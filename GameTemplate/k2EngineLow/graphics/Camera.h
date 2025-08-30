@@ -374,6 +374,37 @@ namespace nsK2EngineLow {
 		/// <param name="worldPos">ワールド座標</param>
 		void CalcScreenPositionFromWorldPosition(Vector2& screenPos, const Vector3& worldPos) const;
 
+		// Cameraクラスの実装に追加
+		void SetProjectionOrthographic(bool isOrtho, float width, float height, float nearZ, float farZ, float fovY, float aspect)
+		{
+			if (isOrtho) {
+				// 正射影
+				SetUpdateProjMatrixFunc(enUpdateProjMatrixFunc_Ortho);
+				SetWidth(width);
+				SetHeight(height);
+				SetNear(nearZ);
+				SetFar(farZ);
+			}
+			else {
+				// 透視投影
+				SetUpdateProjMatrixFunc(enUpdateProjMatrixFunc_Perspective);
+				SetViewAngle(fovY);
+				SetAspect(aspect);
+				SetNear(nearZ);
+				SetFar(farZ);
+			}
+			m_isNeedUpdateProjectionMatrix = true;
+		}
+
+		/// <summary>
+		/// アスペクト比を設定。
+		/// </summary>
+		void SetAspect(float aspect)
+		{
+			m_aspect = aspect;
+			m_isDirty = true;
+		}
+
 	protected:
 		float		m_targetToPositionLen = 1.0f;			// 注視点と視点まで距離。
 		Vector3		m_position = { 0.0f, 0.0f, 1.0f };		// カメラ位置。

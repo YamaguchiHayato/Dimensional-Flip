@@ -47,6 +47,16 @@ namespace nsK2EngineLow {
 		{
 			m_rigidBody.Release();
 		}
+
+
+		void SetPosition(const Vector3& pos)
+		{
+			auto& btTrans = m_rigidBody.GetBody()->getWorldTransform();
+			btVector3 btPos;
+			btPos = btVector3(pos.x, pos.y, pos.z);
+			btTrans.setOrigin(btPos);
+		}
+
 	private:
 		MeshCollider m_meshCollider;		//メッシュコライダー。
 		RigidBody m_rigidBody;				//剛体。

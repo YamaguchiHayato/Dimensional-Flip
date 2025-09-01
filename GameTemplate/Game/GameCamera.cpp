@@ -3,15 +3,14 @@
 #include "Player.h"
 #include "Game.h"
 
-
 namespace
 {
 	Vector3 CAMERA_TARGET;
 }
 
-
-
-//スタートメソッド
+/// <summary>
+/// 初期化処理。
+/// </summary>
 bool GameCamera::Start()
 {
 	////ニアクリップとファークリップの設定
@@ -24,26 +23,20 @@ bool GameCamera::Start()
 	return true;
 }
 
+/// <summary>
+///	更新処理。
+/// </summary>
 void GameCamera::Update()
 {
-	CameraMove();            // カメラの移動
+	//CameraMove();            // カメラの移動
 
-	if (g_pad[0]->IsPress(enButtonB))
-	{
-		CameraSwitch();
-	}
+	CameraSwitch();
 
 }
 
-//void GameCamera::CameraStateTransition()
-//{
-//	switch (cameraState)
-//	{
-//	default:
-//		break;
-//	}
-//}
-
+/// <summary>
+/// カメラの移動、回転。
+/// </summary>
 void GameCamera::CameraMove()
 {
 
@@ -88,26 +81,47 @@ void GameCamera::CameraMove()
 	g_camera3D->Update();
 }
 
+/// <summary>
+/// カメラの視点切替。
+/// </summary>
 void GameCamera::CameraSwitch()
 {
+	CameraMode requestCameraMode = CameraMode::None;
+
 	if (g_pad[0]->IsPress(enButtonB))
 	{
 		// ステートが2Dモードの時
 		if (cameraMode == mode_2D)
 		{
-			cameraMode = mode_3D;
-			SwitchTo3DMode();
+			requestCameraMode = mode_3D;
 		}
-
 		else
 		{
-			cameraMode = mode_2D;
-			SwitchTo2DMode();
+			requestCameraMode = mode_2D;
 		}
+	}
 
+	if (requestCameraMode != CameraMode::None)
+	{
+		if (requestCameraMode != cameraMode)
+		{
+			switch (requestCameraMode)
+			{
+			case GameCamera::mode_2D:
+				SwitchTo2DMode();
+				break;
+			case GameCamera::mode_3D:
+				SwitchTo3DMode();
+				break;
+			}
+			cameraMode = requestCameraMode;
+		}
 	}
 }
 
+/// <summary>
+/// カメラの2D視点用。
+/// </summary>
 void GameCamera::SwitchTo2DMode()
 {
     // 正射影投影（Orthographic）に切り替え
@@ -128,16 +142,16 @@ void GameCamera::SwitchTo2DMode()
     g_camera3D->Update();
 }
 
+/// <summary>
+/// カメラの3D視点用。
+/// </summary>
 void GameCamera::SwitchTo3DMode()
 {
-    // 透視投影（Perspective）に切り替え
-    g_camera3D->SetProjectionOrthographic(false,1280.0f, 720.0f, 1.0f, 10000.0f, 60.0f, 16.0f / 9.0f);
-
     // カメラ位置を「上から斜め後ろ」に設定
     if (m_player) {
         Vector3 playerPos = m_player->m_position;
         // 斜め後ろ上からプレイヤーを見る（例: Y+上、Z-奥）
-        Vector3 camOffset(0.0f, 125.0f, -250.0f);
+        Vector3 camOffset(-250.0f, 125.0f, 0.0f);
         Vector3 camPos = playerPos + camOffset;
         g_camera3D->SetPosition(camPos);
         g_camera3D->SetTarget(playerPos);

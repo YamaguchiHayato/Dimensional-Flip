@@ -44,6 +44,7 @@ private:
 	{
 		mode_2D, // 2Dモード
 		mode_3D, // 3Dモード
+		None,
 	};
 
 	CameraMode cameraMode = mode_2D; // カメラモード

@@ -1,5 +1,8 @@
 #pragma once
 
+
+
+
 class Stage1 : public IGameObject
 {
 public:
@@ -10,10 +13,14 @@ public:
 	void Render(RenderContext & rc);
 
 private:
-	ModelRender modelRender;	
+	ModelRender m_StageRender;	
+
 	Vector3 m_position;
 
 	PhysicsStaticObject m_physicsStaticObject;
+
+	Quaternion m_StageRot;
+private:
 	CollisionObject* m_collisionObject = nullptr;
 
 };

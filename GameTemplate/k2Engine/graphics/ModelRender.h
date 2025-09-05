@@ -147,7 +147,15 @@ namespace nsK2Engine {
 			SetRotation(rotation);
 			SetScale(scale);
 		}
-
+		
+		/// <summary>
+		/// 座標を取得
+		/// </summary>
+		/// <returns>座標</returns>
+		const Vector3& GetPosition() const
+		{
+			return m_position;
+		}
 		/// <summary>
 		/// 座標を設定。
 		/// </summary>

@@ -23,7 +23,7 @@ bool Player::Start()
 	//モデルを初期化する。
 	m_modelRender.Init("Assets/modelData/unityChan.tkm", animationClip, enAnimationClip_Num, enModelUpAxisY);
 	//キャラクターコントローラーの初期化
-	m_Characon.Init(25.0f, 75.0f, m_position);
+	m_Characon.Init(25.0f, 25.0f, m_position);
 
 	m_position = Vector3(0, 0, 0);
 	return true;
@@ -63,7 +63,7 @@ void Player::Move()
 		m_moveSpeed.y = 0.0f;
 		if(g_pad[0]->IsTrigger(enButtonA))
 		{
-			m_moveSpeed.y = 300.0f;
+			m_moveSpeed.y = 350.0f;
 		}
 	} 
 	else

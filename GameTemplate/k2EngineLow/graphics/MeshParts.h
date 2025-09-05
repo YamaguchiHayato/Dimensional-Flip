@@ -201,6 +201,7 @@ namespace nsK2EngineLow {
 			Matrix mWorld;		//ワールド行列。
 			Matrix mView;		//ビュー行列。
 			Matrix mProj;		//プロジェクション行列。
+			Matrix mOtherGraphicPro;
 		};
 		ConstantBuffer m_commonConstantBuffer;					// メッシュ共通の定数バッファ。
 		ConstantBuffer m_expandConstantBuffer;					// ユーザー拡張用の定数バッファ

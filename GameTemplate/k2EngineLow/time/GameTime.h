@@ -101,6 +101,23 @@ namespace nsK2EngineLow {
 			m_sw.Stop();
 			PushFrameDeltaTime(static_cast<float>(m_sw.GetElapsed()));
 		}
+
+		/// <summary>
+        /// ストップウォッチ
+        /// </summary>
+        /// <param name="time">(単位:秒)</param>
+        /// <returns>設定した時間が経過したらtrueを返します</returns>
+		bool StopWatch(float time)
+		{
+			m_stopWatchTime += GetFrameDeltaTime();
+			if (m_stopWatchTime > time)
+			{
+				m_stopWatchTime = 0.0f;
+				return true;
+			}
+			return false;
+		}
+
 	private:
 		friend class K2EngineLow;
 		Stopwatch m_sw;
@@ -108,5 +125,7 @@ namespace nsK2EngineLow {
 		float		m_frameDeltaTime = 1.0f / 60.0f;	// 1フレームの経過時間。
 		bool		m_isFixedFrameDeltaTime = false;		// 1フレームの経過時間を固定化する。
 		float		m_fixedFrameDeltaTime = 1.0f / 60.0f;	// 固定経過時間。
+		float       m_stopWatchTime = 0.0f;					//ストップウォッチ計測時間
+
 	};
 }

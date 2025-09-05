@@ -16,6 +16,8 @@ struct SPSIn
 	float3 biNormal : BINORMAL; //従ベクトル。
 	float2 uv : TEXCOORD0; //UV座標。
 	float3 worldPos : TEXCOORD1; // ワールド座標
+    
+    
 };
 
 

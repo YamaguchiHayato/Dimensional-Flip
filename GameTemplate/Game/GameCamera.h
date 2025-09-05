@@ -13,39 +13,65 @@ public:
 	bool Start();                 
 
 	/// <summary>
-   	/// 更新処理。
+   	/// Lerpでの更新処理。
 	/// </summary>
 	void Update();                
 
-	/// <summary>
-	/// カメラの移動処理。
-	/// </summary>
-	void CameraMove();
 
+private:
+	/// <summary>
+    /// カメラの視点切替。
+    /// </summary>
 	void CameraSwitch();
 	
+	/// <summary>
+	/// カメラの2D視点用。
+	/// </summary>
 	void SwitchTo2DMode();
 
+	/// <summary>
+	/// カメラの3D視点用。
+	/// </summary>
 	void SwitchTo3DMode();
 
-	// 正射影・透視投影切り替え
-	void SetProjectionOrthographic(bool isOrtho, float width = 1280.0f, float height = 720.0f, float nearZ = 1.0f, float farZ = 10000.0f, float fovY = 60.0f, float aspect = 16.0f/9.0f);
+	void CameraMove();
+
+	/// <summary>
+	/// // 正射影・透視投影切り替え
+	/// </summary>
+	/// <param name="isOrtho"></param>
+	/// <param name="width">幅。</param>
+	/// <param name="height">高さ。</param>
+	/// <param name="nearZ"></param>
+	/// <param name="farZ"></param>
+	/// <param name="fovY"></param>
+	/// <param name="aspect">アスペクト比の計算</param>
+	void SetProjectionOrthographic(bool isOrtho, float width, float height, float nearZ, float farZ, float fovY, float aspect);
+	
 private:
 	Player* m_player = nullptr; //プレイヤー     
 
+private:
+	// 追従設定
+	float followDistance_ = 6.0f;   // 背後の距離
+	float verticalOffset_ = 2.0f;   // 高さのオフセット
+	float followLerp_ = 8.0f;       // 補間速度
 
 private:
-	Vector3 axisX;
+	Vector3 m_CameraTarget;
 	Vector3 m_toCameraPos = Vector3::One;
-	Quaternion qRot;
+	Vector3 m_playerPos;
 
+	// 内部状態
+	Vector3 currentPosition;
+	Vector3 currentTarget;
 private:
 	enum CameraMode
 	{
-		mode_2D, // 2Dモード
-		mode_3D, // 3Dモード
+		mode_2D, // 2Dモード。
+		mode_3D, // 3Dモード。
+		None,
 	};
 
 	CameraMode cameraMode = mode_2D; // カメラモード
-
 };

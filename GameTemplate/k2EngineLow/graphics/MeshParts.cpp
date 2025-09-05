@@ -5,6 +5,15 @@
 #include "IndexBuffer.h"
 #include "ComputeAnimationVertexBuffer.h"
 
+namespace
+{
+	// カメラの各種パラメータ。
+	const float CAMERA_WIDHT = 1280.0f;       // 画面幅。
+	const float CAMERA_HEIGHT = 720.0f;       // 画面高さ。
+	const float CAMERA_NEAR_Z = 1.0f;         // ニアクリップ。
+	const float CAMERA_FAR_Z = 10000.0f;      // ファークリップ。
+}
+
 namespace nsK2EngineLow {
 	static TResourceBank<Material>& GetMaterialBank()
 	{
@@ -282,7 +291,8 @@ namespace nsK2EngineLow {
 			m_skeleton->GetBoneMatricesTopAddress()
 		);
 	}
-	void MeshParts::Draw(
+	void MeshParts::Draw
+	(
 		RenderContext& rc,
 		const Matrix& mWorld,
 		const Matrix& mView,
@@ -299,6 +309,7 @@ namespace nsK2EngineLow {
 		cb.mWorld = mWorld;
 		cb.mView = mView;
 		cb.mProj = mProj;
+		cb.mOtherGraphicPro.MakeOrthoProjectionMatrix(CAMERA_WIDHT,CAMERA_HEIGHT, CAMERA_NEAR_Z, CAMERA_FAR_Z);
 		m_commonConstantBuffer.CopyToVRAM(cb);
 
 		if (m_expandData) {

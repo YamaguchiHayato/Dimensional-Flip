@@ -104,13 +104,6 @@ namespace nsK2EngineLow {
 			SetPosition({ x, y, z });
 		}
 		/// <summary>
-		/// カメラの座標を取得。
-		/// </summary>
-		const Vector3& GetPosition() const
-		{
-			return m_position;
-		}
-		/// <summary>
 		/// 注視点を設定。
 		/// </summary>
 		void SetTarget(float x, float y, float z)
@@ -122,6 +115,16 @@ namespace nsK2EngineLow {
 			m_target = target;
 			m_isDirty = true;
 		}
+
+		/// <summary>
+        /// カメラの座標を取得。
+        /// </summary>
+		const Vector3& GetPosition() const
+		{
+			return m_position;
+		}
+
+
 		/// <summary>
 		/// 注視点を取得。
 		/// </summary>
@@ -428,5 +431,9 @@ namespace nsK2EngineLow {
 		EnUpdateProjMatrixFunc m_updateProjMatrixFunc = enUpdateProjMatrixFunc_Perspective;	// プロジェクション行列の更新の仕方。
 		bool		m_isNeedUpdateProjectionMatrix = true;
 		bool		m_isDirty = false;						// ダーティフラグ。
+
+	public:
+		Vector3     m_SetPlayerCameraPosition;
+
 	};
 }

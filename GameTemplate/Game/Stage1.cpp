@@ -15,12 +15,12 @@ Stage1::~Stage1()
 
 bool Stage1::Start()
 {
-	modelRender.Init("Assets/stage&material/stage2VerTest.tkm");
-	m_physicsStaticObject.CreateFromModel(modelRender.GetModel(), modelRender.GetModel().GetWorldMatrix());
+	m_StageRender.Init("Assets/stage&material/stage1.tkm");
+	m_physicsStaticObject.CreateFromModel(m_StageRender.GetModel(), m_StageRender.GetModel().GetWorldMatrix());
+    
 
 	// コリジョン。
 	m_collisionObject = NewGO<CollisionObject>(0, "collisionobject");
-
 
 	//コリジョンを動く床に設置
 	m_collisionObject->CreateBox
@@ -38,8 +38,8 @@ bool Stage1::Start()
 
 void Stage1::Update()
 {
-	modelRender.SetScale(SCALE);
-	modelRender.Update();
+	m_StageRender.SetScale(SCALE);
+	m_StageRender.Update();
 
 	// 当たり判定。
 	m_physicsStaticObject.SetPosition(m_position);
@@ -51,5 +51,5 @@ void Stage1::Update()
 
 void Stage1::Render(RenderContext& rc)
 {
-	modelRender.Draw(rc);
+	m_StageRender.Draw(rc);
 }

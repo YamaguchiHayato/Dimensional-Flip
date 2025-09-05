@@ -45,39 +45,54 @@ public:
 		enAnimationClip_Run,                          //走行アニメ
 		enAnimationClip_Num,                          //アニメーションの数
 	};
-	//メンバ変数
-	Player* m_player;                                 //プレイヤー
+
 	Vector3 m_position;                               //座標ベクトル
-	ModelRender m_modelRender;                          //モデル描画クラス
-	Quaternion rot;
-	AnimationClip animationClip[enAnimationClip_Num]; //アニメーション
-	CharacterController m_Characon;                   //キャラクターコントローラー
-	Vector3 diff;
-	Vector3 m_moveSpeed;                           //移動速度
+
+
+	/// <summary>
+	/// キャラコンのゲッター関数。
+	/// </summary>
+	/// <returns></returns>
 	CharacterController& GetCharacterController()
 	{
 		return m_Characon;
 	}
+
+	/// <summary>
+	/// 座標のゲッター関数。
+	/// </summary>
+	/// <returns></returns>
 	const Vector3& GetPosition() const
 	{
 		return m_position;
 	}
+
+	/// <summary>
+	/// 移動速度
+	/// </summary>
+	/// <param name="addMoveSpeed"></param>
 	void AddMoveSpeed(const Vector3& addMoveSpeed)
 	{
 		m_moveSpeed += addMoveSpeed;
 	}
 
+
+
+private:
+	//メンバ変数
+	Player* m_player;                                 //プレイヤー
+
+private:
+	AnimationClip animationClip[enAnimationClip_Num]; //アニメーション
+	CharacterController m_Characon;                   //キャラクターコントローラー
+
+	ModelRender m_modelRender;                        //モデル描画クラス
+	Vector3 diff;                                     //距離。
+	Vector3 m_moveSpeed;                              //移動速度
+	Quaternion rot;
+
+private:	
 	int	m_playerState = enPlayer_idle;
-
-
-public:
-	enum class Axis
-	{
-		XY,
-		XYZ
-	};
-
-	void SetMovementAxis(Axis axis);
 
 };
 

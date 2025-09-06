@@ -451,10 +451,10 @@
       <Filter>sound</Filter>
     </ClInclude>
     <ClInclude Include="time\GameTime.h">
-      <Filter>time</Filter>
+      <Filter>sound\time</Filter>
     </ClInclude>
     <ClInclude Include="time\Stopwatch.h">
-      <Filter>time</Filter>
+      <Filter>sound\time</Filter>
     </ClInclude>
     <ClInclude Include="tkFile\TksFile.h">
       <Filter>tkFile</Filter>
@@ -485,7 +485,7 @@
       <Filter>geometry</Filter>
     </ClInclude>
     <ClInclude Include="time\FPSLimitter.h">
-      <Filter>time</Filter>
+      <Filter>sound\time</Filter>
     </ClInclude>
     <ClInclude Include="AI\PathFinding\PathFinding.h">
       <Filter>AI\PathFinding</Filter>
@@ -552,9 +552,6 @@
     <Filter Include="sound">
       <UniqueIdentifier>{b4bfd2b2-754c-4112-8c0d-bd8ec2eaf701}</UniqueIdentifier>
     </Filter>
-    <Filter Include="time">
-      <UniqueIdentifier>{973a3ec8-080c-4aa1-9fee-4dca8a8a8036}</UniqueIdentifier>
-    </Filter>
     <Filter Include="tkFile">
       <UniqueIdentifier>{76a10421-a719-4ab3-82db-2cd452f086a1}</UniqueIdentifier>
     </Filter>
@@ -575,6 +572,9 @@
     </Filter>
     <Filter Include="dxc">
       <UniqueIdentifier>{496d48ba-26ca-419f-9db8-b1cea244c1c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sound\time">
+      <UniqueIdentifier>{973a3ec8-080c-4aa1-9fee-4dca8a8a8036}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

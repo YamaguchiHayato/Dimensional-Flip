@@ -6,20 +6,18 @@
 
 namespace
 {
+	// カメラの追従設定。
 	Vector3 CAMERA_TARGET;
 
 	// カメラの各種パラメータ。
-	const float CAMERA_WIDHT = 1280.0f;       // 画面幅。
-	const float CAMERA_HEIGHT = 720.0f;       // 画面高さ。
-	const float CAMERA_NEAR_Z = 1.0f;         // ニアクリップ。
-	const float CAMERA_FAR_Z = 10000.0f;      // ファークリップ。
-	const float CAMERA_FOV_Y = 60.0f;         // 画角(縦)。
-	const float CAMERA_ASPECT = 16.0f / 9.0f; // アスペクト比。
+	const auto CAMERA_WIDHT = 1280.0f;       // 画面幅。
+	const auto CAMERA_HEIGHT = 720.0f;       // 画面高さ。
+	const auto CAMERA_NEAR_Z = 1.0f;         // ニアクリップ。
+	const auto CAMERA_FAR_Z = 10000.0f;      // ファークリップ。
+	const auto CAMERA_FOV_Y = 60.0f;         // 画角(縦)。
+	const auto CAMERA_ASPECT = 16.0f / 9.0f; // アスペクト比。
 }
 
-inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t) {
-	return a + (b - a) * t;
-}
 
 /// <summary>
 /// 初期化処理。
@@ -55,43 +53,17 @@ void GameCamera::CameraMove()
 	// 早期リターン。
 	if (!m_player) return;
 
-	// カメラの追従設定。
-	Vector3 playerPos = m_player->m_position;
-	Vector3 playerForward = m_player->GetPosition();
+	CAMERA_TARGET = m_player->m_position;
 
-	// 背後オフセットを動的に算出。
-	Vector3 behind = playerPos - playerForward * followDistance_;
-	behind.y += verticalOffset_;
+	//Vector3 playerForward = m_player->GetPosition();
 
-	Vector3 desiredPosition = behind;
-	Vector3 desiredTarget = playerPos;
+	//// 背後オフセットを動的に算出。
+	//Vector3 behind = CAMERA_TARGET - playerForward * followDistance_;
+	//behind.y += verticalOffset_;
 
+	//Vector3 desiredPosition = behind;
+	//Vector3 desiredTarget = CAMERA_TARGET;
 
-	//// カメラが2Dモードの場合。
-	//if (cameraMode == mode_2D ? false : true)
-	//{
-	//	float t = 1.0f - std::exp(-followLerp_ * g_gameTime->GetFrameDeltaTime());
-	//	currentPosition = Lerp(currentPosition, desiredPosition, t);
-	//	currentTarget = Lerp(currentTarget, desiredTarget, t);
-	//	g_camera3D->SetPosition(currentPosition);
-	//	g_camera3D->SetTarget(currentTarget);		//// 横からに視点を固定させる。
-	//	//Vector3 camOffset(0.0f, 0.0f, -250.0f);
-	//	//Vector3 camPos = playerPos + camOffset;
-	//	//Vector3 camTarget = playerPos;
-	//	//g_camera3D->SetPosition(camPos );
-	//	//g_camera3D->SetTarget(camTarget);
-
-	//}
-
-	//// カメラが3Dモードの場合。
-	//else
-	//{
-	//	// 真後ろからの追従視点。
-	//	Vector3 camPos(playerPos.x - 1000.0f, playerPos.y, playerPos.z);
-	//	Vector3 camTarget(playerPos.x, playerPos.y, playerPos.z);
-	//	g_camera3D->SetPosition(camPos);
-	//	g_camera3D->SetTarget(camTarget);
-	//}
 
 	g_camera3D->Update();
 }

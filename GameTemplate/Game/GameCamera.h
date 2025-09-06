@@ -62,9 +62,6 @@ private:
 	Vector3 m_toCameraPos = Vector3::One;
 	Vector3 m_playerPos;
 
-	// “à•”ó‘Ô
-	Vector3 currentPosition;
-	Vector3 currentTarget;
 private:
 	enum CameraMode
 	{

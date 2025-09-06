@@ -16,6 +16,7 @@ private:
 	ModelRender m_StageRender;	
 
 	Vector3 m_position;
+	Vector3 m_initPosition;
 
 	PhysicsStaticObject m_physicsStaticObject;
 

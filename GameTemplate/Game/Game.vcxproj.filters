@@ -17,6 +17,8 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="TrackingEnemy.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -29,5 +31,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="TrackingEnemy.h" />
+    <ClInclude Include="EnemyBase.h" />
   </ItemGroup>
 </Project>

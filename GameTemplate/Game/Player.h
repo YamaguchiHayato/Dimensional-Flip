@@ -82,7 +82,7 @@ private:
 	//メンバ変数
 	Player* m_player;                                 //プレイヤー
 
-private:
+public:
 	AnimationClip animationClip[enAnimationClip_Num]; //アニメーション
 	CharacterController m_Characon;                   //キャラクターコントローラー
 

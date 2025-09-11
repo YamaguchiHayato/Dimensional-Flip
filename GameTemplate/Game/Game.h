@@ -1,7 +1,7 @@
 #pragma once
 #include "Level3DRender/LevelRender.h"
 
-class ChaseEnemy;
+class TrackingEnemy;
 class Door;
 class Player;
 class Stage1;
@@ -14,17 +14,13 @@ public:
 	bool Start();
 private:
 	/// <summary>
-	/// Enemyの生成。
+	/// 追跡敵の生成。
 	/// </summary>
-	void EnemyNewGO();
+	void EnemyNewGO_Tracking();
 
-	/// <summary>
-	/// ドアの生成。
-	/// </summary>
-	void DoorNewGO();
 private:
 	// モデル。
-	ChaseEnemy* m_chaseEnemy = nullptr;
+	TrackingEnemy* m_trackingEnemy = nullptr;
 	Player* m_player = nullptr;
 
 	// ステージ。

@@ -1,74 +1,64 @@
 #pragma once
-
+#include "k2EngineLowPreCompile.h"
+#include <functional>
+// #include <algorithm> // ← ヘッダでは不要にできます
 class Player;
 class GameCamera : public IGameObject
 {
 public:
-	GameCamera() {};
-	~GameCamera() {};
+    GameCamera() = default;
+    ~GameCamera() = default;
 
-	/// <summary>
-  	/// 初期化処理。
-	/// </summary>
-	bool Start();                 
+    bool Start();
+    void Update();
+    void Upadte();
 
-	/// <summary>
-   	/// Lerpでの更新処理。
-	/// </summary>
-	void Update();                
-
-
-private:
-	/// <summary>
-    /// カメラの視点切替。
-    /// </summary>
-	void CameraSwitch();
-	
-	/// <summary>
-	/// カメラの2D視点用。
-	/// </summary>
-	void SwitchTo2DMode();
-
-	/// <summary>
-	/// カメラの3D視点用。
-	/// </summary>
-	void SwitchTo3DMode();
-
-	void CameraMove();
-
-	/// <summary>
-	/// // 正射影・透視投影切り替え
-	/// </summary>
-	/// <param name="isOrtho"></param>
-	/// <param name="width">幅。</param>
-	/// <param name="height">高さ。</param>
-	/// <param name="nearZ"></param>
-	/// <param name="farZ"></param>
-	/// <param name="fovY"></param>
-	/// <param name="aspect">アスペクト比の計算</param>
-	void SetProjectionOrthographic(bool isOrtho, float width, float height, float nearZ, float farZ, float fovY, float aspect);
-	
-private:
-	Player* m_player = nullptr; //プレイヤー     
+    void SetPlayerGetter(const std::function<nsK2EngineLow::Vector3(void)>& getter) { m_getPlayerPos = getter; }
+    void SetOrbitStepDeg(float degCW);
+    void SetOrbitDuration(float seconds);
+    void SetTarget(Player* player) { m_player = player; }
+    void SetToCameraPos(const Vector3& toCameraPos)
+    {
+        m_toCameraPos = toCameraPos;
+        m_toCameraPosmultiplier = double(m_toCameraPos.z) / double(-500.0f);
+    }
 
 private:
-	// 追従設定
-	float followDistance_ = 6.0f;   // 背後の距離
-	float verticalOffset_ = 2.0f;   // 高さのオフセット
-	float followLerp_ = 8.0f;       // 補間速度
+    nsK2EngineLow::Vector3 QueryPlayerPos() const;
+    void BeginOrbitStepCW();
+    void TickOrbit(float dt);
+
+    // --- ここを変更：std::clamp を使わない ---
+    static inline float Clamp01(float v) noexcept {
+        return (v < 0.0f) ? 0.0f : (v > 1.0f ? 1.0f : v);
+    }
+    float EaseSmoothStep01(float t) const noexcept {
+        t = Clamp01(t);
+        return t * t * (3.0f - 2.0f * t);
+    }
 
 private:
-	Vector3 m_CameraTarget;
-	Vector3 m_toCameraPos = Vector3::One;
-	Vector3 m_playerPos;
+    float m_duration = 0.30f;
+    float m_stepAngleRad = nsK2EngineLow::Math::DegToRad(-45.0f);
 
-private:
-	enum CameraMode
-	{
-		mode_2D, // 2Dモード。
-		mode_3D, // 3Dモード。
-		None,
-	};
+    bool  m_isRotating = false;
+    int   m_rotateQueue = 0;
 
-	CameraMode cameraMode = mode_2D; // カメラモード
+    float m_elapsed = 0.0f;
+    float m_targetAngleRad = 0.0f;
+    float m_currentAngleRad = 0.0f;
+
+    Player* m_player = nullptr;				//プレイヤー用のインスタンス。
+    Vector3 m_cameraTarget;					//カメラの注視点。
+    Vector3 m_leftScreenEdge;				//左画面端。
+    Vector3 m_toCameraPos;					//注視点から視点に向かうベクトル。
+    double m_toCameraPosmultiplier = 1.0f;	//カメラの倍率。
+    bool m_stageTransitionFlag = false;		//ステージ遷移フラグ
+
+    nsK2EngineLow::Vector3 m_playerPos{ 0,0,0 };
+    nsK2EngineLow::Vector3 m_initialOffset{ 0,0,-200 };
+    nsK2EngineLow::Vector3 m_followOffset{ 0,0,-200 };
+
+    // --- ここを修正：Vector3 に nsK2EngineLow:: を付ける ---
+    std::function<nsK2EngineLow::Vector3(void)> m_getPlayerPos;
 };

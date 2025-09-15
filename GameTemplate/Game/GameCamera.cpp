@@ -1,170 +1,197 @@
 #include "stdafx.h"
-#include "DirectXMath.h"
 #include "GameCamera.h"
-#include "Player.h"
-#include "Game.h"
+#include <algorithm>
+
+using namespace nsK2EngineLow;
 
 namespace
 {
-	// カメラの追従設定。
-	Vector3 CAMERA_TARGET;
-
-	// カメラの各種パラメータ。
-	const auto CAMERA_WIDHT = 1280.0f;       // 画面幅。
-	const auto CAMERA_HEIGHT = 720.0f;       // 画面高さ。
-	const auto CAMERA_NEAR_Z = 1.0f;         // ニアクリップ。
-	const auto CAMERA_FAR_Z = 10000.0f;      // ファークリップ。
-	const auto CAMERA_FOV_Y = 60.0f;         // 画角(縦)。
-	const auto CAMERA_ASPECT = 16.0f / 9.0f; // アスペクト比。
+    const Vector3 CAMERA_POS(0.0f, 200.0f, -800.0f);
+    const float CAMERA_NEAR(1.0f);
+    const float CAMERA_FAR(10000.0f);
 }
 
 
-/// <summary>
-/// 初期化処理。
-/// </summary>
+// -------------------------------------
+// 公開設定系
+// -------------------------------------
+void GameCamera::SetOrbitStepDeg(float degCW)
+{
+    m_stepAngleRad = Math::DegToRad(degCW);
+}
+
+void GameCamera::SetOrbitDuration(float seconds)
+{
+    m_duration = (std::max)(0.01f, seconds);
+}
+
+// -------------------------------------
+// Start: 初期化
+// -------------------------------------
 bool GameCamera::Start()
 {
-	////ニアクリップとファークリップの設定
-	g_camera3D->SetNear(1.0f);
-	g_camera3D->SetFar(10000.0f);
+    // 状態リセット
+    m_isRotating = false;
+    m_rotateQueue = 0;
+    m_elapsed = 0.0f;
+    m_targetAngleRad = 0.0f;
+    m_currentAngleRad = 0.0f;
 
-	//注視点からのベクトルの設定
-	m_player = FindGO<Player>("player");
-	m_toCameraPos.Set(m_player->GetPosition().x, m_player->GetPosition().y, -250.0f);
+    // 初期プレイヤー位置
+    m_playerPos = QueryPlayerPos();
 
-	return true;
+    // 現在のカメラからオフセットを作る（g_camera3D は GraphicsEngine 初期化時に有効化）
+    if (g_camera3D) {
+        // いまのカメラをプレイヤーへ向け直し（必要に応じて）
+        g_camera3D->SetTarget(m_playerPos);
 
+        // 既存位置があれば、その相対オフセットを追従オフセットとして採用
+        Vector3 camPos = g_camera3D->GetPosition();
+        m_followOffset = camPos - m_playerPos;
+
+        // 初期回転オフセットも合わせる
+        m_initialOffset = m_followOffset;
+    }
+    else {
+        // フォールバック（とりあえず少し後ろ）
+        m_followOffset = Vector3(0, 50, -200);
+        m_initialOffset = m_followOffset;
+    }
+
+    return true;
 }
 
-/// <summary>
-///	更新処理。
-/// </summary>
+// -------------------------------------
+// Update / Upadte: 毎フレーム
+// -------------------------------------
 void GameCamera::Update()
 {
-	CameraSwitch(); // カメラの視点切替
-	CameraMove();   // カメラの移動。
+    // 1) プレイヤー位置を更新
+    m_playerPos = QueryPlayerPos();
+
+     
+
+    // 2) 入力（Bボタン）で 45° の回転ステップを要求
+    if (g_pad[0]->IsTrigger(enButtonB)) {
+        if (!m_isRotating) {
+            BeginOrbitStepCW();   // 今すぐ開始
+        }
+        else {
+            // 現在回転中なら、完了後にもう一段回す
+            ++m_rotateQueue;
+        }
+    }
+
+    // 3) 回転中なら補間を進める／そうでなければ追従のみ
+    const float dt = g_gameTime->GetFrameDeltaTime();   // エンジンのΔt（秒）
+    if (m_isRotating) {
+        TickOrbit(dt);
+    }
+    else {
+        // 非回転時：追従（プレイヤーが動いても既存オフセットを保つ）
+        if (g_camera3D) {
+            g_camera3D->SetTarget(m_playerPos);
+            g_camera3D->SetPosition(m_playerPos + m_followOffset);
+        }
+    }
 }
 
-/// <summary>
-/// カメラの追従。
-/// </summary>
-void GameCamera::CameraMove()
+void GameCamera::Upadte()
 {
-	// 早期リターン。
-	if (!m_player) return;
-
-	CAMERA_TARGET = m_player->m_position;
-
-	//Vector3 playerForward = m_player->GetPosition();
-
-	//// 背後オフセットを動的に算出。
-	//Vector3 behind = CAMERA_TARGET - playerForward * followDistance_;
-	//behind.y += verticalOffset_;
-
-	//Vector3 desiredPosition = behind;
-	//Vector3 desiredTarget = CAMERA_TARGET;
-
-
-	g_camera3D->Update();
+    // 互換：誤綴り版が呼ばれても内部で本処理に回す
+    Update();
 }
 
-
-/// <summary>
-/// カメラの視点切替。
-/// </summary>
-void GameCamera::CameraSwitch()
+// -------------------------------------
+// 内部：プレイヤー位置の取得
+// -------------------------------------
+Vector3 GameCamera::QueryPlayerPos() const
 {
-	
-	CameraMode requestCameraMode = CameraMode::None;
-
-	// Bボタンが押されたら
-	if (g_pad[0]->IsTrigger(enButtonB))
-	{
-		// ステートが2Dモードの時
-		if (cameraMode == mode_2D)
-		{
-			// 3Dモードに切り替えをリクエスト
-			requestCameraMode = mode_3D;
-		}
-
-		// ステートが3Dモードの時
-		else
-		{    
-			// 2Dモードに切り替えをリクエスト
-			requestCameraMode = mode_2D;
-		}
-	}
-
-	// リクエストがNoneでなければ
-	if (requestCameraMode != CameraMode::None)
-	{
-		// 現在のカメラモードとリクエストされたモードが異なれば
-		if (requestCameraMode != cameraMode)
-		{
-			// カメラモードを切り替え
-			switch (requestCameraMode)
-			{
-				 // 2Dモードに切り替え
-			case GameCamera::mode_3D:
-				SwitchTo2DMode();
-				break;
-
-				// 3Dモードに切り替え
-			case GameCamera::mode_2D:
-				SwitchTo3DMode();
-				break;
-			}
-
-			// カメラモードを更新
-			cameraMode = requestCameraMode;
-		}
-	}
-
+    if (m_getPlayerPos) {
+        return m_getPlayerPos();
+    }
+    // フォールバック：ターゲットが既にプレイヤーを向いているなら流用
+    if (g_camera3D) {
+        return g_camera3D->GetTarget();
+    }
+    return Vector3::Zero; // 最終フォールバック
 }
 
-/// <summary>
-/// カメラの2D視点用。
-/// </summary>
-void GameCamera::SwitchTo2DMode()
+// -------------------------------------
+// 内部：45°ステップを開始
+// -------------------------------------
+void GameCamera::BeginOrbitStepCW()
 {
+    // その時点の相対オフセットを初期値としてキャプチャ
+    if (g_camera3D) {
+        m_initialOffset = g_camera3D->GetPosition() - m_playerPos;
+        // もしゼロ長になっていたら最低限の距離を与える
+        if (m_initialOffset.LengthSq() < 1e-6f) {
+            m_initialOffset = Vector3(0, 50, -200);
+        }
+    }
 
-	// 正射影投影（Orthographic）に切り替え
-	 g_camera3D->SetProjectionOrthographic(true, CAMERA_WIDHT, CAMERA_HEIGHT, CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV_Y, CAMERA_ASPECT);
-
-
-	if (m_player) {
-		m_playerPos = m_player->m_position;
-
-		// 横スクロール風の視点（Z軸固定）
-		Vector3 camPos(m_playerPos.x - 1000.0f, m_playerPos.y + 100.0f, 0.0f);
-		Vector3 camTarget(m_playerPos.x, m_playerPos.y, 0.0f);
-		g_camera3D->SetPosition(camPos);
-		g_camera3D->SetTarget(camTarget);
-	}
-	g_camera3D->Update();
+    m_isRotating = true;
+    m_elapsed = 0.0f;
+    m_currentAngleRad = 0.0f;
+    m_targetAngleRad = m_stepAngleRad; // 例：-45°（LH時計回り）
 }
 
-/// <summary>
-/// カメラの3D視点用。
-/// </summary>
-void GameCamera::SwitchTo3DMode()
+// -------------------------------------
+// 内部：回転補間の適用
+// -------------------------------------
+void GameCamera::TickOrbit(float dt)
 {
-	if (m_player) {
+    if (!g_camera3D) {
+        // カメラが無い場合は安全に終了
+        m_isRotating = false;
+        m_rotateQueue = 0;
+        return;
+    }
 
+    m_elapsed += dt;
+    float t = m_elapsed / m_duration;
+    if (t > 1.0f) t = 1.0f;
 
-		Vector3 playerPos = m_player->m_position;
-		Vector3 camOffset(0.0f, 125.0f, -250.0f);
-		Vector3 camPos = playerPos + camOffset;
+    // イージング（スムースステップ）
+    const float u = EaseSmoothStep01(t);
 
-		// 
-		m_toCameraPos = camPos;
-		m_CameraTarget = playerPos;
+    // 目標角に対する現在角（初期→目標を u で補間）
+    const float angleNow = m_targetAngleRad * u;
 
-		g_camera3D->SetPosition(camPos);
-		g_camera3D->SetTarget(playerPos);
+    // 初期オフセットを「Y軸まわり angleNow」回転させる
+    Vector3 curOffset = m_initialOffset;
+    {
+        Quaternion q;
+        q.SetRotationY(angleNow);
+        q.Apply(curOffset);  // in-place 回転
+    }
 
-	}
+    // プレイヤー中心に配置＆注視
+    const Vector3 camPos = m_playerPos + curOffset;
+    g_camera3D->SetTarget(m_playerPos);
+    g_camera3D->SetPosition(camPos);
+    // g_camera3D->Update(); // 必要なら
 
-	g_camera3D->Update();
+    // 完了判定
+    if (m_elapsed >= m_duration) {
+        // 最終状態を追従オフセットとする（次のフレーム以降の通常追従用）
+        m_followOffset = curOffset;
+
+        // 状態をクリア
+        m_isRotating = false;
+        m_elapsed = 0.0f;
+        m_currentAngleRad = 0.0f;
+        m_targetAngleRad = 0.0f;
+
+        // キューが残っていれば次の 45° を直ちに開始
+        if (m_rotateQueue > 0) {
+            --m_rotateQueue;
+            BeginOrbitStepCW();
+        }
+    }
+    else {
+        // 進捗のメモ（必要なら差分利用用）
+        m_currentAngleRad = angleNow;
+    }
 }
-

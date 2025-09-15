@@ -7,6 +7,14 @@ namespace nsK2EngineLow {
 	/// カメラクラス。
 	/// </summary>
 	class Camera : public Noncopyable {
+        // Camera クラスにSetRotationメソッドを追加
+        public:
+            // カメラの回転（クォータニオン）を設定する
+            void SetRotation(const Quaternion& rotation)
+            {
+                m_rotation = rotation;
+                m_isDirty = true; // 行列の再計算が必要な場合
+            }
 	public:
 		/// <summary>
 		/// 射影行列の更新方法。
@@ -434,6 +442,6 @@ namespace nsK2EngineLow {
 
 	public:
 		Vector3     m_SetPlayerCameraPosition;
-
+		Quaternion  m_rotation; // カメラの回転を保持するクォータニオン
 	};
 }

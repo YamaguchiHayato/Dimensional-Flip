@@ -14,11 +14,11 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Stage1.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TrackingEnemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -28,10 +28,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stage1.h" />
-    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TrackingEnemy.h" />
     <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="GameCamera.h" />
   </ItemGroup>
 </Project>

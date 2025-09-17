@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "GameCamera.h"
 
 namespace
 {
@@ -41,6 +42,7 @@ void Player::Update()
 
 void Player::Move()
 {
+
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
 
@@ -49,12 +51,9 @@ void Player::Move()
 	stickL.y = g_pad[0]->GetLStickYF();
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
-
-	forward.y = 0.0f;
-	right.y = 0.0f;
-
+	forward.y = right.y = 0.0f;
 	right *= stickL.x * 480.0f;
-	forward *= stickL.y * 0.0f;
+	forward *= stickL.y * 480.0f;
 
 	m_moveSpeed += right + forward;
 
@@ -72,8 +71,7 @@ void Player::Move()
 		m_moveSpeed.y -= GLAVITY;
 	}
 	m_position = m_Characon.Execute(m_moveSpeed, 1.0f / 60.0f);
-	m_position.z = 0.0f;
-
+//	m_position.z = 0.0f;
 
 	m_Characon.SetPosition(m_position);
 

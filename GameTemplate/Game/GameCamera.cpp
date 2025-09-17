@@ -1,16 +1,14 @@
 #include "stdafx.h"
 #include "GameCamera.h"
+#include "Player.h"
 #include <algorithm>
 
 using namespace nsK2EngineLow;
 
 namespace
 {
-    const Vector3 CAMERA_POS(0.0f, 200.0f, -800.0f);
-    const float CAMERA_NEAR(1.0f);
-    const float CAMERA_FAR(10000.0f);
+    Vector3 CAMERA_POSITION;
 }
-
 
 // -------------------------------------
 // 公開設定系
@@ -58,27 +56,29 @@ bool GameCamera::Start()
         m_initialOffset = m_followOffset;
     }
 
+	m_player = FindGO<Player>("player");
     return true;
 }
 
 // -------------------------------------
 // Update / Upadte: 毎フレーム
 // -------------------------------------
-void GameCamera::Update()
+void GameCamera::CameraUpdate()
 {
     // 1) プレイヤー位置を更新
     m_playerPos = QueryPlayerPos();
 
-     
-
     // 2) 入力（Bボタン）で 45° の回転ステップを要求
     if (g_pad[0]->IsTrigger(enButtonB)) {
-        if (!m_isRotating) {
-            BeginOrbitStepCW();   // 今すぐ開始
-        }
-        else {
-            // 現在回転中なら、完了後にもう一段回す
-            ++m_rotateQueue;
+        if (IsInOrbitZone(m_playerPos))
+        {
+            if (!m_isRotating) {
+                BeginOrbitStepCW();   // 今すぐ開始
+            }
+            else {
+                // 現在回転中なら、完了後にもう一段回す
+                ++m_rotateQueue;
+            }
         }
     }
 
@@ -96,10 +96,9 @@ void GameCamera::Update()
     }
 }
 
-void GameCamera::Upadte()
+void GameCamera::Update()
 {
-    // 互換：誤綴り版が呼ばれても内部で本処理に回す
-    Update();
+	CameraUpdate();
 }
 
 // -------------------------------------
@@ -107,13 +106,12 @@ void GameCamera::Upadte()
 // -------------------------------------
 Vector3 GameCamera::QueryPlayerPos() const
 {
-    if (m_getPlayerPos) {
-        return m_getPlayerPos();
-    }
+    if (m_getPlayerPos) { return m_getPlayerPos(); }
+	if (m_player) { return m_player->GetPosition(); }
     // フォールバック：ターゲットが既にプレイヤーを向いているなら流用
-    if (g_camera3D) {
-        return g_camera3D->GetTarget();
-    }
+    if (g_camera3D) { return g_camera3D->GetTarget(); }
+    
+
     return Vector3::Zero; // 最終フォールバック
 }
 
@@ -194,4 +192,30 @@ void GameCamera::TickOrbit(float dt)
         // 進捗のメモ（必要なら差分利用用）
         m_currentAngleRad = angleNow;
     }
+}
+
+void GameCamera::AddOrbitZoneXZ(float minX, float maxX, float minZ, float maxZ)
+{
+    if (minX > maxX) std::swap(minX, maxX);
+    if (minZ > maxZ) std::swap(minZ, maxZ);
+    m_orbitZones.push_back(OrbitZoneXZ{ minX, maxX, minZ, maxZ });
+}
+
+void GameCamera::ClearOrbitZones()
+{
+    m_orbitZones.clear();
+}
+
+bool GameCamera::IsInOrbitZone(const Vector3& p) const
+{
+    // ゾーン未登録ならどこでも許可
+    if (m_orbitZones.empty()) return true;
+
+    for (const auto& z : m_orbitZones) {
+        if (p.x >= z.minX && p.x <= z.maxX &&
+            p.z >= z.minZ && p.z <= z.maxZ) {
+            return true;
+        }
+    }
+    return false;
 }

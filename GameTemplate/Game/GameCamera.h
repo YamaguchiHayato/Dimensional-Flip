@@ -1,7 +1,8 @@
 #pragma once
 #include "k2EngineLowPreCompile.h"
 #include <functional>
-// #include <algorithm> // ← ヘッダでは不要にできます
+#include <Vector>
+
 class Player;
 class GameCamera : public IGameObject
 {
@@ -11,7 +12,7 @@ public:
 
     bool Start();
     void Update();
-    void Upadte();
+    void CameraUpdate();
 
     void SetPlayerGetter(const std::function<nsK2EngineLow::Vector3(void)>& getter) { m_getPlayerPos = getter; }
     void SetOrbitStepDeg(float degCW);
@@ -22,6 +23,10 @@ public:
         m_toCameraPos = toCameraPos;
         m_toCameraPosmultiplier = double(m_toCameraPos.z) / double(-500.0f);
     }
+
+    void AddOrbitZoneXZ(float minX, float maxX, float minZ, float maxZ);
+    void ClearOrbitZones();
+    bool IsInOrbitZone(const nsK2EngineLow::Vector3& p) const;
 
 private:
     nsK2EngineLow::Vector3 QueryPlayerPos() const;
@@ -36,6 +41,11 @@ private:
         t = Clamp01(t);
         return t * t * (3.0f - 2.0f * t);
     }
+
+    struct OrbitZoneXZ {
+        float minX, maxX, minZ, maxZ;
+    };
+    std::vector<OrbitZoneXZ> m_orbitZones;  // 許可ゾーンのリスト
 
 private:
     float m_duration = 0.30f;

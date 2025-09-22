@@ -1,4 +1,5 @@
 #pragma once
+#include "Src/Actor/Actor.h"
 class TrackingEnemy;
 class IEnemy
 {
@@ -15,7 +16,7 @@ public:
 
 };
 
-class EnemyBase : public IGameObject ,public IEnemy
+class EnemyBase : public Actor
 {
 public:
 	EnemyBase() {};

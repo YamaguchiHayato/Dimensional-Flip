@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameCamera.h"
-#include "Player.h"
+#include "Actor/Character/Player.h"
 #include <algorithm>
 
 using namespace nsK2EngineLow;

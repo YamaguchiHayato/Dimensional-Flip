@@ -4,6 +4,21 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{1c44a0a2-237a-410d-8c86-107fd153bed8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor">
+      <UniqueIdentifier>{715ea53d-7871-401a-800a-6d93fb5e6fa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character">
+      <UniqueIdentifier>{bee95387-773d-4f6c-a945-37f124b86832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy">
+      <UniqueIdentifier>{afae5479-4889-4952-b273-8491fcd8a89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Stage">
+      <UniqueIdentifier>{ae5f0c52-4e96-482e-a278-39ce5d450482}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -12,13 +27,33 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Stage1.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="TrackingEnemy.cpp" />
-    <ClCompile Include="EnemyBase.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Src\GameCamera.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Actor.cpp">
+      <Filter>Src\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Stage.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Stage1.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -26,12 +61,32 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Stage1.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="TrackingEnemy.h" />
-    <ClInclude Include="EnemyBase.h" />
-    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Src\GameCamera.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Actor.h">
+      <Filter>Src\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Stage.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Stage1.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

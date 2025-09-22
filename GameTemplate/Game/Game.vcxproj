@@ -223,33 +223,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Src\Actor\Actor.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
+    <ClCompile Include="Src\GameCamera.cpp" />
+    <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
-    <ClCompile Include="TrackingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Src\Actor\Actor.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Player.h" />
+    <ClInclude Include="Src\Actor\Stage\Stage.h" />
+    <ClInclude Include="Src\Actor\Stage\Stage1.h" />
+    <ClInclude Include="Src\GameCamera.h" />
+    <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
-    <ClInclude Include="TrackingEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

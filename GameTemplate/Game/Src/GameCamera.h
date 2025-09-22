@@ -1,10 +1,11 @@
 #pragma once
+#include "Src/Actor/Actor.h"
 #include "k2EngineLowPreCompile.h"
 #include <functional>
 #include <Vector>
 
 class Player;
-class GameCamera : public IGameObject
+class GameCamera : public Actor
 {
 public:
     GameCamera() = default;

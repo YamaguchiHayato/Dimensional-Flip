@@ -1,7 +1,8 @@
 #pragma once
 #include "stdafx.h"
+#include "Src/Actor/Actor.h"
 
-class Player : public IGameObject
+class Player : public Actor
 {
 public:
 	Player() {};

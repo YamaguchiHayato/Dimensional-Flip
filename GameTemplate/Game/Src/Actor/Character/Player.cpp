@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "GameCamera.h"
+#include "Src/GameCamera.h"
 
 namespace
 {

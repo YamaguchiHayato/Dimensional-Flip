@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Src//Actor/Actor.h"
 /// <summary>
 /// ステージをIDで管理するenum。
 /// </summary>
@@ -32,7 +32,7 @@ public:
 /// <summary>
 /// IGameObject継承用クラス。
 /// </summary>
-class IStage : public IGameObject
+class IStage : public Actor
 {
 public:
 	IStage() {};

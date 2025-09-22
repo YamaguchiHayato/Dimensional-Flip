@@ -1,10 +1,10 @@
 ﻿#include "stdafx.h"
-#include "EnemyBase.h"
 #include "Game.h"
-#include "GameCamera.h"
-#include "Player.h"
-#include "Stage1.h"
-#include "TrackingEnemy.h"
+#include "Src/GameCamera.h"
+#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Stage/Stage1.h"
+#include "Src/Actor/Character/Enemy/EnemyBase.h"
+#include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 
 namespace EnemyPosition
 {

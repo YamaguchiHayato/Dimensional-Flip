@@ -1,9 +1,9 @@
 #pragma once
+#include "Stage.h"
 
 
 
-
-class Stage1 : public IGameObject
+class Stage1 : public Stage
 {
 public:
 	Stage1() {};

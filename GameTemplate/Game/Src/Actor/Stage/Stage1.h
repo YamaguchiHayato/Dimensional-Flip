@@ -1,16 +1,16 @@
 #pragma once
-#include "Stage.h"
+#include "Src/Actor/Stage/Stage.h"
 
 
 
-class Stage1 : public Stage
+class Stage1 : public IStage
 {
 public:
 	Stage1() {};
 	~Stage1();
-	bool Start();
-	void Update();
-	void Render(RenderContext & rc);
+	bool Start()override;
+	void Update()override;
+	void Render(RenderContext & rc)override;
 
 private:
 	ModelRender m_StageRender;	

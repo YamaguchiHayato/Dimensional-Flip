@@ -1,5 +1,5 @@
 #pragma once
-#include "EnemyBase.h"
+#include "Src/Actor/Character/Enemy/EnemyBase.h"
 
 class Player;
 /// <summary>

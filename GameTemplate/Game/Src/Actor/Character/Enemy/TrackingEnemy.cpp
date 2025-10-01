@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Actor/Character/Player.h"
-#include "Actor/Character/Enemy/TrackingEnemy.h"
+#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "graphics/effect/EffectEmitter.h"
 
 namespace

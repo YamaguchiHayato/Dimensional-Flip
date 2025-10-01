@@ -1,99 +1,89 @@
 #pragma once
-#include "stdafx.h"
-#include "Src/Actor/Actor.h"
 
-class Player : public Actor
+enum PlayerState {
+	enPlayer_idle,
+	enPlayer_walk,
+	enPlayer_run,
+	enPlayer_jump,
+	enPlayer_stageclear,
+	enPlayer_gameover,
+	enPlayer_num,
+};
+
+enum EnAnimationClip
+{
+	enAnimationClip_Idle,
+	enAnimationClip_Walk,
+	enAnimationClip_Jump,
+	enAnimationClip_Run,
+	enAnimationClip_Num,
+};
+
+class GameCamera;
+class Player : public IGameObject
 {
 public:
 	Player() {};
 	~Player() {};
 
-	//初期化処理
-	bool Start();
-
-	//更新処理
-	void Update();
-
-	//描画処理
-	void Render(RenderContext& rendercontext);
-
-	//移動処理
+	bool Start()override;
+	void Update()override;
+	void Render(RenderContext& rendercontext)override;
 	void Move();
-
-	//回転処理
 	void Rotation();
-
-	// アニメーションの再生。
 	void PlayAnimation();
-	
-	// プレイヤーステート。
-	enum PlayerState {
-		enPlayer_idle,
-		enPlayer_walk,
-		enPlayer_run,
-		enPlayer_jump,
-		enPlayer_stageclear,
-		enPlayer_gameover,
-		enPlayer_num
-	};
-
-	//アニメーション
-	enum EnAnimationClip
-	{
-		enAnimationClip_Idle,                         //待機アニメ
-		enAnimationClip_Walk,                         //歩行アニメ
-		enAnimationClip_Jump,                         //ジャンプアニメ
-		enAnimationClip_Run,                          //走行アニメ
-		enAnimationClip_Num,                          //アニメーションの数
-	};
-
-	Vector3 m_position;                               //座標ベクトル
-
-
-	/// <summary>
-	/// キャラコンのゲッター関数。
-	/// </summary>
-	/// <returns></returns>
+	Vector3 m_position;
 	CharacterController& GetCharacterController()
 	{
 		return m_Characon;
 	}
-
-	/// <summary>
-	/// 座標のゲッター関数。
-	/// </summary>
-	/// <returns></returns>
 	const Vector3& GetPosition() const
 	{
 		return m_position;
 	}
-
-	/// <summary>
-	/// 移動速度
-	/// </summary>
-	/// <param name="addMoveSpeed"></param>
 	void AddMoveSpeed(const Vector3& addMoveSpeed)
 	{
 		m_moveSpeed += addMoveSpeed;
 	}
 
+private:
 
+	/**
+	  * @brief �A�j���[�V�������擾���čĐ�����֐��B
+	  */
+	const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
+
+	/**
+	 * @brief �v���C���[���f�����擾���čĐ�����֐��B
+	 * @param modelName 
+	 * @param animationClip 
+	 * @param enAnimationClip 
+	 * @param enModelUpAxis 
+	 * @param flag 
+	 * @return 
+	 */
+	const std::string FetchPlayerModel
+	(const std::string& modelName, AnimationClip animationClip, EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag);
+
+	/**
+	  * @brief �A�j���[�V�������i�[����֐��B
+	  */
+	void SetAnimation();
 
 private:
-	//メンバ変数
-	Player* m_player;                                 //プレイヤー
-
+	Player* m_player = nullptr;                                
+	GameCamera* m_gameCamera = nullptr;
 public:
-	AnimationClip animationClip[enAnimationClip_Num]; //アニメーション
-	CharacterController m_Characon;                   //キャラクターコントローラー
+	AnimationClip m_animationClip[enAnimationClip_Num];
+	CharacterController m_Characon;               
 
-	ModelRender m_modelRender;                        //モデル描画クラス
-	Vector3 diff;                                     //距離。
-	Vector3 m_moveSpeed;                              //移動速度
+	ModelRender m_modelRender;
+	Vector3 diff;
+	Vector3 m_moveSpeed;
 	Quaternion rot;
 
 private:	
 	int	m_playerState = enPlayer_idle;
 
+	bool m_is2D = false;
 };
-

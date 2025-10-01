@@ -19,6 +19,9 @@
     <Filter Include="Src\Actor\Stage">
       <UniqueIdentifier>{ae5f0c52-4e96-482e-a278-39ce5d450482}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Camera">
+      <UniqueIdentifier>{f015fa04-0e76-45a7-be36-9db1855e1a67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -27,9 +30,6 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Src\GameCamera.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene.cpp">
       <Filter>Src</Filter>
     </ClCompile>
@@ -45,14 +45,32 @@
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Player.cpp">
-      <Filter>Src\Actor\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp">
       <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Title.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\GameCamera.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\FollowCamera.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\OrbitCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\WallActor.cpp">
+      <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,9 +79,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Src\GameCamera.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Scene.h">
       <Filter>Src</Filter>
     </ClInclude>
@@ -79,14 +94,36 @@
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Player.h">
-      <Filter>Src\Actor\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage1.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Title.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Src\Camera\GameCamera.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\ICameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\FollowCamera.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\OrbitCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\WallActor.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,8 @@
 #pragma once
-#include "Src//Actor/Actor.h"
-/// <summary>
-/// ステージをIDで管理するenum。
-/// </summary>
+
+/**
+  * @brief ステージをIDで管理するenum。
+  */
 enum class StageID
 {
 	ID_Stage1,
@@ -16,30 +16,31 @@ class Stage1;
 class Stage2;
 class Stage3;
 class Stage4;
-/// <summary>
-/// ステージを管理する親クラス。
-/// </summary>
-class Stage
+
+/**
+  * @brief ステージを管理する親クラス。
+  */
+class Stage : public IGameObject
 {
 public:
 	Stage() {};
 	~Stage() {};
-	bool Start();
-	void Update();
-	void Render(RenderContext& rc);
+	bool Start() override {}
+	void Update() override {}
+	void Render(RenderContext& rc) override {}
 };
 
-/// <summary>
-/// IGameObject継承用クラス。
-/// </summary>
-class IStage : public Actor
+/**
+  * @brief IGameObject継承用クラス。
+  */
+class IStage : public IGameObject
 {
 public:
 	IStage() {};
 	virtual ~IStage() {};
-	virtual bool Start();
-	virtual void Update();
-	virtual void Render(RenderContext& rc);
+	virtual bool Start() override { return true; }
+	virtual void Update() override {}
+	virtual void Render(RenderContext& rc) override {}
 
 	// ステージ用インスタンス。
 	Stage1* m_stage1 = nullptr;

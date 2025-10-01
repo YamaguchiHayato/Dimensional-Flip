@@ -2,6 +2,7 @@
 #include "Level3DRender/LevelRender.h"
 
 class TrackingEnemy;
+class WallActor;
 class Player;
 class Stage1;
 class GameCamera;
@@ -18,12 +19,19 @@ private:
 	/// </summary>
 	void EnemyNewGO_Tracking();
 
-	/**
-	 * @brief プレイヤーの座標を取得して表示。
+	/*
+	 * @brief 透明壁オブジェクトの生成。
 	 */
-	void FontRenderDebug();
+	void WallNewGO();
+	/*
+ 　　* @brief 視点回転が許可される領域をまとめて登録する。
+     *
+     * この関数では、ゲーム中でプレイヤーが視点回転を行えるエリアを
+     * 初期化・設定する。各エリアは座標や境界情報として保持され、
+     * カメラの回転可否判定に利用される。
+     */
+	void SetupViewRotationAreas();
 
-	void Render(RenderContext);
 private:
 	// モデル。
 	TrackingEnemy* m_trackingEnemy = nullptr;
@@ -31,6 +39,7 @@ private:
 
 	// ステージ。
 	Stage1* m_stage1 = nullptr;
+	WallActor* m_wallActor = nullptr;
 
 	// その他。
 	GameCamera* m_gameCamera = nullptr;

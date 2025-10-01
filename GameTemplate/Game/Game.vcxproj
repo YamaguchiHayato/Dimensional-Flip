@@ -232,8 +232,13 @@
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
-    <ClCompile Include="Src\GameCamera.cpp" />
+    <ClCompile Include="Src\Camera\FollowCamera.cpp" />
+    <ClCompile Include="Src\Camera\GameCamera.cpp" />
+    <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
+    <ClCompile Include="Src\Camera\OrbitCameraStrategy.cpp" />
     <ClCompile Include="Src\Scene.cpp" />
+    <ClCompile Include="Src\Title.cpp" />
+    <ClCompile Include="Src\WallActor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -243,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -250,10 +256,18 @@
     <ClInclude Include="Src\Actor\Character\Player.h" />
     <ClInclude Include="Src\Actor\Stage\Stage.h" />
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
-    <ClInclude Include="Src\GameCamera.h" />
+    <ClInclude Include="Src\Camera\FollowCamera.h" />
+    <ClInclude Include="Src\Camera\GameCamera.h" />
+    <ClInclude Include="Src\Camera\ICameraStrategy.h" />
+    <ClInclude Include="Src\Camera\OrbitCameraStrategy.h" />
     <ClInclude Include="Src\Scene.h" />
+    <ClInclude Include="Src\Title.h" />
+    <ClInclude Include="Src\WallActor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

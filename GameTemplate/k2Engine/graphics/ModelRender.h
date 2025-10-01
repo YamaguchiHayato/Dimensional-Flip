@@ -205,6 +205,14 @@ namespace nsK2Engine {
 			SetScale({ x, y, z });
 		}
 		/// <summary>
+		/// 透明度を設定
+		/// </summary>
+		/// <param name="alpha">透明度</param>
+		void SetAlpha(const float alpha)
+		{
+			m_alpha = alpha;
+		}
+		/// <summary>
 		/// シャドウキャスターのフラグを設定する
 		/// </summary>
 		void SetShadowCasterFlag(bool flag)
@@ -450,7 +458,8 @@ namespace nsK2Engine {
 		Model						m_shadowModels[MAX_DIRECTIONAL_LIGHT][NUM_SHADOW_MAP];	// シャドウマップに描画するモデル
 		ConstantBuffer				m_drawShadowMapCameraParamCB[MAX_DIRECTIONAL_LIGHT][NUM_SHADOW_MAP];		// シャドウマップ作成時に必要なカメラパラメータ用の定数バッファ。
 		bool						m_isUpdateAnimation = true;			// アニメーションを更新する？
-		Skeleton					m_skeleton;							// 骨。
+		Skeleton					m_skeleton;                         // 骨。
+		float                       m_alpha = 1.0f;                     // 透明度。
 		bool						m_isShadowCaster = true;			// シャドウキャスターフラグ
 		float						m_animationSpeed = 1.0f;
 		int							m_numInstance = 0;					// インスタンスの数。

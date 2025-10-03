@@ -38,13 +38,15 @@ void OrbitCameraStrategy::Update(GameCamera* owner)
 
 void OrbitCameraStrategy::BeginOrbitStep(GameCamera* owner)
 {
+    /* 初期オフセットを保存。*/
+	m_initialOffset = owner->GetFollowOffset();
+
     if (g_camera3D) {
         m_initialOffset = g_camera3D->GetPosition() - owner->QueryPlayerPos();
         if (m_initialOffset.LengthSq() < 1e-6f) {
             m_initialOffset = Vector3(0, 50, -200);
         }
     }
-
     m_stepAngleRad = Math::DegToRad(m_step);
     m_duration = std::fabs(m_stepAngleRad / m_speed);
     m_isRotating = true;

@@ -1,6 +1,33 @@
 #pragma once
 #include "ICameraStrategy.h"
 
+/*
+ * @ struct OrbitZoneXZ 
+ * 
+ * XZ平面上の視点回転許可領域を表す構造体。
+ */
+struct OrbitZoneXZ
+{
+    float minX, 
+          maxX, 
+          minZ, 
+          maxZ; 
+};
+
+
+/*
+ * @ struct OrbitZoneYZ 
+ * 
+ * YZ平面上の視点回転許可領域を表す構造体。
+ */ 
+struct  OrbitZoneYZ
+{
+    float minY,
+          maxY,
+          minZ,
+          maxZ;
+};
+
 class Player;
 class GameCamera : public IGameObject
 {
@@ -22,6 +49,8 @@ public:
 
     bool IsInOrbitZone(const nsK2EngineLow::Vector3& p) const;
     void AddOrbitZoneXZ(float minX, float maxX, float minZ, float maxZ);
+    void AddOrbitZoneYZ(float minY, float maxY, float minZ, float maxZ);
+
     void ClearOrbitZones();
 
     /*
@@ -40,6 +69,7 @@ private:
     nsK2EngineLow::Vector3 m_followOffset{ 0,0,-200 };
 
 
-    struct OrbitZoneXZ { float minX, maxX, minZ, maxZ; };
-    std::vector<OrbitZoneXZ> m_orbitZones;
+     
+    std::vector<OrbitZoneXZ> m_zoneXZ;
+    std::vector<OrbitZoneYZ> m_zoneYZ;
 };

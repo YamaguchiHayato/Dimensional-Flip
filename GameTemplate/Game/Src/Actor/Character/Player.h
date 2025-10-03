@@ -32,7 +32,50 @@ public:
 	void Move();
 	void Rotation();
 	void PlayAnimation();
-	Vector3 m_position;
+	void ManageState();
+
+	/*
+	 * @brief ジャンプ力の設定。
+	 */
+	void SetJumpPower(float jumpPower) { m_jumpPower = jumpPower; }
+
+	/*
+	 * @brief ジャンプ力の取得。
+	 */
+	const float& GetJumpPower() const { return m_jumpPower; }
+
+	/*
+	 * リスポーン地点の設定。 
+	 */
+	void SetRespawnPositon(const Vector3& pos)
+	{
+		m_respawnPos = pos;
+	}
+
+	/*
+	 * プレイヤーをリスポーンする。 
+	 */
+	void PlayerRespawn()
+	{
+		m_position = m_respawnPos;
+		m_rotation = m_respawnRot;
+		m_modelRender.SetPosition(m_position);
+		m_modelRender.SetRotation(m_rotation);
+		m_Characon.SetPosition(m_position);
+		m_respawnFlag = true;
+	}
+
+
+	/*
+	 * プレイヤーがリスポーンしたか？ 
+	 * @return リスポーンしたらtrue、
+	 * してなかったらfalse
+	 */
+	bool IsPlayerRespawn()
+	{
+		return m_respawnFlag;
+	}
+
 	CharacterController& GetCharacterController()
 	{
 		return m_Characon;
@@ -70,6 +113,7 @@ private:
 	  */
 	void SetAnimation();
 
+
 private:
 	Player* m_player = nullptr;                                
 	GameCamera* m_gameCamera = nullptr;
@@ -80,10 +124,16 @@ public:
 	ModelRender m_modelRender;
 	Vector3 diff;
 	Vector3 m_moveSpeed;
-	Quaternion rot;
+	Vector3 m_position;
+	Vector3 m_respawnPos;
+	Quaternion m_respawnRot;
+	Quaternion m_rotation;
 
 private:	
-	int	m_playerState = enPlayer_idle;
+	int	m_playerState; 
+	int m_doCheck = 0;
 
+	float m_jumpPower = 50.0f;
+	bool m_respawnFlag = false;
 	bool m_is2D = false;
 };

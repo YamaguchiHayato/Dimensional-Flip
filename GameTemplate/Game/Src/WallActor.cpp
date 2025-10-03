@@ -17,7 +17,7 @@ WallActor::~WallActor()
 bool WallActor::Start()
 {
 	/* IniTranslucent 半透明用のInit関数。*/
-	m_WallRender.IniTranslucent("Assets/stage&material/Stage1/Wall.tkm");
+	m_WallRender.IniTranslucent("Assets/stageMaterial/Stage1/Wall.tkm");
 	/* モデル大きさの設定。*/
 	m_WallRender.SetScale(WallStatus::SCALE);
 	/* モデルの座標の設定。*/

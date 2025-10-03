@@ -15,7 +15,7 @@ Stage1::~Stage1()
 
 bool Stage1::Start()
 {
-	m_StageRender.Init("Assets/stage&material/Stage1/Stage1.tkm");
+	m_StageRender.Init("Assets/stageMaterial/Stage1/Stage1.tkm");
 	m_physicsStaticObject.CreateFromModel(m_StageRender.GetModel(), m_StageRender.GetModel().GetWorldMatrix());
 	m_StageRender.SetScale(SCALE);
 

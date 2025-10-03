@@ -5,10 +5,8 @@ namespace
 {
 	const Vector3 SCALE(0.5f, 0.5f, 0.5f);
 
-	const float JUMP_INITIAL_SPEED = 2500.0f;
-	const float GRAVITY = 20.0f;   
-	const float JUMP_HOLD_GRAVITY = 7.0f;
-	const float FALL_GRAVITY = 30.0f;  
+	// モデルにかかる重力。
+	const float GLAVITY = 15.0f;
 
 
 	const char* PLAYER_MODEL = "Assets/modelData/";
@@ -39,20 +37,20 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
 
 bool Player::Start()
 {
-	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/idle.tka");
-	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_Walk].Load("Assets/animData/walk.tka");
-	m_animationClip[enAnimationClip_Walk].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_Run].Load("Assets/animData/run.tka");
-	m_animationClip[enAnimationClip_Run].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_Jump].Load("Assets/animData/jump.tka");
-	m_animationClip[enAnimationClip_Jump].SetLoopFlag(false);
+	/* アニメーションの設定。*/
+	SetAnimation();
+	//m_animationClip[enAnimationClip_Idle].Load("Assets/animData/idle.tka");
+	//m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	//m_animationClip[enAnimationClip_Walk].Load("Assets/animData/walk.tka");
+	//m_animationClip[enAnimationClip_Walk].SetLoopFlag(true);
+	//m_animationClip[enAnimationClip_Run].Load("Assets/animData/run.tka");
+	//m_animationClip[enAnimationClip_Run].SetLoopFlag(true);
+	//m_animationClip[enAnimationClip_Jump].Load("Assets/animData/jump.tka");
+	//m_animationClip[enAnimationClip_Jump].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/unityChan.tkm", m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 
-	m_Characon.Init(25.0f, 25.0f, m_position);
-
-	m_position = Vector3(0, 0, 0);
+	m_Characon.Init(20.0f, 25.0f, m_position);
 
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	return true;
@@ -60,14 +58,15 @@ bool Player::Start()
 
 void Player::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonB))
-	{
-		m_is2D = !m_is2D;
-	}
+	//if (g_pad[0]->IsTrigger(enButtonB))
+	//{
+	//	m_is2D = !m_is2D;
+	//}
 
 	Move();
 	Rotation();
 	PlayAnimation();
+	ManageState();
 	m_modelRender.SetScale(SCALE);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.Update();
@@ -75,9 +74,11 @@ void Player::Update()
 
 void Player::Move()
 {
-	m_moveSpeed = Vector3::Zero;
+	m_moveSpeed.x = 0.0f;
+	m_moveSpeed.z = 0.0f;
 
 	Vector3 stickL;
+
 	stickL.x = g_pad[0]->GetLStickXF();
 	stickL.y = g_pad[0]->GetLStickYF();
 
@@ -87,60 +88,27 @@ void Player::Move()
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	forward.Normalize();
-	right.Normalize();
+	right *= stickL.x * 480.0f;
+	forward *= stickL.y * 0.0f;
 
-	if (m_is2D)
-	{
-		m_moveSpeed += right * (stickL.x * 480.0f);
-		m_moveSpeed.z = 0.0f;
-	}
+	m_moveSpeed += right + forward;
 
-	else
+	if (m_Characon.IsOnGround())
 	{
-		m_moveSpeed += right * (stickL.x * 480.0f);
-		m_moveSpeed += forward * (stickL.y * 480.0f);
-	}
+		m_moveSpeed.y = 0.0f;
 
-	/* ジャンプ処理。
-	 * 短ジャンプ: 低いジャンプ。
-	 * 長ジャンプ: 高いジャンプ。
-	 */
-	if(m_Characon.IsOnGround())
-	{
-	//	m_moveSpeed.y = 0.0f;
-		// ジャンプ
-		if(g_pad[0]->IsTrigger(enButtonA))
+		if (g_pad[0]->IsTrigger(enButtonA)) 
 		{
-			m_moveSpeed.y = JUMP_INITIAL_SPEED;
-		}
-	} 
-	
-	else
-	{
-		if (m_moveSpeed.y > 0.0f) 
-		{
-			// 上昇中
-			if (g_pad[0]->IsPress(enButtonA))
-			{
-				// ボタン押しっぱなしなら高く飛べる（重力を弱める）
-				m_moveSpeed.y -= JUMP_HOLD_GRAVITY;
-			}
-			else 
-			{
-				// ボタンを離したらすぐに強めの重力
-				m_moveSpeed.y -= GRAVITY;
-			}
-		}
-		else
-		{
-			// 落下中はさらに重力を強めてズドンと落ちる
-			m_moveSpeed.y -= FALL_GRAVITY;
+			m_moveSpeed.y = 350.0f;
 		}
 	}
 
-	m_position = m_Characon.Execute(m_moveSpeed, 1.0f / 60.0f);
-	if (m_is2D && m_gameCamera->IsInOrbitZone(m_position)) { m_position.z = 0.0f; }
+	m_moveSpeed.y -= GLAVITY;
+
+
+	m_position = m_Characon.Execute(m_moveSpeed, 1.0f / 150.0f);
+
+
 	m_Characon.SetPosition(m_position);
 	m_modelRender.SetPosition(m_position);
 }
@@ -154,24 +122,57 @@ void Player::Rotation()
 	}
 
 	if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f) {
-		rot.SetRotationYFromDirectionXZ(dir);
-		m_modelRender.SetRotation(rot);
+		m_rotation.SetRotationYFromDirectionXZ(dir);
+		m_modelRender.SetRotation(m_rotation);
+	}
+}
+
+//ステート管理
+void Player::ManageState()
+{
+	//地面についていなかったら
+	if (m_Characon.IsOnGround() == false)
+	{
+		//ステートを1にする
+		m_playerState = 1;
+		//ManageStateの処理を終わらせる
+		return;
+	}
+
+	//地面に着地したら
+	//x zの移動速度があったらスティックの入力
+	if (fabsf(m_moveSpeed.x) >= 0.001f || fabsf(m_moveSpeed.z) >= 0.001f)
+	{
+		//ステートを2にする
+		m_playerState = 2;
+	}
+	//何も入力しなかったら
+	else
+	{
+		//ステートを0(待機状態)にする
+		m_playerState = 0;
 	}
 }
 
 void Player::PlayAnimation()
 {
+	//switch文
 	switch (m_playerState)
 	{
-	case enPlayer_idle:
-		 m_modelRender.PlayAnimation(enAnimationClip_Idle);
-		 break;
-	case enPlayer_walk:
-		 m_modelRender.PlayAnimation(enAnimationClip_Walk);
-		 break;
-	case enPlayer_run:
-		 m_modelRender.PlayAnimation(enAnimationClip_Run);
-		 break;
+		//待機状態だったら
+	case 0:
+		//待機アニメーションの再生
+		m_modelRender.PlayAnimation(enAnimationClip_Idle);
+		break;
+		//歩き状態だったら
+	case 1:
+		//ジャンプアニメーションを再生
+		m_modelRender.PlayAnimation(enAnimationClip_Jump);
+		break;
+		//ジャンプ中だったら
+	case 2:
+		m_modelRender.PlayAnimation(enAnimationClip_Run);
+		break;
 	}
 }
 
@@ -183,11 +184,11 @@ void Player::Render(RenderContext& rc)
 void Player::SetAnimation()
 {
 	/* 待機アニメーション。*/
-	FetchPlayAnimation(enAnimationClip_Idle,"playeridle", true);
+	FetchPlayAnimation(enAnimationClip_Idle,"idle", true);
 	/* 歩きアニメーション。*/
-	FetchPlayAnimation(enAnimationClip_Walk, "playerwalk", true);
+	FetchPlayAnimation(enAnimationClip_Walk, "walk", true);
 	/* 走りアニメーション。*/
-	FetchPlayAnimation(enAnimationClip_Run, "playerrun", true);
+	FetchPlayAnimation(enAnimationClip_Run, "run", true);
 	/* ジャンプアニメーション。*/
-	FetchPlayAnimation(enAnimationClip_Jump, "playerjump", false);
+	FetchPlayAnimation(enAnimationClip_Jump, "jump", false);
 }

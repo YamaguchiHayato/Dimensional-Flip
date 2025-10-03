@@ -12,7 +12,9 @@ namespace
 
 bool Title::Start()
 {
-	m_titleRender.Init("Assets/sprite/title.DDS", TITLE_WIDTH, TITLE_HEIGHT);
+	m_titleRender.Init("Assets/sprite/TitleScene.DDS", TITLE_WIDTH, TITLE_HEIGHT);
+	
+	m_titleRender.Update();
 	return true;
 }
 
@@ -23,6 +25,7 @@ void Title::Update()
 		NewGO<Game>(0, "game");
 		DeleteGO(this);
 	}
+	m_titleRender.Update();
 }
 
 void Title::Render(RenderContext& rc)

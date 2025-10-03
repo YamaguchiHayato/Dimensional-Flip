@@ -72,6 +72,9 @@
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="GameClear.cpp" />
+    <ClCompile Include="JumpPad.cpp" />
+    <ClCompile Include="Star.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -122,6 +125,9 @@
     <ClInclude Include="Src\WallActor.h">
       <Filter>Src</Filter>
     </ClInclude>
+    <ClInclude Include="GameClear.h" />
+    <ClInclude Include="JumpPad.h" />
+    <ClInclude Include="Star.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

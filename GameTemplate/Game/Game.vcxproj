@@ -224,6 +224,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameClear.cpp" />
+    <ClCompile Include="JumpPad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp" />
@@ -239,6 +241,7 @@
     <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="Src\Title.cpp" />
     <ClCompile Include="Src\WallActor.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -248,6 +251,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameClear.h" />
+    <ClInclude Include="JumpPad.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
@@ -263,6 +268,7 @@
     <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="Src\Title.h" />
     <ClInclude Include="Src\WallActor.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

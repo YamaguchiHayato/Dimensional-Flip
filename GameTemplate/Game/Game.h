@@ -12,8 +12,11 @@ enum class enStageState
 };
 
 class TrackingEnemy;
+class TimerUI;
 class WallActor;
+class NumberUI;
 class Player;
+class ScoreUI;
 class Stage1;
 class Star;
 class JumpPad;
@@ -48,9 +51,24 @@ private:
 	void StarNewGO();
 
 	/*
-	 * @brief ゴールフレームオブジェクトの生成。
+	 * @brief UIオブジェクトの生成。
+	 */
+	void UINewGO();
+
+	/*
+	 * @brief タイマーUIオブジェクトの生成。
+	 */
+	void TimerUINewGO();
+
+	/*
+	 * @brief 数字UIオブジェクトの生成。
+	 */
+	void NumberUINewGO();
+	
+	/*
+	 * @brief スコアUIオブジェクトの生成。
 	 */ 
-	void GoalFrameNewGO();
+	void ScoreUINewGO();
 
 	/*
  　　* @brief 視点回転が許可される領域をまとめて登録する。
@@ -67,23 +85,27 @@ private:
 	void InitSkyCube();
 private:
 	// モデル。
-	TrackingEnemy* m_trackingEnemy = nullptr;
-	Player* m_player = nullptr;
+	TrackingEnemy* trackingEnemy_ = nullptr;
+	Player* player_ = nullptr;
 
 	// ステージ。
-	Stage1* m_stage1 = nullptr;
-	Star* m_star = nullptr;
-	WallActor* m_wallActor = nullptr;
-	JumpPad* m_jumpPad = nullptr;
-	GoalChecker* m_goalChecker = nullptr;
+	Stage1* stage1_ = nullptr;
+	Star* star_ = nullptr;
+	WallActor* wallActor_ = nullptr;
+	JumpPad* jumpPad_ = nullptr;
+
+	/* UI。*/
+	TimerUI* timerUI_ = nullptr;
+	NumberUI* numberUI_ = nullptr;
+	ScoreUI* scoreUI_ = nullptr;
 
 	// その他。
-	GameCamera* m_gameCamera = nullptr;
-	SkyCube* m_skyCube = nullptr;
+	GameCamera* gameCamera_ = nullptr;
+	SkyCube* skyCube_ = nullptr;
 private:
-	FontRender m_fontRender; // デバッグ用。
-	ModelRender m_modelRender; // モデル。
-	Vector3 m_pos;// 座標。
-	Quaternion m_Rot;
+	FontRender fontRender_; // デバッグ用。
+	ModelRender modelRender_; // モデル。
+	Vector3 Pos_;// 座標。
+	Quaternion Rot_;
 };
 

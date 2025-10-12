@@ -225,13 +225,14 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClear.cpp" />
-    <ClCompile Include="JumpPad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Star.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
     <ClCompile Include="Src\Camera\FollowCamera.cpp" />
@@ -240,8 +241,11 @@
     <ClCompile Include="Src\Camera\OrbitCameraStrategy.cpp" />
     <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="Src\Title.cpp" />
+    <ClCompile Include="Src\UI\NumberUI.cpp" />
+    <ClCompile Include="Src\UI\ScoreUI.cpp" />
+    <ClCompile Include="Src\UI\TimerUI.cpp" />
+    <ClCompile Include="Src\UI\UIBase.cpp" />
     <ClCompile Include="Src\WallActor.cpp" />
-    <ClCompile Include="Star.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -252,13 +256,14 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClear.h" />
-    <ClInclude Include="JumpPad.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Player.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Star.h" />
     <ClInclude Include="Src\Actor\Stage\Stage.h" />
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
     <ClInclude Include="Src\Camera\FollowCamera.h" />
@@ -267,8 +272,11 @@
     <ClInclude Include="Src\Camera\OrbitCameraStrategy.h" />
     <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="Src\Title.h" />
+    <ClInclude Include="Src\UI\NumberUI.h" />
+    <ClInclude Include="Src\UI\ScoreUI.h" />
+    <ClInclude Include="Src\UI\TimerUI.h" />
+    <ClInclude Include="Src\UI\UIBase.h" />
     <ClInclude Include="Src\WallActor.h" />
-    <ClInclude Include="Star.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

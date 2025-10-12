@@ -7,8 +7,11 @@
 #include "Src/Actor/Character/Enemy/EnemyBase.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "Src/Camera/FollowCamera.h"
-#include "JumpPad.h"
-#include "Star.h"
+#include "Src/Actor/Stage/Gimmick/JumpPad.h"
+#include "Src/Actor/Stage/Gimmick/Star.h"
+#include "Src/UI/TimerUI.h"
+#include "Src/UI/NumberUI.h"
+#include "Src/UI/ScoreUI.h"
 
 namespace EnemyPosition
 {
@@ -77,7 +80,7 @@ namespace CameraParameter
 
 void Game::InitSkyCube()
 {
-	DeleteGO(m_skyCube);
+	DeleteGO(skyCube_);
 	SkyCube* m_SkyCube = NewGO<SkyCube>(0, "skycube");
 	m_SkyCube->SetType(enSkyCubeType_Day);
 	m_SkyCube->SetLuminance(0.5f);
@@ -93,11 +96,16 @@ void Game::InitSkyCube()
 
 bool Game::Start()
 {
+	/* UIのNewGO。*/
+	UINewGO();
+
 	/* 疑似背景の設定。*/
 	InitSkyCube();
 
-    m_player = NewGO<Player>(0, "player");
-	m_stage1 = NewGO<Stage1>(0, "stage1");
+
+
+    player_ = NewGO<Player>(0, "player");
+	stage1_ = NewGO<Stage1>(0, "stage1");
 
 //	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	NewGO<FollowCamera>(0, "followcamera");
@@ -198,17 +206,44 @@ void Game::StarNewGO()
 
 }
 
+void Game::UINewGO()
+{
+	/* GameTiemerを描画する処理。*/
+	TimerUINewGO();
+
+	/* UIの数字部分を描画する処理。*/ 
+	NumberUINewGO();
+
+	/* UIのスコア部分を描画する処理。*/ 
+	ScoreUINewGO();
+}
+
+void Game::TimerUINewGO()
+{
+	timerUI_ = NewGO<TimerUI>(0, "timerUI");
+}
+
+void Game::NumberUINewGO()
+{
+	numberUI_ = NewGO<NumberUI>(0, "numberUI");
+}
+
+void Game::ScoreUINewGO()
+{
+	scoreUI_ = NewGO<ScoreUI>(0, "scoreUI");
+}
+
 void Game::EnemyNewGO_Tracking()
 {
-	m_trackingEnemy = NewGO<TrackingEnemy>(0, "TrackingEnemy");
-	m_trackingEnemy->m_EnemyPosition = {EnemyPosition::Pos1};
-	m_trackingEnemy->m_EnemyFP = m_trackingEnemy->m_EnemyPosition;
+	trackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
+	trackingEnemy_->m_EnemyPosition = {EnemyPosition::Pos1};
+	trackingEnemy_->m_EnemyFP = trackingEnemy_->m_EnemyPosition;
 }
 
 void Game::SetupViewRotationAreas()
 {
 	/* 1つ目の許可領域。*/
-	m_gameCamera->AddOrbitZoneXZ
+	gameCamera_->AddOrbitZoneXZ
 	(
 		CameraParameter::Territory1::CAMERA_ROT_MIN_X,
 		CameraParameter::Territory1::CAMERA_ROT_MAX_X,
@@ -217,7 +252,7 @@ void Game::SetupViewRotationAreas()
 	);
 
 	/* 2つ目の許可領域。*/
-	m_gameCamera->AddOrbitZoneYZ
+	gameCamera_->AddOrbitZoneYZ
 	(
 		CameraParameter::Territory2::CAMERA_ROT_MIN_Y,
 		CameraParameter::Territory2::CAMERA_ROT_MAX_Y,

@@ -22,6 +22,12 @@
     <Filter Include="Src\Camera">
       <UniqueIdentifier>{f015fa04-0e76-45a7-be36-9db1855e1a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\UI">
+      <UniqueIdentifier>{a190ba3a-ba59-46a2-a54a-a57bec26176e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Stage\Gimmick">
+      <UniqueIdentifier>{3295a3f4-8986-410a-abff-65e8b9a3183e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -73,8 +79,24 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="GameClear.cpp" />
-    <ClCompile Include="JumpPad.cpp" />
-    <ClCompile Include="Star.cpp" />
+    <ClCompile Include="Src\UI\UIBase.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\TimerUI.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\NumberUI.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Star.cpp">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\ScoreUI.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -106,9 +128,6 @@
     <ClInclude Include="Src\Title.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Player.h">
-      <Filter>Src\Actor\Character</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Camera\GameCamera.h">
       <Filter>Src\Camera</Filter>
@@ -126,8 +145,27 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="GameClear.h" />
-    <ClInclude Include="JumpPad.h" />
-    <ClInclude Include="Star.h" />
+    <ClInclude Include="Src\UI\UIBase.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\TimerUI.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\NumberUI.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Star.h">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\ScoreUI.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

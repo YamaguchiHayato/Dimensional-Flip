@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Camera/GameCamera.h"
+#include "Src/UI/ScoreUI.h"
 namespace
 {
 	const Vector3 SCALE(0.5f, 0.5f, 0.5f);
@@ -39,14 +40,6 @@ bool Player::Start()
 {
 	/* アニメーションの設定。*/
 	SetAnimation();
-	//m_animationClip[enAnimationClip_Idle].Load("Assets/animData/idle.tka");
-	//m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
-	//m_animationClip[enAnimationClip_Walk].Load("Assets/animData/walk.tka");
-	//m_animationClip[enAnimationClip_Walk].SetLoopFlag(true);
-	//m_animationClip[enAnimationClip_Run].Load("Assets/animData/run.tka");
-	//m_animationClip[enAnimationClip_Run].SetLoopFlag(true);
-	//m_animationClip[enAnimationClip_Jump].Load("Assets/animData/jump.tka");
-	//m_animationClip[enAnimationClip_Jump].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/unityChan.tkm", m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 
@@ -58,6 +51,9 @@ bool Player::Start()
 
 void Player::Update()
 {
+	/* フレームの開始時にフラグをリセットする。*/
+	didJumpThisFrame_ = false;
+
 	//if (g_pad[0]->IsTrigger(enButtonB))
 	//{
 	//	m_is2D = !m_is2D;
@@ -100,6 +96,7 @@ void Player::Move()
 		if (g_pad[0]->IsTrigger(enButtonA)) 
 		{
 			m_moveSpeed.y = 350.0f;
+			didJumpThisFrame_ = true;
 		}
 	}
 

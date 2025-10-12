@@ -1,6 +1,7 @@
 #pragma once
 
-enum PlayerState {
+enum PlayerState 
+{
 	enPlayer_idle,
 	enPlayer_walk,
 	enPlayer_run,
@@ -89,6 +90,7 @@ public:
 		m_moveSpeed += addMoveSpeed;
 	}
 
+	bool DoJumpCheck() const { return didJumpThisFrame_; };
 private:
 
 	/**
@@ -136,4 +138,5 @@ private:
 	float m_jumpPower = 50.0f;
 	bool m_respawnFlag = false;
 	bool m_is2D = false;
+	bool didJumpThisFrame_ = false;
 };

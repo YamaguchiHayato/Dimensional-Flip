@@ -12,23 +12,31 @@ namespace
 
 bool Title::Start()
 {
-	m_titleRender.Init("Assets/sprite/TitleScene.DDS", TITLE_WIDTH, TITLE_HEIGHT);
+	titleRender_.Init("Assets/sprite/TitleScene.DDS", TITLE_WIDTH, TITLE_HEIGHT);
 	
-	m_titleRender.Update();
+	titleRender_.Update();
 	return true;
 }
 
 void Title::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonA))
-	{
-		NewGO<Game>(0, "game");
-		DeleteGO(this);
-	}
-	m_titleRender.Update();
+	TitleAction();
+	titleRender_.Update();
 }
 
 void Title::Render(RenderContext& rc)
 {
-	m_titleRender.Draw(rc);
+	titleRender_.Draw(rc);
+}
+
+void Title::TitleAction()
+{
+	/* Aボタンでゲームスタート。*/
+	if (g_pad[0]->IsTrigger(enButtonA))
+	{
+		sceneTransitionFlag_ = true;
+		NewGO<Game>(0, "game");
+		DeleteGO(this);
+
+	}
 }

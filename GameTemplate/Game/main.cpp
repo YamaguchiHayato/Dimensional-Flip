@@ -6,7 +6,7 @@
 
 #include "Game.h"
 #include "Src/Title.h"
-
+#include "SceneBase.h"
 
 void ReportLiveObjects()
 {
@@ -34,7 +34,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//////////////////////////////////////
 
 //	NewGO<Game>(0, "game");
-	Title* title = NewGO<Title>(0, "title");
+//	Title* title = NewGO<Title>(0, "title");
+	NewGO<Scene>(0,"scene");
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
 	//////////////////////////////////////

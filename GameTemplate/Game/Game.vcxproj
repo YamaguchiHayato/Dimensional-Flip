@@ -226,6 +226,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
@@ -239,8 +241,8 @@
     <ClCompile Include="Src\Camera\GameCamera.cpp" />
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\OrbitCameraStrategy.cpp" />
-    <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="Src\Title.cpp" />
+    <ClCompile Include="Src\UI\HPbarUI.cpp" />
     <ClCompile Include="Src\UI\NumberUI.cpp" />
     <ClCompile Include="Src\UI\ScoreUI.cpp" />
     <ClCompile Include="Src\UI\TimerUI.cpp" />
@@ -252,11 +254,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -270,8 +275,8 @@
     <ClInclude Include="Src\Camera\GameCamera.h" />
     <ClInclude Include="Src\Camera\ICameraStrategy.h" />
     <ClInclude Include="Src\Camera\OrbitCameraStrategy.h" />
-    <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="Src\Title.h" />
+    <ClInclude Include="Src\UI\HPbarUI.h" />
     <ClInclude Include="Src\UI\NumberUI.h" />
     <ClInclude Include="Src\UI\ScoreUI.h" />
     <ClInclude Include="Src\UI\TimerUI.h" />
@@ -279,6 +284,7 @@
     <ClInclude Include="Src\WallActor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

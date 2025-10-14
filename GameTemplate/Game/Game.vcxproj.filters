@@ -36,9 +36,6 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Src\Scene.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Actor.cpp">
       <Filter>Src\Actor</Filter>
     </ClCompile>
@@ -97,6 +94,12 @@
     <ClCompile Include="Src\UI\ScoreUI.cpp">
       <Filter>Src\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Src\UI\HPbarUI.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -104,9 +107,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Src\Scene.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Actor\Actor.h">
       <Filter>Src\Actor</Filter>
     </ClInclude>
@@ -166,6 +166,12 @@
     <ClInclude Include="Src\Actor\Character\Player.h">
       <Filter>Src\Actor\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Src\UI\HPbarUI.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

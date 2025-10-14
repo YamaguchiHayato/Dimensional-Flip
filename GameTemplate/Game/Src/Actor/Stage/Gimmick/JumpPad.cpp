@@ -81,7 +81,7 @@ void JumpPad::LaunchPlayer()
 	/* プレイヤーがジャンプパッドの上にいるか? */
 	if (m_jumpPadCollision->IsHit(m_player->GetCharacterController()))
 	{
-		m_player->m_moveSpeed.y = 400.0f;
+		m_player->moveSpeed_.y = 400.0f;
 	}
 
 	/* 上に乗っていなければ何もしない。*/

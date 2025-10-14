@@ -22,7 +22,7 @@ class Game : public IGameObject
 {
 public:
 	Game() {};
-	virtual ~Game() {};
+	virtual ~Game();
 	bool Start();
 	void Update();
 private:

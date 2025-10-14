@@ -20,8 +20,8 @@ const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, co
 {
 	std::string AnimationFilePath = PLAYER_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
     
-	m_animationClip[enAnimationClip].Load(AnimationFilePath.c_str());
-	m_animationClip[enAnimationClip].SetLoopFlag(flag);
+	animationClip_[enAnimationClip].Load(AnimationFilePath.c_str());
+	animationClip_[enAnimationClip].SetLoopFlag(flag);
 	return AnimationFilePath;
 }
 
@@ -30,8 +30,8 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
 	// モデルをロード(tkmファイル名を打ち込む)。
 	std::string  Player = PLAYER_MODEL + modelName + MODEL_FILE_EXTENSION;
 
-	m_animationClip[enAnimationClip].Load(Player.c_str());
-	m_animationClip[enAnimationClip].SetLoopFlag(flag);
+	animationClip_[enAnimationClip].Load(Player.c_str());
+	animationClip_[enAnimationClip].SetLoopFlag(flag);
 	return Player;
 
 }
@@ -41,11 +41,11 @@ bool Player::Start()
 	/* アニメーションの設定。*/
 	SetAnimation();
 
-	m_modelRender.Init("Assets/modelData/unityChan.tkm", m_animationClip, enAnimationClip_Num, enModelUpAxisY);
+	PlayerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
 
-	m_Characon.Init(20.0f, 25.0f, m_position);
+	PlayerCharacon_.Init(20.0f, 25.0f, PlayerPos_);
 
-	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	gameCamera_ = FindGO<GameCamera>("gamecamera");
 	return true;
 }
 
@@ -63,15 +63,15 @@ void Player::Update()
 	Rotation();
 	PlayAnimation();
 	ManageState();
-	m_modelRender.SetScale(SCALE);
-	m_modelRender.SetPosition(m_position);
-	m_modelRender.Update();
+	PlayerRender_.SetScale(SCALE);
+	PlayerRender_.SetPosition(PlayerPos_);
+	PlayerRender_.Update();
 }
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	moveSpeed_.x = 0.0f;
+	moveSpeed_.z = 0.0f;
 
 	Vector3 stickL;
 
@@ -87,40 +87,40 @@ void Player::Move()
 	right *= stickL.x * 480.0f;
 	forward *= stickL.y * 0.0f;
 
-	m_moveSpeed += right + forward;
+	moveSpeed_ += right + forward;
 
-	if (m_Characon.IsOnGround())
+	if (PlayerCharacon_.IsOnGround())
 	{
-		m_moveSpeed.y = 0.0f;
+		moveSpeed_.y = 0.0f;
 
 		if (g_pad[0]->IsTrigger(enButtonA)) 
 		{
-			m_moveSpeed.y = 350.0f;
+			moveSpeed_.y = 350.0f;
 			didJumpThisFrame_ = true;
 		}
 	}
 
-	m_moveSpeed.y -= GLAVITY;
+	moveSpeed_.y -= GLAVITY;
 
 
-	m_position = m_Characon.Execute(m_moveSpeed, 1.0f / 150.0f);
+	PlayerPos_ = PlayerCharacon_.Execute(moveSpeed_, 1.0f / 150.0f);
 
 
-	m_Characon.SetPosition(m_position);
-	m_modelRender.SetPosition(m_position);
+	PlayerCharacon_.SetPosition(PlayerPos_);
+	PlayerRender_.SetPosition(PlayerPos_);
 }
 
 void Player::Rotation()
 {
-	Vector3 dir = m_moveSpeed;
+	Vector3 dir = moveSpeed_;
 
-	if (m_is2D) {
+	if (is2D_) {
 		dir.z = 0.0f;
 	}
 
 	if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f) {
-		m_rotation.SetRotationYFromDirectionXZ(dir);
-		m_modelRender.SetRotation(m_rotation);
+		rotation_.SetRotationYFromDirectionXZ(dir);
+		PlayerRender_.SetRotation(rotation_);
 	}
 }
 
@@ -128,54 +128,54 @@ void Player::Rotation()
 void Player::ManageState()
 {
 	//地面についていなかったら
-	if (m_Characon.IsOnGround() == false)
+	if (PlayerCharacon_.IsOnGround() == false)
 	{
 		//ステートを1にする
-		m_playerState = 1;
+		playerState_ = 1;
 		//ManageStateの処理を終わらせる
 		return;
 	}
 
 	//地面に着地したら
 	//x zの移動速度があったらスティックの入力
-	if (fabsf(m_moveSpeed.x) >= 0.001f || fabsf(m_moveSpeed.z) >= 0.001f)
+	if (fabsf(moveSpeed_.x) >= 0.001f || fabsf(moveSpeed_.z) >= 0.001f)
 	{
 		//ステートを2にする
-		m_playerState = 2;
+		playerState_ = 2;
 	}
 	//何も入力しなかったら
 	else
 	{
 		//ステートを0(待機状態)にする
-		m_playerState = 0;
+		playerState_ = 0;
 	}
 }
 
 void Player::PlayAnimation()
 {
 	//switch文
-	switch (m_playerState)
+	switch (playerState_)
 	{
 		//待機状態だったら
 	case 0:
 		//待機アニメーションの再生
-		m_modelRender.PlayAnimation(enAnimationClip_Idle);
+		PlayerRender_.PlayAnimation(enAnimationClip_Idle);
 		break;
 		//歩き状態だったら
 	case 1:
 		//ジャンプアニメーションを再生
-		m_modelRender.PlayAnimation(enAnimationClip_Jump);
+		PlayerRender_.PlayAnimation(enAnimationClip_Jump);
 		break;
 		//ジャンプ中だったら
 	case 2:
-		m_modelRender.PlayAnimation(enAnimationClip_Run);
+		PlayerRender_.PlayAnimation(enAnimationClip_Run);
 		break;
 	}
 }
 
 void Player::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
+	PlayerRender_.Draw(rc);
 }
 
 void Player::SetAnimation()

@@ -13,6 +13,6 @@ void TitleScene::Update()
 {
 	if (title_->GetSceneTransitionFlag() == true)
 	{
-		SceneManager::GetInstance()->Update();
+		SceneManager::GetInstance()->SetRequest(SceneID::sStage1);
 	}
 }

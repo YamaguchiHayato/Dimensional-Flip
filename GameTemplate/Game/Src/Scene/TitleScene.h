@@ -1,5 +1,5 @@
 #pragma once
-#include "SceneBase.h"
+#include "Scene.h"
 class Title;
 class TitleScene : public SceneBase
 {
@@ -8,7 +8,7 @@ public:
 	~TitleScene() {};
 	bool Start() override;
 	void Update() override;
-
+	void Render(RenderContext& rc) override {};
 private:
 	Title* title_ = nullptr;
 };

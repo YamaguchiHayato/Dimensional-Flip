@@ -11,18 +11,10 @@ public:
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
-
-private:
-	ModelRender m_StageRender;	
-
-	Vector3 m_position;
-	Vector3 m_initPosition;
-
-	PhysicsStaticObject m_physicsStaticObject;
-
-	Quaternion m_StageRot;
-private:
-	CollisionObject* m_collisionObject = nullptr;
+	const std::string InitStage(const std::string& stagename)override
+	{
+		return IStage::InitStage(stagename);
+	};
 
 };
 

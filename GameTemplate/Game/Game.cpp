@@ -13,6 +13,7 @@
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/HPbarUI.h"
+#include "Src/Scene/SceneManager.h"
 
 namespace EnemyPosition
 {
@@ -79,6 +80,16 @@ namespace CameraParameter
 	}
 }
 
+Game::~Game()
+{
+	DeleteGO(player_);
+	DeleteGO(stage1_);
+	DeleteGO(timerUI_);
+	DeleteGO(numberUI_);
+	DeleteGO(scoreUI_);
+	DeleteGO(hpbarUI_);
+}
+
 void Game::InitSkyCube()
 {
 	DeleteGO(skyCube_);
@@ -103,9 +114,14 @@ bool Game::Start()
 	/* 疑似背景の設定。*/
 	InitSkyCube();
 
+	// まず、"player"という名前のオブジェクトを探す
+	player_ = FindGO<Player>("player");
 
-
-    player_ = NewGO<Player>(0, "player");
+	// もしプレイヤーが見つからなかった場合（nullptrだった場合）のみ、新しく生成する
+	if (player_ == nullptr)
+	{
+		player_ = NewGO<Player>(0, "player");
+	}
 	stage1_ = NewGO<Stage1>(0, "stage1");
 
 //	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");

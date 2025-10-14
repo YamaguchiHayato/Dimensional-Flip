@@ -1,27 +1,23 @@
 #pragma once
 #include "Level3DRender/LevelRender.h"
-
-
-enum class enStageState
-{
-	enState_Stage1,
-	enState_Stage2,
-	enState_Stage3,
-	enState_Stage4,
-	enState_Num,
-};
-
+/* Characterクラス。*/
 class TrackingEnemy;
-class TimerUI;
-class WallActor;
-class NumberUI;
 class Player;
+/* UIクラス。*/
+class NumberUI;
 class ScoreUI;
+class TimerUI;
+class HPbarUI;
+/* 透明な壁クラス。*/
+class WallActor;
+/* ステージクラス。*/
 class Stage1;
+/* ギミッククラス。*/
 class Star;
 class JumpPad;
+/* カメラクラス。*/
 class GameCamera;
-class GoalChecker;
+/* ゲームクラス。*/
 class Game : public IGameObject
 {
 public:
@@ -30,9 +26,9 @@ public:
 	bool Start();
 	void Update();
 private:
-	/// <summary>
-	/// 追跡敵の生成。
-	/// </summary>
+	/* 
+	 * @brief 追跡型敵オブジェクトの生成。
+	 */
 	void EnemyNewGO_Tracking();
 
 	/*
@@ -70,6 +66,11 @@ private:
 	 */ 
 	void ScoreUINewGO();
 
+	/* 
+	 * @brief HPバーUIオブジェクトの生成。
+	 */
+	void HPbarUINewGO();
+
 	/*
  　　* @brief 視点回転が許可される領域をまとめて登録する。
      *
@@ -98,14 +99,9 @@ private:
 	TimerUI* timerUI_ = nullptr;
 	NumberUI* numberUI_ = nullptr;
 	ScoreUI* scoreUI_ = nullptr;
-
+	HPbarUI* hpbarUI_ = nullptr;
 	// その他。
 	GameCamera* gameCamera_ = nullptr;
 	SkyCube* skyCube_ = nullptr;
-private:
-	FontRender fontRender_; // デバッグ用。
-	ModelRender modelRender_; // モデル。
-	Vector3 Pos_;// 座標。
-	Quaternion Rot_;
 };
 

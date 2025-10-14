@@ -38,19 +38,19 @@ public:
 	/*
 	 * @brief ジャンプ力の設定。
 	 */
-	void SetJumpPower(float jumpPower) { m_jumpPower = jumpPower; }
+	void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
 
 	/*
 	 * @brief ジャンプ力の取得。
 	 */
-	const float& GetJumpPower() const { return m_jumpPower; }
+	const float& GetJumpPower() const { return jumpPower_; }
 
 	/*
 	 * リスポーン地点の設定。 
 	 */
 	void SetRespawnPositon(const Vector3& pos)
 	{
-		m_respawnPos = pos;
+		respawnPos_ = pos;
 	}
 
 	/*
@@ -58,12 +58,12 @@ public:
 	 */
 	void PlayerRespawn()
 	{
-		m_position = m_respawnPos;
-		m_rotation = m_respawnRot;
-		m_modelRender.SetPosition(m_position);
-		m_modelRender.SetRotation(m_rotation);
-		m_Characon.SetPosition(m_position);
-		m_respawnFlag = true;
+		PlayerPos_ = respawnPos_;
+		rotation_ = respawnRot_;
+		PlayerRender_.SetPosition(PlayerPos_);
+		PlayerRender_.SetRotation(rotation_);
+		PlayerCharacon_.SetPosition(PlayerPos_);
+		respawnFlag_ = true;
 	}
 
 
@@ -74,20 +74,20 @@ public:
 	 */
 	bool IsPlayerRespawn()
 	{
-		return m_respawnFlag;
+		return respawnFlag_;
 	}
 
 	CharacterController& GetCharacterController()
 	{
-		return m_Characon;
+		return PlayerCharacon_;
 	}
 	const Vector3& GetPosition() const
 	{
-		return m_position;
+		return PlayerPos_;
 	}
 	void AddMoveSpeed(const Vector3& addMoveSpeed)
 	{
-		m_moveSpeed += addMoveSpeed;
+		moveSpeed_ += addMoveSpeed;
 	}
 
 	bool DoJumpCheck() const { return didJumpThisFrame_; };
@@ -117,26 +117,26 @@ private:
 
 
 private:
-	Player* m_player = nullptr;                                
-	GameCamera* m_gameCamera = nullptr;
+	Player* player_ = nullptr;                                
+	GameCamera* gameCamera_ = nullptr;
 public:
-	AnimationClip m_animationClip[enAnimationClip_Num];
-	CharacterController m_Characon;               
+	AnimationClip animationClip_[enAnimationClip_Num];
+	CharacterController PlayerCharacon_;               
 
-	ModelRender m_modelRender;
-	Vector3 diff;
-	Vector3 m_moveSpeed;
-	Vector3 m_position;
-	Vector3 m_respawnPos;
-	Quaternion m_respawnRot;
-	Quaternion m_rotation;
+	ModelRender PlayerRender_;
+	Vector3 diff_;
+	Vector3 moveSpeed_;
+	Vector3 PlayerPos_;
+	Vector3 respawnPos_;
+	Quaternion respawnRot_;
+	Quaternion rotation_;
 
 private:	
-	int	m_playerState; 
-	int m_doCheck = 0;
+	int	playerState_; 
+	int doCheck_ = 0;
 
-	float m_jumpPower = 50.0f;
-	bool m_respawnFlag = false;
-	bool m_is2D = false;
+	float jumpPower_ = 50.0f;
+	bool respawnFlag_ = false;
+	bool is2D_ = false;
 	bool didJumpThisFrame_ = false;
 };

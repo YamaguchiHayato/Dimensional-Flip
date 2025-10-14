@@ -28,6 +28,9 @@
     <Filter Include="Src\Actor\Stage\Gimmick">
       <UniqueIdentifier>{3295a3f4-8986-410a-abff-65e8b9a3183e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scene">
+      <UniqueIdentifier>{504a6e0d-194d-4cae-8573-1ea3a7990bb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -75,7 +78,6 @@
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Src\UI\UIBase.cpp">
       <Filter>Src\UI</Filter>
     </ClCompile>
@@ -97,9 +99,25 @@
     <ClCompile Include="Src\UI\HPbarUI.cpp">
       <Filter>Src\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SceneBase.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="Src\Scene\Scene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\SceneManager.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\Stage1Scene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\TitleScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameClear.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage2Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -144,7 +162,6 @@
     <ClInclude Include="Src\WallActor.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="GameClear.h" />
     <ClInclude Include="Src\UI\UIBase.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
@@ -169,9 +186,25 @@
     <ClInclude Include="Src\UI\HPbarUI.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SceneBase.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Src\Scene\Scene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\SceneManager.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\Stage1Scene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\TitleScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\GameClear.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Stage2.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

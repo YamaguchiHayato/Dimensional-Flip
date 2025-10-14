@@ -37,7 +37,7 @@ void FollowCamera::Move()
 {
 	//カメラの更新
 	//注視点の計算
-	Vector3 target = m_player->m_position;
+	Vector3 target = m_player->PlayerPos_;
 
 	target.y += 85.0f;
 

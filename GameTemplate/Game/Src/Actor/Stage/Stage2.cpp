@@ -1,5 +1,6 @@
 #include "stdafx.h"
-#include "Stage1.h"
+#include "Src/Actor/Stage/Stage2.h"
+#include "Src/Actor/Stage/Stage.h"
 
 namespace
 {
@@ -8,15 +9,15 @@ namespace
 	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//コリジョンの大きさ
 }
 
-Stage1::~Stage1()
+Stage2::~Stage2()
 {
 	DeleteGO(StageCollision_);
 }
 
-bool Stage1::Start()
+bool Stage2::Start()
 {
 
-	const std::string stagePath = InitStage("Stage1/Stage1");
+	const std::string stagePath = InitStage("Stage2/Stage2");
 	StageRender_.Init(stagePath.c_str());
 	StagePhysics_.CreateFromModel(StageRender_.GetModel(), StageRender_.GetModel().GetWorldMatrix());
 	StageRender_.SetScale(SCALE);
@@ -27,9 +28,9 @@ bool Stage1::Start()
 
 	//コリジョンを動く床に設置
 	StageCollision_->CreateBox
-	(   StagePos_ + COLLISION_HEIGHT,
+	(StagePos_ + COLLISION_HEIGHT,
 		Quaternion::Identity,
-		COLLISION_SIZE );
+		COLLISION_SIZE);
 
 	// 座標設定。
 	StageRender_.SetPosition(StagePos_);
@@ -42,7 +43,7 @@ bool Stage1::Start()
 	return true;
 }
 
-void Stage1::Update()
+void Stage2::Update()
 {
 	StageRender_.Update();
 
@@ -54,7 +55,7 @@ void Stage1::Update()
 
 }
 
-void Stage1::Render(RenderContext& rc)
+void Stage2::Render(RenderContext& rc)
 {
 	StageRender_.Draw(rc);
 }

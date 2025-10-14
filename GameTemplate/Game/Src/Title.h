@@ -44,14 +44,24 @@ public:
 	{
 		return sceneTransitionFlag_; 
 	}
+	const void SetGameLooadFlag(bool flag)
+	{
+		gameLoadFlag = flag;
+	} 
+	bool GetGameLoadFlag()
+	{
+		return gameLoadFlag;
+	}
 	/* タイトル画面での入力操作。*/
 	void TitleAction();	
 private:
 	/* タイトル画面の画像表示。*/ 
 	SpriteRender titleRender_;
-
 private:
 	/* シーン遷移フラグ。*/
 	bool sceneTransitionFlag_ = false;		
+	/* ゲームロードフラグ。*/ 
+	bool gameLoadFlag = false;			
+
 };
 

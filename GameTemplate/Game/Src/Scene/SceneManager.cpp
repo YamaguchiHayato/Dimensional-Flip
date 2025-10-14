@@ -1,7 +1,9 @@
 #include "stdafx.h"
-#include "SceneManager.h"
-#include "SceneBase.h"
-#include "TitleScene.h"
+#include "Src/Scene/SceneManager.h"
+#include "Src/Scene/Stage1Scene.h"
+#include "Src/Actor/Stage/Stage2.h"
+#include "Src/Scene/Scene.h"
+#include "Src/Scene/TitleScene.h"
 #define SMGetIns SceneManager::GetInstance
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -12,8 +14,15 @@ void SceneManager::Update()
 	{
 		ChangeScene();
 	}
+
+	/* シーンが存在する場合、更新処理を行う。*/
+	if (scene_) scene_->Update();
 }
 
+void SceneManager::Render(RenderContext& rc)
+{
+	if (scene_) scene_->Render(rc);
+}
 void SceneManager::ChangeScene()
 {
 	/* 既存シーンの解放。*/
@@ -26,15 +35,15 @@ void SceneManager::ChangeScene()
 	/* IDが無効でなければ。*/
 	if (requestID_ != SceneID::sInvalid)
 	{
-		delete scene_;
-
 		switch (requestID_)
 		{
 		case SceneID::sTitle:
-			scene_ = new TitleScene();
+			scene_ = NewGO<TitleScene>(0,"titlescene");
 			requestID_ = SceneID::sInvalid;
 			break;
 		case SceneID::sStage1:
+			scene_ = NewGO<Stage1Scene>(0, "stage1scene");
+			requestID_ = SceneID::sInvalid;
 			break;
 		case SceneID::sStage2:
 			break;
@@ -44,19 +53,14 @@ void SceneManager::ChangeScene()
 			break;
 		case SceneID::sResult:
 			break;
-		case SceneID::sInvalid:
-			break;
 		default:
 			break;
 		}
 	}
 
 	/* シーンが作成されるとStart()を呼び出す。*/
-	if (scene_)
-	{
-		/* シーンを初期化する。*/
-		scene_->Start();
-		/* リクエストされたシーンを無効化する。*/
-		requestID_ = SceneID::sInvalid;
-	}
+	if (scene_) scene_->Start();
+	/* リクエストされたシーンを無効化する。*/
+	requestID_ = SceneID::sInvalid;
+
 }	

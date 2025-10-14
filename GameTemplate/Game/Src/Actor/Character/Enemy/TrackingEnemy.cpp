@@ -84,13 +84,13 @@ void TrackingEnemy::Update()
 	// 更新処理。
 	m_EnemyRender.Update();
 
-	Vector3 diff = m_player->m_position - m_EnemyPosition;
+	Vector3 diff = m_player->PlayerPos_ - m_EnemyPosition;
 	if (diff.Length() <= 100.0f && Enemyanimationstate != 1)
 	{
-		if (m_player->m_Characon.IsOnGround() == false)
+		if (m_player->PlayerCharacon_.IsOnGround() == false)
 		{
 			Enemyanimationstate = 1;
-			m_player->m_moveSpeed.y = 500.0f;
+			m_player->moveSpeed_.y = 500.0f;
 			m_EnemyCC.RemoveRigidBoby();
 
 			////エフェクトの処理
@@ -161,7 +161,7 @@ void TrackingEnemy::Move()
 //追跡処理。
 void TrackingEnemy::Tracking()
 {
-	Vector3 diff = m_player->m_position - m_EnemyPosition;
+	Vector3 diff = m_player->PlayerPos_ - m_EnemyPosition;
 	const bool inRadius = (diff.Length() < 100.0f);
 
 	// B) 座標トリガ（敵があるX座標を越えたら）

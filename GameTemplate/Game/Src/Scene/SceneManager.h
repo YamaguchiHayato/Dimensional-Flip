@@ -3,7 +3,7 @@
  * @brief   シーン管理クラス。
  */
 #pragma once
-#include "SceneBase.h"
+#include "Scene.h"
 
 /*
  * @enum    SceneID。
@@ -28,7 +28,6 @@ private:
 	SceneBase* scene_ = nullptr;
 	SceneID requestID_ = SceneID::sTitle;
 	static SceneManager* instance_;
-
 	virtual ~SceneManager() {};
 
 public:
@@ -38,6 +37,8 @@ public:
 	bool Start() override { return true; };
 	/* 更新処理。*/
 	void Update() override;
+	/* 描画処理。*/
+	void Render(RenderContext& rc) override;
 	/* シーンの遷移処理。*/
 	void ChangeScene();
 	/* シーンの解放処理。*/ 

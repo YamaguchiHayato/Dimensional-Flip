@@ -14,7 +14,7 @@ public:
 	bool Start() override;
 	void Update() override;
 	void Render(RenderContext& rc)override;
-	virtual const std::string InitUI(const std::string& UIname) override{
+	const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
 

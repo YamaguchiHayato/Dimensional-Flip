@@ -12,6 +12,7 @@
 #include "Src/UI/TimerUI.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
+#include "Src/UI/HPbarUI.h"
 
 namespace EnemyPosition
 {
@@ -216,6 +217,9 @@ void Game::UINewGO()
 
 	/* UIのスコア部分を描画する処理。*/ 
 	ScoreUINewGO();
+
+	/* HPbarの部分を描画する処理。*/
+	HPbarUINewGO();
 }
 
 void Game::TimerUINewGO()
@@ -231,6 +235,11 @@ void Game::NumberUINewGO()
 void Game::ScoreUINewGO()
 {
 	scoreUI_ = NewGO<ScoreUI>(0, "scoreUI");
+}
+
+void Game::HPbarUINewGO()
+{
+	hpbarUI_ = NewGO<HPbarUI>(0, "hpbarUI");
 }
 
 void Game::EnemyNewGO_Tracking()

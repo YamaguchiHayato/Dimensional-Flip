@@ -126,7 +126,7 @@ public:
 	ModelRender PlayerRender_;
 	Vector3 diff_;
 	Vector3 moveSpeed_;
-	Vector3 PlayerPos_;
+	Vector3 PlayerPos_ = Vector3::Zero;
 	Vector3 respawnPos_;
 	Quaternion respawnRot_;
 	Quaternion rotation_;

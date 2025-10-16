@@ -11,7 +11,7 @@ public:
 	virtual void Render(RenderContext& rc) = 0;
 
 public:
-	TrackingEnemy* m_TrackingEnemy = nullptr;// í«è]ìGÅB
+	TrackingEnemy* trackingEnemy_ = nullptr;// í«è]ìGÅB
 
 
 };
@@ -27,9 +27,9 @@ public:
 	void Render(RenderContext& rc)override {};
 
 public:
-	CharacterController m_EnemyCC;
-	Vector3 m_EnemyPosition;
-	ModelRender m_EnemyRender;
+	CharacterController enemyCC_;
+	Vector3 enemyPosition_;
+	ModelRender enemyRender_;
 
 };
 

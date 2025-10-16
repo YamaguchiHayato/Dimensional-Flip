@@ -261,8 +261,8 @@ void Game::HPbarUINewGO()
 void Game::EnemyNewGO_Tracking()
 {
 	trackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
-	trackingEnemy_->m_EnemyPosition = {EnemyPosition::Pos1};
-	trackingEnemy_->m_EnemyFP = trackingEnemy_->m_EnemyPosition;
+	trackingEnemy_->enemyPosition_ = {EnemyPosition::Pos1};
+	trackingEnemy_->enemyFP_ = trackingEnemy_->enemyPosition_;
 }
 
 void Game::SetupViewRotationAreas()

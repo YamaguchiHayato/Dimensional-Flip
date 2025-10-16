@@ -25,8 +25,8 @@ const::std::string TrackingEnemy::GetFullPath_EnemyAnimation(EnAnimationClip ene
 	std::string Animation = ENEMY_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
 
 	// アニメーションのロード。
-	m_animationclip[enemyAnimation].Load(Animation.c_str());
-	m_animationclip[enemyAnimation].SetLoopFlag(flag);
+	animationclip_[enemyAnimation].Load(Animation.c_str());
+	animationclip_[enemyAnimation].SetLoopFlag(flag);
 
 	return Animation;
 }
@@ -39,25 +39,25 @@ bool TrackingEnemy::Start()
 	SetEnemyAnimation();
 
 	// モデルの初期化。
-	m_EnemyRender.Init("Assets/modelData/Skeleton.tkm", m_animationclip, enAnimationclip_num, enModelUpAxisY, true);
+	enemyRender_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enAnimationclip_num, enModelUpAxisY, true);
 
 	// 大きさをセット。
-	m_EnemyRender.SetScale(SCALE);
+	enemyRender_.SetScale(SCALE);
 
 	// キャラコン。
-	m_EnemyCC.Init(RADIUS, HEIGHT, m_EnemyPosition);
+	enemyCC_.Init(RADIUS, HEIGHT, enemyPosition_);
 
 	// 座標をセット。
-	m_EnemyRender.SetPosition(m_EnemyPosition);
+	enemyRender_.SetPosition(enemyPosition_);
 
 	// 更新処理。
-	m_EnemyRender.Update();
+	enemyRender_.Update();
 
 	// エフェクトの初期化。
 //	EffectEngine::GetInstance()->ResistEffect(EffectList_EnemyHit, u"Assets/effect/enemyhiteffect.efk");
 
 	// 探索処理。
-	m_player = FindGO<Player>("player");
+	player_ = FindGO<Player>("player");
 
 
 	return true;
@@ -79,19 +79,19 @@ void TrackingEnemy::Update()
 	EnemyAnimation();
 
 	// モデルをセット。
-	m_EnemyRender.SetPosition(m_EnemyPosition);
+	enemyRender_.SetPosition(enemyPosition_);
 
 	// 更新処理。
-	m_EnemyRender.Update();
+	enemyRender_.Update();
 
-	Vector3 diff = m_player->PlayerPos_ - m_EnemyPosition;
-	if (diff.Length() <= 100.0f && Enemyanimationstate != 1)
+	Vector3 diff = player_->PlayerPos_ - enemyPosition_;
+	if (diff.Length() <= 100.0f && enemyanimationstate_ != 1)
 	{
-		if (m_player->PlayerCharacon_.IsOnGround() == false)
+		if (player_->PlayerCharacon_.IsOnGround() == false)
 		{
-			Enemyanimationstate = 1;
-			m_player->moveSpeed_.y = 500.0f;
-			m_EnemyCC.RemoveRigidBoby();
+			enemyanimationstate_ = 1;
+			player_->moveSpeed_.y = 500.0f;
+			enemyCC_.RemoveRigidBoby();
 
 			////エフェクトの処理
 			//EffectEmitter* effectEmitter = NewGO<EffectEmitter>(0);
@@ -114,7 +114,7 @@ void TrackingEnemy::Update()
 		else
 		{
 			//プレイヤーに触れた
-			m_touchPlayerFlag = true;
+		    touchPlayerFlag_ = true;
 		}
 	}
 
@@ -123,92 +123,92 @@ void TrackingEnemy::Update()
 // 動作処理。
 void TrackingEnemy::Move()
 {
-	if (!m_isChasing)
+	if (!isChasing_)
 	{
-		if (Enemystate == 0) {
-			m_EnemyMS.x = -2.0f;
+		if (enemystate_ == 0) {
+			enemyMS_.x = -2.0f;
 		}
-		else if (Enemystate == 1) {
-			m_EnemyMS.x = 2.0f;
+		else if (enemystate_ == 1) {
+			enemyMS_.x = 2.0f;
 		}
-		if (m_EnemyPosition.x >= m_EnemyFP.x + 200.0f)
+		if (enemyPosition_.x >= enemyFP_.x + 200.0f)
 		{
-			Enemystate = 0;
+			enemystate_ = 0;
 		}
-		else if (m_EnemyPosition.x <= m_EnemyFP.x - 200.0f)
+		else if (enemyPosition_.x <= enemyFP_.x - 200.0f)
 		{
-			Enemystate = 1;
+			enemystate_ = 1;
 		}
 
 	}
 
-	if (Enemyanimationstate == 1) {
-		m_EnemyMS.x = 0;
-		if (!m_EnemyRender.IsPlayingAnimation())
+	if (enemyanimationstate_ == 1) {
+		enemyMS_.x = 0;
+		if (!enemyRender_.IsPlayingAnimation())
 		{
 			DeleteGO(this);
 		}
 	}
-	m_EnemyPosition = m_EnemyCC.Execute(m_EnemyMS, 1.0f);
+	enemyPosition_ = enemyCC_.Execute(enemyMS_, 1.0f);
 	float glavity = 3.0f;
-	if (m_EnemyCC.IsOnGround()) {
+	if (enemyCC_.IsOnGround()) {
 		//重力をなくす
-		m_EnemyMS.y = 0.0f;
+		enemyMS_.y = 0.0f;
 	}
-	m_EnemyMS.y -= glavity;
+	enemyMS_.y -= glavity;
 }
 
 //追跡処理。
 void TrackingEnemy::Tracking()
 {
-	Vector3 diff = m_player->PlayerPos_ - m_EnemyPosition;
+	Vector3 diff = player_->PlayerPos_ - enemyPosition_;
 	const bool inRadius = (diff.Length() < 100.0f);
 
 	// B) 座標トリガ（敵があるX座標を越えたら）
-	const bool passX = (m_EnemyPosition.x >= m_triggerX);
+	const bool passX = (enemyPosition_.x >= triggerX_);
 
-	if (!m_isChasing && (inRadius || passX)) {
-		m_isChasing = true;
+	if (!isChasing_ && (inRadius || passX)) {
+		isChasing_ = true;
 	}
 
 	// ---- 追跡中の移動ベクトルを設定 ----
-	if (m_isChasing) {
+	if (isChasing_) {
 		diff.y = 0.0f;                // 水平面だけで追う（必要ならYも可）
 		if (diff.LengthSq() > 1e-4f) {
 			diff.Normalize();
-			m_EnemyMS.x = diff.x * m_chaseSpeed;
-			m_EnemyMS.z = diff.z * m_chaseSpeed;
+			enemyMS_.x = diff.x * chaseSpeed_;
+			enemyMS_.z = diff.z * chaseSpeed_;
 		}
 		else {
-			m_EnemyMS.x = m_EnemyMS.z = 0.0f; // ほぼ重なったら停止
+			enemyMS_.x = enemyMS_.z = 0.0f; // ほぼ重なったら停止
 		}
 	}
 }
 
 // 回転処理。
 void TrackingEnemy::Rotation() {
-	if (Enemystate == 0) {
-		rotation.SetRotationDegY(ENEMYSTATE_ZERO);
+	if (enemystate_ == 0) {
+		rotation_.SetRotationDegY(ENEMYSTATE_ZERO);
 	}
-	else if (Enemystate == 1) {
-		rotation.SetRotationDegY(ENEMYSTATE_ONE);
+	else if (enemystate_ == 1) {
+		rotation_.SetRotationDegY(ENEMYSTATE_ONE);
 	}
-	rotation.AddRotationDegX(ENEMYSTATE_TWO);
+	rotation_.AddRotationDegX(ENEMYSTATE_TWO);
 	//絵描きさんに回転を教える。
-	m_EnemyRender.SetRotation(rotation);
+	enemyRender_.SetRotation(rotation_);
 }
 
 // Enemyのアニメーション。
 void TrackingEnemy::EnemyAnimation()
 {
-	switch (Enemyanimationstate)
+	switch (enemyanimationstate_)
 	{
 	case 0:
-		m_EnemyRender.PlayAnimation(enAnimationclip_walk, 0.1f);
+		enemyRender_.PlayAnimation(enAnimationclip_walk, 0.1f);
 		break;
 
 	case 1:
-		m_EnemyRender.PlayAnimation(enAnimationclip_death, 0.1f);
+		enemyRender_.PlayAnimation(enAnimationclip_death, 0.1f);
 		break;
 	}
 }
@@ -216,7 +216,7 @@ void TrackingEnemy::EnemyAnimation()
 // 描画処理。
 void TrackingEnemy::Render(RenderContext& rc)
 {
-	m_EnemyRender.Draw(rc);
+	enemyRender_.Draw(rc);
 }
 
 // アニメーションの再生。

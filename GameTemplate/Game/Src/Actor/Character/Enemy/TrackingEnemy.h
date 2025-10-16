@@ -21,12 +21,12 @@ public:
 
 // 外部参照用 変数。
 public:
-	Vector3 m_EnemyFP;
-	Vector3 m_EnemyPosition;
+	Vector3 enemyFP_;
+	Vector3 enemyPosition_;
 
-	bool  m_isChasing = false;   // 追跡中フラグ
-	float m_chaseSpeed = 4.0f;   // 追跡速度
-	float m_triggerX = FLT_MAX;
+	bool  isChasing_ = false;   // 追跡中フラグ
+	float chaseSpeed_ = 4.0f;   // 追跡速度
+	float triggerX_ = FLT_MAX;
 
 public:
 	enum class State
@@ -43,38 +43,37 @@ public:
 		enAnimationclip_num
 	};
 private:
-	AnimationClip m_animationclip[enAnimationclip_num];
-	CharacterController m_EnemyCC;
-	SphereCollider m_sphereColl;
-	Vector3 m_EnemyMS;
-	Player* m_player = nullptr;
+	AnimationClip animationclip_[enAnimationclip_num];
+	CharacterController enemyCC_;
+	SphereCollider sphereColl_;
+	Vector3 enemyMS_;
+	Player* player_ = nullptr;
 
-	Vector3 m_enemyDeathDistanceX = Vector3::Zero;//x軸の判定
-	Vector3 m_enemyDeathDistanceY = Vector3::Zero;//y軸の判定
-	ModelRender m_EnemyRender;
-	Quaternion rotation;
-
-private:
-	int Enemystate = 0;
-	int Enemyanimationstate = 0;
-
-	bool m_touchPlayerFlag = false;//プレイヤーに触れたか？
-
-
+	Vector3 enemyDeathDistanceX_ = Vector3::Zero;//x軸の判定
+	Vector3 enemyDeathDistanceY_ = Vector3::Zero;//y軸の判定
+	ModelRender enemyRender_;
+	Quaternion rotation_;
 
 private:
-	/// <summary>
-	/// 追跡処理。
-	/// </summary>
+	int enemystate_ = 0;
+	int enemyanimationstate_ = 0;
+
+	bool touchPlayerFlag_ = false;//プレイヤーに触れたか？
+
+
+
+private:
+	/* 追跡処理。*/
 	void Tracking();
 
-	/// <summary>
-    /// アニメーションメソッド。
-    /// </summary>
+	/* 
+	 * @brief アニメーションのフルパスを取得する関数。
+	 */ 
 	const std::string GetFullPath_EnemyAnimation(EnAnimationClip enemyAnimation, const std::string& animationName, bool flag);
-	/// <summary>
-	/// アニメーションをセット。
-	/// </summary>
+
+	/* 
+	 * @brief アニメーションを格納する関数。
+	 */ 
 	void SetEnemyAnimation();
 
 private:

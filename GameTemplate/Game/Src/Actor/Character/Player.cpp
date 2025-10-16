@@ -42,6 +42,7 @@ bool Player::Start()
 	SetAnimation();
 
 	PlayerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
+//	PlayerRender_.Init("Assets/modelData/player/player.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
 
 	PlayerCharacon_.Init(20.0f, 25.0f, PlayerPos_);
 
@@ -180,6 +181,14 @@ void Player::Render(RenderContext& rc)
 
 void Player::SetAnimation()
 {
+	///* 待機アニメーション。*/
+	//FetchPlayAnimation(enAnimationClip_Idle,"player_idle", true);
+	///* 歩きアニメーション。*/
+	//FetchPlayAnimation(enAnimationClip_Walk, "player_walk", true);
+	///* 走りアニメーション。*/
+	//FetchPlayAnimation(enAnimationClip_Run, "player_run", true);
+	///* ジャンプアニメーション。*/
+	//FetchPlayAnimation(enAnimationClip_Jump, "player_jump", false);
 	/* 待機アニメーション。*/
 	FetchPlayAnimation(enAnimationClip_Idle,"idle", true);
 	/* 歩きアニメーション。*/

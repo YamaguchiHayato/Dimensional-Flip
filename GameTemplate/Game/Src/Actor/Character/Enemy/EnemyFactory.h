@@ -9,6 +9,6 @@ class TrackingEnemy;
 class EnemyFactory : public Actor
 {
 public:
-	TrackingEnemy* m_TrackingEnemy = nullptr;
+	TrackingEnemy* trackingEnemy_ = nullptr;
 };
 

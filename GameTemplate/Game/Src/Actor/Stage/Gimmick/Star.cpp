@@ -7,13 +7,13 @@ namespace StarStatus
 {
 	const float STAR_ROTATE_SPEED = 3.0f;
 	const Vector3 STAR_SCALE(0.5f, 0.5f, 0.5f);
-	const Vector3 COLLISION_HEIGHT(0.0f, 25.0f, 0.0f);//コリジョンの高さ
-	const Vector3 COLLISION_SIZE(365.0f, 5.0f, 225.0f);//コリジョンの大きさ
+	const Vector3 COLLISION_HEIGHT(0.0f, 25.0f, 0.0f);//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ縺ｮ鬮倥＆
+	const Vector3 COLLISION_SIZE(365.0f, 5.0f, 225.0f);//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ縺ｮ螟ｧ縺阪＆
 }
 
 bool Star::Start()
 {
-	m_starRender.Init("Assets/stageMaterial/Stage1/Star.tkm");
+	m_starRender.Init("Assets/stage/Stage1/Star.tkm");
 	m_starRender.SetScale(StarStatus::STAR_SCALE);
 	m_starRender.SetPosition(m_starPosition);
 
@@ -23,7 +23,6 @@ bool Star::Start()
 
 void Star::Update()
 {
-	/* 早期リターン。*/
 	if (m_player == nullptr) { return; }
 
 	Vector3 diff = m_player->GetPosition() - m_starPosition;
@@ -33,20 +32,15 @@ void Star::Update()
 		DeleteGO(this);
 	}
 
-	/* 回転処理。*/
 	Rotation();
-	/* 座標をセット。*/
 	m_starRender.SetPosition(m_starPosition);
-	/* 描画更新。*/
 	m_starRender.Update();
 }
 
 void Star::Rotation()
 {
-	/* 回転を計算数る処理。*/
 	m_starRotation.AddRotationDegY(StarStatus::STAR_ROTATE_SPEED);
 
-	/* 回転度数をセット。*/
 	m_starRender.SetRotation(m_starRotation);
 }
 

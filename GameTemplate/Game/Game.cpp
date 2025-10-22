@@ -1,5 +1,6 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "Game.h"
+#include "Fade.h"
 #include "Src/Camera/GameCamera.h"
 #include "Src/WallActor.h"
 #include "Src/Actor/Character/Player.h"
@@ -49,32 +50,21 @@ namespace GoalPointPosition
 	const Vector3 Pos1(1400.0f, 100.0f, -2000.0f);
 }
 
-/* カメラの視点を回転できる座標上限を設定するパラメータ。 */
 namespace CameraParameter
 {
-	/* 許可領域1。*/
 	namespace Territory1
 	{
-		/* @param CAMERA_ROT_MIN_X : カメラのX軸回転の最小値。*/
 		const float CAMERA_ROT_MIN_X = 0;
-		/* @param CAMERA_ROT_MAX_X : カメラのX軸回転の最大値。*/
 		const float CAMERA_ROT_MAX_X = 10000;
-		/* @param CAMERA_ROT_MIN_Z : カメラのZ軸回転の最小値。*/
 		const float CAMERA_ROT_MIN_Z = -100;
-		/* @param CAMERA_ROT_MAX_Z : カメラのZ軸回転の最大値。*/
 		const float CAMERA_ROT_MAX_Z = 10000;
 	}
 
-	/* 許可領域2。*/ 
 	namespace Territory2
 	{
-		/* @param CAMERA_ROT_MIN_Y : カメラのX軸回転の最小値。*/
 		const float CAMERA_ROT_MIN_Y = 10001;
-		/* @param CAMERA_ROT_MAX_Y : カメラのX軸回転の最大値。*/
 		const float CAMERA_ROT_MAX_Y = 20000;
-		/* @param CAMERA_ROT_MIN_Z : カメラのZ軸回転の最小値。*/
 		const float CAMERA_ROT_MIN_Z = 10001;
-		/* @param CAMERA_ROT_MAX_Z : カメラのZ軸回転の最大値。*/
 		const float CAMERA_ROT_MAX_Z = 20001;
 
 	}
@@ -108,10 +98,10 @@ void Game::InitSkyCube()
 
 bool Game::Start()
 {
-	/* UIのNewGO。*/
 	UINewGO();
 
-	/* 疑似背景の設定。*/
+    FadeStart();
+
 	InitSkyCube();
 
 	// まず、"player"という名前のオブジェクトを探す
@@ -132,16 +122,12 @@ bool Game::Start()
 
 	//camera->ClearOrbitZones();
 
-	/* ゾーン登録。*/
 	//SetupViewRotationAreas();
 
-	/* 透明壁をNewGO。*/
 	WallNewGO();
 
-	/* スターをNewGO。*/ 
 	StarNewGO();
 
-	/* ジャンプパッドをNewGO。*/
 	JumpPadNewGO();
 
 //	EnemyNewGO_Tracking();
@@ -151,14 +137,12 @@ bool Game::Start()
 
 void Game::Update()
 {
-	///* XZ方向への回転アクション。*/
 	//if (g_pad[0]->IsTrigger(enButtonX))
 	//{
 	//	auto orbit = dynamic_cast<OrbitCameraStrategy*>(m_gameCamera->GetStrategy());
 	//	if (orbit) orbit->SetMode(OrbitMode::XZ);
 	//}
 
-	///* YZ方向への回転アクション。*/
 	//if (g_pad[0]->IsTrigger(enButtonY))
 	//{
 	//	auto orbit = dynamic_cast<OrbitCameraStrategy*>(m_gameCamera->GetStrategy());
@@ -168,7 +152,6 @@ void Game::Update()
 
 void Game::WallNewGO()
 {
-	/* 座標を指定してモデルを複数描画*/
 	std::vector<Vector3> WallPosList =
 	{
 		WallPosition::Pos1,
@@ -182,7 +165,7 @@ void Game::WallNewGO()
 		auto wall = NewGO<WallActor>(0, "wall");
 		wall->SetWallPos(WallPosList[i]);
 
-		if (i == 3) /* Pos4*/
+		if (i == 3) 
 		{
 			Quaternion wallRot;
 			wallRot.SetRotationDegY(90.0f);
@@ -194,7 +177,6 @@ void Game::WallNewGO()
 
 void Game::JumpPadNewGO()
 {
-	/* 座標を指定してモデルを複数描画*/
 	std::vector<Vector3> JumpPadPosList =
 	{
 		JumpPadPosition::Pos1
@@ -209,7 +191,6 @@ void Game::JumpPadNewGO()
 
 void Game::StarNewGO()
 {
-	/* 座標を指定してモデルを複数描画*/
 	std::vector<Vector3> StarPosList =
 	{
 		StarPosition::Pos1
@@ -225,16 +206,12 @@ void Game::StarNewGO()
 
 void Game::UINewGO()
 {
-	/* GameTiemerを描画する処理。*/
 	TimerUINewGO();
 
-	/* UIの数字部分を描画する処理。*/ 
 	NumberUINewGO();
 
-	/* UIのスコア部分を描画する処理。*/ 
 	ScoreUINewGO();
 
-	/* HPbarの部分を描画する処理。*/
 	HPbarUINewGO();
 }
 
@@ -258,6 +235,11 @@ void Game::HPbarUINewGO()
 	hpbarUI_ = NewGO<HPbarUI>(0, "hpbarUI");
 }
 
+void Game::FadeStart()
+{
+    fade_ = FindGO<Fade>("fade");
+    fade_->FadeTransition(FadeState::FadeStart);
+}
 void Game::EnemyNewGO_Tracking()
 {
 	trackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
@@ -267,7 +249,6 @@ void Game::EnemyNewGO_Tracking()
 
 void Game::SetupViewRotationAreas()
 {
-	/* 1つ目の許可領域。*/
 	gameCamera_->AddOrbitZoneXZ
 	(
 		CameraParameter::Territory1::CAMERA_ROT_MIN_X,
@@ -276,7 +257,6 @@ void Game::SetupViewRotationAreas()
 		CameraParameter::Territory1::CAMERA_ROT_MAX_Z
 	);
 
-	/* 2つ目の許可領域。*/
 	gameCamera_->AddOrbitZoneYZ
 	(
 		CameraParameter::Territory2::CAMERA_ROT_MIN_Y,

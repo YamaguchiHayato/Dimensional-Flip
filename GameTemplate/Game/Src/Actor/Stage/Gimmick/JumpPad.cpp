@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "JumpPad.h"
 #include "Src/Actor/Character/Player.h"
 
@@ -8,8 +8,8 @@ namespace
 	const Vector3 JUMPPAD_SCALE(0.2f, 0.2f, 0.2f);
 	const Vector3 JUMPPAD_POSITION(500.0f, -20.0f, 0.0f);
 
-	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//ƒRƒŠƒWƒ‡ƒ“‚Ì‚‚³
-	const Vector3 COLLISION_SIZE(365.0f, 5.0f, 225.0f);//ƒRƒŠƒWƒ‡ƒ“‚Ì‘å‚«‚³
+	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®é«˜ã•
+	const Vector3 COLLISION_SIZE(365.0f, 5.0f, 225.0f);//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®å¤§ãã•
 }
 
 JumpPad::~JumpPad()
@@ -19,29 +19,22 @@ JumpPad::~JumpPad()
 
 bool JumpPad::Start()
 {
-	/* JumpPad‚Ìƒ‚ƒfƒ‹‚ğİ’èB*/
-	m_jumpPadModelRender.Init("Assets/stageMaterial/Stage1/JumpPad.tkm");
-	// ƒ‚ƒfƒ‹‚Ì‘å‚«‚³B
+	m_jumpPadModelRender.Init("Assets/stage/Stage1/JumpPad.tkm");
 	m_jumpPadModelRender.SetScale(JUMPPAD_SCALE);
 
-	// ƒ‚ƒfƒ‹‚ÌXVì‹ÆB
 	m_jumpPadModelRender.Update();
 
-	// ’Tõˆ—B
 	m_player = FindGO<Player>("player");
 
-	// “–‚½‚è”»’èB
 	m_jumpPadPhysics.CreateFromModel
 	(
 		m_jumpPadModelRender.GetModel(),
 		m_jumpPadModelRender.GetModel().GetWorldMatrix()
 	);
 
-	// ƒRƒŠƒWƒ‡ƒ“B
 	m_jumpPadCollision = NewGO<CollisionObject>(0, "collisionobject");
 
 
-	//ƒRƒŠƒWƒ‡ƒ“‚ğ“®‚­°‚Éİ’u
 	m_jumpPadCollision->CreateBox
 	(
 		m_jumpPadPosition + COLLISION_HEIGHT,
@@ -49,10 +42,8 @@ bool JumpPad::Start()
 		COLLISION_SIZE
 	);
 
-	// À•W‚ğİ’èB
 	m_jumpPadModelRender.SetPosition(m_jumpPadPosition);
 
-	// ƒRƒŠƒWƒ‡ƒ“‚ğ”jŠüB
 	m_jumpPadCollision->SetIsEnableAutoDelete(false);
 	m_padFirstPosition = m_jumpPadPosition;
 	return true;
@@ -60,31 +51,24 @@ bool JumpPad::Start()
 
 void JumpPad::Update()
 {
-	/* ‘ŠúƒŠƒ^[ƒ“B*/
 	if (m_player == nullptr) return;
 
-	/* JumpPadˆ—B*/
 	LaunchPlayer();
-	/* ƒoƒŒƒbƒgƒRƒŠƒWƒ‡ƒ“‚Ì“K—pB*/
 	m_jumpPadPhysics.SetPosition(m_jumpPadPosition);
 
-	// ƒRƒŠƒWƒ‡ƒ“B
 	m_jumpPadCollision->SetPosition(m_jumpPadPosition + COLLISION_HEIGHT);
 
-	// ƒ‚ƒfƒ‹‚ÌXVˆ—B
 	m_jumpPadModelRender.Update();
 
 }
 
 void JumpPad::LaunchPlayer()
 {
-	/* ƒvƒŒƒCƒ„[‚ªƒWƒƒƒ“ƒvƒpƒbƒh‚Ìã‚É‚¢‚é‚©? */
 	if (m_jumpPadCollision->IsHit(m_player->GetCharacterController()))
 	{
 		m_player->moveSpeed_.y = 400.0f;
 	}
 
-	/* ã‚Éæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢B*/
 	else { return; }
 }
 
@@ -92,4 +76,3 @@ void JumpPad::Render(RenderContext& rc)
 {
 	m_jumpPadModelRender.Draw(rc);
 }
-

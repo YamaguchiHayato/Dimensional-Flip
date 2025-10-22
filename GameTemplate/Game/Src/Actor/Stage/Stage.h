@@ -1,7 +1,7 @@
 #pragma once
 
 /**
-  * @brief ƒXƒe[ƒW‚ğID‚ÅŠÇ—‚·‚éenumB
+  * @brief ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’IDã§ç®¡ç†ã™ã‚‹enumã€‚
   */
 enum class StageID : uint8_t
 {
@@ -18,7 +18,7 @@ class Stage3;
 class Stage4;
 
 /**
-  * @brief ƒXƒe[ƒW‚ğŠÇ—‚·‚éeƒNƒ‰ƒXB
+  * @brief ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ç®¡ç†ã™ã‚‹è¦ªã‚¯ãƒ©ã‚¹ã€‚
   */
 class Stage : public IGameObject
 {
@@ -32,7 +32,7 @@ public:
 };
 
 /**
-  * @brief IGameObjectŒp³—pƒNƒ‰ƒXB
+  * @brief IGameObjectç¶™æ‰¿ç”¨ã‚¯ãƒ©ã‚¹ã€‚
   */
 class IStage : public IGameObject
 {
@@ -44,12 +44,12 @@ public:
 	virtual void Render(RenderContext& rc) override {}
 	virtual const std::string InitStage(const std::string& stagename)
 	{
-		std::string Stagepath = "Assets/stageMaterial/" + stagename + ".tkm";
+		std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
 		return Stagepath;
 	};
 
 
-	// ƒXƒe[ƒW—pƒCƒ“ƒXƒ^ƒ“ƒXB
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã€‚
 	Stage1* m_stage1 = nullptr;
 	Stage2* m_stage2 = nullptr;
 	Stage3* m_stage3 = nullptr;

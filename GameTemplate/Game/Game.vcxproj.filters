@@ -117,7 +117,9 @@
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Stage2Scene.cpp" />
+    <ClCompile Include="Src\Scene\Stage2Scene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -204,7 +206,9 @@
     <ClInclude Include="Src\Actor\Stage\Stage2.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Stage2Scene.h" />
+    <ClInclude Include="Src\Scene\Stage2Scene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

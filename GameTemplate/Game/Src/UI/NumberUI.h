@@ -32,7 +32,8 @@ private:
 	SpriteRender UINumber_[static_cast<int>(enUINumber::enNumber_Num)];
 	SpriteRender UINUmber_TensDigit[static_cast<int>(enUINumber::enNumber_Num)];
 	SpriteRender UINUmber_OnesDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	/* ローカル変数。*/
+
+/* ローカル変数。*/
 private:
 	/* タイムUI描画フラグ。*/
 	bool isTimeUIDrawing_ = true;						

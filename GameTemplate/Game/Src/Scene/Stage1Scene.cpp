@@ -2,23 +2,44 @@
 #include "Stage1Scene.h"
 #include "Src/Title.h"
 #include "SceneManager.h"
-#define SMGetIns SceneManager::GetInstance // ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚éƒ}ƒNƒ’è‹`
+#include "StageClear.h"
+#define SMGetIns SceneManager::GetInstance // ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹ãƒã‚¯ãƒ­å®šç¾©
 
-// ƒXƒe[ƒW1ƒV[ƒ“::‰Šú‰»ˆ—B
+// ã‚¹ãƒ†ãƒ¼ã‚¸1ã‚·ãƒ¼ãƒ³::åˆæœŸåŒ–å‡¦ç†ã€‚
 bool Stage1Scene::Start()
 {
-	// ƒXƒe[ƒW1‚Ì‰Šú‰»ˆ—‚ğs‚¤B
-	stage1_ = NewGO<Stage1>(0, "Stage1"); // ƒXƒe[ƒW1‚Ì‰Šú‰»ˆ—‚ğs‚¤B
+	// ã‚¹ãƒ†ãƒ¼ã‚¸1ã®åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†ã€‚
+	stage1_ = NewGO<Stage1>(0, "Stage1"); // ã‚¹ãƒ†ãƒ¼ã‚¸1ã®åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†ã€‚
 
 	// 
 
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
-	//ƒ^ƒCƒgƒ‹ƒV[ƒ“‚Ìƒ^ƒCƒgƒ‹ƒNƒ‰ƒX‚ğæ“¾‚·‚éB
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+	//ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚¯ãƒ©ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 	title_ = FindGO<Title>("Title");
 	if (title_ != nullptr)
 	{
 		title_->SetGameLooadFlag(true); 
 	}
 	return true;
+}
+
+void Stage1Scene::Update()
+{
+    if (stageClear_ != nullptr)
+    {
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹ã€‚
+        if (stageClear_->GetIsClear() == true)
+        {
+            // ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«ã‚¹ãƒ†ãƒ¼ã‚¸2ã‚·ãƒ¼ãƒ³ã¸ã®é·ç§»ã‚’è¦æ±‚ã™ã‚‹ã€‚
+            SMGetIns()->SetRequest(SceneID::sStage2);
+        }
+    }
+
+    	//SceneManagerã‚’çµŒç”±ã—ã¦ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã¸ã®é·ç§»ã‚’è¦æ±‚ã—ã¦ã„ãŸã‚‰
+	if (SceneManager::GetInstance()->GetRequest() == SceneID::sTitle)
+	{
+		//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã«é·ç§»ã™ã‚‹
+		SMGetIns()->SetRequest(SceneID::sTitle);
+	}
 }
 

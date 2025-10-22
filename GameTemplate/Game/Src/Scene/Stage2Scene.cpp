@@ -1,25 +1,17 @@
 #include "stdafx.h"
-#include "Stage2Scene.h"
+#include "Src/Scene/Stage2Scene.h"
 #include "Src/Scene/SceneManager.h"
-#define SMGetIns SceneManager::GetInstance // シングルトンインスタンスを取得するマクロ定義
+#define SMGetIns SceneManager::GetInstance // 繧ｷ繝ｳ繧ｰ繝ｫ繝医Φ繧､繝ｳ繧ｹ繧ｿ繝ｳ繧ｹ繧貞叙蠕励☆繧九�槭け繝ｭ螳夂ｾｩ
 
 bool Stage2Scene::Start()
 {
 	SMGetIns()->SetRequest(SceneID::sStage2);
-	/* ステージ2の生成。*/
 	stage2_ = NewGO<Stage2>(0, "stage2");
 
-	/* Playerクラスを取得。*/
 	player_ = FindGO<Player>("player");
 	if (player_ != nullptr)
 	{
-		/* プレイヤーをステージ2のスタートに移動。*/
 		
 	}
 	return true;
-}
-
-void Stage2Scene::Update()
-{
-
 }

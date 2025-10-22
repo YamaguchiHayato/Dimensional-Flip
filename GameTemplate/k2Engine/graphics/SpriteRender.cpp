@@ -15,6 +15,10 @@ namespace nsK2Engine {
 		initData.m_height = static_cast<UINT>(h);
 		initData.m_alphaBlendMode = alphaBlendMode;
 		
+				//定数バッファの設定
+		initData.m_expandConstantBuffer = &GetSpriteRenderConstantBuffer();
+		initData.m_expandConstantBufferSize = sizeof(GetSpriteRenderConstantBuffer());
+
 		//Sprite初期化オブジェクトを使用して、Spriteを初期化する。
 		m_sprite.Init(initData);
 	}

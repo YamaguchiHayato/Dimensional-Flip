@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Src/Title.h"
 #include "Game.h"
+#include "Fade.h"
 
 namespace
 {
@@ -13,7 +14,10 @@ namespace
 bool Title::Start()
 {
 	titleRender_.Init("Assets/sprite/TitleScene.DDS", TITLE_WIDTH, TITLE_HEIGHT);
-	
+
+    fade_ = FindGO<Fade>("fade");
+    fade_->FadeTransition(FadeStart);
+
 	titleRender_.Update();
 	return true;
 }
@@ -31,10 +35,14 @@ void Title::Render(RenderContext& rc)
 
 void Title::TitleAction()
 {
-	/* Aボタンでゲームスタート。*/
-	if (g_pad[0]->IsTrigger(enButtonA))
+    if (sceneTransitionFlag_ == false && g_pad[0]->IsTrigger(enButtonA))
+    {
+        fade_->FadeTransition(FadeEnd);
+        sceneTransitionFlag_ = true;
+    }
+
+	if (sceneTransitionFlag_ == true && fade_->IsFadeEnd() == true)
 	{
-		sceneTransitionFlag_ = true;
 		NewGO<Game>(0, "game");
 		DeleteGO(this);
 

@@ -1,67 +1,54 @@
 #pragma once
 
-/* ƒ^ƒCƒgƒ‹‰æ–Ê‚Å‚ÌGamePad‘€ìB*/
 enum class enGamePadSelect : uint8_t
 {
-	enSelect_AButton, /// Aƒ{ƒ^ƒ“B
-	enSelect_BButton, /// Bƒ{ƒ^ƒ“B
-	enSelect_XButton, /// Xƒ{ƒ^ƒ“B
-	enSelect_YButton, /// Yƒ{ƒ^ƒ“B
-	enSelect_LStick,  /// Lƒ{ƒ^ƒ“B
-	enSelect_RStick,  /// Rƒ{ƒ^ƒ“B
-	enSelect_DPad,    /// \šƒL[B
-	enSelect_Num,	  /// ƒQ[ƒ€ƒpƒbƒh”B
+    enSelect_AButton, /// Aãƒœã‚¿ãƒ³ã€‚
+    enSelect_BButton, /// Bãƒœã‚¿ãƒ³ã€‚
+    enSelect_XButton, /// Xãƒœã‚¿ãƒ³ã€‚
+    enSelect_YButton, /// Yãƒœã‚¿ãƒ³ã€‚
+    enSelect_LStick,  /// Lãƒœã‚¿ãƒ³ã€‚
+    enSelect_RStick,  /// Rãƒœã‚¿ãƒ³ã€‚
+    enSelect_DPad,    /// åå­—ã‚­ãƒ¼ã€‚
+    enSelect_Num,     /// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰æ•°ã€‚
 };
 
-/* ƒ‚[ƒh‘I‘ğBB*/ 
 enum class enTitleScene : uint8_t
 {
-	enTitle,     /// ƒ^ƒCƒgƒ‹‰æ–ÊB
-	enModeSelect,/// ƒ‚[ƒh‘I‘ğ‰æ–ÊB
-	enHowToPlay, /// —V‚Ñ•ûà–¾‰æ–ÊB
-	enNum        /// ƒV[ƒ“”B
+    enTitle,      /// ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã€‚
+    enModeSelect, /// ãƒ¢ãƒ¼ãƒ‰é¸æŠç”»é¢ã€‚
+    enHowToPlay,  /// éŠã³æ–¹èª¬æ˜ç”»é¢ã€‚
+    enNum         /// ã‚·ãƒ¼ãƒ³æ•°ã€‚
 };
 
-/* ƒ^ƒCƒgƒ‹‰æ–Ê‚Å‚ÌƒV[ƒ“‘JˆÚB*/ 
 enum class enTitleModeSelect : uint8_t
 {
-	enTitleTransition_Title,		///ƒ^ƒCƒgƒ‹B
-	enTitleTransition_ModeSelect,	///ƒ‚[ƒh‘I‘ğB
-	enTitleTransition_HowToPlay,	///—V‚Ñ•ûB
-	enTitleTransition_Num			///‘JˆÚ”B
+    enTitleTransition_Title,      /// ã‚¿ã‚¤ãƒˆãƒ«ã€‚
+    enTitleTransition_ModeSelect, /// ãƒ¢ãƒ¼ãƒ‰é¸æŠã€‚
+    enTitleTransition_HowToPlay,  /// éŠã³æ–¹ã€‚
+    enTitleTransition_Num         /// é·ç§»æ•°ã€‚
 };
-
+class Fade;
 class Title : public IGameObject
 {
 public:
-	Title() {};
-	~Title() {};
+    Title() {};
+    ~Title() {};
 
-	bool Start();
-	void Update();
-	void Render(RenderContext& rc);
-	bool GetSceneTransitionFlag()
-	{
-		return sceneTransitionFlag_; 
-	}
-	const void SetGameLooadFlag(bool flag)
-	{
-		gameLoadFlag = flag;
-	} 
-	bool GetGameLoadFlag()
-	{
-		return gameLoadFlag;
-	}
-	/* ƒ^ƒCƒgƒ‹‰æ–Ê‚Å‚Ì“ü—Í‘€ìB*/
-	void TitleAction();	
-private:
-	/* ƒ^ƒCƒgƒ‹‰æ–Ê‚Ì‰æ‘œ•\¦B*/ 
-	SpriteRender titleRender_;
-private:
-	/* ƒV[ƒ“‘JˆÚƒtƒ‰ƒOB*/
-	bool sceneTransitionFlag_ = false;		
-	/* ƒQ[ƒ€ƒ[ƒhƒtƒ‰ƒOB*/ 
-	bool gameLoadFlag = false;			
+    bool Start();
+    void Update();
+    void Render(RenderContext& rc);
+    bool GetSceneTransitionFlag() { return sceneTransitionFlag_; }
+    const void SetGameLooadFlag(bool flag) { gameLoadFlag = flag; }
+    bool GetGameLoadFlag() { return gameLoadFlag; }
+    void TitleAction();
 
+private:
+    Fade* fade_ = nullptr;
+
+private:
+    SpriteRender titleRender_;
+
+private:
+    bool sceneTransitionFlag_ = false;
+    bool gameLoadFlag = false;
 };
-

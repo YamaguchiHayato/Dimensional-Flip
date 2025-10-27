@@ -1,19 +1,18 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/GameCamera.h"
 #include "Src/UI/ScoreUI.h"
 namespace
 {
 	const Vector3 SCALE(0.5f, 0.5f, 0.5f);
 
-	// ƒ‚ƒfƒ‹‚É‚©‚©‚éd—ÍB
+	// ãƒ¢ãƒ‡ãƒ«ã«ã‹ã‹ã‚‹é‡åŠ›ã€‚
 	const float GLAVITY = 15.0f;
 
 
 	const char* PLAYER_MODEL = "Assets/modelData/";
-	const char* PLAYER_ANIMATION = "Assets/animData/";// ƒtƒ@ƒCƒ‹ƒpƒXB
-	const char* ANIMATION_FILE_EXTENSION = ".tka"; // Šg’£qB
-	const char* MODEL_FILE_EXTENSION = ".tkm"; // Šg’£qB
+	const char* PLAYER_ANIMATION = "Assets/animData/";// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+	const char* ANIMATION_FILE_EXTENSION = ".tka"; // æ‹¡å¼µå­ã€‚
+	const char* MODEL_FILE_EXTENSION = ".tkm"; // æ‹¡å¼µå­ã€‚
 }
 
 const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag)
@@ -27,7 +26,7 @@ const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, co
 
 const std::string Player::FetchPlayerModel(const std::string& modelName, AnimationClip animationClip, EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag)
 {
-	// ƒ‚ƒfƒ‹‚ğƒ[ƒh(tkmƒtƒ@ƒCƒ‹–¼‚ğ‘Å‚¿‚Ş)B
+	// ãƒ¢ãƒ‡ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰(tkmãƒ•ã‚¡ã‚¤ãƒ«åã‚’æ‰“ã¡è¾¼ã‚€)ã€‚
 	std::string  Player = PLAYER_MODEL + modelName + MODEL_FILE_EXTENSION;
 
 	animationClip_[enAnimationClip].Load(Player.c_str());
@@ -38,27 +37,19 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
 
 bool Player::Start()
 {
-	/* ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìİ’èB*/
 	SetAnimation();
 
 	PlayerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
-//	PlayerRender_.Init("Assets/modelData/player/player.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
 
 	PlayerCharacon_.Init(20.0f, 25.0f, PlayerPos_);
 
-	gameCamera_ = FindGO<GameCamera>("gamecamera");
 	return true;
 }
 
 void Player::Update()
 {
-	/* ƒtƒŒ[ƒ€‚ÌŠJn‚Éƒtƒ‰ƒO‚ğƒŠƒZƒbƒg‚·‚éB*/
 	didJumpThisFrame_ = false;
 
-	//if (g_pad[0]->IsTrigger(enButtonB))
-	//{
-	//	m_is2D = !m_is2D;
-	//}
 
 	Move();
 	Rotation();
@@ -125,49 +116,49 @@ void Player::Rotation()
 	}
 }
 
-//ƒXƒe[ƒgŠÇ—
+//ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†
 void Player::ManageState()
 {
-	//’n–Ê‚É‚Â‚¢‚Ä‚¢‚È‚©‚Á‚½‚ç
+	//åœ°é¢ã«ã¤ã„ã¦ã„ãªã‹ã£ãŸã‚‰
 	if (PlayerCharacon_.IsOnGround() == false)
 	{
-		//ƒXƒe[ƒg‚ğ1‚É‚·‚é
+		//ã‚¹ãƒ†ãƒ¼ãƒˆã‚’1ã«ã™ã‚‹
 		playerState_ = 1;
-		//ManageState‚Ìˆ—‚ğI‚í‚ç‚¹‚é
+		//ManageStateã®å‡¦ç†ã‚’çµ‚ã‚ã‚‰ã›ã‚‹
 		return;
 	}
 
-	//’n–Ê‚É’…’n‚µ‚½‚ç
-	//x z‚ÌˆÚ“®‘¬“x‚ª‚ ‚Á‚½‚çƒXƒeƒBƒbƒN‚Ì“ü—Í
+	//åœ°é¢ã«ç€åœ°ã—ãŸã‚‰
+	//x zã®ç§»å‹•é€Ÿåº¦ãŒã‚ã£ãŸã‚‰ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›
 	if (fabsf(moveSpeed_.x) >= 0.001f || fabsf(moveSpeed_.z) >= 0.001f)
 	{
-		//ƒXƒe[ƒg‚ğ2‚É‚·‚é
+		//ã‚¹ãƒ†ãƒ¼ãƒˆã‚’2ã«ã™ã‚‹
 		playerState_ = 2;
 	}
-	//‰½‚à“ü—Í‚µ‚È‚©‚Á‚½‚ç
+	//ä½•ã‚‚å…¥åŠ›ã—ãªã‹ã£ãŸã‚‰
 	else
 	{
-		//ƒXƒe[ƒg‚ğ0(‘Ò‹@ó‘Ô)‚É‚·‚é
+		//ã‚¹ãƒ†ãƒ¼ãƒˆã‚’0(å¾…æ©ŸçŠ¶æ…‹)ã«ã™ã‚‹
 		playerState_ = 0;
 	}
 }
 
 void Player::PlayAnimation()
 {
-	//switch•¶
+	//switchæ–‡
 	switch (playerState_)
 	{
-		//‘Ò‹@ó‘Ô‚¾‚Á‚½‚ç
+		//å¾…æ©ŸçŠ¶æ…‹ã ã£ãŸã‚‰
 	case 0:
-		//‘Ò‹@ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+		//å¾…æ©Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
 		PlayerRender_.PlayAnimation(enAnimationClip_Idle);
 		break;
-		//•à‚«ó‘Ô‚¾‚Á‚½‚ç
+		//æ­©ãçŠ¶æ…‹ã ã£ãŸã‚‰
 	case 1:
-		//ƒWƒƒƒ“ƒvƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶
+		//ã‚¸ãƒ£ãƒ³ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿ
 		PlayerRender_.PlayAnimation(enAnimationClip_Jump);
 		break;
-		//ƒWƒƒƒ“ƒv’†‚¾‚Á‚½‚ç
+		//ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ã ã£ãŸã‚‰
 	case 2:
 		PlayerRender_.PlayAnimation(enAnimationClip_Run);
 		break;
@@ -181,20 +172,8 @@ void Player::Render(RenderContext& rc)
 
 void Player::SetAnimation()
 {
-	///* ‘Ò‹@ƒAƒjƒ[ƒVƒ‡ƒ“B*/
-	//FetchPlayAnimation(enAnimationClip_Idle,"player_idle", true);
-	///* •à‚«ƒAƒjƒ[ƒVƒ‡ƒ“B*/
-	//FetchPlayAnimation(enAnimationClip_Walk, "player_walk", true);
-	///* ‘–‚èƒAƒjƒ[ƒVƒ‡ƒ“B*/
-	//FetchPlayAnimation(enAnimationClip_Run, "player_run", true);
-	///* ƒWƒƒƒ“ƒvƒAƒjƒ[ƒVƒ‡ƒ“B*/
-	//FetchPlayAnimation(enAnimationClip_Jump, "player_jump", false);
-	/* ‘Ò‹@ƒAƒjƒ[ƒVƒ‡ƒ“B*/
 	FetchPlayAnimation(enAnimationClip_Idle,"idle", true);
-	/* •à‚«ƒAƒjƒ[ƒVƒ‡ƒ“B*/
 	FetchPlayAnimation(enAnimationClip_Walk, "walk", true);
-	/* ‘–‚èƒAƒjƒ[ƒVƒ‡ƒ“B*/
 	FetchPlayAnimation(enAnimationClip_Run, "run", true);
-	/* ƒWƒƒƒ“ƒvƒAƒjƒ[ƒVƒ‡ƒ“B*/
 	FetchPlayAnimation(enAnimationClip_Jump, "jump", false);
 }

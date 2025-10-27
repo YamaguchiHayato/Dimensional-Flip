@@ -4,7 +4,7 @@
 bool Fade::Start()
 {
     // フェード用スプライトの初期化
-    fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 1600, 900);
+    fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 3200, 1600);
     fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round);
     fadeSprite_.SetWipeScrollSpeed(1000.0f);
     return true;

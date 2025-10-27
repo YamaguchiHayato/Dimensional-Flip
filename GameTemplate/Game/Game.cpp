@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Fade.h"
-#include "Src/Camera/GameCamera.h"
 #include "Src/WallActor.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Character/Enemy/EnemyBase.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
-#include "Src/Camera/FollowCamera.h"
 #include "Src/Actor/Stage/Gimmick/JumpPad.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/UI/TimerUI.h"
@@ -50,25 +48,6 @@ namespace GoalPointPosition
 	const Vector3 Pos1(1400.0f, 100.0f, -2000.0f);
 }
 
-namespace CameraParameter
-{
-	namespace Territory1
-	{
-		const float CAMERA_ROT_MIN_X = 0;
-		const float CAMERA_ROT_MAX_X = 10000;
-		const float CAMERA_ROT_MIN_Z = -100;
-		const float CAMERA_ROT_MAX_Z = 10000;
-	}
-
-	namespace Territory2
-	{
-		const float CAMERA_ROT_MIN_Y = 10001;
-		const float CAMERA_ROT_MAX_Y = 20000;
-		const float CAMERA_ROT_MIN_Z = 10001;
-		const float CAMERA_ROT_MAX_Z = 20001;
-
-	}
-}
 
 Game::~Game()
 {
@@ -114,15 +93,6 @@ bool Game::Start()
 	}
 	stage1_ = NewGO<Stage1>(0, "stage1");
 
-//	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-	NewGO<FollowCamera>(0, "followcamera");
-	//auto strategy = std::make_unique<OrbitCameraStrategy>(-45.0f, 0.3f, OrbitMode::XZ);
-	//m_gameCamera->SetStrategy(std::move(strategy));
-	//auto camera = FindGO<GameCamera>("gamecamera");
-
-	//camera->ClearOrbitZones();
-
-	//SetupViewRotationAreas();
 
 	WallNewGO();
 
@@ -137,17 +107,6 @@ bool Game::Start()
 
 void Game::Update()
 {
-	//if (g_pad[0]->IsTrigger(enButtonX))
-	//{
-	//	auto orbit = dynamic_cast<OrbitCameraStrategy*>(m_gameCamera->GetStrategy());
-	//	if (orbit) orbit->SetMode(OrbitMode::XZ);
-	//}
-
-	//if (g_pad[0]->IsTrigger(enButtonY))
-	//{
-	//	auto orbit = dynamic_cast<OrbitCameraStrategy*>(m_gameCamera->GetStrategy());
-	//	if (orbit) orbit->SetMode(OrbitMode::YZ);
-	//}
 }
 
 void Game::WallNewGO()
@@ -240,6 +199,7 @@ void Game::FadeStart()
     fade_ = FindGO<Fade>("fade");
     fade_->FadeTransition(FadeState::FadeStart);
 }
+
 void Game::EnemyNewGO_Tracking()
 {
 	trackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
@@ -247,23 +207,3 @@ void Game::EnemyNewGO_Tracking()
 	trackingEnemy_->enemyFP_ = trackingEnemy_->enemyPosition_;
 }
 
-void Game::SetupViewRotationAreas()
-{
-	gameCamera_->AddOrbitZoneXZ
-	(
-		CameraParameter::Territory1::CAMERA_ROT_MIN_X,
-		CameraParameter::Territory1::CAMERA_ROT_MAX_X,
-		CameraParameter::Territory1::CAMERA_ROT_MIN_Z,
-		CameraParameter::Territory1::CAMERA_ROT_MAX_Z
-	);
-
-	gameCamera_->AddOrbitZoneYZ
-	(
-		CameraParameter::Territory2::CAMERA_ROT_MIN_Y,
-		CameraParameter::Territory2::CAMERA_ROT_MAX_Y,
-		CameraParameter::Territory2::CAMERA_ROT_MIN_Z,
-		CameraParameter::Territory2::CAMERA_ROT_MAX_Z
-	);
-
-//	m_gameCamera->AddOrbitZoneXZ(850.0f, 950.0f, 0.0f, 50.0f);
-}

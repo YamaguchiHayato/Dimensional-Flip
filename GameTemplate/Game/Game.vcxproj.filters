@@ -63,18 +63,6 @@
     <ClCompile Include="Src\Actor\Character\Player.cpp">
       <Filter>Src\Actor\Character</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera\GameCamera.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Camera\FollowCamera.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Camera\OrbitCameraStrategy.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
     </ClCompile>
@@ -117,7 +105,10 @@
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Stage2Scene.cpp" />
+    <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="Src\Scene\Stage2Scene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -147,18 +138,6 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Src\Camera\GameCamera.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Camera\ICameraStrategy.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Camera\FollowCamera.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Camera\OrbitCameraStrategy.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Src\WallActor.h">
       <Filter>Src</Filter>
     </ClInclude>
@@ -204,7 +183,10 @@
     <ClInclude Include="Src\Actor\Stage\Stage2.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Stage2Scene.h" />
+    <ClInclude Include="Fade.h" />
+    <ClInclude Include="Src\Scene\Stage2Scene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

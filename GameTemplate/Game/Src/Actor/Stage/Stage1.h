@@ -15,6 +15,5 @@ public:
 	{
 		return IStage::InitStage(stagename);
 	};
-
 };
 

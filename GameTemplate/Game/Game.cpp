@@ -4,6 +4,7 @@
 #include "Src/WallActor.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Actor/Stage/Stage1.h"
+#include "Src/Camera/Dimensiontrigger.h"
 #include "Src/Actor/Character/Enemy/EnemyBase.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "Src/Actor/Stage/Gimmick/JumpPad.h"
@@ -12,6 +13,8 @@
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/HPbarUI.h"
+#include "Src/Camera/CameraManager.h"
+#include "Src/Scene/Scene.h"
 #include "Src/Scene/SceneManager.h"
 
 namespace EnemyPosition
@@ -48,20 +51,26 @@ namespace GoalPointPosition
 	const Vector3 Pos1(1400.0f, 100.0f, -2000.0f);
 }
 
+namespace TriggerPos
+{
+    const Vector3 Pos1 = Vector3(200.0f, 0.0f, 0.0f);
+	const Vector3 Pos2 = Vector3(1400.0f,-75.0f, 0.0f );
+
+}
 
 Game::~Game()
 {
-	DeleteGO(player_);
-	DeleteGO(stage1_);
-	DeleteGO(timerUI_);
-	DeleteGO(numberUI_);
-	DeleteGO(scoreUI_);
-	DeleteGO(hpbarUI_);
+	DeleteGO(pPlayer_);
+	DeleteGO(pStage1_);
+	DeleteGO(pTimerUI_);
+	DeleteGO(pNumberUI_);
+	DeleteGO(pScoreUI_);
+	DeleteGO(pHpbarUI_);
 }
 
 void Game::InitSkyCube()
 {
-	DeleteGO(skyCube_);
+	DeleteGO(pSkyCube_);
 	SkyCube* m_SkyCube = NewGO<SkyCube>(0, "skycube");
 	m_SkyCube->SetType(enSkyCubeType_Day);
 	m_SkyCube->SetLuminance(0.5f);
@@ -83,16 +92,15 @@ bool Game::Start()
 
 	InitSkyCube();
 
-	// まず、"player"という名前のオブジェクトを探す
-	player_ = FindGO<Player>("player");
+    pPlayer_ = NewGO<Player>(0, "player");
 
-	// もしプレイヤーが見つからなかった場合（nullptrだった場合）のみ、新しく生成する
-	if (player_ == nullptr)
-	{
-		player_ = NewGO<Player>(0, "player");
-	}
-	stage1_ = NewGO<Stage1>(0, "stage1");
+    // カメラマネージャーの生成。
+    pCameraManager_ = std::unique_ptr<CameraManager>
+        (NewGO<CameraManager>(0, "cameramanager"));
 
+    pPlayer_->InitCameraManager(pCameraManager_.get());
+
+    DimensionTriggerNewGO();
 
 	WallNewGO();
 
@@ -107,6 +115,9 @@ bool Game::Start()
 
 void Game::Update()
 {
+    // カメラマネージャーの更新。
+    if (pCameraManager_)
+        pCameraManager_->Update();
 }
 
 void Game::WallNewGO()
@@ -176,34 +187,49 @@ void Game::UINewGO()
 
 void Game::TimerUINewGO()
 {
-	timerUI_ = NewGO<TimerUI>(0, "timerUI");
+	pTimerUI_ = NewGO<TimerUI>(0, "timerUI");
 }
 
 void Game::NumberUINewGO()
 {
-	numberUI_ = NewGO<NumberUI>(0, "numberUI");
+	pNumberUI_ = NewGO<NumberUI>(0, "numberUI");
 }
 
 void Game::ScoreUINewGO()
 {
-	scoreUI_ = NewGO<ScoreUI>(0, "scoreUI");
+	pScoreUI_ = NewGO<ScoreUI>(0, "scoreUI");
 }
 
 void Game::HPbarUINewGO()
 {
-	hpbarUI_ = NewGO<HPbarUI>(0, "hpbarUI");
+	pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarUI");
 }
 
 void Game::FadeStart()
 {
-    fade_ = FindGO<Fade>("fade");
-    fade_->FadeTransition(FadeState::FadeStart);
+    pFade_ = FindGO<Fade>("fade");
+    pFade_->FadeTransition(FadeState::FadeStart);
+}
+
+void Game::DimensionTriggerNewGO()
+{
+	std::vector<Vector3> TriggerList =
+	{
+		TriggerPos::Pos1,
+		TriggerPos::Pos2 
+	};
+	for (size_t i = 0; i < TriggerList.size(); i++)
+	{
+		auto trigger = NewGO<DimensionTrigger>(0, "dimensiontrigger");
+		trigger->SetTriggerPos(TriggerList[i]);
+	}
+
 }
 
 void Game::EnemyNewGO_Tracking()
 {
-	trackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
-	trackingEnemy_->enemyPosition_ = {EnemyPosition::Pos1};
-	trackingEnemy_->enemyFP_ = trackingEnemy_->enemyPosition_;
+	pTrackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
+	pTrackingEnemy_->enemyPosition_ = {EnemyPosition::Pos1};
+	pTrackingEnemy_->enemyFP_ = pTrackingEnemy_->enemyPosition_;
 }
 

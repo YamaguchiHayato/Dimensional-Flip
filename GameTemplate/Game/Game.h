@@ -1,5 +1,11 @@
 #pragma once
 #include "Level3DRender/LevelRender.h"
+#include "Src/Camera/CameraManager.h"
+
+#include <DirectXTK/Inc/Audio.h>
+#include <memory>    
+class CameraManager;
+class Dimensiontrigger;
 class Fade;
 class TrackingEnemy;
 class Player;
@@ -21,42 +27,53 @@ public:
     void Update();
 
 private:
-    void EnemyNewGO_Tracking();
+    // キャラクター。
+    inline void EnemyNewGO_Tracking();
 
-    void WallNewGO();
-
-    void JumpPadNewGO();
-
+    // ギミック。
+    inline void JumpPadNewGO();
     void StarNewGO();
 
-    void UINewGO();
+    // 各UIの生成。
+    inline void UINewGO();
+    inline void TimerUINewGO();
+    inline void NumberUINewGO();
+    inline void ScoreUINewGO();
+    inline void HPbarUINewGO();
 
-    void TimerUINewGO();
+    // その他。
+    inline void FadeStart();
+    inline void InitSkyCube();
+    inline void WallNewGO();
+    inline void DimensionTriggerNewGO();
 
-    void NumberUINewGO();
-
-    void ScoreUINewGO();
-
-    void HPbarUINewGO();
-    void FadeStart();
-    void SetupViewRotationAreas();
-    void InitSkyCube();
 
 private:
-    TrackingEnemy* trackingEnemy_ = nullptr;
-    Player* player_ = nullptr;
+    // キャラクター。
+    TrackingEnemy* pTrackingEnemy_ = nullptr;
+    Player* pPlayer_ = nullptr;
 
-    Stage1* stage1_ = nullptr;
-    Star* star_ = nullptr;
-    WallActor* wallActor_ = nullptr;
-    JumpPad* jumpPad_ = nullptr;
+    // カメラ。
+    std::unique_ptr<CameraManager> pCameraManager_;
 
-    TimerUI* timerUI_ = nullptr;
-    NumberUI* numberUI_ = nullptr;
-    ScoreUI* scoreUI_ = nullptr;
-    HPbarUI* hpbarUI_ = nullptr;
+    std::unique_ptr<DirectX::AudioEngine> audioEngine_;
 
-    Fade* fade_ = nullptr;
-    GameCamera* gameCamera_ = nullptr;
-    SkyCube* skyCube_ = nullptr;
+    // ステージ。
+    Stage1* pStage1_ = nullptr;
+    Star* pStar_ = nullptr;
+
+    // ギミック。
+    WallActor* pWallActor_ = nullptr;
+    JumpPad* pJumpPad_ = nullptr;
+
+    // UI。
+    TimerUI* pTimerUI_ = nullptr;
+    NumberUI* pNumberUI_ = nullptr;
+    ScoreUI* pScoreUI_ = nullptr;
+    HPbarUI* pHpbarUI_ = nullptr;
+
+    // その他。
+    Fade* pFade_ = nullptr;
+    SkyCube* pSkyCube_ = nullptr;
+    Dimensiontrigger* pDimensionTrigger_ = nullptr;
 };

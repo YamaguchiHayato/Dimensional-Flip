@@ -10,7 +10,7 @@ namespace
 
 	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 
-	/* ƒXƒRƒA‚ÌŠeŒ…‚ÌÀ•WB*/
+    // å„æ¡ã®ã‚¹ã‚³ã‚¢ç”»åƒã®åº§æ¨™ã€‚
 	const Vector3 HundredThousandDigit(550.0f, 450.0f, 0.0f);
 	const Vector3 TenThousandDigit(620.0f, 450.0f, 0.0f);
 	const Vector3 ThousandDigit(690.0f, 450.0f, 0.0f);
@@ -19,10 +19,10 @@ namespace
 	const Vector3 OnesDigit(900.0f, 450.0f, 0.0f);
 	const Vector3 UI_SCALE(1.0f, 1.0f, 1.0f);
 
-	/* ƒXƒRƒA‚ÌÅ‘å’lB*/
+    // ã‚¹ã‚³ã‚¢ã®æœ€å¤§å€¤ã€‚
 	const int MAX_SCORE = 9999;
 
-	/* ƒXƒRƒAƒeƒLƒXƒg‚ÌÀ•WB*/
+    // SCOREãƒ†ã‚­ã‚¹ãƒˆã®åº§æ¨™ã€‚
 	const Vector3 ScoreTextPos{ 400.0f, 450.0f, 0.0f };
 
 }
@@ -30,43 +30,43 @@ namespace
 
 bool ScoreUI::Start()
 {
-	/* ‰æ‘œ‚Ì‰Šú‰»B*/ 
-	InitUIScore();
+    // UIã‚¹ã‚³ã‚¢ã®åˆæœŸåŒ–ã€‚
+    InitUIScore();
 
-	/* ƒvƒŒƒCƒ„[‚Ìƒ|ƒCƒ“ƒ^‚Ìæ“¾B*/ 
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å–å¾—ã€‚
 	player_ = FindGO<Player>("player");
 	return true;
 }
 
 void ScoreUI::Update()
 {
-	/* ƒXƒRƒA‚ÌXVˆ—B*/
+    // ã‚¹ã‚³ã‚¢ã®æ›´æ–°å‡¦ç†ã€‚
 	UpdateScore();
 }
 
 void ScoreUI::Render(RenderContext& rc)
 {
-	/* SCORE‚Ì•`‰æB*/
+    // ã‚¹ã‚³ã‚¢ãƒ†ã‚­ã‚¹ãƒˆã®æç”»ã€‚  
 	UIScoreText_.Draw(rc);
-	/* ƒXƒRƒA‚Ì•`‰æB*/
-	/* 10–œ‚ÌŒ…‚Ì•`‰æB*/
+    // å„æ¡ã®ã‚¹ã‚³ã‚¢æç”»ã€‚
+    // 10ä¸‡ã®æ¡ã®æç”»ã€‚
 	UIScore_HundredThousandDigit[hundredThousandPlace_].Draw(rc);
-	/* 1–œ‚ÌŒ…‚Ì•`‰æB*/
+    // 1ä¸‡ã®æ¡ã®æç”»ã€‚
 	UIScore_TenThousandDigit[tenThousandPlace_].Draw(rc);
-	/* 1000‚ÌŒ…‚Ì•`‰æB*/ 
+    // 1000ã®æ¡ã®æç”»ã€‚
 	UIScore_ThousandDigit[thousandPlace_].Draw(rc);
-	/* 100‚ÌŒ…‚Ì•`‰æB*/
+    // 100ã®æ¡ã®æç”»ã€‚
 	UIScore_HundredDigit[hundredPlace_].Draw(rc);
-	/* 10‚ÌŒ…‚Ì•`‰æB*/
+    // 10ã®æ¡ã®æç”»ã€‚
 	UIScore_TensDigit[tenPlace_].Draw(rc);
-	/* 1‚ÌŒ…‚Ì•`‰æB*/
+    // 1ã®æ¡ã®æç”»ã€‚
 	UIScore_OnesDigit[onePlace_].Draw(rc);
 
 }
 
 void ScoreUI::InitUIScore()
 {
-	/* SCORE‚Ì•¶š‰æ‘œ‚ÌInit*/
+    // ã‚¹ã‚³ã‚¢ãƒ†ã‚­ã‚¹ãƒˆã®UIåˆæœŸåŒ–ã€‚
 	std::string filePath = InitUI("progressBar/UI_Score");
 	UIScoreText_.Init(filePath.c_str(), UI_WIDTH, UI_HEIGHT);
 	UIScoreText_.SetPosition(ScoreTextPos);
@@ -77,11 +77,11 @@ void ScoreUI::InitUIScore()
 
 	for (int i = 0; i < static_cast<int>(enUINumber::enNumber_Num); i++)
 	{
-		/* UI‰æ‘œ‚ÌInit*/
+        // ã‚¹ã‚³ã‚¢ã®å„æ¡ã®UIåˆæœŸåŒ–ã€‚
 		std::string filePath = "number/UI_" + std::to_string(i);
 		std::string NumberUIPaht = InitUI(filePath);
 
-		/* ƒXƒRƒA‚ÌŒ…•\¦—pƒXƒvƒ‰ƒCƒg‚ÌInitB*/
+        // å„æ¡ã®ã‚¹ã‚³ã‚¢UIåˆæœŸåŒ–ã€‚
 		UIScore_HundredThousandDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 		UIScore_TenThousandDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 		UIScore_ThousandDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
@@ -89,7 +89,7 @@ void ScoreUI::InitUIScore()
 		UIScore_TensDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 		UIScore_OnesDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 
-		/* À•W‚Ìİ’èB*/
+        // å„æ¡ã®ã‚¹ã‚³ã‚¢UIä½ç½®è¨­å®šã€‚
 		UIScore_HundredThousandDigit[i].SetPosition(HundredThousandDigit);
 		UIScore_TenThousandDigit[i].SetPosition(TenThousandDigit);
 		UIScore_ThousandDigit[i].SetPosition(ThousandDigit);
@@ -97,7 +97,7 @@ void ScoreUI::InitUIScore()
 		UIScore_TensDigit[i].SetPosition(TensDigit);
 		UIScore_OnesDigit[i].SetPosition(OnesDigit);
 
-		/* ‘å‚«‚³‚Ìİ’èB*/	
+        // å„æ¡ã®ã‚¹ã‚³ã‚¢UIã‚¹ã‚±ãƒ¼ãƒ«è¨­å®šã€‚
 		UIScore_HundredThousandDigit[i].SetScale(UI_SCALE);
 		UIScore_TenThousandDigit[i].SetScale(UI_SCALE);
 		UIScore_ThousandDigit[i].SetScale(UI_SCALE);
@@ -105,7 +105,7 @@ void ScoreUI::InitUIScore()
 		UIScore_TensDigit[i].SetScale(UI_SCALE);
 		UIScore_OnesDigit[i].SetScale(UI_SCALE);
 
-		/* æZƒJƒ‰[‚Ìİ’èB*/
+        // å„æ¡ã®ã‚¹ã‚³ã‚¢UIè‰²è¨­å®šã€‚
 		UIScore_HundredThousandDigit[i].SetMulColor(WHITE);
 		UIScore_TenThousandDigit[i].SetMulColor(WHITE);
 		UIScore_ThousandDigit[i].SetMulColor(WHITE);
@@ -113,7 +113,7 @@ void ScoreUI::InitUIScore()
 		UIScore_TensDigit[i].SetMulColor(WHITE);
 		UIScore_TensDigit[i].SetMulColor(WHITE);
 
-		/* XVˆ—B*/
+        // å„æ¡ã®ã‚¹ã‚³ã‚¢UIæ›´æ–°ã€‚
 		UIScore_HundredThousandDigit[i].Update();
 		UIScore_TenThousandDigit[i].Update();
 		UIScore_ThousandDigit[i].Update();
@@ -126,19 +126,12 @@ void ScoreUI::InitUIScore()
 
 void ScoreUI::UpdateScore()
 {
-	/* ƒXƒRƒA‚Ì‰ÁZˆ—B*/
-	if (player_ != nullptr && player_->DoJumpCheck())
-	{
-		score_ += 100.0f;
-	}
+    // ã‚¸ãƒ£ãƒ³ãƒ—æˆåŠŸæ™‚ã«ã‚¹ã‚³ã‚¢ã‚’åŠ ç®—ã€‚
+	if (player_ != nullptr && player_->DoJumpCheck()) score_ += 100.0f;
 
-	/* */
-	if (score_ > MAX_SCORE)
-	{
-		score_ = MAX_SCORE;
-	}
+	if (score_ > MAX_SCORE) score_ = MAX_SCORE;
 
-	/* ƒXƒRƒA‚ÌŠeŒ…‚Ì’l‚ğæ“¾B*/
+    // å„æ¡ã®ã‚¹ã‚³ã‚¢ã‚’è¨ˆç®—ã€‚
 	int currentScore = static_cast<int>(score_);
 	hundredThousandPlace_ = (currentScore / 100000) % 10;
 	tenThousandPlace_ = (currentScore / 10000) % 10;

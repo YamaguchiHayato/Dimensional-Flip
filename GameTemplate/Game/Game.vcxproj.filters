@@ -90,9 +90,6 @@
     <ClCompile Include="Src\Scene\Scene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Scene\SceneManager.cpp">
-      <Filter>Src\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene\Stage1Scene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
@@ -107,6 +104,30 @@
     </ClCompile>
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Src\Scene\Stage2Scene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\FollowStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\SideCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\CameraManager.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="StageClear.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\InGameScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\SceneManager.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -168,9 +189,6 @@
     <ClInclude Include="Src\Scene\Scene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Scene\SceneManager.h">
-      <Filter>Src\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Scene\Stage1Scene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
@@ -185,6 +203,30 @@
     </ClInclude>
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Src\Scene\Stage2Scene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\ICameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\FollowStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\SideCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\Dimensiontrigger.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\CameraManager.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="StageClear.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\InGameScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\SceneManager.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "JumpPad.h"
 #include "Src/Actor/Character/Player.h"
 
@@ -64,7 +64,7 @@ void JumpPad::Update()
 
 void JumpPad::LaunchPlayer()
 {
-	if (m_jumpPadCollision->IsHit(m_player->GetCharacterController()))
+	if (m_jumpPadCollision->IsHit(m_player->GetPlayerCC()))
 	{
 		m_player->moveSpeed_.y = 400.0f;
 	}

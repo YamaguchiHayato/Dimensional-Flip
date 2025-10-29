@@ -19,6 +19,16 @@ public:
 	{
 		return m_starPosition;
 	}
+
+    inline int GetStarCount() const
+    {
+        int count = 0;
+        for (bool collected : starCollected_) {
+        if (!collected) ++count;
+        }
+        return count;
+    }
+
 private:
 	Player* m_player = nullptr;
 
@@ -27,5 +37,9 @@ private:
 	Vector3 m_starPosition;
 	Quaternion m_starRotation;
 	GameClear* m_gameClear = nullptr;
+
+
+private:
+     std::vector<bool> starCollected_;
 };
 

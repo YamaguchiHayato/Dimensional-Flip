@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameClear.h"
 #include "Src/Title.h"
+#include "Src/Scene/TitleScene.h"
 
 bool GameClear::Start()
 {
@@ -10,11 +11,11 @@ bool GameClear::Start()
 
 void GameClear::Update()
 {
-	if(g_pad[0]->IsTrigger(enButtonB))
-	{
-		NewGO <Title>(0, "title");
-		DeleteGO(this);
-	}
+	//if(g_pad[0]->IsTrigger(enButtonB))
+	//{
+	//	//NewGO <TitleScene>(0, "titlescene");
+	//	DeleteGO(this);
+	//}
 }
 
 void GameClear::Render(RenderContext& rc)

@@ -5,122 +5,122 @@
 
 namespace
 {
-	// ƒLƒƒƒ‰ƒRƒ“‚Ì’è”B
+	// ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã®å®šæ•°ã€‚
 	const float RADIUS = 25.0f;
 	const float HEIGHT = 100.0f;
 
-	// EnemyState‚Ì’è”B
+	// EnemyStateã®å®šæ•°ã€‚
 	const float ENEMYSTATE_ZERO = 270.0f;
 	const float ENEMYSTATE_ONE = 90.0f;
 	const float ENEMYSTATE_TWO = -180.0f;
 
-	// ƒXƒP[ƒ‹B
+	// ã‚¹ã‚±ãƒ¼ãƒ«ã€‚
 	const Vector3 SCALE(5.0f, 5.0f, 5.0f);
 }
 
 
-// ƒAƒjƒ[ƒVƒ‡ƒ“ƒƒ\ƒbƒhB
+// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 const::std::string TrackingEnemy::GetFullPath_EnemyAnimation(EnAnimationClip enemyAnimation, const std::string& animationName, bool flag)
 {
 	std::string Animation = ENEMY_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ[ƒhB
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ­ãƒ¼ãƒ‰ã€‚
 	animationclip_[enemyAnimation].Load(Animation.c_str());
 	animationclip_[enemyAnimation].SetLoopFlag(flag);
 
 	return Animation;
 }
 
-// ‰Šú‰»ˆ—B
+// åˆæœŸåŒ–å‡¦ç†ã€‚
 bool TrackingEnemy::Start()
 {
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìİ’èB
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®šã€‚
 	SetEnemyAnimation();
 
-	// ƒ‚ƒfƒ‹‚Ì‰Šú‰»B
+	// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–ã€‚
 	enemyRender_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enAnimationclip_num, enModelUpAxisY, true);
 
-	// ‘å‚«‚³‚ğƒZƒbƒgB
+	// å¤§ãã•ã‚’ã‚»ãƒƒãƒˆã€‚
 	enemyRender_.SetScale(SCALE);
 
-	// ƒLƒƒƒ‰ƒRƒ“B
+	// ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã€‚
 	enemyCC_.Init(RADIUS, HEIGHT, enemyPosition_);
 
-	// À•W‚ğƒZƒbƒgB
+	// åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã€‚
 	enemyRender_.SetPosition(enemyPosition_);
 
-	// XVˆ—B
+	// æ›´æ–°å‡¦ç†ã€‚
 	enemyRender_.Update();
 
-	// ƒGƒtƒFƒNƒg‚Ì‰Šú‰»B
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–ã€‚
 //	EffectEngine::GetInstance()->ResistEffect(EffectList_EnemyHit, u"Assets/effect/enemyhiteffect.efk");
 
-	// ’Tõˆ—B
+	// æ¢ç´¢å‡¦ç†ã€‚
 	player_ = FindGO<Player>("player");
 
 
 	return true;
 }
 
-// XVˆ—B
+// æ›´æ–°å‡¦ç†ã€‚
 void TrackingEnemy::Update()
 {
-	// ’ÇÕˆ—B
+	// è¿½è·¡å‡¦ç†ã€‚
 	Tracking();
 
-	// “®ìˆ—B
+	// å‹•ä½œå‡¦ç†ã€‚
 	Move();
 
-	// ‰ñ“]ˆ—B
+	// å›è»¢å‡¦ç†ã€‚
 	Rotation();
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“B
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
 	EnemyAnimation();
 
-	// ƒ‚ƒfƒ‹‚ğƒZƒbƒgB
+	// ãƒ¢ãƒ‡ãƒ«ã‚’ã‚»ãƒƒãƒˆã€‚
 	enemyRender_.SetPosition(enemyPosition_);
 
-	// XVˆ—B
+	// æ›´æ–°å‡¦ç†ã€‚
 	enemyRender_.Update();
 
-	Vector3 diff = player_->PlayerPos_ - enemyPosition_;
+	Vector3 diff = player_->playerPos_ - enemyPosition_;
 	if (diff.Length() <= 100.0f && enemyanimationstate_ != 1)
 	{
-		if (player_->PlayerCharacon_.IsOnGround() == false)
+		if (player_->playerCC_.IsOnGround() == false)
 		{
 			enemyanimationstate_ = 1;
 			player_->moveSpeed_.y = 500.0f;
 			enemyCC_.RemoveRigidBoby();
 
-			////ƒGƒtƒFƒNƒg‚Ìˆ—
+			////ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å‡¦ç†
 			//EffectEmitter* effectEmitter = NewGO<EffectEmitter>(0);
 			//effectEmitter->Init(EffectList_EnemyHit);
 
-			////ƒGƒtƒFƒNƒg‚ÌˆÊ’u‚Ìİ’è
+			////ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®ã®è¨­å®š
 			//Vector3 enemyLocalPos = { 0.0f,120.0f,0.0f };
 			//enemyLocalPos += m_position;
 			//effectEmitter->SetPosition(enemyLocalPos);
 
-			////ƒGƒtƒFƒNƒg‚Ì‘å‚«‚³‚Ìİ’è
+			////ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å¤§ãã•ã®è¨­å®š
 			//effectEmitter->SetScale({ 30.0f,30.0f,30.0f });
 
-			////ƒGƒtƒFƒNƒg‚ÌÄ¶
+			////ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å†ç”Ÿ
 			//effectEmitter->Play();
 
-			////ƒvƒŒƒCƒ„[‚ª“G‚ğ“¥‚ñ‚¾‚Ì‰¹‚ğÄ¶B
+			////ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã‚’è¸ã‚“ã æ™‚ã®éŸ³ã‚’å†ç”Ÿã€‚
 			//g_gameSoundEngine->PlaySE(GameSoundList_SE_Player_StepOnEnemy, 1.0f);
 		}
 		else
 		{
-			//ƒvƒŒƒCƒ„[‚ÉG‚ê‚½
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è§¦ã‚ŒãŸ
 		    touchPlayerFlag_ = true;
 		}
 	}
 
 }
 
-// “®ìˆ—B
+// å‹•ä½œå‡¦ç†ã€‚
 void TrackingEnemy::Move()
 {
 	if (!isChasing_)
@@ -152,40 +152,40 @@ void TrackingEnemy::Move()
 	enemyPosition_ = enemyCC_.Execute(enemyMS_, 1.0f);
 	float glavity = 3.0f;
 	if (enemyCC_.IsOnGround()) {
-		//d—Í‚ğ‚È‚­‚·
+		//é‡åŠ›ã‚’ãªãã™
 		enemyMS_.y = 0.0f;
 	}
 	enemyMS_.y -= glavity;
 }
 
-//’ÇÕˆ—B
+//è¿½è·¡å‡¦ç†ã€‚
 void TrackingEnemy::Tracking()
 {
-	Vector3 diff = player_->PlayerPos_ - enemyPosition_;
+	Vector3 diff = player_->playerPos_ - enemyPosition_;
 	const bool inRadius = (diff.Length() < 100.0f);
 
-	// B) À•WƒgƒŠƒKi“G‚ª‚ ‚éXÀ•W‚ğ‰z‚¦‚½‚çj
+	// B) åº§æ¨™ãƒˆãƒªã‚¬ï¼ˆæ•µãŒã‚ã‚‹Xåº§æ¨™ã‚’è¶ŠãˆãŸã‚‰ï¼‰
 	const bool passX = (enemyPosition_.x >= triggerX_);
 
 	if (!isChasing_ && (inRadius || passX)) {
 		isChasing_ = true;
 	}
 
-	// ---- ’ÇÕ’†‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ğİ’è ----
+	// ---- è¿½è·¡ä¸­ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨­å®š ----
 	if (isChasing_) {
-		diff.y = 0.0f;                // …•½–Ê‚¾‚¯‚Å’Ç‚¤i•K—v‚È‚çY‚à‰Âj
+		diff.y = 0.0f;                // æ°´å¹³é¢ã ã‘ã§è¿½ã†ï¼ˆå¿…è¦ãªã‚‰Yã‚‚å¯ï¼‰
 		if (diff.LengthSq() > 1e-4f) {
 			diff.Normalize();
 			enemyMS_.x = diff.x * chaseSpeed_;
 			enemyMS_.z = diff.z * chaseSpeed_;
 		}
 		else {
-			enemyMS_.x = enemyMS_.z = 0.0f; // ‚Ù‚Úd‚È‚Á‚½‚ç’â~
+			enemyMS_.x = enemyMS_.z = 0.0f; // ã»ã¼é‡ãªã£ãŸã‚‰åœæ­¢
 		}
 	}
 }
 
-// ‰ñ“]ˆ—B
+// å›è»¢å‡¦ç†ã€‚
 void TrackingEnemy::Rotation() {
 	if (enemystate_ == 0) {
 		rotation_.SetRotationDegY(ENEMYSTATE_ZERO);
@@ -194,11 +194,11 @@ void TrackingEnemy::Rotation() {
 		rotation_.SetRotationDegY(ENEMYSTATE_ONE);
 	}
 	rotation_.AddRotationDegX(ENEMYSTATE_TWO);
-	//ŠG•`‚«‚³‚ñ‚É‰ñ“]‚ğ‹³‚¦‚éB
+	//çµµæãã•ã‚“ã«å›è»¢ã‚’æ•™ãˆã‚‹ã€‚
 	enemyRender_.SetRotation(rotation_);
 }
 
-// Enemy‚ÌƒAƒjƒ[ƒVƒ‡ƒ“B
+// Enemyã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
 void TrackingEnemy::EnemyAnimation()
 {
 	switch (enemyanimationstate_)
@@ -213,22 +213,22 @@ void TrackingEnemy::EnemyAnimation()
 	}
 }
 
-// •`‰æˆ—B
+// æç”»å‡¦ç†ã€‚
 void TrackingEnemy::Render(RenderContext& rc)
 {
 	enemyRender_.Draw(rc);
 }
 
-// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶B
+// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿã€‚
 void TrackingEnemy::SetEnemyAnimation()
 {
-	// ‘Ò‹@ƒ‚[ƒVƒ‡ƒ“B
+	// å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
 	GetFullPath_EnemyAnimation(enAnimationclip_idle, "SkeletonIdle", true);
 
-	// •à‚«ƒ‚[ƒVƒ‡ƒ“B
+	// æ­©ããƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
 	GetFullPath_EnemyAnimation(enAnimationclip_walk, "SkeletonWalk", true);
 
-	// €–Sƒ‚[ƒVƒ‡ƒ“B
+	// æ­»äº¡ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
 	GetFullPath_EnemyAnimation(enAnimationclip_death, "SkeletonDeath", false);
 
 }

@@ -4,10 +4,8 @@
 #include<InitGUID.h>
 #include<dxgidebug.h>
 
-#include "Game.h"
-#include "Src/Title.h"
 #include "Src/Scene/Scene.h"
-#include "Fade.h"
+#include "Src/Scene/SceneManager.h"
 
 void ReportLiveObjects()
 {
@@ -34,10 +32,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	// ここから初期化を行うコードを記述する。
 	//////////////////////////////////////
 
-	NewGO<SceneBase>(0,"scenebase");
-    NewGO<Fade>(1,"fade");
+    // シーンマネージャーの生成。
+    SceneManager::CreateInstance();
+    SceneManager::GetInstance()->Start();
 
-	//////////////////////////////////////
+    //////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
 	//////////////////////////////////////
 	
@@ -47,8 +46,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		if (g_pad[0]->IsTrigger(enButtonA) ){
 			g_pad[0]->SetVibration(/*durationSec=*/0.5f, /*normalizedPower=*/1.0f);
 		}
+        // シーンマネージャーの更新。
+        SceneManager::GetInstance()->Update();
+
 		K2Engine::GetInstance()->Execute();
 	}
+
+    SceneManager::DeleteInstance();
 
 	K2Engine::DeleteInstance();
 

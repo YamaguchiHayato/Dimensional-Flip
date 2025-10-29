@@ -10,9 +10,12 @@ public:
 	void Update() override;
     void Render(RenderContext& rc) override {};
 
-	void SetWallPos(const Vector3& pos) { m_WallPos = pos; }
-	const Vector3& GetWallPos() const  { return m_WallPos; }
-	void SetWallRot(const Quaternion& rot) { m_WallRot = rot; }
+public:
+    inline void SetWallRot(const Quaternion& rot) { m_WallRot = rot; }
+	inline void SetWallPos(const Vector3& pos) { m_WallPos = pos; }
+
+public:
+	inline const Vector3& GetWallPos() const  { return m_WallPos; }
 
 private:
 	ModelRender m_WallRender;

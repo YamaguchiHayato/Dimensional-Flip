@@ -4,8 +4,8 @@
 namespace
 {
 	const Vector3 SCALE(1.0f, 1.0f, 1.0f);
-	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//ƒRƒŠƒWƒ‡ƒ“‚Ì‚‚³
-	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//ƒRƒŠƒWƒ‡ƒ“‚Ì‘å‚«‚³
+	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®é«˜ã•
+	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®å¤§ãã•
 }
 
 Stage1::~Stage1()
@@ -17,25 +17,27 @@ bool Stage1::Start()
 {
 
 	const std::string stagePath = InitStage("Stage1/Stage1");
+
+
 	StageRender_.Init(stagePath.c_str());
 	StagePhysics_.CreateFromModel(StageRender_.GetModel(), StageRender_.GetModel().GetWorldMatrix());
 	StageRender_.SetScale(SCALE);
 
 
-	// ƒRƒŠƒWƒ‡ƒ“B
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ã€‚
 	StageCollision_ = NewGO<CollisionObject>(0, "collisionobject");
 
-	//ƒRƒŠƒWƒ‡ƒ“‚ğ“®‚­°‚Éİ’u
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’å‹•ãåºŠã«è¨­ç½®
 	StageCollision_->CreateBox
 	(   StagePos_ + COLLISION_HEIGHT,
 		Quaternion::Identity,
 		COLLISION_SIZE );
 
-	// À•Wİ’èB
+	// åº§æ¨™è¨­å®šã€‚
 	StageRender_.SetPosition(StagePos_);
 	initPos_ = StagePos_;
 
-	// ƒRƒŠƒWƒ‡ƒ“‚ğ”jŠüB
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ç ´æ£„ã€‚
 	StageCollision_->SetIsEnableAutoDelete(false);
 
 	StageRender_.Update();
@@ -44,17 +46,26 @@ bool Stage1::Start()
 
 void Stage1::Update()
 {
+    if (!m_isStart)
+    {
+        return;
+    }
+
 	StageRender_.Update();
 
-	// “–‚½‚è”»’èB
+	// å½“ãŸã‚Šåˆ¤å®šã€‚
 	StagePhysics_.SetPosition(StagePos_);
 
-	// ƒRƒŠƒWƒ‡ƒ“B
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ã€‚
 	StageCollision_->SetPosition(StagePos_ + COLLISION_HEIGHT);
 
 }
 
 void Stage1::Render(RenderContext& rc)
 {
+    if (!m_isStart)
+    {
+        return;
+    }
 	StageRender_.Draw(rc);
 }

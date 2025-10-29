@@ -25,7 +25,7 @@ void Star::Update()
 {
 	if (m_player == nullptr) { return; }
 
-	Vector3 diff = m_player->GetPosition() - m_starPosition;
+	Vector3 diff = m_player->GetPlayerPos() - m_starPosition;
 	if (diff.Length() <= 100.0f)
 	{
 		NewGO<GameClear>(0, "gameclear");

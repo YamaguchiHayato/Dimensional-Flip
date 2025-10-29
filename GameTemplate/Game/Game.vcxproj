@@ -236,7 +236,13 @@
     <ClCompile Include="Src\Actor\Stage\Stage.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp" />
+    <ClCompile Include="Src\Camera\CameraManager.cpp" />
+    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
+    <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
+    <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
+    <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\GameClear.cpp" />
+    <ClCompile Include="Src\Scene\InGameScene.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Scene\SceneManager.cpp" />
     <ClCompile Include="Src\Scene\Stage1Scene.cpp" />
@@ -249,6 +255,7 @@
     <ClCompile Include="Src\UI\TimerUI.cpp" />
     <ClCompile Include="Src\UI\UIBase.cpp" />
     <ClCompile Include="Src\WallActor.cpp" />
+    <ClCompile Include="StageClear.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -270,7 +277,13 @@
     <ClInclude Include="Src\Actor\Stage\Stage.h" />
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\Stage2.h" />
+    <ClInclude Include="Src\Camera\CameraManager.h" />
+    <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
+    <ClInclude Include="Src\Camera\FollowStrategy.h" />
+    <ClInclude Include="Src\Camera\ICameraStrategy.h" />
+    <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\GameClear.h" />
+    <ClInclude Include="Src\Scene\InGameScene.h" />
     <ClInclude Include="Src\Scene\Scene.h" />
     <ClInclude Include="Src\Scene\SceneManager.h" />
     <ClInclude Include="Src\Scene\Stage1Scene.h" />
@@ -283,6 +296,7 @@
     <ClInclude Include="Src\UI\TimerUI.h" />
     <ClInclude Include="Src\UI\UIBase.h" />
     <ClInclude Include="Src\WallActor.h" />
+    <ClInclude Include="StageClear.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

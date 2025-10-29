@@ -39,9 +39,9 @@ bool Player::Start()
 {
 	SetAnimation();
 
-	PlayerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
+	playerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
 
-	PlayerCharacon_.Init(20.0f, 25.0f, PlayerPos_);
+	playerCC_.Init(20.0f, 25.0f, playerPos_);
 
 	return true;
 }
@@ -55,9 +55,9 @@ void Player::Update()
 	Rotation();
 	PlayAnimation();
 	ManageState();
-	PlayerRender_.SetScale(SCALE);
-	PlayerRender_.SetPosition(PlayerPos_);
-	PlayerRender_.Update();
+	playerRender_.SetScale(SCALE);
+	playerRender_.SetPosition(playerPos_);
+	playerRender_.Update();
 }
 
 void Player::Move()
@@ -81,7 +81,7 @@ void Player::Move()
 
 	moveSpeed_ += right + forward;
 
-	if (PlayerCharacon_.IsOnGround())
+	if (playerCC_.IsOnGround())
 	{
 		moveSpeed_.y = 0.0f;
 
@@ -95,24 +95,20 @@ void Player::Move()
 	moveSpeed_.y -= GLAVITY;
 
 
-	PlayerPos_ = PlayerCharacon_.Execute(moveSpeed_, 1.0f / 150.0f);
+	playerPos_ = playerCC_.Execute(moveSpeed_, 1.0f / 150.0f);
 
 
-	PlayerCharacon_.SetPosition(PlayerPos_);
-	PlayerRender_.SetPosition(PlayerPos_);
+	playerCC_.SetPosition(playerPos_);
+	playerRender_.SetPosition(playerPos_);
 }
 
 void Player::Rotation()
 {
 	Vector3 dir = moveSpeed_;
 
-	if (is2D_) {
-		dir.z = 0.0f;
-	}
-
 	if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f) {
-		rotation_.SetRotationYFromDirectionXZ(dir);
-		PlayerRender_.SetRotation(rotation_);
+		playerot_.SetRotationYFromDirectionXZ(dir);
+		playerRender_.SetRotation(playerot_);
 	}
 }
 
@@ -120,7 +116,7 @@ void Player::Rotation()
 void Player::ManageState()
 {
 	//地面についていなかったら
-	if (PlayerCharacon_.IsOnGround() == false)
+	if (playerCC_.IsOnGround() == false)
 	{
 		//ステートを1にする
 		playerState_ = 1;
@@ -151,23 +147,23 @@ void Player::PlayAnimation()
 		//待機状態だったら
 	case 0:
 		//待機アニメーションの再生
-		PlayerRender_.PlayAnimation(enAnimationClip_Idle);
+		playerRender_.PlayAnimation(enAnimationClip_Idle);
 		break;
 		//歩き状態だったら
 	case 1:
 		//ジャンプアニメーションを再生
-		PlayerRender_.PlayAnimation(enAnimationClip_Jump);
+		playerRender_.PlayAnimation(enAnimationClip_Jump);
 		break;
 		//ジャンプ中だったら
 	case 2:
-		PlayerRender_.PlayAnimation(enAnimationClip_Run);
+		playerRender_.PlayAnimation(enAnimationClip_Run);
 		break;
 	}
 }
 
 void Player::Render(RenderContext& rc)
 {
-	PlayerRender_.Draw(rc);
+	playerRender_.Draw(rc);
 }
 
 void Player::SetAnimation()

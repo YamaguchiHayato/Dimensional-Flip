@@ -2,13 +2,13 @@
 #include "Src/Actor/Actor.h"
 
 /// <summary>
-/// Enemy‚Ì”h¶ƒNƒ‰ƒX‚ğnew‚·‚éƒNƒ‰ƒXB
+/// Enemyã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‚’newã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 /// </summary>
 class Player;
 class TrackingEnemy;
 class EnemyFactory : public Actor
 {
 public:
-	TrackingEnemy* trackingEnemy_ = nullptr;
+	TrackingEnemy* pTrackingEnemy_ = nullptr;
 };
 

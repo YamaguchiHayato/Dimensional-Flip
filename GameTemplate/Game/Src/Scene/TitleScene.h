@@ -1,15 +1,19 @@
 #pragma once
-#include "Scene.h"
+#include "Src/Scene/Scene.h"
+
+class Fade;
 class Title;
-class TitleScene : public SceneBase
+class TitleScene : public IScene
 {
 public:
 	TitleScene() {};
-	~TitleScene() {};
+	virtual ~TitleScene();
 	bool Start() override;
 	void Update() override;
-	void Render(RenderContext& rc) override {};
+
 private:
-	Title* title_ = nullptr;
+    Fade* pFade_ = nullptr;
+	Title* pTitle_ = nullptr;
+
 };
 

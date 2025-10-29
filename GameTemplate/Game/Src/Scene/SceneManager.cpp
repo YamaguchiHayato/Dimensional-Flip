@@ -1,66 +1,70 @@
 #include "stdafx.h"
-#include "Src/Scene/SceneManager.h"
-#include "Src/Scene/Stage1Scene.h"
-#include "Src/Actor/Stage/Stage2.h"
-#include "Src/Scene/Scene.h"
 #include "Src/Scene/TitleScene.h"
-#define SMGetIns SceneManager::GetInstance
-SceneManager* SceneManager::instance_ = nullptr;
+#include "Src/Scene/InGameScene.h"
+#include "Src/Scene/SceneManager.h"
+
+SceneManager* SceneManager::pSceneManger_ = nullptr;
+
+
+
+bool SceneManager::Start()
+{
+    // æœ€åˆã®ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆã€‚
+    pCurrentScene_ = CreateScene(SceneID::sTitle);
+    if (pCurrentScene_)
+    {
+        pCurrentScene_->Start();
+        return true;
+    }
+    return false;
+} 
 
 void SceneManager::Update()
 {
-	/* ID‚ª–³Œø‚Å‚Í‚È‚¢ê‡AƒV[ƒ“‘JˆÚ‚ğs‚¤B*/
-	if (requestID_ != SceneID::sInvalid)
-	{
-		ChangeScene();
-	}
+    if (requestID_ != SceneID::sInvalid)
+    {
+        IScene* nextScene = CreateScene(requestID_);
 
-	/* ƒV[ƒ“‚ª‘¶İ‚·‚éê‡AXVˆ—‚ğs‚¤B*/
-	if (scene_) scene_->Update();
+        if (nextScene != nullptr)
+        {
+            nextScene->Start();
+            // å‰ã®ã‚·ãƒ¼ãƒ³ã‚’æ¶ˆã™ã€‚
+            delete pCurrentScene_;
+            // æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«åˆ‡ã‚Šæ›¿ãˆã‚‹ã€‚
+            pCurrentScene_ = nextScene;
+        }
+        // ã‚·ãƒ¼ãƒ³ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢ã€‚
+        requestID_ = SceneID::sInvalid;
+    }
+
+    if (pCurrentScene_ != nullptr)
+    {
+        pCurrentScene_->Update();
+    }
 }
 
-void SceneManager::Render(RenderContext& rc)
+IScene* SceneManager::CreateScene(SceneID id)
 {
-	if (scene_) scene_->Render(rc);
-}
-void SceneManager::ChangeScene()
-{
-	/* Šù‘¶ƒV[ƒ“‚Ì‰ğ•úB*/
-	if (scene_)
-	{
-		delete scene_;
-		scene_ = nullptr;
-	}
+    switch (id)
+    {
+        // ã‚±ãƒ¼ã‚¹: ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã€‚
+        case SceneID::sTitle:
+             pCurrentScene_= new TitleScene();
+             currentID_ = SceneID::sInvalid;
+             break;
 
-	/* ID‚ª–³Œø‚Å‚È‚¯‚ê‚ÎB*/
-	if (requestID_ != SceneID::sInvalid)
-	{
-		switch (requestID_)
-		{
-		case SceneID::sTitle:
-			scene_ = NewGO<TitleScene>(0,"titlescene");
-			requestID_ = SceneID::sInvalid;
-			break;
-		case SceneID::sStage1:
-			scene_ = NewGO<Stage1Scene>(0, "stage1scene");
-			requestID_ = SceneID::sInvalid;
-			break;
-		case SceneID::sStage2:
-			break;
-		case SceneID::sGameOver:
-			break;
-		case SceneID::sGameClear:
-			break;
-		case SceneID::sResult:
-			break;
-		default:
-			break;
-		}
-	}
+         // ã‚±ãƒ¼ã‚¹: ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã€‚
+         case SceneID::sInGame:
+              pCurrentScene_ = new InGameScene();
+              currentID_ = SceneID::sInvalid;
+              break;
 
-	/* ƒV[ƒ“‚ªì¬‚³‚ê‚é‚ÆStart()‚ğŒÄ‚Ño‚·B*/
-	if (scene_) scene_->Start();
-	/* ƒŠƒNƒGƒXƒg‚³‚ê‚½ƒV[ƒ“‚ğ–³Œø‰»‚·‚éB*/
-	requestID_ = SceneID::sInvalid;
+          default:
+              break;
+    }
 
-}	
+    return pCurrentScene_;
+ }
+
+
+

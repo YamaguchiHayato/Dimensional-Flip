@@ -1,69 +1,52 @@
-/*
- * @file    SceneManager.h
- * @brief   ƒV[ƒ“ŠÇ—ƒNƒ‰ƒXB
- */
 #pragma once
-#include "Scene.h"
-
-/*
- * @enum    SceneIDB
- * @brief   ƒV[ƒ“‚ÌID‚ğŠÇ—‚·‚é—ñ‹“Œ^B
- * @details ƒV[ƒ“‚Ì”h¶ƒNƒ‰ƒX‚É‚±‚Ì—ñ‹“Œ^‚ğŒp³‚³‚¹‚éB
- * @dote    2025/10/14 c —ñ‹“Œ^ì¬“úB
- */
-enum class SceneID : uint8_t
-{
-	sTitle,
-	sStage1,
-	sStage2,
-	sGameOver,
-	sGameClear,
-	sResult,
-	sInvalid,
-};
-
-class SceneManager : public SceneBase
+#include "Src/Scene/Scene.h"
+class SceneManager : public IScene
 {
 private:
-	SceneBase* scene_ = nullptr;
-	SceneID requestID_ = SceneID::sTitle;
-	static SceneManager* instance_;
-	virtual ~SceneManager() {};
+    IScene* pCurrentScene_ = nullptr;
+    SceneID currentID_ = SceneID::sTitle;
+    SceneID requestID_ = SceneID::sInvalid;
 
 public:
-	/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
-	SceneManager() {};
-	/* ‰Šú‰»ˆ—B*/
-	bool Start() override { return true; };
-	/* XVˆ—B*/
-	void Update() override;
-	/* •`‰æˆ—B*/
-	void Render(RenderContext& rc) override;
-	/* ƒV[ƒ“‚Ì‘JˆÚˆ—B*/
-	void ChangeScene();
-	/* ƒV[ƒ“‚Ì‰ğ•úˆ—B*/ 
-	static SceneManager* GetInstance()
-	{
-		if (instance_ == nullptr)
-		{
-			instance_ = new SceneManager();
-		}
-		return instance_;
-	}
-	/* ƒV[ƒ“‚Ì‰ğ•úˆ—B*/
-	void SetRequest(SceneID id)
-	{
-		requestID_ = id;
-	}
-	/* ƒV[ƒ“‚Ìæ“¾ˆ—B*/
-	SceneID GetRequest()
-	{
-		return requestID_;
-	};
-	
+    // åˆæœŸåŒ–å‡¦ç†ã€‚
+    bool Start() override;
+    // æ›´æ–°å‡¦ç†ã€‚
+    void Update() override;
+    // ã‚·ãƒ¼ãƒ³ã®å¤‰æ›´å‡¦ç†ã€‚
+    inline void ChangeScene(SceneID newID)
+    {
+        requestID_ = newID;
+    }
 
+    IScene* CreateScene(SceneID id);
 
+private:
+    // ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ä»£å…¥æ¼”ç®—å­ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆåŒ–ã€‚
+    SceneManager(/* const SceneManager&*/) /*= default*/{};
+//    SceneManager& operator=(const SceneManager&) = default;
+    virtual ~SceneManager() {};
 
+private:
+    static SceneManager* pSceneManger_;
 
+public:
+    // ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆã€‚
+    inline static void CreateInstance()
+    {
+        if (!pSceneManger_)
+            pSceneManger_ = new SceneManager();
+    }
+
+    // ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+    inline static SceneManager* GetInstance()
+    {
+        return pSceneManger_;
+    }
+
+    // ã‚·ãƒ¼ãƒ³ã®è§£æ”¾å‡¦ç†ã€‚
+    inline static void DeleteInstance()
+    {
+        delete pSceneManger_;
+        pSceneManger_ = nullptr;
+    }
 };
-

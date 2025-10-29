@@ -1,8 +1,3 @@
 #include "stdafx.h"
-#include "Scene.h"
-#include "SceneManager.h"
+#include "Src/Scene/Scene.h"
 
-void SceneBase::Update()
-{
-	SceneManager::GetInstance()->Update();
-}

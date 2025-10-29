@@ -12,9 +12,13 @@ public:
 
     void LoadingProcess();
     void FadeTransition(FadeState fadeState);
-    FadeState GetFadeState() const { return fadeState_; }
-    SpriteRender& GetFadeSprite() { return fadeSprite_; }
-    bool IsFadeEnd() const { return fadeInEnd_; }
+
+// ゲッター。
+public:
+    inline FadeState GetFadeState() const { return fadeState_; }
+    inline SpriteRender& GetFadeSprite() { return fadeSprite_; }
+    inline bool IsFadeEnd() const { return fadeInEnd_; }
+// ゲッターここまで。
 
 private:
     void ChangeFadeState();

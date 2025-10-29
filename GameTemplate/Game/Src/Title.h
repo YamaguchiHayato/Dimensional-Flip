@@ -27,6 +27,7 @@ enum class enTitleModeSelect : uint8_t
     enTitleTransition_HowToPlay,  /// 遊び方。
     enTitleTransition_Num         /// 遷移数。
 };
+
 class Fade;
 class Title : public IGameObject
 {
@@ -37,10 +38,12 @@ public:
     bool Start();
     void Update();
     void Render(RenderContext& rc);
-    bool GetSceneTransitionFlag() { return sceneTransitionFlag_; }
-    const void SetGameLooadFlag(bool flag) { gameLoadFlag = flag; }
-    bool GetGameLoadFlag() { return gameLoadFlag; }
-    void TitleAction();
+
+public:
+    inline const void SetGameLooadFlag(bool flag) { gameLoadFlag = flag; }
+
+public:
+    inline bool GetGameLoadFlag() { return gameLoadFlag; }
 
 private:
     Fade* fade_ = nullptr;
@@ -49,6 +52,5 @@ private:
     SpriteRender titleRender_;
 
 private:
-    bool sceneTransitionFlag_ = false;
     bool gameLoadFlag = false;
 };

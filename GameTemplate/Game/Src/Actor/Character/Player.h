@@ -20,7 +20,7 @@ enum EnAnimationClip
 	enAnimationClip_Num,
 };
 
-class GameCamera;
+class CameraManager;
 class Player : public IGameObject
 {
 public:
@@ -30,113 +30,113 @@ public:
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext& rendercontext)override;
+    bool DoJumpCheck() const { return didJumpThisFrame_; };
+
+private:
 	void Move();
 	void Rotation();
 	void PlayAnimation();
 	void ManageState();
-
-	/*
-	 * @brief ƒWƒƒƒ“ƒv—Í‚Ìİ’èB
-	 */
-	void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
-
-	/*
-	 * @brief ƒWƒƒƒ“ƒv—Í‚Ìæ“¾B
-	 */
-	const float& GetJumpPower() const { return jumpPower_; }
-
-	/*
-	 * ƒŠƒXƒ|[ƒ“’n“_‚Ìİ’èB 
-	 */
-	void SetRespawnPositon(const Vector3& pos)
-	{
-		respawnPos_ = pos;
-	}
-
-	/*
-	 * ƒvƒŒƒCƒ„[‚ğƒŠƒXƒ|[ƒ“‚·‚éB 
-	 */
-	void PlayerRespawn()
-	{
-		PlayerPos_ = respawnPos_;
-		rotation_ = respawnRot_;
-		PlayerRender_.SetPosition(PlayerPos_);
-		PlayerRender_.SetRotation(rotation_);
-		PlayerCharacon_.SetPosition(PlayerPos_);
-		respawnFlag_ = true;
-	}
-
-
-	/*
-	 * ƒvƒŒƒCƒ„[‚ªƒŠƒXƒ|[ƒ“‚µ‚½‚©H 
-	 * @return ƒŠƒXƒ|[ƒ“‚µ‚½‚çtrueA
-	 * ‚µ‚Ä‚È‚©‚Á‚½‚çfalse
-	 */
-	bool IsPlayerRespawn()
-	{
-		return respawnFlag_;
-	}
-
-	CharacterController& GetCharacterController()
-	{
-		return PlayerCharacon_;
-	}
-	const Vector3& GetPosition() const
-	{
-		return PlayerPos_;
-	}
-	void AddMoveSpeed(const Vector3& addMoveSpeed)
+    void AddMoveSpeed(const Vector3& addMoveSpeed)
 	{
 		moveSpeed_ += addMoveSpeed;
 	}
 
-	bool DoJumpCheck() const { return didJumpThisFrame_; };
-private:
+// ã‚»ãƒƒã‚¿ãƒ¼ã€‚
+public:
+    // CameraManagerã®åˆæœŸåŒ–ã€‚
+    inline void InitCameraManager(CameraManager* pCameraManager)
+    {
+        pCameraManager_ = pCameraManager;
+    }
+    // ã‚¸ãƒ£ãƒ³ãƒ—åŠ›ã®è¨­å®šã€‚
+	inline void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
+    // ãƒˆãƒªã‚¬ãƒ¼ã‚¨ãƒªã‚¢å†…ã§å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
+    inline void EnterTriggerArea()
+    {
+        triggerOverlapCount_++;
+    }
+    // ãƒˆãƒªã‚¬ãƒ¼ã‚¨ãƒªã‚¢å¤–ã§å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
+	inline void ExitTriggerArea()
+	{
+        // æ¸›ç®—å‡¦ç†ã€‚
+		triggerOverlapCount_--;
+        // 0æœªæº€ã«ãªã‚‰ãªã„ã‚ˆã†ã«è£œæ­£ã€‚
+		if(triggerOverlapCount_ < 0)
+		{
+			triggerOverlapCount_ = 0;
+		}
+	}
+// ã‚»ãƒƒã‚¿ãƒ¼ã“ã“ã¾ã§ã€‚
 
-	/**
-	  * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾‚µ‚ÄÄ¶‚·‚éŠÖ”B
-	  */
+// ã‚²ãƒƒã‚¿ãƒ¼ã€‚
+public:
+    // ã‚¸ãƒ£ãƒ³ãƒ—åŠ›ã®å–å¾—ã€‚
+    inline const float& GetJumpPower() const { return jumpPower_; }
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®CCå–å¾—ã€‚
+	inline CharacterController& GetPlayerCC()
+	{
+		return playerCC_;
+	}
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ã®å–å¾—ã€‚
+	inline const Vector3 GetPlayerPos() const
+	{ 
+		return playerPos_; 
+	}
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«å–å¾—ã€‚
+	inline const Vector3 GetForward() const
+	{
+		return playerForward_;
+
+    }
+    // æˆ»ã‚‹ãƒ•ãƒ©ã‚°ã®å–å¾—ã€‚
+	inline bool GetReturnFlag() const
+	{
+		return returnFlag_;
+	}
+    // ãƒˆãƒªã‚¬ãƒ¼ã‚¨ãƒªã‚¢å†…ã‹ã©ã†ã‹ã®å–å¾—ã€‚
+	inline bool GetInTriggerArea() const
+	{
+		return triggerOverlapCount_ > 0;
+	}
+// ã‚²ãƒƒã‚¿ãƒ¼ã“ã“ã¾ã§ã€‚
+
+private:
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã—ã¦å†ç”Ÿã™ã‚‹é–¢æ•°ã€‚
 	const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
 
-	/**
-	 * @brief ƒvƒŒƒCƒ„[ƒ‚ƒfƒ‹‚ğæ“¾‚µ‚ÄÄ¶‚·‚éŠÖ”B
-	 * @param modelName 
-	 * @param animationClip 
-	 * @param enAnimationClip 
-	 * @param enModelUpAxis 
-	 * @param flag 
-	 * @return 
-	 */
+    // ãƒ¢ãƒ‡ãƒ«ã‚’å–å¾—ã—ã¦å†ç”Ÿã™ã‚‹é–¢æ•°ã€‚
 	const std::string FetchPlayerModel
 	(const std::string& modelName, AnimationClip animationClip, EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag);
 
-	/**
-	  * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ğŠi”[‚·‚éŠÖ”B
-	  */
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ ¼ç´ã€‚
 	void SetAnimation();
 
 
 private:
-	Player* player_ = nullptr;                                
-	GameCamera* gameCamera_ = nullptr;
+	Player* player_ = nullptr;
+    CameraManager* pCameraManager_ = nullptr;
 public:
 	AnimationClip animationClip_[enAnimationClip_Num];
-	CharacterController PlayerCharacon_;               
+    // CC â€¦ CharacterControllerã€‚
+	CharacterController playerCC_;               
 
-	ModelRender PlayerRender_;
+	ModelRender playerRender_;
 	Vector3 diff_;
-	Vector3 moveSpeed_;
-	Vector3 PlayerPos_ = Vector3::Zero;
-	Vector3 respawnPos_;
-	Quaternion respawnRot_;
-	Quaternion rotation_;
+	Vector3 moveSpeed_ = Vector3::Zero;
+	Vector3 playerPos_ = Vector3::Zero;
+    Vector3 playerForward_ = Vector3::Front;
+	Quaternion playerot_;
 
 private:	
 	int	playerState_; 
 	int doCheck_ = 0;
+    //ãƒˆãƒªã‚¬ãƒ¼ã‚¨ãƒªã‚¢å†…ãƒ•ãƒ©ã‚°
+	int triggerOverlapCount_ = 0; /// ã„ãã¤ã®ã‚¨ãƒªã‚¢ã«é‡ãªã£ã¦ã„ã‚‹ã‹ã‚«ã‚¦ãƒ³ãƒˆã€‚
 
 	float jumpPower_ = 50.0f;
-	bool respawnFlag_ = false;
-	bool is2D_ = false;
+
 	bool didJumpThisFrame_ = false;
+	bool returnFlag_ = false; //æˆ»ã‚‹ãƒ•ãƒ©ã‚°
+
 };

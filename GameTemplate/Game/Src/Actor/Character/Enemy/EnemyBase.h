@@ -11,7 +11,7 @@ public:
 	virtual void Render(RenderContext& rc) = 0;
 
 public:
-	TrackingEnemy* trackingEnemy_ = nullptr;// ’Ç]“GB
+	TrackingEnemy* pTrackingEnemy_ = nullptr;// è¿½å¾“æ•µã€‚
 
 
 };

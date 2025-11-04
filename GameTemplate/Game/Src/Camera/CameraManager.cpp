@@ -42,9 +42,6 @@ void CameraManager::Request3DMode()
 
 void CameraManager::Request2DMode()
 {
-	// モードが既に2Dで、かつ回転していない場合 (任意)
-	// if (m_currentMode == CameraMode::mode2D && /* 回転角度がほぼ0かチェック */ ) return;
-
 	pCameraStrategy_ = std::make_unique<SideCameraStrategy>(pPlayer_);
 	pCameraStrategy_->Start(); // 念のため初期化
 	currentMode_ = CameraMode::mode2D;

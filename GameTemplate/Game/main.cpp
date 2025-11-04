@@ -6,6 +6,7 @@
 
 #include "Src/Scene/Scene.h"
 #include "Src/Scene/SceneManager.h"
+#include "Src/Actor/Stage/StageManager.h"
 
 void ReportLiveObjects()
 {
@@ -36,6 +37,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     SceneManager::CreateInstance();
     SceneManager::GetInstance()->Start();
 
+
     //////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
 	//////////////////////////////////////
@@ -48,6 +50,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
         // シーンマネージャーの更新。
         SceneManager::GetInstance()->Update();
+
 
 		K2Engine::GetInstance()->Execute();
 	}

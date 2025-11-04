@@ -21,9 +21,7 @@ public:
     IScene* CreateScene(SceneID id);
 
 private:
-    // コピーコンストラクタ・代入演算子をデフォルト化。
-    SceneManager(/* const SceneManager&*/) /*= default*/{};
-//    SceneManager& operator=(const SceneManager&) = default;
+    SceneManager(){};
     virtual ~SceneManager() {};
 
 private:

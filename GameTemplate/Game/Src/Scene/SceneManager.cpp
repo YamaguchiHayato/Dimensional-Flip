@@ -14,6 +14,8 @@ bool SceneManager::Start()
     if (pCurrentScene_)
     {
         pCurrentScene_->Start();
+        // シーンの初期値を設定する。
+        currentID_ = SceneID::sTitle;
         return true;
     }
     return false;
@@ -30,8 +32,12 @@ void SceneManager::Update()
             nextScene->Start();
             // 前のシーンを消す。
             delete pCurrentScene_;
+
             // 次のシーンに切り替える。
             pCurrentScene_ = nextScene;
+            // シーンIDを更新する。
+            currentID_  = requestID_;
+
         }
         // シーンリクエストをクリア。
         requestID_ = SceneID::sInvalid;
@@ -45,25 +51,24 @@ void SceneManager::Update()
 
 IScene* SceneManager::CreateScene(SceneID id)
 {
+    IScene* newScene = nullptr;
     switch (id)
     {
         // ケース: タイトルシーン。
         case SceneID::sTitle:
-             pCurrentScene_= new TitleScene();
-             currentID_ = SceneID::sInvalid;
+             newScene= new TitleScene();
              break;
 
          // ケース: インゲームシーン。
          case SceneID::sInGame:
-              pCurrentScene_ = new InGameScene();
-              currentID_ = SceneID::sInvalid;
+              newScene = new InGameScene();
               break;
 
           default:
               break;
     }
 
-    return pCurrentScene_;
+    return newScene;
  }
 
 

@@ -13,9 +13,10 @@
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/HPbarUI.h"
-#include "Src/Camera/CameraManager.h"
 #include "Src/Scene/Scene.h"
+#include "Src/Camera/CameraManager.h"
 #include "Src/Scene/SceneManager.h"
+#include "Src/Actor/Stage/StageManager.h"
 
 namespace EnemyPosition
 {
@@ -32,18 +33,18 @@ namespace WallPosition
 {
 	const Vector3 Pos1(0.0f, 0.0f, 25.0f);
 	const Vector3 Pos2(300.0f, 0.0f, 25.0f);
-	const Vector3 Pos3(900.0f, -20.0f, 23.0f);
+	const Vector3 Pos3(900.0f, -20.0f, 230.0f);
 	const Vector3 Pos4(1450.0f, -40.0f, 180.0f);
 }
 
 namespace StarPosition
 {
-	const Vector3 Pos1(1400.0f, 95.0f, -2000.0f);
+    const Vector3 Pos1(1500.0f, 95.0f, -2000.0f);
 }
 
 namespace JumpPadPosition
 {
-	const Vector3 Pos1(1400.0f, -60.0f, -1680.0f);
+	const Vector3 Pos1(1400.0f, -60.0f, -1800.0f);
 }
 
 namespace GoalPointPosition
@@ -54,18 +55,15 @@ namespace GoalPointPosition
 namespace TriggerPos
 {
     const Vector3 Pos1 = Vector3(200.0f, 0.0f, 0.0f);
-	const Vector3 Pos2 = Vector3(1400.0f,-75.0f, 0.0f );
+	const Vector3 Pos2 = Vector3(1500.0f,-75.0f, 0.0f );
 
 }
 
 Game::~Game()
 {
 	DeleteGO(pPlayer_);
-	DeleteGO(pStage1_);
-	DeleteGO(pTimerUI_);
-	DeleteGO(pNumberUI_);
-	DeleteGO(pScoreUI_);
-	DeleteGO(pHpbarUI_);
+    DeleteGO(pStar_);
+    DeleteGO(pJumpPad_);
 }
 
 void Game::InitSkyCube()
@@ -86,19 +84,24 @@ void Game::InitSkyCube()
 
 bool Game::Start()
 {
+    // 各UIの生成。
 	UINewGO();
 
-    FadeStart();
+    // ステージマネージャーの生成。
+    StageManager::CreateInstance();
+    StageManager::GetInstance()->Start();
+
+//    FadeStart();
 
 	InitSkyCube();
 
-    pPlayer_ = NewGO<Player>(0, "player");
 
+    pPlayer_ = NewGO<Player>(0, "player");
     // カメラマネージャーの生成。
     pCameraManager_ = std::unique_ptr<CameraManager>
         (NewGO<CameraManager>(0, "cameramanager"));
-
     pPlayer_->InitCameraManager(pCameraManager_.get());
+
 
     DimensionTriggerNewGO();
 
@@ -109,15 +112,26 @@ bool Game::Start()
 	JumpPadNewGO();
 
 //	EnemyNewGO_Tracking();
-//  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+//    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 
 void Game::Update()
 {
+    // ステージマネージャーの更新。
+    StageManager::GetInstance()->Update();
+
+
     // カメラマネージャーの更新。
     if (pCameraManager_)
         pCameraManager_->Update();
+
+ //   StageManager::DeleteInstance();
+}
+
+void Game::Render(RenderContext& rc)
+{
+    StageManager::GetInstance()->Render(rc);
 }
 
 void Game::WallNewGO()
@@ -126,14 +140,13 @@ void Game::WallNewGO()
 	{
 		WallPosition::Pos1,
 		WallPosition::Pos2,
-		WallPosition::Pos3,
-		WallPosition::Pos4
+	//	WallPosition::Pos3,
+	//	WallPosition::Pos4
 	};
 
 	for (size_t i = 0; i < WallPosList.size(); i++)
 	{
 		auto wall = NewGO<WallActor>(0, "wall");
-		wall->SetWallPos(WallPosList[i]);
 
 		if (i == 3) 
 		{
@@ -141,6 +154,9 @@ void Game::WallNewGO()
 			wallRot.SetRotationDegY(90.0f);
 			wall->SetWallRot(wallRot);
 		}
+
+        wall->SetWallPos(WallPosList[i]);
+
 	}
 
 }

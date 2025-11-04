@@ -25,27 +25,29 @@ public:
     virtual ~Game();
     bool Start();
     void Update();
+    void Render(RenderContext& rc);
 
 private:
     // キャラクター。
     inline void EnemyNewGO_Tracking();
 
     // ギミック。
-    inline void JumpPadNewGO();
-    void StarNewGO();
+    inline void JumpPadNewGO();// ジャンプパッド。
+    inline void StarNewGO();// スター。
 
-    // 各UIの生成。
+    // UI。
     inline void UINewGO();
-    inline void TimerUINewGO();
-    inline void NumberUINewGO();
-    inline void ScoreUINewGO();
-    inline void HPbarUINewGO();
+    // 各UIの生成。
+    inline void TimerUINewGO();// タイマーUI。
+    inline void NumberUINewGO();// ナンバーUI。
+    inline void ScoreUINewGO();// スコアUI。
+    inline void HPbarUINewGO();// HPbar。
 
     // その他。
-    inline void FadeStart();
-    inline void InitSkyCube();
-    inline void WallNewGO();
-    inline void DimensionTriggerNewGO();
+    inline void FadeStart(); // フェード開始。
+    inline void InitSkyCube(); // スカイキューブの初期化。
+    inline void WallNewGO();   // 透明壁の生成。
+    inline void DimensionTriggerNewGO(); // カメラの可動域制限。
 
 
 private:
@@ -55,10 +57,8 @@ private:
 
     // カメラ。
     std::unique_ptr<CameraManager> pCameraManager_;
+    
 
-    std::unique_ptr<DirectX::AudioEngine> audioEngine_;
-
-    // ステージ。
     Stage1* pStage1_ = nullptr;
     Star* pStar_ = nullptr;
 

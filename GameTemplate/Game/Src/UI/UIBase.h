@@ -1,9 +1,9 @@
-/*
- * @file    UIBase.hB
- * @brief   UI‚ÌŠî’êƒNƒ‰ƒXB
- * @details UI‚Ì”h¶ƒNƒ‰ƒX‚É‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚³‚¹‚éB
- * @dote    10/06 c ƒNƒ‰ƒXì¬“úB
- */
+//
+// @file    UIBase.hã€‚
+// @brief   UIã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+// @details UIã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã«ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã•ã›ã‚‹ã€‚
+// @dote    10/06 â€¦ ã‚¯ãƒ©ã‚¹ä½œæˆæ—¥ã€‚
+//
 #pragma once
 class UIBase : public IGameObject
 {
@@ -12,42 +12,39 @@ protected:
 	UIBase() {};
 	virtual ~UIBase() {};
 
-	/* Œp³—pŠÖ”‚Ì‰Šú‰»ˆ—B*/
-	/* ‰Šú‰»ˆ—ŠÖ”B*/
+    // åˆæœŸåŒ–å‡¦ç†é–¢æ•°ã€‚
 	virtual bool Start() = 0 { return true; };
-	/* XVˆ—ŠÖ”B*/	
+    // æ›´æ–°å‡¦ç†é–¢æ•°ã€‚
 	virtual void Update() = 0 {};
-	/* •`‰æˆ—ŠÖ”B*/
+    // æç”»å‡¦ç†é–¢æ•°ã€‚
 	virtual void Render(RenderContext& rc) = 0 {};
-	/* ‰æ‘œ‚ÌInitŠÖ”B*/
+    // UIç”¨ã®ç”»åƒãƒ‘ã‚¹åˆæœŸåŒ–é–¢æ•°ã€‚
 	virtual const std::string InitUI(const std::string& UIname) 
 	{
-		std::string UIpath = "Assets/UI/" + UIname + ".DDS";
+		std::string UIpath = "Assets/stage/" + UIname + ".DDS";
 		return UIpath;
 	};
 	
 
 protected:
-	/* ‰æ‘œ•\¦—pB*/
+    // UIç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
 	SpriteRender UISprite_; 
-	/* UI‚ğ•\¦‚³‚¹‚éÀ•WB*/
-	Vector2 UIPos_ = Vector2::Zero;
 
 protected:
-	/* UI‚Ì”šî•ñ‚ğŠÇ—‚·‚é—ñ‹“Œ^B*/
+    // UIç”¨ã®æ•°å­—åˆ—æŒ™å‹ã€‚
 	static enum class enUINumber : uint8_t
 	{
-		enNumber_Zero, /// 0B
-		enNumber_One,  /// 1B
-		enNumber_Two,  /// 2B
-		enNumber_Three,/// 3B
-		enNumber_Four, /// 4B
-		enNumber_Five, /// 5B
-		enNumber_Six,  /// 6B
-		enNumber_Seven,/// 7B
-		enNumber_Eight,/// 8B
-		enNumber_Nine, /// 9B 
-		enNumber_Num,  /// ”B
+		enNumber_Zero, /// 0ã€‚
+		enNumber_One,  /// 1ã€‚
+		enNumber_Two,  /// 2ã€‚
+		enNumber_Three,/// 3ã€‚
+		enNumber_Four, /// 4ã€‚
+		enNumber_Five, /// 5ã€‚
+		enNumber_Six,  /// 6ã€‚
+		enNumber_Seven,/// 7ã€‚
+		enNumber_Eight,/// 8ã€‚
+		enNumber_Nine, /// 9ã€‚ 
+		enNumber_Num,  /// æ•°ã€‚
 	};
 
 

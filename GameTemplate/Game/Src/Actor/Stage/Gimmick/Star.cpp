@@ -2,6 +2,7 @@
 #include "Star.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/GameClear.h"
+#include "Src/StageClear.h"
 
 namespace StarStatus
 {
@@ -28,7 +29,8 @@ void Star::Update()
 	Vector3 diff = m_player->GetPlayerPos() - m_starPosition;
 	if (diff.Length() <= 100.0f)
 	{
-		NewGO<GameClear>(0, "gameclear");
+//		NewGO<GameClear>(0, "gameclear");
+        NewGO<StageClear>(0, "stageclear");
 		DeleteGO(this);
 	}
 

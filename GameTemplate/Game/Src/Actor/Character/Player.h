@@ -31,6 +31,7 @@ public:
 	void Update()override;
 	void Render(RenderContext& rendercontext)override;
     bool DoJumpCheck() const { return didJumpThisFrame_; };
+    void Action();
 
 private:
 	void Move();
@@ -99,7 +100,12 @@ public:
 	{
 		return triggerOverlapCount_ > 0;
 	}
-// ゲッターここまで。
+    // カメラモードを取得。
+    inline CameraManager* GetCameraManager() 
+    {
+        return pCameraManager_;
+    }
+    // ゲッターここまで。
 
 private:
     // アニメーションを取得して再生する関数。

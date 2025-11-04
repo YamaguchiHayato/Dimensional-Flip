@@ -20,16 +20,6 @@
 // シーンのインターフェース
 // こういう挙動をしたいという考えのもとに、派生先で実装を強制する
 //
-class IScene 
-{
-public:
-    IScene() {};
-    virtual ~IScene() {};
-
-    virtual bool Start() = 0 { return true; };
-    virtual void Update() = 0 {};
-};
-
 
 // 今のシーンを識別する列挙型。
 enum class SceneID : uint8_t
@@ -40,4 +30,15 @@ enum class SceneID : uint8_t
     sGameOver,
     sInvalid = 0xff
 };
+
+class IScene 
+{
+public:
+    IScene() {};
+    virtual ~IScene() {};
+
+    virtual bool Start() = 0 { return true; };
+    virtual void Update() = 0 {};
+};
+
 

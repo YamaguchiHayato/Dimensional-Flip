@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Stage1.h"
-
+#include "Src/Actor/Stage/Stage1.h"
+#include "Src/Actor/Character/Player.h"
 namespace
 {
 	const Vector3 SCALE(1.0f, 1.0f, 1.0f);
@@ -10,62 +10,51 @@ namespace
 
 Stage1::~Stage1()
 {
-	DeleteGO(StageCollision_);
+    DeleteGO(pStageCollision_);
 }
 
 bool Stage1::Start()
 {
-
 	const std::string stagePath = InitStage("Stage1/Stage1");
+	stageRender_.Init(stagePath.c_str());
 
-
-	StageRender_.Init(stagePath.c_str());
-	StagePhysics_.CreateFromModel(StageRender_.GetModel(), StageRender_.GetModel().GetWorldMatrix());
-	StageRender_.SetScale(SCALE);
-
+	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
+	stageRender_.SetScale(SCALE);
 
 	// コリジョン。
-	StageCollision_ = NewGO<CollisionObject>(0, "collisionobject");
+	pStageCollision_ = NewGO<CollisionObject>(0, "collisionobject");
 
 	//コリジョンを動く床に設置
-	StageCollision_->CreateBox
-	(   StagePos_ + COLLISION_HEIGHT,
+	pStageCollision_->CreateBox
+	(   stagePos_ + COLLISION_HEIGHT,
 		Quaternion::Identity,
 		COLLISION_SIZE );
 
 	// 座標設定。
-	StageRender_.SetPosition(StagePos_);
-	initPos_ = StagePos_;
+	stageRender_.SetPosition(stagePos_);
+	initPos_ = stagePos_;
 
 	// コリジョンを破棄。
-	StageCollision_->SetIsEnableAutoDelete(false);
+	pStageCollision_->SetIsEnableAutoDelete(false);
 
-	StageRender_.Update();
+	stageRender_.Update();
 	return true;
 }
 
 void Stage1::Update()
 {
-    if (!m_isStart)
-    {
-        return;
-    }
 
-	StageRender_.Update();
+	stageRender_.Update();
 
 	// 当たり判定。
-	StagePhysics_.SetPosition(StagePos_);
+	stagePhysics_.SetPosition(stagePos_);
 
 	// コリジョン。
-	StageCollision_->SetPosition(StagePos_ + COLLISION_HEIGHT);
+	pStageCollision_->SetPosition(stagePos_ + COLLISION_HEIGHT);
 
 }
 
 void Stage1::Render(RenderContext& rc)
 {
-    if (!m_isStart)
-    {
-        return;
-    }
-	StageRender_.Draw(rc);
+	stageRender_.Draw(rc);
 }

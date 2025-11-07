@@ -68,6 +68,11 @@ public:
 			triggerOverlapCount_ = 0;
 		}
 	}
+    // 座標。
+    inline void SetPlayerPos(const Vector3& pos)
+    {
+        playerPos_ = pos;
+    }
 // セッターここまで。
 
 // ゲッター。
@@ -122,6 +127,7 @@ private:
 private:
 	Player* player_ = nullptr;
     CameraManager* pCameraManager_ = nullptr;
+
 public:
 	AnimationClip animationClip_[enAnimationClip_Num];
     // CC … CharacterController。

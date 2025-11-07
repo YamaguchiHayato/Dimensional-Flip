@@ -1,6 +1,6 @@
 /*
  * @file TimerUI.h
- * @dote 10/06 TimerUI ÅIXV“úB
+ * @dote 10/06 TimerUI æœ€çµ‚æ›´æ–°æ—¥ã€‚
  */
 
 #pragma once
@@ -17,6 +17,7 @@ public:
 	const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
+
 
 };
 

@@ -1,31 +1,44 @@
 #pragma once
 #include "Src/Scene/Scene.h"
+class Fade;
 class SceneManager : public IScene
 {
 private:
     IScene* pCurrentScene_ = nullptr;
     SceneID currentID_ = SceneID::sTitle;
     SceneID requestID_ = SceneID::sInvalid;
+    SceneID targetID = SceneID::sInvalid;
 
 public:
     // 初期化処理。
     bool Start() override;
     // 更新処理。
     void Update() override;
-    // シーンの変更処理。
-    inline void ChangeScene(SceneID newID)
+        IScene* CreateScene(SceneID id);
+
+// セッター。
+public:
+    // FadeSceneから呼ばれる内部用のシーン変更
+    inline void ChangeSceneInternal(SceneID newID)
     {
         requestID_ = newID;
     }
 
-    IScene* CreateScene(SceneID id);
+    // シーンの変更処理。
+    inline void ChangeScene(SceneID newID)
+    {
+        requestID_ = newID;
+        //requestID_ = SceneID::sFade;
+    }
+
 
 private:
     SceneManager(){};
-    virtual ~SceneManager() {};
+    virtual ~SceneManager();
 
 private:
     static SceneManager* pSceneManger_;
+    Fade* pFade_ = nullptr;
 
 public:
     // シングルトンインスタンスの生成。
@@ -33,6 +46,17 @@ public:
     {
         if (!pSceneManger_)
             pSceneManger_ = new SceneManager();
+    }
+    // Fadeシーンの生成管理。
+    inline Fade* GetFade()
+    {
+        return pFade_;
+    }
+
+    // ターゲットシーンIDの取得。
+    SceneID GetTargetSceneID() const
+    {
+        return targetID;
     }
 
     // シングルトンインスタンスを取得

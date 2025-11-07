@@ -2,30 +2,30 @@
 
 enum class enGamePadSelect : uint8_t
 {
-    enSelect_AButton, /// Aボタン。
-    enSelect_BButton, /// Bボタン。
-    enSelect_XButton, /// Xボタン。
-    enSelect_YButton, /// Yボタン。
-    enSelect_LStick,  /// Lボタン。
-    enSelect_RStick,  /// Rボタン。
-    enSelect_DPad,    /// 十字キー。
-    enSelect_Num,     /// ゲームパッド数。
+    AButton, /// Aボタン。
+    BButton, /// Bボタン。
+    XButton, /// Xボタン。
+    YButton, /// Yボタン。
+    LStick,  /// Lボタン。
+    RStick,  /// Rボタン。
+    DPad,    /// 十字キー。
+    Num,     /// ゲームパッド数。
 };
 
 enum class enTitleScene : uint8_t
 {
-    enTitle,      /// タイトル画面。
-    enModeSelect, /// モード選択画面。
-    enHowToPlay,  /// 遊び方説明画面。
-    enNum         /// シーン数。
+    sTitle,      /// タイトル画面。
+    sModeSelect, /// モード選択画面。
+    sHowToPlay,  /// 遊び方説明画面。
+    sNum         /// シーン数。
 };
 
 enum class enTitleModeSelect : uint8_t
 {
-    enTitleTransition_Title,      /// タイトル。
-    enTitleTransition_ModeSelect, /// モード選択。
-    enTitleTransition_HowToPlay,  /// 遊び方。
-    enTitleTransition_Num         /// 遷移数。
+    sTitle,      /// タイトル。
+    sModeSelect, /// モード選択。
+    sHowToPlay,  /// 遊び方。
+    sNum         /// 遷移数。
 };
 
 class Fade;

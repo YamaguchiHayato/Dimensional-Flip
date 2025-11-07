@@ -33,10 +33,10 @@ namespace nsK2Engine
      */
     enum FadeState
     {
-        FadeStart,
-        Loading,
-        FadeEnd,
-        StateNum
+        FadeStart, // フェードイン。
+        Loading,   // ローディング中。
+        FadeEnd,   // フェードアウト。
+        StateNum   // 状態数。
     };
 
     /// <summary>
@@ -215,15 +215,16 @@ namespace nsK2Engine
 		/// </summary>
 		void LinearWipeUpdate()
 		{
-			//フェードステートがフェードインならワイプサイズを大きくする
+			////フェードステートがフェードインならワイプサイズを大きくする
 			if (fadeState_ == FadeStart)
 			{
 				m_spriteRenderConstantBuffer.linearWipe.size += wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
 			}
+
 			//フェードステートがフェードアウトならワイプサイズを小さくする
 			else if (fadeState_ == FadeEnd)
 			{
-				m_spriteRenderConstantBuffer.linearWipe.size -= wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
+			    m_spriteRenderConstantBuffer.linearWipe.size += wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
 			}
 		}
 

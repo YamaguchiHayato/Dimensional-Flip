@@ -1,7 +1,7 @@
-/*
- * @file HPbarUI.h
- * @dote 10/14 c ƒNƒ‰ƒX’Ç‰Á“úB
- */
+//
+// @file HPbarUI.h
+// @dote 10/14 â€¦ ã‚¯ãƒ©ã‚¹è¿½åŠ æ—¥ã€‚
+//
 
 #pragma once
 #include "Src/UI/UIBase.h"
@@ -18,30 +18,31 @@ public:
 		return UIBase::InitUI(UIname);
 	};
 
+
 private:
-	/* HPƒo[‚Ì‰æ‘œ—Ş‚ğInit‚·‚éˆ—B*/
-	/* ‚»‚ê‚¼‚ê‚ÌInitŠÖ”‚ğInit‚·‚éˆ—B*/
+    // HPãƒãƒ¼UIã®åˆæœŸåŒ–å‡¦ç†ã€‚
 	void InitHPbar();
-	/* HP‰æ‘œ‚ğInitB*/
+    // HPãƒãƒ¼ã®Textã‚’Initã€‚
 	void InitHPbar_Heart();
-	/* HPƒo[‚ÌFill‚ğInitB*/
+    // HPãƒãƒ¼ã®Fillã‚’Initã€‚
 	void InitHPbar_Fill();
-	/* HPƒo[‚ÌGhost‚ğInitB*/
+    // HPãƒãƒ¼ã®Ghostã‚’Initã€‚
 	void InitHPbar_Ghost();
 
 
-	/* ‚»‚ê‚¼‚ê‚ÌSetPosition‚ğ‚Ü‚Æ‚ß‚éŠÖ”B*/
+    // ãã‚Œãã‚Œã®SetPositionã‚’ã¾ã¨ã‚ã‚‹é–¢æ•°ã€‚
 	void SetPositions();
-	/* ‚»‚ê‚¼‚ê‚ÌSetScale‚ğ‚Ü‚Æ‚ß‚éŠÖ”B*/ 
+    // ãã‚Œãã‚Œã®SetScaleã‚’ã¾ã¨ã‚ã‚‹é–¢æ•°ã€‚
 	void SetScales();
-	/* ‚»‚ê‚¼‚ê‚ÌUpdate‚ğ‚Ü‚Æ‚ß‚éŠÖ”B*/
+    // HPãƒãƒ¼ã®æ›´æ–°å‡¦ç†ã€‚
 	void Updates();
 
 private:
-	SpriteRender Heart_;
-	SpriteRender HPText_;
-	SpriteRender Fill_;
-	SpriteRender Ghost_;
+    // HPãƒãƒ¼é–¢é€£å¤‰æ•°ã€‚
+    SpriteRender Heart_; // HPãƒãƒ¼ã®ãƒ†ã‚­ã‚¹ãƒˆéƒ¨åˆ†ã€‚
+    SpriteRender HPText_;// HPãƒãƒ¼ã®ãƒ†ã‚­ã‚¹ãƒˆã€‚
+    SpriteRender Fill_;  // HPãƒãƒ¼ã®Filléƒ¨åˆ†ã€‚
+    SpriteRender Ghost_; // HPãƒãƒ¼ã®Ghostéƒ¨åˆ†ã€‚
 
 };
 

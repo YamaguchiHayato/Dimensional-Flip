@@ -21,12 +21,18 @@ public:
     virtual bool Start() { return true; }
     virtual void Update(){};
     virtual void Render(RenderContext& rc){};
+
+public:
     virtual const std::string InitStage(const std::string& stagename)
     {
         std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
         return Stagepath;
     };
 
+    virtual Vector3 GetStageStartPos() const = 0
+    {
+        return Vector3::Zero;
+    }
 
 protected:
     CollisionObject* pStageCollision_ = nullptr;

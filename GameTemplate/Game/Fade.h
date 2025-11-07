@@ -17,7 +17,8 @@ public:
 public:
     inline FadeState GetFadeState() const { return fadeState_; }
     inline SpriteRender& GetFadeSprite() { return fadeSprite_; }
-    inline bool IsFadeEnd() const { return fadeInEnd_; }
+    inline bool IsFadeInEnd() const { return fadeInEnd_; }
+    inline bool IsFadeOutEnd() const { return fadeOutEnd_; }
 // ゲッターここまで。
 
 private:
@@ -30,7 +31,10 @@ private:
     Sprite sprite_;
 
 private:
+    uint8_t fadeCounter_ = 0;
+
     bool fadeInEnd_ = false;
+    bool fadeOutEnd_ = false;
     bool fadeTransitionFlag_ = false;
     bool loadingFlag_ = false;	
 };

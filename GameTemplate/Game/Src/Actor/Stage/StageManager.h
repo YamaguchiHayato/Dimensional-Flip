@@ -26,6 +26,24 @@ public:
         requestID_s_ = newStageID;
     }
 
+// ゲッター。
+public:
+    // ステージ開始位置の取得。
+    inline Vector3 GetStageStartPos() const override
+    {
+        if (pCurrentStage_)
+        {
+            return pCurrentStage_->GetStageStartPos();
+        }
+        return Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    // 現在のステージIDを取得。
+    // ステージ変更検知で使用。
+    inline StageID GetCurrentStageID() const
+    {
+        return currentID_s_;
+    }
 private:
     StageManager() {};
     virtual ~StageManager() {};
@@ -39,7 +57,7 @@ public:
     inline static void CreateInstance()
     {
         if (!pStageManger_)
-        pStageManger_ = new StageManager();
+            pStageManger_ = new StageManager();
     }
 
     // シングルトンインスタンスを取得

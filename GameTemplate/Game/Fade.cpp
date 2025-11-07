@@ -3,10 +3,14 @@
 
 bool Fade::Start()
 {
-    // フェード用スプライトの初期化
-    fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 3200, 1600);
-    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round);
-    fadeSprite_.SetWipeScrollSpeed(1000.0f);
+    fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 1920, 1080);
+    
+    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round); 
+    
+    fadeSprite_.SetWipeScrollSpeed(-1000.0f);
+
+    fadeSprite_.SetWipeSize(900.0f);
+
     return true;
 }
 
@@ -15,28 +19,31 @@ void Fade::Update()
     ChangeFadeState();
 
     if (fadeSprite_.GetWipeSize() < 0.0f &&
-        fadeState_ == FadeEnd)
+        fadeState_ == FadeState::FadeStart)
     {
-        fadeInEnd_ = true;
+        fadeInEnd_ = true; 
     }
 
-    else
+    if (fadeSprite_.GetWipeSize() > 900.0f && 
+        fadeState_ == FadeState::FadeEnd)
     {
-        fadeInEnd_ = false;
+        fadeOutEnd_ = true;
     }
 
-    //if (fadeState_ == FadeState::Loading)
-    //{
-    //    LoadingProcess();
-    //}
-
+    if (fadeState_ == FadeState::Loading)
+    {
+        LoadingProcess();
+    }
 
     fadeSprite_.Update();
 }
 
 void Fade::Render(RenderContext& rc)
 {
+    if (fadeInEnd_ == true) return;
+
     fadeSprite_.Draw(rc);
+
 }
 
 void Fade::LoadingProcess()
@@ -51,12 +58,12 @@ void Fade::ChangeFadeState()
         switch (fadeState_)
         {
         case FadeState::FadeStart:
-             fadeSprite_.SetWipeSize(-50.0f);
+             fadeSprite_.SetWipeSize(900.0f); // 開始位置 (隠れている)
              fadeTransitionFlag_ = true;
              break;
 
         case FadeState::FadeEnd:
-             fadeSprite_.SetWipeSize(900.0f);
+             fadeSprite_.SetWipeSize(-50.0f); // 開始位置 (見えている)
              fadeTransitionFlag_ = true;
              break;
 
@@ -70,7 +77,7 @@ void Fade::FadeTransition(FadeState fadeState)
 {
     fadeState_ = fadeState;
 
-    if (fadeState == FadeState::FadeEnd)
+    if (fadeState == FadeState::FadeStart)
     {
         fadeSprite_.SetWipeScrollSpeed(-1000.0f);
     }
@@ -80,9 +87,11 @@ void Fade::FadeTransition(FadeState fadeState)
         fadeSprite_.SetWipeScrollSpeed(1000.0f);
     }
 
-    fadeSprite_.SetFadeTransition(fadeState_);
+     fadeSprite_.SetFadeTransition(fadeState_);
     fadeTransitionFlag_ = false;
- 
+
+    fadeInEnd_ = false;
+    fadeOutEnd_ = false;
 
     if (fadeState_ == FadeStart)
     {

@@ -12,8 +12,14 @@ public:
 	void Update() override;
 
 private:
-    Fade* pFade_ = nullptr;
-	Title* pTitle_ = nullptr;
+    void StartFadeOutToInGame();
 
+private:
+    Fade* pFade_ = nullptr;
+    Title* pTitle_ = nullptr;
+
+private:
+    // 現在がフェード中かどうかを調べる。    
+    bool isFadingOut = false;
 };
 

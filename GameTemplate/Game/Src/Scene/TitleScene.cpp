@@ -24,17 +24,48 @@ bool TitleScene::Start()
         return false;
     }
 
+    // Fadeオブジェクトの取得。
+    pFade_ = SceneManager::GetInstance()->GetFade();
+
+    // フェード合うとフラグをリセット。
+    isFadingOut = false;
+
+    // シーン開始と同時にFadeStartを開始する。
+    pFade_->FadeTransition(FadeState::FadeStart);
+
     return true;
 }
 
 void TitleScene::Update()
 {
+    if (pFade_ == nullptr) return;
 
-    // タイトルクラスでフラグが切り替わったら。
-    if (g_pad[0]->IsTrigger(enButtonA))
+    // まだフェードアウト中でない場合 (isFadingOut == false)
+    // ＝ 入力待ち状態
+    if (isFadingOut == false)
     {
-        // InGameシーンへ遷移。
-        SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+        if (g_pad[0]->IsTrigger(enButtonA))
+        {
+        // フェードアウトを開始する。
+        StartFadeOutToInGame();
+        }
     }
+    else
+    {
+        if (pFade_->IsFadeOutEnd())
+        {
+            SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+        }
+    }
+}
+
+void TitleScene::StartFadeOutToInGame()
+{
+    // フラグを立ててUpdateでの入力を無効にする。
+    isFadingOut = true;
+
+    // FadeオブジェクトにFadeOutを指示。
+    pFade_->FadeTransition(FadeState::FadeEnd);
+
 }
 

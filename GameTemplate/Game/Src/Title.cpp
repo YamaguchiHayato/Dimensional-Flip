@@ -16,12 +16,14 @@ bool Title::Start()
     titleRender_.Init("Assets/sprite/TitleScene.DDS", TITLE_WIDTH, TITLE_HEIGHT);
 	fade_ = FindGO<Fade>("fade");
 
-
     return true;
 }
 
 void Title::Update()
 {
+    titleRender_.SetPosition({ 0.0f, 0.0f, 0.0f });
+
+    titleRender_.SetScale({ 1.0f, 1.0f, 1.0f });
 	titleRender_.Update();
 }
 

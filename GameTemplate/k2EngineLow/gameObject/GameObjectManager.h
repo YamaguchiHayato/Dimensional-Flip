@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  *@brief	CGameObjectのマネージャー。
  */
 
@@ -246,4 +246,3 @@ namespace nsK2EngineLow {
 
 	
 
- 

@@ -1,7 +1,14 @@
 #include "stdafx.h"
+#include "Src/Actor/Character/Player.h"
+#include "Src/Camera/CameraManager.h"
+
+// ステージ。
 #include "StageManager.h"
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Stage/Stage2.h"
+// ギミック。
+#include "Src/Actor/Stage/Gimmick/IGimmic.h"
+#include "Src/Actor/Stage/Gimmick/RotationFool.h"
 
 StageManager* StageManager::pStageManger_  =nullptr;
 
@@ -40,6 +47,7 @@ void StageManager::Update()
         // ステージリクエストをクリア
         requestID_s_ = StageID::sInvalid;
     }
+
 
     // ステージの更新処理。
     if (pCurrentStage_ != nullptr)

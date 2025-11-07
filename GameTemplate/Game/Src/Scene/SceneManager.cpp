@@ -1,14 +1,35 @@
 #include "stdafx.h"
+#include "Fade.h"
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
 #include "Src/Scene/SceneManager.h"
+#include "Src/Scene/FadeScene.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 
+SceneManager::~SceneManager()
+{
+    if (pCurrentScene_ != nullptr)
+    {
+        delete pCurrentScene_;
+        pCurrentScene_ = nullptr;
+    }
 
+    if (pFade_ != nullptr)
+    {
+        DeleteGO(pFade_);
+        pFade_ = nullptr;
+    }
+}
 
 bool SceneManager::Start()
 {
+    // フェードシーンの生成。
+    pFade_ = NewGO<Fade>(1, "fade");
+    if (pFade_ == nullptr)
+    {
+        return false;
+    }
     // 最初のシーンを生成。
     pCurrentScene_ = CreateScene(SceneID::sTitle);
     if (pCurrentScene_)
@@ -16,6 +37,9 @@ bool SceneManager::Start()
         pCurrentScene_->Start();
         // シーンの初期値を設定する。
         currentID_ = SceneID::sTitle;
+            
+        //// ゲーム開始時にFadeEndを開始する。s
+        //pFade_->FadeTransition(FadeState::FadeEnd);
         return true;
     }
     return false;
@@ -43,6 +67,7 @@ void SceneManager::Update()
         requestID_ = SceneID::sInvalid;
     }
 
+
     if (pCurrentScene_ != nullptr)
     {
         pCurrentScene_->Update();
@@ -54,18 +79,23 @@ IScene* SceneManager::CreateScene(SceneID id)
     IScene* newScene = nullptr;
     switch (id)
     {
+        // ケース: フェードシーン。
+        case SceneID::sFade:
+             newScene = new FadeScene();
+             break;
+
         // ケース: タイトルシーン。
         case SceneID::sTitle:
              newScene= new TitleScene();
              break;
 
-         // ケース: インゲームシーン。
-         case SceneID::sInGame:
-              newScene = new InGameScene();
-              break;
+        // ケース: インゲームシーン。
+        case SceneID::sInGame:
+             newScene = new InGameScene();
+             break;
 
-          default:
-              break;
+        default:
+             break;
     }
 
     return newScene;

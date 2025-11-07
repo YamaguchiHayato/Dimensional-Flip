@@ -1,7 +1,12 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
 
-class Player;
+namespace
+{
+    const Vector3 StartPos(0.0f, 101.0f, 0.0f);
+}
+
+class RotationFool;
 class Stage2 : public IStage
 {
 public:
@@ -16,9 +21,22 @@ public:
 	{
 		return IStage::InitStage(stagename);
 	};
+// ゲッター。
+public:
+    inline Vector3 GetStageStartPos() const override
+    {
+        return StartPos;
+    }
 
+// ギミック生成。
+private:
+    inline void RotationFoolNewGO(); // 回転トリック。
 
 private:
-    Player* pPlayer_ = nullptr;
+    // ギミック。
+    RotationFool* pRotationFool_ = nullptr;
+
+private:
+    Vector3 scale_ = Vector3::One;
 };
 

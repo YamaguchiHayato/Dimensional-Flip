@@ -14,47 +14,47 @@ public:
 	{
 		return UIBase::InitUI(UIname);
 	}
-	/* ƒXƒRƒA‚ÌXVˆ—B*/
+    // ã‚¹ã‚³ã‚¢ã®æ›´æ–°å‡¦ç†ã€‚
 	void UpdateScore();
-private:
-	/* ƒXƒRƒA‚Ì‰æ‘œ‚ğ‚Ü‚Æ‚ß‚ÄInit‚·‚éˆ—B*/
-	void InitUIScore();
+    // ã‚¹ã‚³ã‚¢ã®ãƒªã‚»ãƒƒãƒˆå‡¦ç†ã€‚
+    inline void ResetScore()
+    {
+        score_ = 0.0f;
+    }
 
 private:
-	/* ƒvƒŒƒCƒ„[‚Ìƒ|ƒCƒ“ƒ^B*/
-	Player* player_ = nullptr;
+    // UIã®åˆæœŸåŒ–å‡¦ç†ã€‚
+	void InitUIScore();
 private:
-	/* SCORE‚Ì‰æ‘œ•\¦—pƒXƒvƒ‰ƒCƒgB*/
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿ã€‚
+	Player* pPlayer_ = nullptr;
+private:
+    // ã‚¹ã‚³ã‚¢è¡¨ç¤ºç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã€‚
 	SpriteRender UIScoreText_;
-	/* ƒXƒRƒA‚ÌŒ…•\¦—pƒXƒvƒ‰ƒCƒgB*/
-	/* 100000‚ÌˆÊB*/
+    // ã‚¹ã‚³ã‚¢æ•°å­—åˆ—æŒ™å‹ã€‚
+    // å„æ¡ã®æ•°å­—ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®åˆ—æŒ™å‹ã€‚
 	SpriteRender UIScore_HundredThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	/* 10000‚ÌˆÊB*/
 	SpriteRender UIScore_TenThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	/* 1000‚ÌˆÊB*/
 	SpriteRender UIScore_ThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	/* 100‚ÌˆÊB*/
 	SpriteRender UIScore_HundredDigit[static_cast<int>(enUINumber::enNumber_Num)];		
-	/* 10‚ÌˆÊB*/
 	SpriteRender UIScore_TensDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	/* 1‚ÌˆÊB*/
 	SpriteRender UIScore_OnesDigit[static_cast<int>(enUINumber::enNumber_Num)];
 
 private:
-	/* ƒXƒRƒAB*/
+    // ã‚¹ã‚³ã‚¢é–¢é€£å¤‰æ•°ã€‚
 	float score_ = 0.0f;
-	/* 100000‚ÌˆÊB*/
-	int hundredThousandPlace_ = 0;
-	/* 10000‚ÌˆÊB*/
-	int tenThousandPlace_ = 0;
-	/* 1000‚ÌˆÊB*/
-	int thousandPlace_ = 0;
-	/* 100‚ÌˆÊB*/
-	int hundredPlace_ = 0;
-	/* 10‚ÌˆÊB*/
-	int tenPlace_ = 0;
-	/* 1‚ÌˆÊB*/
-	int onePlace_ = 0;
+    // 100000ã®ä½ã€‚
+	uint8_t hundredThousandPlace_ = 0;
+    // 10000ã®ä½ã€‚
+	uint8_t tenThousandPlace_ = 0;
+    // 1000ã®ä½ã€‚
+	uint8_t thousandPlace_ = 0;
+    // 100ã®ä½ã€‚
+	uint8_t hundredPlace_ = 0;
+    // 10ã®ä½ã€‚
+	uint8_t tenPlace_ = 0;
+    // 1ã®ä½ã€‚
+	uint8_t onePlace_ = 0;
 
 };
 

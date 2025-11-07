@@ -127,7 +127,7 @@ void CalcLinearWipeFromDirection(PSInput In)
 //円形ワイプ
 void CalcLinearWipeFromRound(PSInput In)
 {
-    float2 posFromCenter = In.pos.xy - float2(800.0f, 450.0f);
+    float2 posFromCenter = In.pos.xy - float2(960.0f, 540.0f);
     clip(length(posFromCenter) - linearWipe.size);
 }
 

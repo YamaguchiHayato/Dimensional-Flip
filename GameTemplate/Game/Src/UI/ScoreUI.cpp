@@ -34,7 +34,7 @@ bool ScoreUI::Start()
     InitUIScore();
 
     // プレイヤーの取得。
-	player_ = FindGO<Player>("player");
+	pPlayer_ = FindGO<Player>("player");
 	return true;
 }
 
@@ -127,7 +127,7 @@ void ScoreUI::InitUIScore()
 void ScoreUI::UpdateScore()
 {
     // ジャンプ成功時にスコアを加算。
-	if (player_ != nullptr && player_->DoJumpCheck()) score_ += 100.0f;
+	if (pPlayer_ != nullptr && pPlayer_->DoJumpCheck()) score_ += 100.0f;
 
 	if (score_ > MAX_SCORE) score_ = MAX_SCORE;
 

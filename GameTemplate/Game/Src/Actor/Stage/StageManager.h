@@ -1,6 +1,7 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
 
+class LoadingScene;
 class StageManager : public IStage
 {
 private:
@@ -17,7 +18,8 @@ public:
     void Render(RenderContext& rc) override;
     // ステージの生成処理。
     IStage* CreateStage(StageID id);
-
+    // ステージの同期的変更処理。
+    void ChangeStageSync(StageID newStageID);
 // セッター。
 public:
     // ステージの変更処理。
@@ -35,21 +37,21 @@ public:
         {
             return pCurrentStage_->GetStageStartPos();
         }
-        return Vector3(0.0f, 0.0f, 0.0f);
+        return Vector3::Zero;
     }
-
     // 現在のステージIDを取得。
     // ステージ変更検知で使用。
     inline StageID GetCurrentStageID() const
     {
         return currentID_s_;
     }
-private:
-    StageManager() {};
-    virtual ~StageManager() {};
 
-// static メンバー。
+    StageManager() {};
+    virtual ~StageManager();
+
+
 private:
+    // static メンバー。
     static StageManager* pStageManger_;
 
 public:
@@ -57,7 +59,14 @@ public:
     inline static void CreateInstance()
     {
         if (!pStageManger_)
-            pStageManger_ = new StageManager();
+            pStageManger_ = NewGO<StageManager>(0, "stagemanager");
+    }
+
+    // シングルトンインスタンスの破棄。
+    inline static void DeleteInstance()
+    {
+         DeleteGO(pStageManger_);
+        pStageManger_ = nullptr;
     }
 
     // シングルトンインスタンスを取得
@@ -66,10 +75,4 @@ public:
         return pStageManger_;
     }
 
-    // ステージの解放処理。
-    inline static void DeleteInstance()
-    {
-        delete pStageManger_;
-        pStageManger_ = nullptr;
-    }
 };

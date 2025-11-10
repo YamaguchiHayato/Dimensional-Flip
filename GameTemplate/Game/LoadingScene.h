@@ -1,6 +1,6 @@
 #pragma once
 class Fade;
-class Loading 
+class LoadingScene : public IGameObject
 {
 public:
     bool Start() ;

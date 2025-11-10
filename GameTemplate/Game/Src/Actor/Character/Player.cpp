@@ -47,11 +47,16 @@ bool Player::Start()
 
 	playerCC_.Init(20.0f, 25.0f, playerPos_);
 
+    
 	return true;
 }
 
 void Player::Update()
 {
+    if (isPaused_)
+    {
+        return;
+    }
 	didJumpThisFrame_ = false;
 
 

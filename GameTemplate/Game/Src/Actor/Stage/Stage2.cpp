@@ -9,11 +9,8 @@
 
 namespace
 {
-    const Vector3 STARTPOS(0.0f, 101.0f, 0.0f);
-    //const Vector3 SCALE(1.0f, 1.0f, 1.0f);
-    const Vector3 SCALE(0.125f, 0.125f, 0.125f);
-	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//コリジョンの高さ
-	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//コリジョンの大きさ
+    const Vector3 STARTPOS(98.077f, 140.0f, 15.878f);
+    const Vector3 SCALE(1.0f, 1.0f, 1.0f);
 }
 
 namespace Stage2GimmickPos
@@ -21,14 +18,10 @@ namespace Stage2GimmickPos
     // 回転トリック。
     namespace RotationFoolPosition
     {
-        const Vector3 Pos1(300.0f, 0.0f, -0.0f);
+        const Vector3 Pos1(1500.0f, 200.0f, 15.878f);
     }
 } 
 
-Stage2::~Stage2()
-{
-    DeleteGO(pStageCollision_);
-}
 
 bool Stage2::Start()
 {
@@ -47,20 +40,6 @@ bool Stage2::Start()
     stageRender_.Update();
 	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
 
-	// コリジョン。
-	pStageCollision_ = NewGO<CollisionObject>(0, "collisionobject");
-
-	//コリジョンを動く床に設置
-	pStageCollision_->CreateBox
-	(   stagePos_ + COLLISION_HEIGHT,
-		Quaternion::Identity,
-		COLLISION_SIZE );
-
-
-	// コリジョンを破棄。
-	pStageCollision_->SetIsEnableAutoDelete(false);
-
-
     RotationFoolNewGO();
 	return true;
 }
@@ -71,10 +50,7 @@ void Stage2::Update()
 	stageRender_.Update();
 
 	// 当たり判定。
-	stagePhysics_.SetPosition(stagePos_);
-
-	// コリジョン。
-	pStageCollision_->SetPosition(stagePos_ + COLLISION_HEIGHT);
+	//stagePhysics_.SetPosition(stagePos_);
 }
 
 void Stage2::Render(RenderContext& rc)

@@ -2,14 +2,18 @@
 #include "Level3DRender/LevelRender.h"
 #include "Src/Camera/CameraManager.h"
 #include "stdint.h"
+#include "Src/Scene/SceneManager.h"
+#include "Src/Actor/Stage/IStage.h"
 
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
 
 class CameraManager;
-class Dimensiontrigger;
+class Player;
 class TrackingEnemy;
 class Fade;
+class LoadingScene;
+
 // UI。
 class NumberUI;
 class ScoreUI;
@@ -17,18 +21,24 @@ class TimerUI;
 class HPbarUI;
 
 class Player;
+
 // データ統合クラス。
 class Game : public IGameObject
 {
 public:
     Game() {};
-    virtual ~Game(){};
+    virtual ~Game();
     bool Start();
     void Update();
-    void Render(RenderContext& rc);
 
+    // ステージ遷移要求。
+    void RequestStageTransition(StageID nextStageID);
 private:
-
+    // Player。
+    inline void PlayerInstance()
+    {
+        pPlayer_ = NewGO<Player>(0, "player");
+    }
     // UI。
     inline void UIInstance();
     // 各UIの生成。
@@ -38,35 +48,30 @@ private:
     inline void HPbarInstance();// HPbar。
 
     // その他。
-    inline void FadeStart(); // フェード開始。
     inline void InitSkyCube(); // スカイキューブの初期化。
-    inline void WallNewGO();   // 透明壁の生成。
-    inline void DimensionTriggerNewGO(); // カメラの可動域制限。
-
     inline void EnemyNewGO_Tracking(); // 追尾型敵の生成。
 
-    // ステージが変更された時に呼ばれる処理。
-    void OnStageChange(uint8_t newStageNum);
+    void UpdateTransition();
 
-    inline void ApplyStageSpecifics(uint8_t newStageNum);
 private:
-
-    // カメラ。
     std::unique_ptr<CameraManager> pCameraManager_;
-    
-    // UI。
     TimerUI* pTimerUI_ = nullptr;
     NumberUI* pNumberUI_ = nullptr;
     ScoreUI* pScoreUI_ = nullptr;
     HPbarUI* pHpbarUI_ = nullptr;
-
-    // その他。
     Fade* pFade_ = nullptr;
+    LoadingScene* pLoadingScene_ = nullptr;
     SkyCube* pSkyCube_ = nullptr;
-
     TrackingEnemy* pTrackingEnemy_ = nullptr;
     Player* pPlayer_ = nullptr;
+  
 
+    // 遷移管理用メンバ。
+    SceneTransitionState state_ = SceneTransitionState::None;
+    StageID nextStageID_ = StageID::sInvalid;
+
+    // 時間経過用メンバ。
+    Stopwatch stageClearTimer_;
 private:
     // 現在のステージ番号を追跡するための変数。
     uint8_t currentStageNum_ = -1;

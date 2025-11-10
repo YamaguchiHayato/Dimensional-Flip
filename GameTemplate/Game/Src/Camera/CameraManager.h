@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Src/camera/ICameraStrategy.h"
+#include "Src/Actor/Character/Player.h"
 #include "Game.h"
 
 namespace nsK2EngineLow {

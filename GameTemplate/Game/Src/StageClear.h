@@ -1,20 +1,17 @@
 #pragma once
 #include "stdint.h"
-class Star;
+#include "Game.h"
+#include "Src/Actor/Stage/IStage.h"
+
+
 class StageClear : public IGameObject {
 public:
     StageClear() {}
     ~StageClear() {}
 
     bool Start() ;
-
-public:
-    // クリア状態を返す
-    inline bool IsClear() const { return isClear_; }
 private:
-    Star* pStar_ = nullptr;
+    StageID DecideStage();
 
-private:
-    bool isClear_ = false;
-    std::vector<bool> starCollected_;
+
 };

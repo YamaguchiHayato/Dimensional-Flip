@@ -133,10 +133,7 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Scene\FadeScene.cpp">
-      <Filter>Src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="LoadingScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -239,10 +236,7 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Scene\FadeScene.h">
-      <Filter>Src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Loading.h" />
+    <ClInclude Include="LoadingScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

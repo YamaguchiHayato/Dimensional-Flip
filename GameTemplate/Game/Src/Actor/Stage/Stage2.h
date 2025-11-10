@@ -3,15 +3,17 @@
 
 namespace
 {
-    const Vector3 StartPos(0.0f, 101.0f, 0.0f);
+    const Vector3 StartPos(98.077f, 140.0f, 15.878f);
 }
 
 class RotationFool;
+class Player;
+class CameraManager;
 class Stage2 : public IStage
 {
 public:
 	Stage2() {};
-	virtual ~Stage2();
+	virtual ~Stage2(){};
 
 	bool Start() override;
 	void Update() override;
@@ -28,14 +30,12 @@ public:
         return StartPos;
     }
 
-// ギミック生成。
 private:
     inline void RotationFoolNewGO(); // 回転トリック。
 
 private:
     // ギミック。
     RotationFool* pRotationFool_ = nullptr;
-
 private:
     Vector3 scale_ = Vector3::One;
 };

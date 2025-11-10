@@ -30,9 +30,9 @@ void NumberUI::Update()
 
 void NumberUI::Render(RenderContext& rc)
 {
-	/* 10‚ÌŒ…‚Ì•`‰æB*/
-	UINUmber_TensDigit[tenPlace_].Draw(rc);
-	/* 1‚ÌŒ…‚Ì•`‰æB*/ 
+    // 10ã®æ¡ã®æç”»ã€‚
+    UINUmber_TensDigit[tenPlace_].Draw(rc);
+    // 1ã®æ¡ã®æç”»ã€‚
 	UINUmber_OnesDigit[onePlace_].Draw(rc);
 }
 
@@ -40,26 +40,26 @@ void NumberUI::InitUINumber()
 {
 	for (int i = 0; i <static_cast<int>( enUINumber::enNumber_Num); i++)
 	{
-		/* UI‰æ‘œ‚ÌInit*/
+        // UIç”»åƒã®ãƒ‘ã‚¹ã€‚
 		std::string filePath = "number/UI_" + std::to_string(i);
 		std::string NumberUIPaht = InitUI(filePath);
 
 		UINUmber_TensDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 		UINUmber_OnesDigit[i].Init(NumberUIPaht.c_str(), UI_WIDTH, UI_HEIGHT);
 
-		/* À•W‚Ìİ’èB*/
+        // åº§æ¨™ã®è¨­å®šã€‚
 		UINUmber_TensDigit[i].SetPosition(TensDigit);
 		UINUmber_OnesDigit[i].SetPosition(OnesDigit);
 
-		/* ‘å‚«‚³‚Ìİ’èB*/
+        // å¤§ãã•ã®è¨­å®šã€‚
 		UINUmber_TensDigit[i].SetScale(UI_SCALE);
 		UINUmber_OnesDigit[i].SetScale(UI_SCALE);
 
-		/* æZƒJƒ‰[‚Ìİ’èB*/
+        // ä¹—ç®—ã‚«ãƒ©ãƒ¼ã®è¨­å®šã€‚
 		UINUmber_TensDigit[i].SetMulColor(WHITE);
 		UINUmber_TensDigit[i].SetMulColor(WHITE);
 
-		/* XVˆ—B*/
+        // æ›´æ–°ã€‚
 		UINUmber_TensDigit[i].Update();
 		UINUmber_OnesDigit[i].Update();
 	}
@@ -68,7 +68,7 @@ void NumberUI::InitUINumber()
 
 void NumberUI::UpdateTimer()
 {
-	/* ƒ^ƒCƒ}[‚Ìˆ—B*/
+    // ã‚¿ã‚¤ãƒãƒ¼å‡¦ç†ã€‚
 	if (timer_ > 0.0f)
 	{
 		timer_ -= g_gameTime->GetFrameDeltaTime();
@@ -78,7 +78,8 @@ void NumberUI::UpdateTimer()
 		timer_ = 0.0f;
 	}
 
-	int remainingSeconds = static_cast<int>(timer_); 
+
+	uint8_t remainingSeconds = static_cast<int>(timer_); 
 	tenPlace_ = (remainingSeconds / 10) % 10;   
 	onePlace_ = remainingSeconds % 10;        
 }

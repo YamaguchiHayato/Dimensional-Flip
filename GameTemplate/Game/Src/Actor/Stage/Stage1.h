@@ -1,24 +1,19 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
+#include "Src/Camera/Dimensiontrigger.h"
 
-class Player;
 // ギミック。
 class JumpPad;
 class Star;
 class RotationFool;
-class CameraManager;
-// UI。
-class NumberUI;
-class ScoreUI;
-class TimerUI;
-class HPbarUI;
 
+class Dimensiontrigger;
 // メインクラス。
 class Stage1 : public IStage
 {
 public:
 	Stage1() {};
-	~Stage1();
+	~Stage1(){};
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
@@ -38,26 +33,14 @@ private:
     inline void StarNewGO();// スター。
     inline void WallNewGO();// 透明壁。
     inline void DimensionTriggerNewGO(); // カメラトリガー。
-    // プレイヤー生成。
-    inline void PlayerNewGO(); // プレイヤー。
-    // UI。
-    inline void UIInstance();
-    // 各UIの生成。
-    inline void TimerInstance();// タイマーUI。
-    inline void NumberInstance();// ナンバーUI。
-    inline void ScoreInstance();// スコアUI。
-    inline void HPbarInstance();// HPbar。
+
 
 private:
-    Player* pPlayer_ = nullptr;
-
-    std::unique_ptr<CameraManager> pCameraManager_;
-
-
     // ギミック。
     JumpPad* pJumpPad_ = nullptr;
     Star* pStar_ = nullptr;
     RotationFool* pRotationFool_ = nullptr;
 
+    Dimensiontrigger* pDimensionTrigger_ = nullptr;
 };
 

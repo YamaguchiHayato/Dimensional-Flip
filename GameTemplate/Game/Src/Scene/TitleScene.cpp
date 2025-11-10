@@ -31,7 +31,7 @@ bool TitleScene::Start()
     isFadingOut = false;
 
     // シーン開始と同時にFadeStartを開始する。
-    pFade_->FadeTransition(FadeState::FadeStart);
+    pFade_->StartFadeIn();
 
     return true;
 }
@@ -46,8 +46,8 @@ void TitleScene::Update()
     {
         if (g_pad[0]->IsTrigger(enButtonA))
         {
-        // フェードアウトを開始する。
-        StartFadeOutToInGame();
+            // フェードアウトを開始する。
+            StartFadeOutToInGame();
         }
     }
     else
@@ -65,7 +65,6 @@ void TitleScene::StartFadeOutToInGame()
     isFadingOut = true;
 
     // FadeオブジェクトにFadeOutを指示。
-    pFade_->FadeTransition(FadeState::FadeEnd);
-
+    pFade_->StartFadeOut();
 }
 

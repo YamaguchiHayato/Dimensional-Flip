@@ -9,11 +9,6 @@
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
 
-// UI。
-#include "Src/UI/TimerUI.h"
-#include "Src/UI/NumberUI.h"
-#include "Src/UI/ScoreUI.h"
-#include "Src/UI/HPbarUI.h"
 
 namespace
 {
@@ -51,20 +46,13 @@ namespace GimmickPos
     {
         const Vector3 Pos1 = Vector3(200.0f, 0.0f, 0.0f);
         const Vector3 Pos2 = Vector3(1500.0f,-75.0f, 0.0f );
+        const Vector3 Pos3 = Vector3(1400.0f, -60.0f, -1800.0f);
     }
 }
 
 
-Stage1::~Stage1()
-{
-    DeleteGO(pStageCollision_);
-}
-
 bool Stage1::Start()
 {
-    // 各UIの生成。
-	UIInstance();
-
 
 	const std::string stagePath = InitStage("Stage1/Stage1");
 	stageRender_.Init(stagePath.c_str());
@@ -72,32 +60,12 @@ bool Stage1::Start()
 	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
 	stageRender_.SetScale(SCALE);
 
-	// コリジョン。
-	pStageCollision_ = NewGO<CollisionObject>(0, "collisionobject");
-
-	//コリジョンを動く床に設置
-	pStageCollision_->CreateBox
-	(   stagePos_ + COLLISION_HEIGHT,
-		Quaternion::Identity,
-		COLLISION_SIZE );
-
 	// 座標設定。
 	stageRender_.SetPosition(stagePos_);
 	initPos_ = stagePos_;
 
-	// コリジョンを破棄。
-	pStageCollision_->SetIsEnableAutoDelete(false);
 
-    // プレイヤー生成。
-    PlayerNewGO();
-
-    // カメラマネージャーの生成。
-    pCameraManager_ = std::unique_ptr<CameraManager>
-        (NewGO<CameraManager>(0, "cameramanager"));
-    pPlayer_->InitCameraManager(pCameraManager_.get());
-
-
-    // スター生成。
+     // スター生成。
 	StarNewGO();
 
     // ジャンプパッド生成。
@@ -108,6 +76,7 @@ bool Stage1::Start()
 
     // カメラトリガー生成。
     DimensionTriggerNewGO();
+
 
 	stageRender_.Update();
 	return true;
@@ -121,8 +90,6 @@ void Stage1::Update()
 	// 当たり判定。
 	stagePhysics_.SetPosition(stagePos_);
 
-	// コリジョン。
-	pStageCollision_->SetPosition(stagePos_ + COLLISION_HEIGHT);
 
 }
 
@@ -140,8 +107,8 @@ void Stage1::JumpPadNewGO()
 
 	for (size_t i = 0; i < JumpPadPosList.size(); i++)
 	{
-		auto jumppad = NewGO<JumpPad>(0, "jumppad");
-		jumppad->SetJumpPadPosition(JumpPadPosList[i]);
+		pJumpPad_= NewGO<JumpPad>(0, "jumppad");
+        pJumpPad_->SetJumpPadPosition(JumpPadPosList[i]);
 	}
 }
 
@@ -192,7 +159,7 @@ void Stage1::DimensionTriggerNewGO()
 	std::vector<Vector3> TriggerList =
 	{
 		GimmickPos::TriggerPos::Pos1,
-		GimmickPos::TriggerPos::Pos2 
+		GimmickPos::TriggerPos::Pos2,
 	};
 	for (size_t i = 0; i < TriggerList.size(); i++)
 	{
@@ -202,39 +169,4 @@ void Stage1::DimensionTriggerNewGO()
 
 }
 
-void Stage1::PlayerNewGO()
-{
-    pPlayer_ = NewGO<Player>(0, "player");
-    pPlayer_->SetPlayerPos(Vector3(0.0f, 150.0f, 0.0f));
-}
 
-void Game::UIInstance()
-{
-	TimerInstance();
-
-	NumberInstance();
-
-	ScoreInstance();
-
-	HPbarInstance();
-}
-
-void Game::TimerInstance()
-{
-    pTimerUI_ = NewGO<TimerUI>(0, "timerui");
-}
-
-void Game::NumberInstance()
-{
-    pNumberUI_ = NewGO<NumberUI>(0, "numberui");
-}
-
-void Game::ScoreInstance()
-{
-    pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
-}
-
-void Game::HPbarInstance()
-{
-    pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
-}

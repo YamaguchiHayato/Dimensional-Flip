@@ -51,6 +51,7 @@ bool JumpPad::Start()
 
 void JumpPad::Update()
 {
+    m_player = FindGO<Player>("player");
 	if (m_player == nullptr) return;
 
 	LaunchPlayer();

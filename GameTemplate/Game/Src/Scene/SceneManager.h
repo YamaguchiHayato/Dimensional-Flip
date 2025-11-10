@@ -1,5 +1,19 @@
 #pragma once
 #include "Src/Scene/Scene.h"
+
+// フェード処理の列挙型
+// ロードシーンはステージの描画を待つため細分化。
+enum class SceneTransitionState : uint8_t
+{
+    None,            // 通常状態。
+    FadeOut,         // フェードアウト中。
+    Load,            // ロード準備。
+    Load_Render,     // ローディング画面の準備。
+    Load_Wait,       // 同期ロード実行。
+    Load_WaitFinish, // ロード完了待ち。
+    FadeIn           // フェードイン中。
+};
+
 class Fade;
 class SceneManager : public IScene
 {

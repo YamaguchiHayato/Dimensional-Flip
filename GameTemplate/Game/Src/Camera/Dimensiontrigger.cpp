@@ -31,6 +31,9 @@ bool DimensionTrigger::Start()
 
 void DimensionTrigger::Update()
 {
+    pPlayer_ = FindGO<Player>("player");
+    if (pPlayer_==nullptr) return;
+
     Trigger();
 
 	//レンダラーの更新

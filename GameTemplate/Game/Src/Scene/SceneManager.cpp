@@ -3,7 +3,6 @@
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
 #include "Src/Scene/SceneManager.h"
-#include "Src/Scene/FadeScene.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 
@@ -79,11 +78,6 @@ IScene* SceneManager::CreateScene(SceneID id)
     IScene* newScene = nullptr;
     switch (id)
     {
-        // ケース: フェードシーン。
-        case SceneID::sFade:
-             newScene = new FadeScene();
-             break;
-
         // ケース: タイトルシーン。
         case SceneID::sTitle:
              newScene= new TitleScene();

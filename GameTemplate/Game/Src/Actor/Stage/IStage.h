@@ -35,9 +35,6 @@ public:
     }
 
 protected:
-    CollisionObject* pStageCollision_ = nullptr;
-
-protected:
     ModelRender stageRender_;
 
     Vector3 stagePos_ = Vector3::Zero;

@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Fade.h"
-#include "Src/WallActor.h"
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/Dimensiontrigger.h"
+#include "LoadingScene.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
-#include "Src//Actor/Stage/Gimmick/RotationFool.h"
 // UI。
+#include "Src/UI/UIBase.h"
 #include "Src/UI/TimerUI.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
@@ -29,6 +28,24 @@ namespace GameParameter
 
 
 
+Game::~Game()
+{
+    ///////////////////////////////////////////
+    // StageManagerはシングルトンのため未破棄。
+    ///////////////////////////////////////////
+
+    DeleteGO(pSkyCube_);
+    DeleteGO(pTrackingEnemy_);
+
+    if (pLoadingScene_)
+    {
+        DeleteGO(pLoadingScene_);
+        pLoadingScene_ = nullptr;
+    }
+
+    StageManager::DeleteInstance();
+}
+
 void Game::InitSkyCube()
 {
 	DeleteGO(pSkyCube_);
@@ -44,118 +61,189 @@ void Game::InitSkyCube()
 
 bool Game::Start()
 {
-
     // ステージマネージャーの生成。
     StageManager::CreateInstance();
-    StageManager::GetInstance()->Start();
 
-    FadeStart();
+    UIInstance();
 
-	InitSkyCube();
+    PlayerInstance();
+    pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
+    pPlayer_->InitCameraManager(pCameraManager_.get());
+
+    // SceneManagerから Fade を取得。
+    pFade_ = SceneManager::GetInstance()->GetFade();
+    if (pFade_ == nullptr)
+        return false;
+
+    // 遷移ステートを初期化。
+    state_ = SceneTransitionState::None;
+    nextStageID_ = StageID::sInvalid;
+    pLoadingScene_ = nullptr;
+
+    // Playerの初期位置設定。
+    Vector3 startPos = StageManager::GetInstance()->GetStageStartPos();
+    pPlayer_->SetPlayerPos(startPos);
+
+    // フェードイン開始。
+    pFade_->StartFadeIn();
+    InitSkyCube();
+
+
 
 //	EnemyNewGO_Tracking();
-    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+//  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 
 void Game::Update()
 {
-    // ステージマネージャーの更新。
-    StageManager::GetInstance()->Update();
+    // 遷移処理を毎フレーム更新。
+    UpdateTransition();
 
-    //
-    uint8_t newStageNum = (uint8_t) StageManager::GetInstance()->GetCurrentStageID();
-
-    if (newStageNum != currentStageNum_)
+    // ケースをNoneの状態でのみ、ゲームのメインロジックを実行。
+    if (state_ == SceneTransitionState::None)
     {
-        // 変更時に処理を呼び出す。
-        OnStageChange(newStageNum);
-        // 現在のステージ番号を更新。
-        currentStageNum_ = newStageNum;
-    }
+        // ステージマネージャーの更新。
+        StageManager::GetInstance()->Update();
 
-    // カメラマネージャーの更新。
-    if (pCameraManager_)
-        pCameraManager_->Update();
+        // カメラマネージャーの更新。
+        if (pCameraManager_)
+            pCameraManager_->Update();
+    }
 
  //   StageManager::DeleteInstance();
 }
 
-void Game::OnStageChange(uint8_t newStageNum)
+void Game::RequestStageTransition(StageID nextStageID)
 {
-    // カメラとプレイヤーの移動。
-    Vector3 stageStartPos = StageManager::GetInstance()->GetStageStartPos();
-
-    // カメラの移動。
-    if (pCameraManager_)
+    // 遷移中でければばリクエストを受け付ける。
+    if (state_ == SceneTransitionState::None)
     {
-        // カメラを2D(デフォルト)に戻す。
-        pCameraManager_->Request2DMode();
-        // カメラの角度をリセット。
-        pCameraManager_->Request2DRotation(0.0f);
-    }
-
-    // ステージ固有の処理を呼び出す。
-    ApplyStageSpecifics(newStageNum);
-
-    // 各UIのリセット処理。
-    if (pScoreUI_)
-    {
-        pScoreUI_->ResetScore();
+        nextStageID_ = nextStageID;
+        // フェードアウト開始。
+        state_ = SceneTransitionState::FadeOut;
     }
 }
 
-void Game::ApplyStageSpecifics(uint8_t newStageNum)
+void Game::UpdateTransition()
 {
+    switch (state_)
+    {
+    /////////////////////////////////////////
+    // A. 通常状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::None:
+    {
+        break;
+    }
 
-    // 各ステージがロードされた時の処理。
-    switch (newStageNum)
+    /////////////////////////////////////////
+    // B. フェードアウト状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::FadeOut:
     {
-    case (uint8_t) StageID::sStage1:
-    {
-        // ステージ1固有の処理。
-        // もしこの敵クラスが存在すれば削除。
-        if (pTrackingEnemy_)
-        {
-            DeleteGO(pTrackingEnemy_);
-            pTrackingEnemy_ = nullptr;
-        }
+        // プレイヤーを一時停止状態にする。
+        pPlayer_->SetPaused(true);
+
+        // フェードアウト開始。
+        pFade_->StartFadeOut();
+
+        // ストップウォッチタイマー開始。
+        stageClearTimer_.Start();
+
+        // 次の状態へ。
+        state_ = SceneTransitionState::Load; // Cへ遷移。
         break;
     }
-    case (uint8_t) StageID::sStage2:
+
+    /////////////////////////////////////////
+    // C. ローディング状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::Load:
     {
-        // もし敵クラスがいなければ生成。
-        if (pTrackingEnemy_ == nullptr)
+        // ストップウォッチを停止して、現在までの経過時間を計算。
+        stageClearTimer_.Stop();
+
+        // 1.FadeOutの完了を待つ。
+        if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
         {
-            EnemyNewGO_Tracking();
-        }
+            // 2. Loading画面を表示する。
+            pLoadingScene_ = NewGO<LoadingScene>(0, "LoadingScene");
+
+            // 3. ロードが終わったらFadeInへ
+            state_ = SceneTransitionState::Load_Render; // Dへ遷移。
+         }
         break;
     }
+
+    /////////////////////////////////////////
+    // D. ローディング描画。
+    /////////////////////////////////////////
+    case SceneTransitionState::Load_Render:
+    {
+        state_ = SceneTransitionState::Load_Wait; // Eへ遷移。
+        break;
+    }
+
+    /////////////////////////////////////////
+    // E. 同期ロード状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::Load_Wait:
+    {
+        // このフレームでGame->Renderが呼ばれ、ローディング画面を描画。
+        // 次フレームで同期ロードを開始する。。
+
+        // 3. 同期ロードを実行。
+        StageManager::GetInstance()->ChangeStageSync(nextStageID_);
+
+        // 4. ロード完了後、PlayerとCameraをリセット。
+        Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
+        pPlayer_->SetPlayerPos(newStartPos);
+
+        if (pCameraManager_)
+            // カメラの初期化。
+            pCameraManager_->Request2DMode(); // 2Dモードへ。
+            pCameraManager_->Request2DRotation(0.0f); // 回転角度をリセット。
+
+        // 5. 物理エンジンを1フレーム更新するためFadeInステートへ。
+        state_ = SceneTransitionState::Load_WaitFinish;
+        break;
+    }
+
+    /////////////////////////////////////////
+    // F.ロード完了待ち状態。
+    /////////////////////////////////////////
+
+    case SceneTransitionState::Load_WaitFinish:
+    {
+        // なにも処理を行わずに1フレーム待つ。 
+        state_ = SceneTransitionState::FadeIn;
+        break;
+    }
+         
+    /////////////////////////////////////////
+    // G. フェードイン状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::FadeIn:
+    {
+        // ローディング画面の削除。
+        if (pLoadingScene_ != nullptr)
+        {
+            DeleteGO(pLoadingScene_);
+            pLoadingScene_ = nullptr;
+        }
+        // プレイヤーの一時停止解除。
+        pPlayer_->SetPaused(false);
+        // フェードイン開始。
+        pFade_->StartFadeIn();
+
+        nextStageID_ = StageID::sInvalid;
+        state_ = SceneTransitionState::None; // Aへ遷移。
+        break;
+    }
+        
     default:
-        // 念のため定義されていないステージの場合は敵を削除。
-        if (pTrackingEnemy_)
-        {
-            DeleteGO(pTrackingEnemy_);
-            pTrackingEnemy_ = nullptr;
-        }
         break;
-    }
-}
-
-void Game::Render(RenderContext& rc)
-{
-    StageManager::GetInstance()->Render(rc);
-}
-
-
-void Game::FadeStart()
-{
-    //フェードアウトがおわったかの処理をかく。
-    //終わってたら下のTrans実行を
-    pFade_ = FindGO<Fade>("fade");
-    if (pFade_->IsFadeInEnd())
-    {
-        pFade_->FadeTransition(FadeState::FadeStart);
     }
 }
 
@@ -164,5 +252,36 @@ void Game::EnemyNewGO_Tracking()
 	pTrackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
 	pTrackingEnemy_->enemyPosition_ = {EnemyPosition::Pos1};
 	pTrackingEnemy_->enemyFP_ = pTrackingEnemy_->enemyPosition_;
+}
+
+void Game::UIInstance()
+{
+	TimerInstance();
+
+	NumberInstance();
+
+	ScoreInstance();
+
+	HPbarInstance();
+}
+
+void Game::TimerInstance()
+{
+    pTimerUI_ = NewGO<TimerUI>(0, "timerui");
+}
+
+void Game::NumberInstance()
+{
+    pNumberUI_ = NewGO<NumberUI>(0, "numberui");
+}
+
+void Game::ScoreInstance()
+{
+    pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
+}
+
+void Game::HPbarInstance()
+{
+    pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
 }
 

@@ -71,9 +71,19 @@ public:
     // 座標。
     inline void SetPlayerPos(const Vector3& pos)
     {
+        // 座標設定。
         playerPos_ = pos;
+        // キャラコンんお移動。
+        playerCC_.SetPosition(playerPos_);
+        // モデルの移動。
+        playerRender_.SetPosition(playerPos_);
     }
-// セッターここまで。
+    // 一時停止フラグ。
+    inline void SetPaused(bool isPaused)
+    {
+        isPaused_ = isPaused;
+    }
+    // セッターここまで。
 
 // ゲッター。
 public:
@@ -150,5 +160,5 @@ private:
 
 	bool didJumpThisFrame_ = false;
 	bool returnFlag_ = false; //戻るフラグ
-
+    bool isPaused_ = false;  
 };

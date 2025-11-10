@@ -1,39 +1,33 @@
 #include "stdafx.h"
 #include "Fade.h"
+#include "Src/Actor/Stage/StageManager.h"
 
 bool Fade::Start()
 {
     fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 1920, 1080);
-    
     fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round); 
-    
     fadeSprite_.SetWipeScrollSpeed(-1000.0f);
-
     fadeSprite_.SetWipeSize(900.0f);
+
 
     return true;
 }
 
 void Fade::Update()
 {
+    // フェード状態の変更処理。
     ChangeFadeState();
 
+    // フェードイン完了判定。
     if (fadeSprite_.GetWipeSize() < 0.0f &&
         fadeState_ == FadeState::FadeStart)
     {
         fadeInEnd_ = true; 
     }
 
-    if (fadeSprite_.GetWipeSize() > 900.0f && 
-        fadeState_ == FadeState::FadeEnd)
-    {
-        fadeOutEnd_ = true;
-    }
-
-    if (fadeState_ == FadeState::Loading)
-    {
-        LoadingProcess();
-    }
+    // フェードアウト完了判定。
+    if (fadeSprite_.GetWipeSize() > 900.0f && fadeState_ == FadeState::FadeEnd)
+    fadeOutEnd_ = true;
 
     fadeSprite_.Update();
 }
@@ -43,11 +37,6 @@ void Fade::Render(RenderContext& rc)
     if (fadeInEnd_ == true) return;
 
     fadeSprite_.Draw(rc);
-
-}
-
-void Fade::LoadingProcess()
-{
 
 }
 
@@ -73,28 +62,24 @@ void Fade::ChangeFadeState()
     }
 }
 
-void Fade::FadeTransition(FadeState fadeState)
+void Fade::StartFadeOut()
 {
-    fadeState_ = fadeState;
+  fadeState_ = FadeState::FadeEnd;
+  fadeSprite_.SetWipeScrollSpeed(1000.0f); // フェードの速度。
+  fadeSprite_.SetFadeTransition(fadeState_);
+  fadeTransitionFlag_ = false;
 
-    if (fadeState == FadeState::FadeStart)
-    {
-        fadeSprite_.SetWipeScrollSpeed(-1000.0f);
-    }
+  fadeInEnd_ = false;
+  fadeOutEnd_ = false;
+}
 
-    else
-    {
-        fadeSprite_.SetWipeScrollSpeed(1000.0f);
-    }
-
-     fadeSprite_.SetFadeTransition(fadeState_);
+void Fade::StartFadeIn()
+{
+    fadeState_ = FadeState::FadeStart;
+    fadeSprite_.SetWipeScrollSpeed(-1000.0f); // フェードインの速度
+    fadeSprite_.SetFadeTransition(fadeState_);
     fadeTransitionFlag_ = false;
 
     fadeInEnd_ = false;
     fadeOutEnd_ = false;
-
-    if (fadeState_ == FadeStart)
-    {
-       loadingFlag_ = false;
-    }
 }

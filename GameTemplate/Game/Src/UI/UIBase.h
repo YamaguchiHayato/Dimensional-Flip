@@ -21,7 +21,7 @@ protected:
     // UI用の画像パス初期化関数。
 	virtual const std::string InitUI(const std::string& UIname) 
 	{
-		std::string UIpath = "Assets/stage/" + UIname + ".DDS";
+		std::string UIpath = "Assets/UI/" + UIname + ".DDS";
 		return UIpath;
 	};
 	

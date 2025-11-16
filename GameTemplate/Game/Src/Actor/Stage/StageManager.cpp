@@ -12,7 +12,7 @@
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 
 #include "Src/Scene/SceneManager.h"
-#include "LoadingScene.h"
+#include "Src/Scene/LoadingScene.h"
 #include "Fade.h"
 
 StageManager* StageManager::pStageManger_  =nullptr;
@@ -24,6 +24,8 @@ StageManager::~StageManager()
     {
         pStageManger_ = nullptr;
     }
+
+    DeleteGO(pCurrentStage_);
 }
 
 bool StageManager::Start()
@@ -94,7 +96,7 @@ void StageManager::Render(RenderContext& rc)
 
     if (pLoadingScene == nullptr && pCurrentStage_ != nullptr)
     {
-        pCurrentStage_->Render(rc);
+//        pCurrentStage_->Render(rc);
     }
 }
 

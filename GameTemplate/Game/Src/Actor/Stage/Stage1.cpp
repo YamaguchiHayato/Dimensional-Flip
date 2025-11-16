@@ -50,6 +50,13 @@ namespace GimmickPos
     }
 }
 
+Stage1::~Stage1()
+{
+    DeleteGO(pJumpPad_);
+    DeleteGO(pStar_);
+    DeleteGO(pWall_);
+    DeleteGO(pDimensionTrigger_);
+}
 
 bool Stage1::Start()
 {
@@ -139,16 +146,17 @@ void Stage1::WallNewGO()
 
 	for (size_t i = 0; i < WallPosList.size(); i++)
 	{
-		auto wall = NewGO<WallActor>(0, "wall");
+       
+		pWall_ = NewGO<WallActor>(0, "wall");
 
 		if (i == 3) 
 		{
 			Quaternion wallRot;
 			wallRot.SetRotationDegY(90.0f);
-			wall->SetWallRot(wallRot);
+			pWall_->SetWallRot(wallRot);
 		}
 
-        wall->SetWallPos(WallPosList[i]);
+        pWall_->SetWallPos(WallPosList[i]);
 
 	}
 
@@ -163,8 +171,8 @@ void Stage1::DimensionTriggerNewGO()
 	};
 	for (size_t i = 0; i < TriggerList.size(); i++)
 	{
-		auto trigger = NewGO<DimensionTrigger>(0, "dimensiontrigger");
-		trigger->SetTriggerPos(TriggerList[i]);
+		pDimensionTrigger_ = NewGO<DimensionTrigger>(0, "dimensiontrigger");
+		pDimensionTrigger_->SetTriggerPos(TriggerList[i]);
 	}
 
 }

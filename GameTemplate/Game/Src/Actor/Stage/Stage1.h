@@ -1,19 +1,18 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
-#include "Src/Camera/Dimensiontrigger.h"
 
 // ギミック。
 class JumpPad;
 class Star;
-class RotationFool;
+class WallActor;
+class DimensionTrigger;
 
-class Dimensiontrigger;
 // メインクラス。
 class Stage1 : public IStage
 {
 public:
 	Stage1() {};
-	~Stage1(){};
+	~Stage1();
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
@@ -39,8 +38,9 @@ private:
     // ギミック。
     JumpPad* pJumpPad_ = nullptr;
     Star* pStar_ = nullptr;
-    RotationFool* pRotationFool_ = nullptr;
-
-    Dimensiontrigger* pDimensionTrigger_ = nullptr;
+        
+    Stage1* pStage1_ = nullptr;
+    WallActor* pWall_ = nullptr;
+    DimensionTrigger* pDimensionTrigger_ = nullptr;
 };
 

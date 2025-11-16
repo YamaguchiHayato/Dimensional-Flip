@@ -225,13 +225,13 @@
   <ItemGroup>
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp" />
@@ -247,6 +247,7 @@
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\GameClear.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
+    <ClCompile Include="Src\Scene\LoadingScene.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Scene\SceneManager.cpp" />
     <ClCompile Include="Src\Scene\TitleScene.cpp" />
@@ -268,13 +269,13 @@
   <ItemGroup>
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\IEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Player.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\GameClear.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />
+    <ClInclude Include="Src\Scene\LoadingScene.h" />
     <ClInclude Include="Src\Scene\Scene.h" />
     <ClInclude Include="Src\Scene\SceneManager.h" />
     <ClInclude Include="Src\Scene\TitleScene.h" />

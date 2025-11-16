@@ -42,6 +42,14 @@ void ScoreUI::Update()
 {
     // スコアの更新処理。
 	UpdateScore();
+
+    UIScoreText_.Update();
+    UIScore_HundredThousandDigit[hundredThousandPlace_].Update();
+    UIScore_TenThousandDigit[tenThousandPlace_].Update();
+    UIScore_ThousandDigit[thousandPlace_].Update();
+    UIScore_HundredDigit[hundredPlace_].Update();
+    UIScore_TensDigit[tenPlace_].Update();
+    UIScore_OnesDigit[onePlace_].Update();
 }
 
 void ScoreUI::Render(RenderContext& rc)

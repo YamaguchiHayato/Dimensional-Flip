@@ -93,6 +93,7 @@ namespace nsK2EngineLow {
 		static const Vector3 AxisY;
 		static const Vector3 AxisZ;
 		static const Vector3 One;
+		static const Vector3 Hundred;
 	public:
 		/// <summary>
 		/// XMVECTOR�ւ̈Öق̕ϊ��B

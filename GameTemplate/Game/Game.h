@@ -49,7 +49,6 @@ private:
 
     // その他。
     inline void InitSkyCube(); // スカイキューブの初期化。
-    inline void EnemyNewGO_Tracking(); // 追尾型敵の生成。
 
     void UpdateTransition();
 
@@ -62,15 +61,12 @@ private:
     Fade* pFade_ = nullptr;
     LoadingScene* pLoadingScene_ = nullptr;
     SkyCube* pSkyCube_ = nullptr;
-    TrackingEnemy* pTrackingEnemy_ = nullptr;
     Player* pPlayer_ = nullptr;
   
 
     // 遷移管理用メンバ。
     SceneTransitionState state_ = SceneTransitionState::None;
     StageID nextStageID_ = StageID::sInvalid;
-
-    // 時間経過用メンバ。
     Stopwatch stageClearTimer_;
 private:
     // 現在のステージ番号を追跡するための変数。

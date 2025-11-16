@@ -2,8 +2,7 @@
 #include "Game.h"
 #include "Fade.h"
 #include "Src/Actor/Character/Player.h"
-#include "LoadingScene.h"
-#include "Src/Actor/Character/Enemy/TrackingEnemy.h"
+#include "Src/Scene/LoadingScene.h"
 // UI。
 #include "Src/UI/UIBase.h"
 #include "Src/UI/TimerUI.h"
@@ -35,7 +34,6 @@ Game::~Game()
     ///////////////////////////////////////////
 
     DeleteGO(pSkyCube_);
-    DeleteGO(pTrackingEnemy_);
 
     if (pLoadingScene_)
     {
@@ -61,12 +59,18 @@ void Game::InitSkyCube()
 
 bool Game::Start()
 {
-    // ステージマネージャーの生成。
+    // StageManagerの生成。
     StageManager::CreateInstance();
+    // こいつを有効にしないとStage1が生成されない。
+    StageManager::GetInstance()->Start();
 
+    // UIの生成。
     UIInstance();
 
+    // Playerの生成。
     PlayerInstance();
+
+    // CameraManagerの生成。
     pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
     pPlayer_->InitCameraManager(pCameraManager_.get());
 
@@ -88,10 +92,8 @@ bool Game::Start()
     pFade_->StartFadeIn();
     InitSkyCube();
 
-
-
-//	EnemyNewGO_Tracking();
-//  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+    // 物理デバッグワイヤーフレーム表示有効化。
+    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 
@@ -111,7 +113,6 @@ void Game::Update()
             pCameraManager_->Update();
     }
 
- //   StageManager::DeleteInstance();
 }
 
 void Game::RequestStageTransition(StageID nextStageID)
@@ -134,6 +135,7 @@ void Game::UpdateTransition()
     /////////////////////////////////////////
     case SceneTransitionState::None:
     {
+        // 何もしない。
         break;
     }
 
@@ -213,7 +215,6 @@ void Game::UpdateTransition()
     /////////////////////////////////////////
     // F.ロード完了待ち状態。
     /////////////////////////////////////////
-
     case SceneTransitionState::Load_WaitFinish:
     {
         // なにも処理を行わずに1フレーム待つ。 
@@ -234,8 +235,13 @@ void Game::UpdateTransition()
         }
         // プレイヤーの一時停止解除。
         pPlayer_->SetPaused(false);
+
         // フェードイン開始。
         pFade_->StartFadeIn();
+
+        // TimerUIをリセットする。
+        pNumberUI_->ResetTimer();
+
 
         nextStageID_ = StageID::sInvalid;
         state_ = SceneTransitionState::None; // Aへ遷移。
@@ -247,12 +253,6 @@ void Game::UpdateTransition()
     }
 }
 
-void Game::EnemyNewGO_Tracking()
-{
-	pTrackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
-	pTrackingEnemy_->enemyPosition_ = {EnemyPosition::Pos1};
-	pTrackingEnemy_->enemyFP_ = pTrackingEnemy_->enemyPosition_;
-}
 
 void Game::UIInstance()
 {

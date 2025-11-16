@@ -26,7 +26,6 @@ protected:
 
 // コリジョンステータス。
 protected:
-    const Vector3 gimmickScale_;// ギミックの大きさ
     const Vector3 collisonHeight_;// コリジョンの高さ
     const Vector3 collisonSize_;// コリジョンの大きさ
 

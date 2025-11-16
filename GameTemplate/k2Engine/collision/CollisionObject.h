@@ -1,6 +1,11 @@
 #pragma once
 #include "physics/PhysicsGhostObject.h"
-
+#include "LinearMath/btVector3.h"
+#include "LinearMath/btQuaternion.h"
+#include "LinearMath/btTransform.h"
+#include "BulletDynamics/Dynamics/btRigidBody.h"
+#include "BulletCollision/CollisionShapes/btSphereShape.h"
+#include "LinearMath/btDefaultMotionState.h"
 
 namespace nsK2Engine {
 	/// <summary>
@@ -14,11 +19,11 @@ namespace nsK2Engine {
 		bool Start();
 		void Update();
 		/// <summary>
-	/// ボックス形状のゴーストオブジェクトを作成。
-	/// </summary>
-	/// <param name="pos">座標。</param>
-	/// <param name="rot">回転。</param>
-	/// <param name="size">サイズ。</param>
+	    /// ボックス形状のゴーストオブジェクトを作成。
+	    /// </summary>
+	    /// <param name="pos">座標。</param>
+	    /// <param name="rot">回転。</param>
+	    /// <param name="size">サイズ。</param>
 		void CreateBox(Vector3 pos, Quaternion rot, Vector3 size)
 		{
 			m_physicsGhostObject.CreateBox(pos, rot, size);
@@ -87,6 +92,76 @@ namespace nsK2Engine {
 		{
 			m_physicsGhostObject.SetPosition(position);
 		}
+
+		/// <summary>
+		/// ヘルパー関数。
+		/// <summary>
+        inline btVector3 ConvertToBtVector3(const Vector3& v)
+	    {
+		       return btVector3(v.x, v.y, v.z);
+	    }
+	    inline Vector3 ConvertToVector3(const btVector3& v)
+ 	    {
+	 	       return Vector3(v.getX(), v.getY(), v.getZ());
+	    }
+	    inline btQuaternion ConvertToBtQuaternion(const Quaternion& q)
+	    {
+		       return btQuaternion(q.x, q.y, q.z, q.w);
+	    }
+	    inline Quaternion ConvertToQuaternion(const btQuaternion& q)
+	    {
+		       return Quaternion(q.getX(), q.getY(), q.getZ(), q.getW());
+	    }
+
+		/// <summary>
+		/// 球形状の「動的な剛体(Rigidbody)」を作成します。
+		/// </summary>
+  //      void CreateDynamicSphere(Vector3 pos, float radius, float mass)
+		//{
+		//	// 1. 球の「形状(Shape)」を作成
+		//	// (※ 形状は使い回せるため、本当は new しない方がよいが、一旦これで動かす)
+		//	btCollisionShape* collisionShape = new btSphereShape(radius);
+
+		//	// 2. 「モーション状態(MotionState)」を作成 (位置や回転の管理)
+		//	btTransform startTransform;
+		//	startTransform.setIdentity();
+		//	// ↓ 【バグ修正】pos_ ではなく引数の pos を使う
+		//	startTransform.setOrigin(ConvertToBtVector3(pos)); 
+		//	btMotionState* motionState = new btDefaultMotionState(startTransform);
+
+		//	// 3. 慣性(Inertia)の計算 (質量が0でなければ)
+		//	btVector3 localInertia(0, 0, 0);
+		//	if (mass != 0.0f) {
+		//		collisionShape->calculateLocalInertia(mass, localInertia);
+		//	}
+
+		//	// 4. 剛体(Rigidbody)の「構築情報」を作成
+		//	// ↓ 【バグ修正】localInertia を追加
+		//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShape, localInertia);
+
+		//	// 5. 剛体(Rigidbody)を new で作成
+		//	// ↓ 【バグ修正】const を削除
+		//	btRigidBody* body = new btRigidBody(rbInfo);
+
+		//	// 6. メンバー変数に保存
+		//	this->btRigidBody_ = body;
+
+		//	// 7. 物理ワールドに剛体を追加 (※この関数はあなたのエンジンに合わせてください)
+		//	PhysicsWorld::GetInstance()->AddRigidBody(body); 
+
+		//	// 8. 剛体に紐づける (当たり判定のコールバックで使うため)
+		//	body->setUserPointer(this);
+		//}
+		const Quaternion GetRot() const
+		{
+			return rot_;
+		}
+
+		const Vector3 GetPos() const
+		{
+			return pos_;
+		}
+
 		/// <summary>
 		/// 回転を設定。
 		/// </summary>
@@ -197,6 +272,9 @@ namespace nsK2Engine {
 			return m_isEnable;
 		}
 	private:
+		btRigidBody* btRigidBody_ = nullptr; // 動的な剛体(Rigidbody)。
+		Quaternion rot_ = Quaternion::Identity;	//回転。
+		Vector3 pos_ = Vector3::Zero;		//座標。
 		PhysicsGhostObject			m_physicsGhostObject;				//ゴーストオブジェクト。
 		const char* m_name = nullptr;					//名前。
 		float						m_timer = 0.0f;						//タイマー。

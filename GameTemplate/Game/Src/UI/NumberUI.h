@@ -12,43 +12,49 @@ public:
 	bool Start() override;
 	void Update() override;
 	void Render(RenderContext& rc)override;
-	virtual const std::string InitUI(const std::string& UIname) override{
+	inline virtual const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
 
-	/* ƒ^ƒCƒ}[‚ÌXVˆ—B*/
+    // ã‚¿ã‚¤ãƒãƒ¼æ›´æ–°å‡¦ç†ã€‚
 	void UpdateTimer();
-	/* ƒ^ƒCƒ}[‚ÌŠJnB*/ 
+    // ã‚¿ã‚¤ãƒãƒ¼é–‹å§‹ãƒ•ãƒ©ã‚°ã®ã‚²ãƒƒã‚¿ãƒ¼ã€‚
 	bool IsTimerStart() const
 	{
 		return isTimerStart_;
 	}
-	/* ƒtƒ@ƒCƒ‹ƒpƒX“à‚Ìdds‚ğ‚Ü‚Æ‚ß‚ÄInit‚·‚éŠÖ”B */
+    // æ•°å­—UIã®åˆæœŸåŒ–ã€‚
 	void InitUINumber();
 
+    // ã‚¿ã‚¤ãƒãƒ¼ãƒªã‚»ãƒƒãƒˆå‡¦ç†ã€‚
+    // å„ã‚¹ãƒ†ãƒ¼ã‚¸é–‹å§‹æ™‚ã«å‘¼ã¶ã€‚
+    inline void ResetTimer()
+    {
+        timer_ = 180.0f;
+    }
 private:
-	
-	/* ”š•\¦—pB*/
+
+    // æ•°å­—ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
 	SpriteRender UINumber_[static_cast<int>(enUINumber::enNumber_Num)];
 	SpriteRender UINUmber_TensDigit[static_cast<int>(enUINumber::enNumber_Num)];
 	SpriteRender UINUmber_OnesDigit[static_cast<int>(enUINumber::enNumber_Num)];
 
-/* ƒ[ƒJƒ‹•Ï”B*/
+// 
 private:
-	/* ƒ^ƒCƒ€UI•`‰æƒtƒ‰ƒOB*/
-	bool isTimeUIDrawing_ = true;						
-	/* ƒ^ƒCƒ}[ŠJnƒtƒ‰ƒOB*/
+    // ã‚¿ã‚¤ãƒãƒ¼UIæç”»ãƒ•ãƒ©ã‚°ã€‚
+	bool isTimeUIDrawing_ = true;
+    // ã‚¿ã‚¤ãƒãƒ¼é–‹å§‹ãƒ•ãƒ©ã‚°ã€‚
 	bool isTimerStart_ = false;
-	/* ŠÔØ‚êƒtƒ‰ƒOB */
-	bool timeUpFlag_ = false;		
-	/* §ŒÀŠÔB*/ 
+    // ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—ãƒ•ãƒ©ã‚°ã€‚
+	bool timeUpFlag_ = false;
+    // ã‚¿ã‚¤ãƒãƒ¼ã€‚
 	float timer_ = 90.0f;
-	/* F‚Ì•Ï‰»B*/
-	float colorChange_ = 0.0f;													
-	/* 10‚ÌˆÊB*/
-	int tenPlace_ = 0;	
-	/* 1‚ÌˆÊB*/ 
-	int onePlace_ = 0;								
+    // è‰²ã‚’å¤‰åŒ–ã€‚
+	float colorChange_ = 0.0f;
+    // 10ã®ä½ã€‚
+	uint8_t tenPlace_ = 0;
+    // 1ã®ä½ã€‚
+	uint8_t onePlace_ = 0;								
 
 };
 

@@ -26,6 +26,9 @@ bool NumberUI::Start()
 void NumberUI::Update()
 {
 	UpdateTimer();
+
+    UINUmber_OnesDigit[onePlace_].Update();
+    UINUmber_TensDigit[tenPlace_].Update();
 }
 
 void NumberUI::Render(RenderContext& rc)
@@ -79,7 +82,7 @@ void NumberUI::UpdateTimer()
 	}
 
 
-	uint8_t remainingSeconds = static_cast<int>(timer_); 
+	uint8_t remainingSeconds = static_cast<uint8_t>(timer_); 
 	tenPlace_ = (remainingSeconds / 10) % 10;   
 	onePlace_ = remainingSeconds % 10;        
 }

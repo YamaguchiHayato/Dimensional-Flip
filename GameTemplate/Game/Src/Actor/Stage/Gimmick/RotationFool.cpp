@@ -5,8 +5,7 @@
 
 namespace
 {
-    const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//コリジョンの高さ
-	const Vector3 COLLISION_SIZE (365.0f, 5.0f, 225.0f);//コリジョンの大きさ
+    const Vector3 GIMMICKCOLLISION(0.0f, 0.0f, 0.0f);//コリジョンの高さ
 	const Vector3 SCALE(3.0f, 3.0f, 5.0f);	//モデルの大きさ
 
 }
@@ -28,32 +27,20 @@ bool RotationFool::Start()
 	
 	// モデルの大きさ。
 	gimmickRender_.SetScale(SCALE);
-
 	// モデルの更新作業。
 	gimmickRender_.Update();
 
 	// 探索処理。
 	pPlayer = FindGO<Player>("player");
 
-	// 当たり判定。
+    // 物理。
     gimmickPhysics_.CreateFromModel(gimmickRender_.GetModel(), gimmickRender_.GetModel().GetWorldMatrix());
-
 	// コリジョン。
 	pGimmickCollision_ = NewGO<CollisionObject>(0, "collisionobject");
-
-
 	//コリジョンを動く床に設置
-	pGimmickCollision_->CreateBox
-	(
-		gimmickPos_ + COLLISION_HEIGHT,
-		Quaternion::Identity,
-		COLLISION_SIZE
-	);
-
+	pGimmickCollision_->CreateBox(gimmickPos_ + GIMMICKCOLLISION,Quaternion::Identity, GIMMICKCOLLISION);
 	// 座標を設定。
 	gimmickRender_.SetPosition(gimmickPos_);
-    initGimmickPos_ = gimmickPos_;
-
 	// コリジョンを破棄。
 	pGimmickCollision_->SetIsEnableAutoDelete(false);
     return true;
@@ -61,12 +48,16 @@ bool RotationFool::Start()
 
 void RotationFool::Update()
 {
-    // ギミックの更新。
+    // ギミックの移動。
+    Move(g_gameTime->GetFrameDeltaTime());
+    // ギミックモデルの更新。
     gimmickRender_.Update();
-    // ギミックの物理設定。
+    // ギミックモデルの座標更新。
+    gimmickRender_.SetPosition(gimmickPos_);
+    // ギミック物理の座標更新。
     gimmickPhysics_.SetPosition(gimmickPos_);
     // ギミックコリジョンの設定。
-    pGimmickCollision_->SetPosition(gimmickPos_ + collisonHeight_);
+    pGimmickCollision_->SetPosition(gimmickPos_ + GIMMICKCOLLISION);
 }
 
 void RotationFool::Render(RenderContext& rc)
@@ -74,3 +65,81 @@ void RotationFool::Render(RenderContext& rc)
     gimmickRender_.Draw(rc);
 }
 
+void RotationFool::Move(float deltaTime)
+{
+    // 
+    switch (foolState_)
+    {
+    /////////////////////////////////////////
+    // A. 上昇状態。
+    /////////////////////////////////////////
+    case FoolState::UP:
+        // 上昇中。
+        gimmickPos_.y += moveSpeed_* g_gameTime->GetFrameDeltaTime();
+        // 上限に達したかをチェック。
+        if (gimmickPos_.y >= GetTopPos().y)
+        {
+            // 座標を上端に合わせる。
+            gimmickPos_.y = GetTopPos().y;
+            // ステートをTOPに変更。
+            foolState_ = FoolState::TOP;
+            // 待機タイマーをセットする。
+            SetStopTime(2.0f);
+
+            gimmickRender_.SetPosition(gimmickPos_);
+        }
+        break;
+
+    /////////////////////////////////////////
+    // B. 上停止状態。
+    ////////////////////////////////////////
+    case FoolState::TOP:
+        // 停止時間のカウントダウンを始める。
+        stopTime_ -= deltaTime;
+
+        // タイマーが0以下になったら。
+        if (stopTime_ <= 0.0f)
+        {
+            // タイマーをリセットする。
+            SetStopTime(2.0f); 
+            // ステートをDOWNに変更する。
+            foolState_ = FoolState::DOWN;
+        }
+    break;
+
+    /////////////////////////////////////////
+    // C. 下降状態。
+    ////////////////////////////////////////
+    case FoolState::DOWN:
+        // 下降中。
+        gimmickPos_.y -= moveSpeed_ * g_gameTime->GetFrameDeltaTime();
+
+        // 下端に到達したか。
+        if (gimmickPos_.y <= GetInitPos().y)
+        {
+            // 座標を下端に合わせる。
+            gimmickPos_.y = GetInitPos().y;
+            // ステートをBOTTOMに変更する。
+            foolState_ = FoolState::BOTTOM;
+            // 待機タイマーをセットする。
+            SetStopTime(2.0f);
+        }
+        break;
+    /////////////////////////////////////////
+    // D. 下降状態。
+    ////////////////////////////////////////
+    case FoolState::BOTTOM:
+        // 停止時間のカウントダウンを始める。
+        stopTime_ -= deltaTime;
+
+        // タイマーが0以下になったら。
+        if (stopTime_ <= 0.0f)
+        {
+            SetStopTime(2.0f); // タイマーをリセットする。
+            foolState_ = FoolState::UP;
+        }
+        break;
+    default:
+        break;
+    }
+}

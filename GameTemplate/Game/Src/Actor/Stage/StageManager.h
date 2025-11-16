@@ -1,5 +1,12 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Actor.h"
+
+namespace StageStartPos
+{
+//    const Vector3 stage2(0.0f, 100.0f, 0.0f);
+    const Vector3 stage2(3000.0f, 800.0f, -60.0f);
+}
 
 class LoadingScene;
 class StageManager : public IStage
@@ -13,7 +20,7 @@ public:
     // 初期化処理。
     bool Start() override;
     // 更新処理。
-    void Update() override;
+    void Update()override;
     // 描画処理。
     void Render(RenderContext& rc) override;
     // ステージの生成処理。
@@ -37,7 +44,7 @@ public:
         {
             return pCurrentStage_->GetStageStartPos();
         }
-        return Vector3::Zero;
+        return StageStartPos::stage2;
     }
     // 現在のステージIDを取得。
     // ステージ変更検知で使用。

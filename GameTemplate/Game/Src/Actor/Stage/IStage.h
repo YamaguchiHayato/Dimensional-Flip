@@ -17,18 +17,17 @@ class IStage : public Actor
 {
 public:
     IStage() {};
-    virtual ~IStage() {};
+    virtual ~IStage(){};
     virtual bool Start() { return true; }
     virtual void Update(){};
     virtual void Render(RenderContext& rc){};
-
-public:
     virtual const std::string InitStage(const std::string& stagename)
     {
         std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
         return Stagepath;
     };
-
+// ゲッター。
+public:
     virtual Vector3 GetStageStartPos() const = 0
     {
         return Vector3::Zero;

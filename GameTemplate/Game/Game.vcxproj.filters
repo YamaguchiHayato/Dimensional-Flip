@@ -42,10 +42,7 @@
     <ClCompile Include="Src\Actor\Actor.cpp">
       <Filter>Src\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\EnemyBase.cpp">
-      <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp">
+    <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp">
@@ -133,7 +130,15 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="Src\Scene\LoadingScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -144,10 +149,7 @@
     <ClInclude Include="Src\Actor\Actor.h">
       <Filter>Src\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Enemy\EnemyBase.h">
-      <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h">
+    <ClInclude Include="Src\Actor\Character\Enemy\IEnemy.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h">
@@ -236,7 +238,15 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingScene.h" />
+    <ClInclude Include="Src\Scene\LoadingScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

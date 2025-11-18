@@ -14,17 +14,6 @@
 #include "Src/Scene/SceneManager.h"
 #include "Src/Actor/Stage/StageManager.h"
 
-namespace EnemyPosition
-{
-	const Vector3 Pos1(600.0f, 0.0f, 0.0f);
-}
-
-namespace GameParameter
-{
-	const float scale = 1.0f;
-
-}
-
 
 
 Game::~Game()
@@ -253,7 +242,6 @@ void Game::UpdateTransition()
     }
 }
 
-
 void Game::UIInstance()
 {
 	TimerInstance();
@@ -263,25 +251,5 @@ void Game::UIInstance()
 	ScoreInstance();
 
 	HPbarInstance();
-}
-
-void Game::TimerInstance()
-{
-    pTimerUI_ = NewGO<TimerUI>(0, "timerui");
-}
-
-void Game::NumberInstance()
-{
-    pNumberUI_ = NewGO<NumberUI>(0, "numberui");
-}
-
-void Game::ScoreInstance()
-{
-    pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
-}
-
-void Game::HPbarInstance()
-{
-    pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
 }
 

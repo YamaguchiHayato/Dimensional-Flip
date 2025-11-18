@@ -13,6 +13,7 @@ class Player;
 class CameraManager;
 class Thwomp;
 class TrackingEnemy;
+class Star;
 class Stage2 : public IStage
 {
 public:
@@ -47,12 +48,13 @@ private:
     inline void RotationFoolNewGO();        // 回転トリック。
     inline void BoxInstance();              // 箱モデルの生成。
     inline void DimensionTriggerInstance(); // トリガーモデルの生成。
+    inline void StarInstance();
 private:
     // ギミック。
     DimensionTrigger* pDimensionTrigger_ = nullptr;
     RotationFool* pRotationFool_ = nullptr;
     Box* pBox_ = nullptr;
-
+    Star* pStar_ = nullptr;
     // 敵。
     TrackingEnemy* pTrackingEnemy_ = nullptr;
     Thwomp* pThwomp_ = nullptr;
@@ -74,9 +76,9 @@ public:
     Stage2Slope() {};
     virtual ~Stage2Slope() {};
 
-    bool Start() override;
-    void Update() override;
-    void Render(RenderContext& rc) override;
+    bool Start();
+    void Update();
+    void Render(RenderContext& rc);
 
 public:
     inline void SetPos(const Vector3& pos)
@@ -86,24 +88,14 @@ public:
     };
 
 private:
-    // 回転移動（円運動）用 ------------------
-    void UpdateOrbit();
-
-private:
     CollisionObject* pCollisionObject_ = nullptr;
 
 private:
     ModelRender render_;
     // コリジョン Box のサイズ（斜面の長さに合わせて調整）
-    Vector3 boxSize_ = Vector3(800.0f, 50.0f, 200.0f);// 現在角度
     Vector3 basePos_ = Vector3::Zero; // 円運動の中心
     Vector3 pos_ = Vector3::Zero; // 実際に使う位置
     Quaternion rot_ = Quaternion::Identity; // 斜面の傾き（モデル側で付けているなら Identity のままでOK）
-
-
-    float orbitRadius_ = 400.0f;// 半径（後で調整）
-    float orbitAngleDeg_ = 0.0f;// 現在角度
-    float orbitSpeedDegPerSec_ = 30.0f;// 1秒あたりの角度
 
 };
 

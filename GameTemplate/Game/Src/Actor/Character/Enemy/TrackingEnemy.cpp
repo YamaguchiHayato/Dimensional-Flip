@@ -18,9 +18,8 @@ namespace
 	const Vector3 SCALE(5.0f, 5.0f, 5.0f);
 }
 
-
 // アニメーションメソッド。
-const::std::string TrackingEnemy::GetFullPath_EnemyAnimation(EnAnimationClip enemyAnimation, const std::string& animationName, bool flag)
+const::std::string TrackingEnemy::FetchAnimation(EnEnemyAnimation enemyAnimation, const std::string& animationName, bool flag)
 {
 	std::string Animation = ENEMY_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
 
@@ -39,25 +38,25 @@ bool TrackingEnemy::Start()
 	SetEnemyAnimation();
 
 	// モデルの初期化。
-	enemyRender_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enAnimationclip_num, enModelUpAxisY, true);
+	render_.Init("Assets/modelData/Skeleton.tkm", animationclip_, Num, enModelUpAxisY, true);
 
 	// 大きさをセット。
-	enemyRender_.SetScale(SCALE);
+	render_.SetScale(SCALE);
 
 	// キャラコン。
-	enemyCC_.Init(RADIUS, HEIGHT, enemyPosition_);
+	charaCon_.Init(RADIUS, HEIGHT, pos_);
 
 	// 座標をセット。
-	enemyRender_.SetPosition(enemyPosition_);
+	render_.SetPosition(pos_);
 
 	// 更新処理。
-	enemyRender_.Update();
+	render_.Update();
 
 	// エフェクトの初期化。
 //	EffectEngine::GetInstance()->ResistEffect(EffectList_EnemyHit, u"Assets/effect/enemyhiteffect.efk");
 
 	// 探索処理。
-	player_ = FindGO<Player>("player");
+	pPlayer_ = FindGO<Player>("player");
 
 
 	return true;
@@ -79,19 +78,19 @@ void TrackingEnemy::Update()
 	EnemyAnimation();
 
 	// モデルをセット。
-	enemyRender_.SetPosition(enemyPosition_);
+    render_.SetPosition(pos_);
 
 	// 更新処理。
-	enemyRender_.Update();
+	render_.Update();
 
-	Vector3 diff = player_->playerPos_ - enemyPosition_;
-	if (diff.Length() <= 100.0f && enemyanimationstate_ != 1)
+	Vector3 diff = pPlayer_->pos_ - pos_;
+	if (diff.Length() <= 100.0f && animaState_ != 1)
 	{
-		if (player_->playerCC_.IsOnGround() == false)
+		if (pPlayer_->charaCon_.IsOnGround() == false)
 		{
-			enemyanimationstate_ = 1;
-			player_->moveSpeed_.y = 500.0f;
-			enemyCC_.RemoveRigidBoby();
+			animaState_ = 1;
+			pPlayer_->moveSpeed_.y = 500.0f;
+			charaCon_.RemoveRigidBoby();
 
 			////エフェクトの処理
 			//EffectEmitter* effectEmitter = NewGO<EffectEmitter>(0);
@@ -117,7 +116,6 @@ void TrackingEnemy::Update()
 		    touchPlayerFlag_ = true;
 		}
 	}
-
 }
 
 // 動作処理。
@@ -125,90 +123,92 @@ void TrackingEnemy::Move()
 {
 	if (!isChasing_)
 	{
-		if (enemystate_ == 0) {
-			enemyMS_.x = -2.0f;
+		if (animaState_ == 0) {
+			moveSpeed_.x = -2.0f;
 		}
-		else if (enemystate_ == 1) {
-			enemyMS_.x = 2.0f;
+		else if (animaState_ == 1) {
+			moveSpeed_.x = 2.0f;
 		}
-		if (enemyPosition_.x >= enemyFP_.x + 200.0f)
+		if (pos_.x >= initPos_.x + 200.0f)
 		{
-			enemystate_ = 0;
+			animaState_ = 0;
 		}
-		else if (enemyPosition_.x <= enemyFP_.x - 200.0f)
+		else if (pos_.x <= initPos_.x - 200.0f)
 		{
-			enemystate_ = 1;
+			animaState_ = 1;
 		}
 
 	}
 
-	if (enemyanimationstate_ == 1) {
-		enemyMS_.x = 0;
-		if (!enemyRender_.IsPlayingAnimation())
+	if (animaState_ == 1) {
+		moveSpeed_.x = 0;
+		if (!render_.IsPlayingAnimation())
 		{
 			DeleteGO(this);
 		}
 	}
-	enemyPosition_ = enemyCC_.Execute(enemyMS_, 1.0f);
+	pos_ = charaCon_.Execute(moveSpeed_, 1.0f);
 	float glavity = 3.0f;
-	if (enemyCC_.IsOnGround()) {
+	if (charaCon_.IsOnGround()) {
 		//重力をなくす
-		enemyMS_.y = 0.0f;
+		moveSpeed_.y = 0.0f;
 	}
-	enemyMS_.y -= glavity;
+	moveSpeed_.y -= glavity;
 }
 
 //追跡処理。
 void TrackingEnemy::Tracking()
 {
-	Vector3 diff = player_->playerPos_ - enemyPosition_;
+	Vector3 diff = pPlayer_->pos_ - pos_;
 	const bool inRadius = (diff.Length() < 100.0f);
 
 	// B) 座標トリガ（敵があるX座標を越えたら）
-	const bool passX = (enemyPosition_.x >= triggerX_);
+	const bool passX = (pos_.x >= triggerX_);
 
 	if (!isChasing_ && (inRadius || passX)) {
 		isChasing_ = true;
 	}
 
 	// ---- 追跡中の移動ベクトルを設定 ----
-	if (isChasing_) {
+	if (isChasing_)
+    {
 		diff.y = 0.0f;                // 水平面だけで追う（必要ならYも可）
-		if (diff.LengthSq() > 1e-4f) {
+		if (diff.LengthSq() > 1e-4f)
+        {
 			diff.Normalize();
-			enemyMS_.x = diff.x * chaseSpeed_;
-			enemyMS_.z = diff.z * chaseSpeed_;
+			moveSpeed_.x = diff.x * chaseSpeed_;
+			moveSpeed_.z = diff.z * chaseSpeed_;
 		}
-		else {
-			enemyMS_.x = enemyMS_.z = 0.0f; // ほぼ重なったら停止
-		}
+
+		else moveSpeed_.x = moveSpeed_.z = 0.0f; // ほぼ重なったら停止
 	}
 }
 
 // 回転処理。
-void TrackingEnemy::Rotation() {
-	if (enemystate_ == 0) {
-		rotation_.SetRotationDegY(ENEMYSTATE_ZERO);
-	}
-	else if (enemystate_ == 1) {
-		rotation_.SetRotationDegY(ENEMYSTATE_ONE);
-	}
-	rotation_.AddRotationDegX(ENEMYSTATE_TWO);
+void TrackingEnemy::Rotation()
+{
+	if (animaState_ == EnEnemyAnimation::enIdle) 
+		rot_.SetRotationDegY(ENEMYSTATE_ZERO);
+
+	else if (animaState_ == EnEnemyAnimation::enDeath) 
+		rot_.SetRotationDegY(ENEMYSTATE_ONE);
+
+	rot_.AddRotationDegX(ENEMYSTATE_TWO);
 	//絵描きさんに回転を教える。
-	enemyRender_.SetRotation(rotation_);
+	render_.SetRotation(rot_);
 }
 
 // Enemyのアニメーション。
 void TrackingEnemy::EnemyAnimation()
 {
-	switch (enemyanimationstate_)
+	switch (animaState_)
 	{
-	case 0:
-		enemyRender_.PlayAnimation(enAnimationclip_walk, 0.1f);
+    case EnEnemyAnimation::enIdle:
+		render_.PlayAnimation(EnEnemyAnimation::enIdle, 0.1f);
 		break;
 
-	case 1:
-		enemyRender_.PlayAnimation(enAnimationclip_death, 0.1f);
+	case EnEnemyAnimation::enDeath:
+		render_.PlayAnimation(EnEnemyAnimation::enDeath, 0.1f);
 		break;
 	}
 }
@@ -216,19 +216,19 @@ void TrackingEnemy::EnemyAnimation()
 // 描画処理。
 void TrackingEnemy::Render(RenderContext& rc)
 {
-	enemyRender_.Draw(rc);
+	render_.Draw(rc);
 }
 
 // アニメーションの再生。
 void TrackingEnemy::SetEnemyAnimation()
 {
 	// 待機モーション。
-	GetFullPath_EnemyAnimation(enAnimationclip_idle, "SkeletonIdle", true);
-
+	FetchAnimation(EnEnemyAnimation::enIdle, "SkeletonIdle", true);
+    
 	// 歩きモーション。
-	GetFullPath_EnemyAnimation(enAnimationclip_walk, "SkeletonWalk", true);
+	FetchAnimation(EnEnemyAnimation::enWalk, "SkeletonWalk", true);
 
 	// 死亡モーション。
-	GetFullPath_EnemyAnimation(enAnimationclip_death, "SkeletonDeath", false);
+	FetchAnimation(EnEnemyAnimation::enDeath, "SkeletonDeath", false);
 
 }

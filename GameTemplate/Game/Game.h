@@ -1,9 +1,14 @@
 #pragma once
+#include "stdint.h"
 #include "Level3DRender/LevelRender.h"
 #include "Src/Camera/CameraManager.h"
-#include "stdint.h"
 #include "Src/Scene/SceneManager.h"
 #include "Src/Actor/Stage/IStage.h"
+#include "Src/UI/HPbarUI.h"
+#include "Src/UI/NumberUI.h"
+#include "Src/UI/ScoreUI.h"
+#include "Src/UI/TimerUI.h"
+
 
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
@@ -42,10 +47,26 @@ private:
     // UI。
     inline void UIInstance();
     // 各UIの生成。
-    inline void TimerInstance();// タイマーUI。
-    inline void NumberInstance();// ナンバーUI。
-    inline void ScoreInstance();// スコアUI。
-    inline void HPbarInstance();// HPbar。
+    // タイマーUI。
+    inline void TimerInstance()
+    {
+        pTimerUI_ = NewGO<TimerUI>(0, "timerui");
+    }
+    // ナンバーUI。
+    inline void NumberInstance()
+    {
+        pNumberUI_ = NewGO<NumberUI>(0, "numberui");
+    }
+    // スコアUI。
+    inline void ScoreInstance()
+    {
+        pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
+    }
+    // HPbar。
+    inline void HPbarInstance()
+    {
+        pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
+    }
 
     // その他。
     inline void InitSkyCube(); // スカイキューブの初期化。

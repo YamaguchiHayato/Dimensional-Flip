@@ -43,9 +43,9 @@ bool Player::Start()
 {
 	SetAnimation();
 
-	playerRender_.Init("Assets/modelData/unityChan.tkm", animationClip_, enAnimationClip_Num, enModelUpAxisY);
+	render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::Num, enModelUpAxisY);
 
-	playerCC_.Init(20.0f, 25.0f, playerPos_);
+	charaCon_.Init(20.0f, 25.0f, pos_);
 
     
 	return true;
@@ -65,9 +65,9 @@ void Player::Update()
 	Rotation();
 	PlayAnimation();
 	ManageState();
-	playerRender_.SetScale(SCALE);
-	playerRender_.SetPosition(playerPos_);
-	playerRender_.Update();
+	render_.SetScale(SCALE);
+	render_.SetPosition(pos_);
+	render_.Update();
 }
 
 void Player::Action()
@@ -139,7 +139,7 @@ void Player::Move()
     
 	moveSpeed_ += right + forward;
 
-	if (playerCC_.IsOnGround())
+	if (charaCon_.IsOnGround())
 	{
 		moveSpeed_.y = 0.0f;
 
@@ -153,19 +153,20 @@ void Player::Move()
 	moveSpeed_.y -= GLAVITY;
 
 
-	playerPos_ = playerCC_.Execute(moveSpeed_, 1.0f / 150.0f);
+	pos_ = charaCon_.Execute(moveSpeed_, 1.0f / 150.0f);
 
 
-	playerCC_.SetPosition(playerPos_);
-	playerRender_.SetPosition(playerPos_);}
+	charaCon_.SetPosition(pos_);
+	render_.SetPosition(pos_);
+}
 
 void Player::Rotation()
 {
 	Vector3 dir = moveSpeed_;
 
 	if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f) {
-		playerot_.SetRotationYFromDirectionXZ(dir);
-		playerRender_.SetRotation(playerot_);
+		rot_.SetRotationYFromDirectionXZ(dir);
+		render_.SetRotation(rot_);
 	}
 }
 
@@ -173,10 +174,10 @@ void Player::Rotation()
 void Player::ManageState()
 {
 	//地面についていなかったら
-	if (playerCC_.IsOnGround() == false)
+	if (charaCon_.IsOnGround() == false)
 	{
 		//ステートを1にする
-		playerState_ = 1;
+		state_ = PlayerState::sJump;
 		//ManageStateの処理を終わらせる
 		return;
 	}
@@ -186,47 +187,49 @@ void Player::ManageState()
 	if (fabsf(moveSpeed_.x) >= 0.001f || fabsf(moveSpeed_.z) >= 0.001f)
 	{
 		//ステートを2にする
-		playerState_ = 2;
+		state_ = PlayerState::sRun;
 	}
 	//何も入力しなかったら
 	else
 	{
 		//ステートを0(待機状態)にする
-		playerState_ = 0;
+        state_ = PlayerState::sIdle;
 	}
 }
 
 void Player::PlayAnimation()
 {
 	//switch文
-	switch (playerState_)
+	switch (state_)
 	{
 		//待機状態だったら
-	case 0:
+    case PlayerState::sIdle:
 		//待機アニメーションの再生
-		playerRender_.PlayAnimation(enAnimationClip_Idle);
+		render_.PlayAnimation(EnAnimationClip::Idle);
 		break;
 		//歩き状態だったら
-	case 1:
+    case PlayerState::sJump:
 		//ジャンプアニメーションを再生
-		playerRender_.PlayAnimation(enAnimationClip_Jump);
+		render_.PlayAnimation(EnAnimationClip::Jump);
 		break;
 		//ジャンプ中だったら
-	case 2:
-		playerRender_.PlayAnimation(enAnimationClip_Run);
+    case PlayerState::sRun:
+		render_.PlayAnimation(EnAnimationClip::Run);
 		break;
 	}
 }
 
 void Player::Render(RenderContext& rc)
 {
-	playerRender_.Draw(rc);
+	render_.Draw(rc);
 }
 
 void Player::SetAnimation()
 {
-	FetchPlayAnimation(enAnimationClip_Idle,"idle", true);
-	FetchPlayAnimation(enAnimationClip_Walk, "walk", true);
-	FetchPlayAnimation(enAnimationClip_Run, "run", true);
-	FetchPlayAnimation(enAnimationClip_Jump, "jump", false);
+    // 待機アニメーション。
+	FetchPlayAnimation(EnAnimationClip::Idle,"idle", true);
+    // 走りアニメーション。
+	FetchPlayAnimation(EnAnimationClip::Run, "run", true);
+    // ジャンプアニメーション。
+	FetchPlayAnimation(EnAnimationClip::Jump, "jump", false);
 }

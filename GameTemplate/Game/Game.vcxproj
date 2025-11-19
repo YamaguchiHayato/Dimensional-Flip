@@ -239,6 +239,7 @@
     <ClCompile Include="Src\Actor\Stage\IStage.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Stage3.cpp" />
     <ClCompile Include="Src\Actor\Stage\StageManager.cpp" />
     <ClCompile Include="Src\Camera\CameraManager.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="Src\Actor\Stage\IStage.h" />
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\Stage2.h" />
+    <ClInclude Include="Src\Actor\Stage\Stage3.h" />
     <ClInclude Include="Src\Actor\Stage\StageManager.h" />
     <ClInclude Include="Src\Camera\CameraManager.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />

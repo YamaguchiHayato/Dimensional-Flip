@@ -40,6 +40,11 @@ namespace GimmickParam
             const Vector3 Pos1(1250.0f, 200.0f, -60.0f);
             const Vector3 Pos2(1380.0f, 400.0f, -60.0f);
             const Vector3 Pos3(1480.0f, 600.0f, -60.0f);
+
+            // 別ルート用。
+            const Vector3 Pos4(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos5(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos6(1500.0f, 100.0f, -60.0f);
         }
 
         // リフトの移動速度リスト。
@@ -52,6 +57,7 @@ namespace GimmickParam
 
     }
 
+
     // 箱。
     namespace Box
     {
@@ -61,23 +67,25 @@ namespace GimmickParam
         }
     }
 
+
     // 追従的。
     namespace TrackingEnemy
     {
         namespace Pos
         {
-            const Vector3 Pos1(1350.0f, 50.0f, 15.878f);
-            const Vector3 Pos2(1450.0f, 50.0f, 15.878f);
+            const Vector3 Pos1(1000.0f, 300.0f, 15.878f);
+//            const Vector3 Pos2(1450.0f, 50.0f, 15.878f);
         }
     }
+
 
     // トゥワンプ。
     namespace Thwomp
     {
         namespace Pos
         {
- //           const Vector3 Pos1(5400.0f, 1900.0f, -80.0f);
-            const Vector3 Pos1(150.0f, 150.0f, -80.0f);
+            const Vector3 Pos1(5400.0f, 1900.0f, -80.0f);
+ //           const Vector3 Pos1(150.0f, 150.0f, -80.0f);
         }
 
         const float DISAPPEAR_Z = -300.0f;
@@ -87,6 +95,8 @@ namespace GimmickParam
         const float   MOVE_SPEED = 200.0f;
 
     }
+
+
     // Trigger。
     namespace Trigger
     {
@@ -96,21 +106,20 @@ namespace GimmickParam
             const Vector3 Pos2(3000.0f, 650.0f, -130.0f);
             // 終了地点。
             const Vector3 Pos1(5400.0f, 1700.0f, -130.0f);
-
             // テスト用初期地点。
             const Vector3 TestPos(200.0f, 0.0f, -70.0f);
         }
     }
+
 
     // ゴールの座標。
     namespace StarPos
     {
         namespace Pos
         {
-            const Vector3 Pos1(3500.0f, 650.0f, -130.0f);
+            const Vector3 Pos1(5800.0f, 1800.0f, -80.0f);
         }
     }
-
 } 
 
 
@@ -120,6 +129,7 @@ bool Stage2::Start()
     // ステージ2モデル。
 	const std::string stagePath = InitStage("Stage2/stage2");
 	stageRender_.Init(stagePath.c_str());
+
 
     // 座標設定。
 	stageRender_.SetPosition(stagePos_);
@@ -136,12 +146,13 @@ bool Stage2::Start()
     // ボックス(足場)の生成。
     BoxInstance();
     // 敵生成。
-//    TrackingInstance();
+    // TrackingInstance();
     // 回転敵の生成。
     ThwompInstance();
     // カメラトリガーの生成。
     DimensionTriggerInstance();
-
+    //
+    StarInstance();
     pPlayer = FindGO<Player>("player");
 	return true;
 }
@@ -220,8 +231,8 @@ void Stage2::TrackingInstance()
 {
     std::vector<Vector3> EnemySpawnList =
 	{
-        GimmickParam::RotationFool::Pos::Pos1,
-        GimmickParam::RotationFool::Pos::Pos2,
+        GimmickParam::TrackingEnemy::Pos::Pos1
+        // GimmickParam::RotationFool::Pos::Pos2,
     };
 
     for (size_t i = 0; i < EnemySpawnList.size(); i++)
@@ -247,9 +258,8 @@ void Stage2::ThwompInstance()
         pThwomp_ = NewGO<Thwomp>(0, "Thwomp");
         // 座標。
         pThwomp_->InitPos(ThwompSpawnList[i]);
-        pThwomp_->InitMoveDir(Vector3(0.0f, 0.0f,-1.0f));
-        pThwomp_->SetMoveSpeed(300.0f); // スピードを300に設定
-
+        // 削除ライン。
+        pThwomp_->SetTriggerPos(GimmickParam::Trigger::Pos::Pos2);
     }
 }
 

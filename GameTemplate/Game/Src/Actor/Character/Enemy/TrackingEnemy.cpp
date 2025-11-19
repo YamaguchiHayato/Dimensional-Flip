@@ -18,7 +18,6 @@ namespace
 	const Vector3 SCALE(5.0f, 5.0f, 5.0f);
 }
 
-
 // アニメーションメソッド。
 const::std::string TrackingEnemy::FetchAnimation(EnEnemyAnimation enemyAnimation, const std::string& animationName, bool flag)
 {
@@ -117,7 +116,6 @@ void TrackingEnemy::Update()
 		    touchPlayerFlag_ = true;
 		}
 	}
-
 }
 
 // 動作処理。
@@ -172,16 +170,17 @@ void TrackingEnemy::Tracking()
 	}
 
 	// ---- 追跡中の移動ベクトルを設定 ----
-	if (isChasing_) {
+	if (isChasing_)
+    {
 		diff.y = 0.0f;                // 水平面だけで追う（必要ならYも可）
-		if (diff.LengthSq() > 1e-4f) {
+		if (diff.LengthSq() > 1e-4f)
+        {
 			diff.Normalize();
 			moveSpeed_.x = diff.x * chaseSpeed_;
 			moveSpeed_.z = diff.z * chaseSpeed_;
 		}
-		else {
-			moveSpeed_.x = moveSpeed_.z = 0.0f; // ほぼ重なったら停止
-		}
+
+		else moveSpeed_.x = moveSpeed_.z = 0.0f; // ほぼ重なったら停止
 	}
 }
 

@@ -50,7 +50,6 @@ bool Game::Start()
 {
     // StageManagerの生成。
     StageManager::CreateInstance();
-    // こいつを有効にしないとStage1が生成されない。
     StageManager::GetInstance()->Start();
 
     // UIの生成。
@@ -82,7 +81,7 @@ bool Game::Start()
     InitSkyCube();
 
     // 物理デバッグワイヤーフレーム表示有効化。
-    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+//    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 

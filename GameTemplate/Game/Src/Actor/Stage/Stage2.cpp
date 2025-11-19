@@ -11,6 +11,7 @@
 // データ統合クラス。
 #include "Game.h"
 // ギミック。
+#include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 #include "Src/Actor/Stage/Gimmick/Box.h"
 #include "Src/Camera/Dimensiontrigger.h"
@@ -24,7 +25,7 @@ namespace
     const Vector3 SCALE(1.0f, 1.0f, 1.0f);
 }
 
-namespace Stage2GimmickParam
+namespace GimmickParam
 {
     // 回転トリック。
     namespace RotationFool
@@ -39,6 +40,11 @@ namespace Stage2GimmickParam
             const Vector3 Pos1(1250.0f, 200.0f, -60.0f);
             const Vector3 Pos2(1380.0f, 400.0f, -60.0f);
             const Vector3 Pos3(1480.0f, 600.0f, -60.0f);
+
+            // 別ルート用。
+            const Vector3 Pos4(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos5(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos6(1500.0f, 100.0f, -60.0f);
         }
 
         // リフトの移動速度リスト。
@@ -51,6 +57,7 @@ namespace Stage2GimmickParam
 
     }
 
+
     // 箱。
     namespace Box
     {
@@ -60,15 +67,17 @@ namespace Stage2GimmickParam
         }
     }
 
+
     // 追従的。
     namespace TrackingEnemy
     {
         namespace Pos
         {
-            const Vector3 Pos1(1350.0f, 50.0f, 15.878f);
-            const Vector3 Pos2(1450.0f, 50.0f, 15.878f);
+            const Vector3 Pos1(1000.0f, 300.0f, 15.878f);
+//            const Vector3 Pos2(1450.0f, 50.0f, 15.878f);
         }
     }
+
 
     // トゥワンプ。
     namespace Thwomp
@@ -76,14 +85,17 @@ namespace Stage2GimmickParam
         namespace Pos
         {
             const Vector3 Pos1(5400.0f, 1900.0f, -80.0f);
+ //           const Vector3 Pos1(150.0f, 150.0f, -80.0f);
         }
 
-        namespace MoveSpeed
-        {
-            const Vector3 Speed1(-200.0f, 0.0f, 0.0f);
-        }
-       
+        const float DISAPPEAR_Z = -300.0f;
+        const float RESPAWN_DELAY = 3.0f;
+
+        const Vector3 MOVE_DIR(-1.0f, -1.0f, 0.0f);    
+        const float   MOVE_SPEED = 200.0f;
+
     }
+
 
     // Trigger。
     namespace Trigger
@@ -94,9 +106,18 @@ namespace Stage2GimmickParam
             const Vector3 Pos2(3000.0f, 650.0f, -130.0f);
             // 終了地点。
             const Vector3 Pos1(5400.0f, 1700.0f, -130.0f);
-
             // テスト用初期地点。
             const Vector3 TestPos(200.0f, 0.0f, -70.0f);
+        }
+    }
+
+
+    // ゴールの座標。
+    namespace StarPos
+    {
+        namespace Pos
+        {
+            const Vector3 Pos1(5800.0f, 1800.0f, -80.0f);
         }
     }
 } 
@@ -108,6 +129,7 @@ bool Stage2::Start()
     // ステージ2モデル。
 	const std::string stagePath = InitStage("Stage2/stage2");
 	stageRender_.Init(stagePath.c_str());
+
 
     // 座標設定。
 	stageRender_.SetPosition(stagePos_);
@@ -124,12 +146,13 @@ bool Stage2::Start()
     // ボックス(足場)の生成。
     BoxInstance();
     // 敵生成。
-//    TrackingInstance();
+    // TrackingInstance();
     // 回転敵の生成。
     ThwompInstance();
     // カメラトリガーの生成。
     DimensionTriggerInstance();
-
+    //
+    StarInstance();
     pPlayer = FindGO<Player>("player");
 	return true;
 }
@@ -150,16 +173,16 @@ void Stage2::RotationFoolNewGO()
     // 設置座標。
     std::vector<Vector3> RotFoolPosList =
 	{
-        Stage2GimmickParam::RotationFool::Pos::Pos1,
-        Stage2GimmickParam::RotationFool::Pos::Pos2,
-        Stage2GimmickParam::RotationFool::Pos::Pos3
+        GimmickParam::RotationFool::Pos::Pos1,
+        GimmickParam::RotationFool::Pos::Pos2,
+        GimmickParam::RotationFool::Pos::Pos3
     };
 
     // 速度リスト。
-    const auto& RotFoolSpeedList = Stage2GimmickParam::RotationFool::SpeedList;
+    const auto& RotFoolSpeedList = GimmickParam::RotationFool::SpeedList;
 
     // 共通のY座標を定義する。
-    const float CommonButtomY = Stage2GimmickParam::RotationFool::COMMONBUTTOM_Y;
+    const float CommonButtomY = GimmickParam::RotationFool::COMMONBUTTOM_Y;
 
     // リストの数が合っているかチェックする。
     if (RotFoolPosList.size() != RotFoolSpeedList.size()) return;
@@ -194,7 +217,7 @@ void Stage2::BoxInstance()
     // 設置座標。
     std::vector<Vector3> BoxPosList =
 	{
-        Stage2GimmickParam::Box::Pos::Pos1,
+        GimmickParam::Box::Pos::Pos1,
     };
 
     for (size_t i = 0; i < BoxPosList.size(); i++)
@@ -208,8 +231,8 @@ void Stage2::TrackingInstance()
 {
     std::vector<Vector3> EnemySpawnList =
 	{
-        Stage2GimmickParam::RotationFool::Pos::Pos1,
-        Stage2GimmickParam::RotationFool::Pos::Pos2,
+        GimmickParam::TrackingEnemy::Pos::Pos1
+        // GimmickParam::RotationFool::Pos::Pos2,
     };
 
     for (size_t i = 0; i < EnemySpawnList.size(); i++)
@@ -224,15 +247,19 @@ void Stage2::ThwompInstance()
 {
     std::vector<Vector3> ThwompSpawnList =
     {
-        Stage2GimmickParam::Thwomp::Pos::Pos1,
+        GimmickParam::Thwomp::Pos::Pos1,
     };
 
     for (size_t i = 0; i < ThwompSpawnList.size(); i++)
     {
         spawnTimer_ += g_gameTime->GetFrameDeltaTime();
-        // Thwomp生成。
+
+        // Thwompの生成。
         pThwomp_ = NewGO<Thwomp>(0, "Thwomp");
-        pThwomp_->SetPos(ThwompSpawnList[i]);
+        // 座標。
+        pThwomp_->InitPos(ThwompSpawnList[i]);
+        // 削除ライン。
+        pThwomp_->SetTriggerPos(GimmickParam::Trigger::Pos::Pos2);
     }
 }
 
@@ -241,9 +268,9 @@ void Stage2::DimensionTriggerInstance()
     // 設置座標。
     std::vector<Vector3> TriggerPosList =
     {
-        Stage2GimmickParam::Trigger::Pos::Pos2,
-        Stage2GimmickParam::Trigger::Pos::Pos1,
-        Stage2GimmickParam::Trigger::Pos::TestPos,
+        GimmickParam::Trigger::Pos::Pos2,
+        GimmickParam::Trigger::Pos::Pos1,
+        GimmickParam::Trigger::Pos::TestPos,
     };
 
     for (size_t i = 0; i < TriggerPosList.size(); i++)
@@ -253,3 +280,18 @@ void Stage2::DimensionTriggerInstance()
     }
 }
 
+void Stage2::StarInstance()
+{
+        // 設置座標。
+    std::vector<Vector3> StarPosList =
+    {
+        GimmickParam::StarPos::Pos::Pos1,
+    };
+
+    for (size_t i = 0; i < StarPosList.size(); i++)
+    {
+        pStar_ = NewGO<Star>(0,"star");
+        pStar_->SetStarPosition(StarPosList[i]);
+    }
+
+}

@@ -10,7 +10,7 @@ public:
 	void Render(RenderContext& rc)override;
 	void Rotation();
 
-	const void SetStarPosition(const Vector3& starPosition)
+	inline void SetStarPosition(const Vector3& starPosition)
 	{
 		m_starPosition = starPosition;
 	}

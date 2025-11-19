@@ -1,85 +1,91 @@
 #pragma once
-#include "Src/Actor/Character/Enemy/EnemyBase.h"
+#include "Src/Actor/Character/Enemy/IEnemy.h"
+
+enum class State
+{
+    Patrol,
+	Chase
+};
+
+enum EnEnemyAnimation
+{
+	enIdle,
+	enWalk,
+	enDeath,
+	enNum
+};
+
 
 class Player;
 /// <summary>
-/// ”h¶ƒNƒ‰ƒX : ’ÇÕ“GB
+/// æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ : è¿½è·¡æ•µã€‚
 /// </summary>
-class TrackingEnemy :  public EnemyBase
+class TrackingEnemy :  public IEnemy
+// å¤–éƒ¨å‚ç…§ç”¨ é–¢æ•°ã€‚
 {
-// ŠO•”QÆ—p ŠÖ”B
 public:
+
 	TrackingEnemy() {};
 	~TrackingEnemy() {};
 
 	bool Start() override;
 	void Update() override;
 	void Render(RenderContext& rc) override;
-	void Move();
-	void Rotation();
-	void EnemyAnimation();
+    inline const std::string InitModel(const std::string& gimmickname) override
+    {
+        return IEnemy::InitModel(gimmickname);
+    };
 
-// ŠO•”QÆ—p •Ï”B
 public:
-	Vector3 enemyFP_;
-	Vector3 enemyPosition_;
+    inline const void SetPos(const Vector3& pos)
+    {
+        pos_ = pos;
+    };
 
-	bool  isChasing_ = false;   // ’ÇÕ’†ƒtƒ‰ƒO
-	float chaseSpeed_ = 4.0f;   // ’ÇÕ‘¬“x
+private:
+    Player* pPlayer_ = nullptr;
+
+	AnimationClip animationclip_[Num];
+	CharacterController charaCon_;
+	SphereCollider sphereColl_;
+	Vector3 moveSpeed_;
+    Vector3 initPos_;
+	Vector3 pos_;
+	Vector3 distanceX_ = Vector3::Zero;//xè»¸ã®åˆ¤å®š
+	Vector3 distanceY_ = Vector3::Zero;//yè»¸ã®åˆ¤å®š
+	ModelRender render_;
+	Quaternion rot_;
+
+private:
+	uint8_t animaState_ = 0;
+
+	bool  touchPlayerFlag_ = false;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è§¦ã‚ŒãŸã‹ï¼Ÿ
+    bool  isChasing_ = false;   // è¿½è·¡ä¸­ãƒ•ãƒ©ã‚°
+	float chaseSpeed_ = 4.0f;   // è¿½è·¡é€Ÿåº¦
 	float triggerX_ = FLT_MAX;
 
-public:
-	enum class State
-	{
-		Patrol,
-		Chase
-	};
-
-	enum EnAnimationClip
-	{
-		enAnimationclip_idle,
-		enAnimationclip_walk,
-		enAnimationclip_death,
-		enAnimationclip_num
-	};
-private:
-	AnimationClip animationclip_[enAnimationclip_num];
-	CharacterController enemyCC_;
-	SphereCollider sphereColl_;
-	Vector3 enemyMS_;
-	Player* player_ = nullptr;
-
-	Vector3 enemyDeathDistanceX_ = Vector3::Zero;//x²‚Ì”»’è
-	Vector3 enemyDeathDistanceY_ = Vector3::Zero;//y²‚Ì”»’è
-	ModelRender enemyRender_;
-	Quaternion rotation_;
-
-private:
-	int enemystate_ = 0;
-	int enemyanimationstate_ = 0;
-
-	bool touchPlayerFlag_ = false;//ƒvƒŒƒCƒ„[‚ÉG‚ê‚½‚©H
-
 
 
 private:
-	/* ’ÇÕˆ—B*/
+    // è¿½è·¡å‡¦ç†ã€‚
 	void Tracking();
+    // å‹•ä½œå‡¦ç†ã€‚
+    void Move();
+    // å›è»¢å‡¦ç†ã€‚
+	void Rotation();
+    // Enemyã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã€‚
+	void EnemyAnimation();
 
-	/* 
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒtƒ‹ƒpƒX‚ğæ“¾‚·‚éŠÖ”B
-	 */ 
-	const std::string GetFullPath_EnemyAnimation(EnAnimationClip enemyAnimation, const std::string& animationName, bool flag);
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
+	const std::string FetchAnimation(EnEnemyAnimation enemyAnimation, const std::string& animationName, bool flag);
 
-	/* 
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ğŠi”[‚·‚éŠÖ”B
-	 */ 
+    // Enemyã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚
 	void SetEnemyAnimation();
 
 private:
 
-	const char* ENEMY_ANIMATION = "Assets/animData/";// ƒtƒ@ƒCƒ‹ƒpƒXB
-	const char* ANIMATION_FILE_EXTENSION = ".tka"; // Šg’£qB
+	const char* ENEMY_ANIMATION = "Assets/animData/";// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+	const char* ANIMATION_FILE_EXTENSION = ".tka"; // æ‹¡å¼µå­ã€‚
 
 };
 

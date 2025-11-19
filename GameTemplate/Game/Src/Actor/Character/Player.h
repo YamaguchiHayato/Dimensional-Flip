@@ -2,22 +2,18 @@
 
 enum PlayerState 
 {
-	enPlayer_idle,
-	enPlayer_walk,
-	enPlayer_run,
-	enPlayer_jump,
-	enPlayer_stageclear,
-	enPlayer_gameover,
-	enPlayer_num,
+    sIdle,
+	sRun,
+	sJump,
+	sNum,
 };
 
 enum EnAnimationClip
 {
-	enAnimationClip_Idle,
-	enAnimationClip_Walk,
-	enAnimationClip_Jump,
-	enAnimationClip_Run,
-	enAnimationClip_Num,
+	Idle,
+	Jump,
+	Run,
+	Num,
 };
 
 class CameraManager;
@@ -72,11 +68,11 @@ public:
     inline void SetPlayerPos(const Vector3& pos)
     {
         // 座標設定。
-        playerPos_ = pos;
-        // キャラコンんお移動。
-        playerCC_.SetPosition(playerPos_);
+        pos_ = pos;
+        // キャラコンを移動。
+        charaCon_.SetPosition(pos_);
         // モデルの移動。
-        playerRender_.SetPosition(playerPos_);
+        render_.SetPosition(pos_);
     }
     // 一時停止フラグ。
     inline void SetPaused(bool isPaused)
@@ -92,24 +88,19 @@ public:
     // プレイヤーのCC取得。
 	inline CharacterController& GetPlayerCC()
 	{
-		return playerCC_;
+		return charaCon_;
 	}
     // プレイヤーの座標の取得。
 	inline const Vector3 GetPlayerPos() const
 	{ 
-		return playerPos_; 
+		return pos_; 
 	}
     // プレイヤーの前方向ベクトル取得。
 	inline const Vector3 GetForward() const
 	{
-		return playerForward_;
+		return forward_;
 
     }
-    // 戻るフラグの取得。
-	inline bool GetReturnFlag() const
-	{
-		return returnFlag_;
-	}
     // トリガーエリア内かどうかの取得。
 	inline bool GetInTriggerArea() const
 	{
@@ -139,26 +130,23 @@ private:
     CameraManager* pCameraManager_ = nullptr;
 
 public:
-	AnimationClip animationClip_[enAnimationClip_Num];
-    // CC … CharacterController。
-	CharacterController playerCC_;               
+	AnimationClip animationClip_[EnAnimationClip::Num];
+	CharacterController charaCon_;               
 
-	ModelRender playerRender_;
+	ModelRender render_;
 	Vector3 diff_;
 	Vector3 moveSpeed_ = Vector3::Zero;
-	Vector3 playerPos_ = Vector3::Zero;
-    Vector3 playerForward_ = Vector3::Front;
-	Quaternion playerot_;
+	Vector3 pos_ = Vector3::Zero;
+    Vector3 forward_ = Vector3::Front;
+	Quaternion rot_;
 
 private:	
-	int	playerState_; 
-	int doCheck_ = 0;
+	int	state_; 
     //トリガーエリア内フラグ
 	int triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
 
 	float jumpPower_ = 50.0f;
 
 	bool didJumpThisFrame_ = false;
-	bool returnFlag_ = false; //戻るフラグ
     bool isPaused_ = false;  
 };

@@ -45,7 +45,7 @@ public:
 private:
     Player* pPlayer_ = nullptr;
 
-	AnimationClip animationclip_[Num];
+	AnimationClip animationclip_[enNum];
 	CharacterController charaCon_;
 	SphereCollider sphereColl_;
 	Vector3 moveSpeed_;

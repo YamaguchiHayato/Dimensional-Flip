@@ -1,6 +1,7 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
 
+class DimensionTrigger;
 class Stage3 : public IStage
 {
 public:
@@ -10,12 +11,14 @@ public:
     bool Start() override;
     void Update() override;
     void Render(RenderContext& rc) override;
-    // モデルのファイルパスをセット。
-    inline const std::string InitStage(const std::string& stagename)override
-	{
-		return IStage::InitStage(stagename);
-	};
+    inline Vector3 GetStageStartPos() const override
+    {
+        return Vector3::Zero;
+    }
 
 private:
-    ModelRender render_;
+    void TriggerInstace();
+
+private:
+    DimensionTrigger* pDimensionTrigger_ = nullptr;
 };

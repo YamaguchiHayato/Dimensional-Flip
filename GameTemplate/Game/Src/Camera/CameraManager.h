@@ -10,8 +10,8 @@ namespace nsK2EngineLow {
 
 enum  class CameraMode  : uint8_t
 {
-	mode3D,
-	mode2D
+    mode3D,   // 3Dモード。
+    mode2_5D, // 2.5Dモード。
 };
 
 
@@ -26,9 +26,8 @@ public:
 	bool Start();
 	void Update();
 
-	void Request3DMode();                            /// 3Dモードへの変更要求
-	void Request2DMode();                            /// 2Dモードへの変更要求
-	void Request2DRotation(float targetAngleDegrees);/// 2Dモードでの回転要求
+	void Request2DMode();                        /// 2Dモードへの変更要求
+	void Request3Dmode(float targetAngleDegrees);/// 3Dモードでの変更要求
 
 // ゲッター。
 public:
@@ -37,7 +36,7 @@ public:
 
 private:
 	std::unique_ptr<ICameraStrategy> pCameraStrategy_;
-	CameraMode currentMode_ = CameraMode::mode2D; // 初期モード
+	CameraMode currentMode_ = CameraMode::mode2_5D; // 初期モード
 
 	Player* pPlayer_ = nullptr; 
 };

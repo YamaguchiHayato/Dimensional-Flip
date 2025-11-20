@@ -16,7 +16,7 @@ bool CameraManager::Start()
 	// 初期戦略 (2Dモード) を設定
 	pCameraStrategy_ = std::make_unique<SideCameraStrategy>(pPlayer_);
 	pCameraStrategy_->Start();
-	currentMode_ = CameraMode::mode2D;
+	currentMode_ = CameraMode::mode2_5D;
 	g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Ortho);
 
 	return true;
@@ -24,42 +24,29 @@ bool CameraManager::Start()
 
 void CameraManager::Update()
 {
-	if (pCameraStrategy_) {
+	if (pCameraStrategy_) 
 		pCameraStrategy_->Update(g_camera3D, g_gameTime->GetFrameDeltaTime());
-	}
-}
-
-void CameraManager::Request3DMode()
-{
-	// モードが既に3Dなら何もしない (任意)
-	if (currentMode_ == CameraMode::mode3D) return;
-
-	pCameraStrategy_ = std::make_unique<FollowStrategy>(pPlayer_);
-	pCameraStrategy_->Start(); // 念のため初期化
-	currentMode_ = CameraMode::mode3D;
-	g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Perspective);
 }
 
 void CameraManager::Request2DMode()
 {
 	pCameraStrategy_ = std::make_unique<SideCameraStrategy>(pPlayer_);
 	pCameraStrategy_->Start(); // 念のため初期化
-	currentMode_ = CameraMode::mode2D;
+	currentMode_ = CameraMode::mode2_5D;
 	g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Ortho);
 }
 
-void CameraManager::Request2DRotation(float targetAngleDegrees)
+void CameraManager::Request3Dmode(float targetAngleDegrees)
 {
 	// 現在のモードが2Dでない場合は何もしない
-	if (currentMode_ != CameraMode::mode2D) return;
-
+	if (currentMode_ != CameraMode::mode2_5D) return;
+    
 	// 現在の戦略が SideCameraStrategy かどうか確認
 	SideCameraStrategy* sideStrategy = dynamic_cast<SideCameraStrategy*>(pCameraStrategy_.get());
 
-	if (sideStrategy) {
-		// 回転を指示
+	if (sideStrategy) 
 		sideStrategy->SetTargetRotationY(targetAngleDegrees);
-	} 
+
 	else 
 	{
 		// もし2Dモードなのに戦略が違う場合は、

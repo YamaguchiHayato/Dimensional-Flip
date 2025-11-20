@@ -6,7 +6,7 @@
 #include "StageManager.h"
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Stage/Stage2.h"
-#include "Src/Actor/Stage/Stage3.h"
+#include "Stage3.h"
 
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
@@ -86,8 +86,8 @@ IStage* StageManager::CreateStage(StageID id)
         break;
 
     case StageID::sStage3:
-        /* newStage = NewGO<Stage3>(0, "stage3");
-         break;*/
+         newStage = NewGO<Stage3>(0, "stage3");
+         break;
 
     default:
         break;

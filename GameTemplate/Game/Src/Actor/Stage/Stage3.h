@@ -1,7 +1,9 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
+#include <vector>
 
 class DimensionTrigger;
+class WallActor;
 class Stage3 : public IStage
 {
 public:
@@ -18,7 +20,10 @@ public:
 
 private:
     void TriggerInstace();
-
+    void WallActorInstace();
 private:
+    CollisionObject* pCollisionObject_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
+    WallActor* pWallActor_ = nullptr;
+
 };

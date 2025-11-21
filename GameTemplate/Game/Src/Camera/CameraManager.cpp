@@ -36,7 +36,7 @@ void CameraManager::Request2DMode()
 	g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Ortho);
 }
 
-void CameraManager::Request3Dmode(float targetAngleDegrees)
+void CameraManager::Request3DModeRot(float targetAngleDegrees)
 {
 	// 現在のモードが2Dでない場合は何もしない
 	if (currentMode_ != CameraMode::mode2_5D) return;
@@ -56,4 +56,16 @@ void CameraManager::Request3Dmode(float targetAngleDegrees)
 		sideStrategy = static_cast<SideCameraStrategy*>(pCameraStrategy_.get());
 		sideStrategy->SetTargetRotationY(targetAngleDegrees);
 	}
+}
+
+void CameraManager::Request3DMode()
+{
+    if (currentMode_ == CameraMode::mode3D)
+        return;
+
+    pCameraStrategy_ = std::make_unique<FollowStrategy>(pPlayer_); 
+    pCameraStrategy_->Start();
+    currentMode_ = CameraMode::mode3D;
+    // ユーザー要望により Orhto 投影を維持
+    g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Ortho);
 }

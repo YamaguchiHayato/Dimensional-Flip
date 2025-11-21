@@ -32,11 +32,11 @@ StageManager::~StageManager()
 bool StageManager::Start()
 {
     // 最初のシーンを生成する。
-    pCurrentStage_ = CreateStage(StageID::sStage2);
+    pCurrentStage_ = CreateStage(StageID::sStage3);
     if (pCurrentStage_)
     {
         // ステージの初期値を設定する。
-        currentID_s_ = StageID::sStage2;
+        currentID_s_ = StageID::sStage3;
         return true;
     }
     return false;

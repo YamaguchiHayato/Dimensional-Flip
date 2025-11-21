@@ -139,7 +139,9 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Stage3.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -248,7 +250,9 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Src\Actor\Stage\Stage3.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

@@ -80,7 +80,7 @@ bool Game::Start()
     pFade_->StartFadeIn();
     InitSkyCube();
 
-    // 物理デバッグワイヤーフレーム表示有効化。
+//    // 物理デバッグワイヤーフレーム表示有効化。
     PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
@@ -193,7 +193,7 @@ void Game::UpdateTransition()
         if (pCameraManager_)
             // カメラの初期化。
             pCameraManager_->Request2DMode(); // 2Dモードへ。
-            pCameraManager_->Request3Dmode(0.0f); // 回転角度をリセット。
+            pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
 
         // 5. 物理エンジンを1フレーム更新するためFadeInステートへ。
         state_ = SceneTransitionState::Load_WaitFinish;

@@ -27,7 +27,8 @@ public:
 	void Update();
 
 	void Request2DMode();                        /// 2Dモードへの変更要求
-	void Request3Dmode(float targetAngleDegrees);/// 3Dモードでの変更要求
+	void Request3DModeRot(float targetAngleDegrees);/// 3Dモードでの変更要求
+    void Request3DMode();
 
 // ゲッター。
 public:

@@ -173,7 +173,6 @@ namespace nsK2EngineLow {
 				{
 					delete* itr;
 				}
-
 			}
 		}
 		enum { GAME_OBJECT_PRIO_MAX = 255 };		//!<ゲームオブジェクトの優先度の最大値。

@@ -47,10 +47,11 @@ bool Thwomp::Start()
 
         slopeRot_ = qYaw * qPitch;
     }
+
     else slopeRot_ = Quaternion::Identity;
 
     // サイズは敵の大きさに合わせて調整 (半径, 高さ, 座標)
-    charaCon_.Init(125.0f, 50.0f, pos_);
+    charaCon_.Init(50.0f, 50.0f, pos_);
 
     // 4. 当たり判定用コリジョン作成 (ゴースト)
     pCollisionObject_ = NewGO<CollisionObject>(0, "thwomp_collision");

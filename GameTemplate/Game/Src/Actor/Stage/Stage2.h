@@ -70,32 +70,4 @@ private:
     float spawnTimer_ = 0.0f;
 };
 
-class Stage2Slope : public IGameObject
-{
-public:
-    Stage2Slope() {};
-    virtual ~Stage2Slope() {};
-
-    bool Start();
-    void Update();
-    void Render(RenderContext& rc);
-
-public:
-    inline void SetPos(const Vector3& pos)
-    {
-        basePos_ = pos;
-        pos_ = pos;
-    };
-
-private:
-    CollisionObject* pCollisionObject_ = nullptr;
-
-private:
-    ModelRender render_;
-    // コリジョン Box のサイズ（斜面の長さに合わせて調整）
-    Vector3 basePos_ = Vector3::Zero; // 円運動の中心
-    Vector3 pos_ = Vector3::Zero; // 実際に使う位置
-    Quaternion rot_ = Quaternion::Identity; // 斜面の傾き（モデル側で付けているなら Identity のままでOK）
-
-};
 

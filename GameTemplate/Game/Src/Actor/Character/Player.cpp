@@ -19,8 +19,7 @@ namespace
     const char* MODEL_FILE_EXTENSION = ".tkm";         // 拡張子。
 } // namespace
 
-const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName,
-                                             bool flag)
+const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName,bool flag)
 {
     std::string AnimationFilePath = PLAYER_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
 
@@ -29,8 +28,7 @@ const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, co
     return AnimationFilePath;
 }
 
-const std::string Player::FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,
-                                           EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag)
+const std::string Player::FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag)
 {
     // モデルをロード(tkmファイル名を打ち込む)。
     std::string Player = PLAYER_MODEL + modelName + MODEL_FILE_EXTENSION;
@@ -69,9 +67,8 @@ void Player::Action()
 {
     // カメラマネージャーのポインタを取得。
     if (!pCameraManager_)
-    {
         return;
-    }
+
     // 現在のカメラモードを取得。
     CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
     // トリガーエリア内かどうか取得。
@@ -90,9 +87,9 @@ void Player::Action()
 
             // トグル操作。
             if (fabsf(currentTargetAngle - 90.0f) < 1.0f)
-                pCameraManager_->Request3Dmode(0.0f);
+                pCameraManager_->Request3DModeRot(0.0f);
             else
-                pCameraManager_->Request3Dmode(90.0f);
+                pCameraManager_->Request3DModeRot(90.0f);
         }
     }
 
@@ -123,8 +120,11 @@ void Player::Move()
             didJumpThisFrame_ = true;
         }
     }
+    // 重力の設定。
     moveSpeed_.y -= GLAVITY;
+    // 移動速度。
     pos_ = charaCon_.Execute(moveSpeed_, 1.0f / 150.0f);
+    // 座標のセット。
     charaCon_.SetPosition(pos_);
     render_.SetPosition(pos_);
 }
@@ -163,10 +163,8 @@ void Player::ChangeDimensionCamera()
     CameraMode currentMode = CameraMode::mode2_5D;
 
     if (pCameraManager_)
-    {
         // 現在のカメラのモードを取得
         currentMode = pCameraManager_->GetCurrentCameraMode();
-    }
 
     // 3Dモードの処理
     if (currentMode == CameraMode::mode2_5D && g_pad[0]->IsTrigger(enButtonB))
@@ -184,6 +182,7 @@ void Player::ChangeDimensionCamera()
         is3DMode_ = false;
     }
 }
+
 void Player::Rotation()
 {
     Vector3 dir = moveSpeed_;

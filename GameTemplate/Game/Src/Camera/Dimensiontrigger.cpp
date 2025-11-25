@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player.h"
+#include "Src/Camera/CameraManager.h"
 #include "DimensionTrigger.h"
 
 namespace
@@ -55,15 +56,27 @@ void DimensionTrigger::Trigger()
 	bool isCurrentlyHit = pTriggerObject_->IsHit(pPlayer_->GetPlayerCC());
 
 	// 状態の変化をチェック
-	if (isCurrentlyHit && ! isPlayerInside_) {
+	if (isCurrentlyHit && ! isPlayerInside_) 
 		// 【入った瞬間】カウンターを増やす
 		pPlayer_->EnterTriggerArea();
-	}
-	else if (!isCurrentlyHit && isPlayerInside_) {
+	else if (!isCurrentlyHit && isPlayerInside_)
 		// 【出た瞬間】カウンターを減らす
 		pPlayer_->ExitTriggerArea();
-	}
 
-	// 次のフレームのために、現在の状態を保存
-	isPlayerInside_ = isCurrentlyHit;
+    // ボス部屋前のトリガー処理 (Pos4: 3600.0, 39.2f, -3927.0f)
+    if (std::abs(triggerPos_.x - 3600.0f) < 10.0f && std::abs(triggerPos_.z - (-3927.0f)) < 10.0f)
+    {
+        CameraManager* pCameraManager = FindGO<CameraManager>("CameraManager");
+        if (pCameraManager)
+        {
+            // プレイヤーがこのトリガーに「入った瞬間」だけ反応
+            if (isCurrentlyHit && !isPlayerInside_)
+            {
+                // RequestBossModeを呼び出す
+                // これにより、強制回転(90度)とBossCameraStrategyへの切り替えが実行される
+                pCameraManager->RequestBossMode();
+            }
+        }
+    }
+    isPlayerInside_ = isCurrentlyHit;
 }

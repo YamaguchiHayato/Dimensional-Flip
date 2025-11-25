@@ -2,7 +2,9 @@
 #include "Src/Actor/Stage/IStage.h"
 #include <vector>
 
+class Boss;
 class DimensionTrigger;
+class Player;
 class WallActor;
 class Stage3 : public IStage
 {
@@ -18,12 +20,21 @@ public:
         return Vector3::Zero;
     }
 
+
 private:
+    inline void BossInstance();
     void TriggerInstace();
     void WallActorInstace();
+
 private:
+    Player* pPlayer_ = nullptr;
+    Boss* pBoss_ = nullptr;
     CollisionObject* pCollisionObject_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
     WallActor* pWallActor_ = nullptr;
 
+private:
+    FontRender debugFont_x;
+    FontRender debugFont_y;
+    FontRender debugFont_z;
 };

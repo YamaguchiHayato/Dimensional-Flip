@@ -2,7 +2,7 @@
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/SceneManager.h"
 
-#include "Src/Title.h"
+#include "Src/Scene/title/TitleView.h"
 #include "Fade.h"
 
 
@@ -10,15 +10,15 @@
 TitleScene::~TitleScene()
 {
     // Titleオブジェクトの削除。
-    DeleteGO(pTitle_);
+    DeleteGO(pTitleView_);
 }
 
 bool TitleScene::Start()
 {
 
     // Titleオブジェクトの生成。
-    pTitle_ = NewGO<Title>(0, "title");
-    if (pTitle_ == nullptr)
+    pTitleView_ = NewGO<TitleView>(0, "titleview");
+    if (pTitleView_ == nullptr)
     {
         // Titleの生成に失敗するとシーン開始も失敗させる。
         return false;

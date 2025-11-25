@@ -1,8 +1,10 @@
 #include "stdafx.h"
-#include "Stage3.h"
+#include "Src/Actor/Stage/Stage3.h"
+#include "Src/Actor/Character/Enemy/Boss.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/WallActor.h"
+#include "Src/Actor/Character/Player.h"
 
 namespace nsStage3
 {
@@ -12,7 +14,7 @@ namespace nsStage3
         const Vector3 Pos2(1600.0f, 0.0f, -2200.0f);
         const Vector3 Pos3(3600.0f, 0.0f, -2200.0f);
         // ボス部屋前。
-        const Vector3 Pos4(4000.0f, 0.0f, -3000.0f);
+        const Vector3 Pos4(3600.0, 39.2f, -3927.0f);
     }
 
     namespace nsWall
@@ -25,6 +27,11 @@ namespace nsStage3
         // Z軸方向に設置する座標。
         const Vector3 Pos3(1600.0f, 0.0f, -500.0f); // 2
         const Vector3 Pos4(1600.0f, 0.0f, -700.0f); // 3
+    }
+
+    namespace nsBoss
+    {
+        const Vector3 InitPos(3600.0, 39.2f, -4300.0f);
     }
 }
 
@@ -46,12 +53,16 @@ bool Stage3::Start()
     // 座標設定。
 	stageRender_.SetPosition(stagePos_);
 	initPos_ = stagePos_;
+
     // 大きさ設定。
     stageRender_.SetScale(Vector3::One);
     stageRender_.Update();
 
+    BossInstance();
     TriggerInstace();
     WallActorInstace();
+
+    pPlayer_ = FindGO<Player>("player");
     return true;
 }
 
@@ -63,9 +74,16 @@ void Stage3::Update()
     stageRender_.Update();
 }
 
+
 void Stage3::Render(RenderContext& rc)
 {
     stageRender_.Draw(rc);
+}
+
+void Stage3::BossInstance()
+{
+    pBoss_ = NewGO<Boss>(0, "boss");
+    pBoss_->SetPos(nsStage3::nsBoss::InitPos);
 }
 
 void Stage3::TriggerInstace()

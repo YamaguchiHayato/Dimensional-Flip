@@ -22,6 +22,8 @@ void SideCameraStrategy::Update(nsK2EngineLow::Camera* camera, const float delta
 	// Slerp … 球面線形補完。(結果は currentRotation_ 自身に格納される) */
 	currentRotation_.Slerp(t, currentRotation_, targetRotation_); //
 
+    camera->SetRotation(currentRotation_);
+
 	// --- 位置計算 ---
 	const Vector3 targetPos = pPlayer_->GetPlayerPos();
 	const Vector3 currentCamPos = camera->GetPosition();

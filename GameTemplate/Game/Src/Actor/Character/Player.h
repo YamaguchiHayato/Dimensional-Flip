@@ -1,6 +1,6 @@
 #pragma once
 
-enum PlayerState
+enum PlayerState : uint8_t
 {
     sIdle,
     sRun,
@@ -8,7 +8,7 @@ enum PlayerState
     sNum,
 };
 
-enum EnAnimationClip
+enum EnAnimationClip : uint8_t
 {
     Idle,
     Jump,

@@ -2,7 +2,7 @@
 #include "Src/Scene/Scene.h"
 
 class Fade;
-class Title;
+class TitleView;
 class TitleScene : public IScene
 {
 public:
@@ -16,7 +16,7 @@ private:
 
 private:
     Fade* pFade_ = nullptr;
-    Title* pTitle_ = nullptr;
+    TitleView* pTitleView_ = nullptr;
 
 private:
     // 現在がフェード中かどうかを調べる。    

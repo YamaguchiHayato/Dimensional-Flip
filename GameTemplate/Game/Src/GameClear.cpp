@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameClear.h"
-#include "Src/Title.h"
+#include "Src/Scene/title/TitleView.h"
 #include "Src/Scene/TitleScene.h"
 
 bool GameClear::Start()

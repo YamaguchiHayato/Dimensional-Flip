@@ -11,8 +11,8 @@ class DimensionTrigger;
 class Stage1 : public IStage
 {
 public:
-	Stage1() {};
-	~Stage1();
+	Stage1() = default;
+	virtual ~Stage1();
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
@@ -37,10 +37,13 @@ private:
 private:
     // ギミック。
     JumpPad* pJumpPad_ = nullptr;
-    Star* pStar_ = nullptr;
-        
-    Stage1* pStage1_ = nullptr;
+    Star* pStar_ = nullptr;        
     WallActor* pWall_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
+
+    std::vector<JumpPad*> lJumpPad_;
+    std::vector<Star*> lStar_;
+    std::vector<WallActor*> lWall_;
+    std::vector<DimensionTrigger*> lDimensionTrigger_;
 };
 

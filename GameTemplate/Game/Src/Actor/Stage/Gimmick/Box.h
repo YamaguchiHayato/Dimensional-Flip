@@ -5,7 +5,8 @@ class Box : public IGimmic
 {
 public:
     Box() {};
-    virtual ~Box() {};
+    virtual ~Box();
+
     bool Start() override;
     void Update() override;
     void Render(RenderContext& rc) override;

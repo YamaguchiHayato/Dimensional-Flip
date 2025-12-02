@@ -152,6 +152,15 @@ namespace nsK2EngineLow {
 		{
 			SetUp({ x, y, z });
 		}
+
+		/// <summary>
+		/// カメラの回転取得。
+		/// </summary>
+		const Quaternion& GetRotation() const
+		{
+			return m_rotation;
+		}
+
 		/// <summary>
 		/// カメラの上方向を取得。
 		/// </summary>

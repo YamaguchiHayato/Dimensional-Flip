@@ -1,4 +1,5 @@
 #pragma once
+#include "Src/Actor/Character/Status.h"
 
 enum PlayerState : uint8_t
 {
@@ -20,8 +21,8 @@ class CameraManager;
 class Player : public IGameObject
 {
 public:
-    Player() {};
-    virtual ~Player() {};
+    Player() = default;
+    virtual ~Player() = default;
 
     bool Start() override;
     void Update() override;
@@ -56,9 +57,7 @@ public:
         triggerOverlapCount_--;
         // 0未満にならないように補正。
         if (triggerOverlapCount_ < 0)
-        {
             triggerOverlapCount_ = 0;
-        }
     }
     // 座標。
     inline void SetPlayerPos(const Vector3& pos)
@@ -92,14 +91,14 @@ private:
     // アニメーションを取得して再生する関数。
     const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
     // モデルを取得して再生する関数。
-    const std::string FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,
-                                       EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag);
+    const std::string FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag);
     // アニメーションを格納
     void SetAnimation();
 
 private:
-    Player* player_ = nullptr;
+    ::Player* player_ = nullptr;
     CameraManager* pCameraManager_ = nullptr;
+    app::status::Status status_;
 
 public:
     AnimationClip animationClip_[EnAnimationClip::Num];

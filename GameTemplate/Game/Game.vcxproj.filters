@@ -31,6 +31,15 @@
     <Filter Include="Src\Scene">
       <UniqueIdentifier>{504a6e0d-194d-4cae-8573-1ea3a7990bb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scene\title">
+      <UniqueIdentifier>{144181d3-b0ee-4297-ae30-471fb1e0e0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Direction">
+      <UniqueIdentifier>{382c0f69-013d-489c-961d-7ab40b48f743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Core">
+      <UniqueIdentifier>{8131aa0e-47c3-4628-b7c3-c1cc3ce48fee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -38,7 +47,6 @@
     <ClCompile Include="system\system.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp">
       <Filter>Src\Actor</Filter>
     </ClCompile>
@@ -53,12 +61,6 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp">
       <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Title.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Player.cpp">
-      <Filter>Src\Actor\Character</Filter>
     </ClCompile>
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
@@ -90,13 +92,9 @@
     <ClCompile Include="Src\Scene\TitleScene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\GameClear.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
@@ -109,23 +107,11 @@
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera\CameraManager.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene\InGameScene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Scene\SceneManager.cpp">
-      <Filter>Src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\StageManager.cpp">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\StageClear.cpp">
-      <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
@@ -142,13 +128,66 @@
     <ClCompile Include="Src\Actor\Stage\Stage3.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleView.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\StageEX.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Status.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\GameClear.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\StageClear.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\Fade.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\CameraManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\Game.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\SceneManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\StageManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Src\Actor\Actor.h">
       <Filter>Src\Actor</Filter>
     </ClInclude>
@@ -163,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage1.h">
       <Filter>Src\Actor\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Title.h">
-      <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\WallActor.h">
@@ -189,9 +225,6 @@
     <ClInclude Include="Src\UI\ScoreUI.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Player.h">
-      <Filter>Src\Actor\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Src\UI\HPbarUI.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
@@ -201,13 +234,9 @@
     <ClInclude Include="Src\Scene\TitleScene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\GameClear.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage2.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Fade.h" />
     <ClInclude Include="Src\Camera\ICameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
@@ -220,23 +249,11 @@
     <ClInclude Include="Src\Camera\Dimensiontrigger.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Camera\CameraManager.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Scene\InGameScene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Scene\SceneManager.h">
-      <Filter>Src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\StageManager.h">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\StageClear.h">
-      <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
@@ -252,6 +269,60 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage3.h">
       <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleLayerBase.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleLogoLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleView.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\StageEX.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\StageEXCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Status.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\GameClear.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\StageClear.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\BossCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\Fade.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\CameraManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\Game.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\SceneManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\StageManager.h">
+      <Filter>Src\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ class RotationFool : public IGimmic
 {
 public:
     RotationFool() {};
-    virtual ~RotationFool() {};
+    virtual ~RotationFool();
 
     bool Start() override;
     void Update() override;

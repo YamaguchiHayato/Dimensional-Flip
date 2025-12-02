@@ -7,9 +7,9 @@
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 // カメラクラス。
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 // データ統合クラス。
-#include "Game.h"
+#include "Src/Core/Game.h"
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
@@ -74,7 +74,6 @@ namespace GimmickParam
         namespace Pos
         {
             const Vector3 Pos1(1000.0f, 300.0f, 15.878f);
-//            const Vector3 Pos2(1450.0f, 50.0f, 15.878f);
         }
     }
 
@@ -85,7 +84,6 @@ namespace GimmickParam
         namespace Pos
         {
             const Vector3 Pos1(5400.0f, 1900.0f, -80.0f);
- //           const Vector3 Pos1(150.0f, 150.0f, -80.0f);
         }
 
         const float DISAPPEAR_Z = -300.0f;
@@ -122,6 +120,22 @@ namespace GimmickParam
     }
 } 
 
+Stage2::~Stage2()
+{
+    for (auto* p : lDimensionTrigger_){ DeleteGO(p); }
+    for (auto* p : lRotationFool_){ DeleteGO(p); }
+    for (auto* p : lBox_){ DeleteGO(p); }
+    for (auto* p : lStar_){ DeleteGO(p); }
+    for (auto* p : lTrackingEnemy_){ DeleteGO(p);}
+    for (auto* p : lThwomp_){ DeleteGO(p); }
+
+    lDimensionTrigger_.clear();
+    lRotationFool_.clear();
+    lBox_.clear();
+    lStar_.clear();
+    lTrackingEnemy_.clear();
+    lThwomp_.clear();
+}
 
 bool Stage2::Start()
 {
@@ -208,6 +222,7 @@ void Stage2::RotationFoolNewGO()
         // D. 大きさ。
         rotFool->SetScale(scale_);
 
+        lRotationFool_.push_back(rotFool);
 	}
 
 }
@@ -224,6 +239,8 @@ void Stage2::BoxInstance()
     {
         pBox_ = NewGO<Box>(0, "Box");
         pBox_->SetPos(BoxPosList[i]);
+
+        lBox_.push_back(pBox_);
     }
 }
 
@@ -232,13 +249,14 @@ void Stage2::TrackingInstance()
     std::vector<Vector3> EnemySpawnList =
 	{
         GimmickParam::TrackingEnemy::Pos::Pos1
-        // GimmickParam::RotationFool::Pos::Pos2,
     };
 
     for (size_t i = 0; i < EnemySpawnList.size(); i++)
     {
         pTrackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
         pTrackingEnemy_->SetPos(EnemySpawnList[i]);
+
+        lTrackingEnemy_.push_back(pTrackingEnemy_);
     }
 
 }
@@ -277,6 +295,8 @@ void Stage2::DimensionTriggerInstance()
     {
         pDimensionTrigger_ = NewGO<DimensionTrigger>(0,"dimensiontrigger");
         pDimensionTrigger_->SetTriggerPos(TriggerPosList[i]);
+
+        lDimensionTrigger_.push_back(pDimensionTrigger_);
     }
 }
 
@@ -292,6 +312,8 @@ void Stage2::StarInstance()
     {
         pStar_ = NewGO<Star>(0,"star");
         pStar_->SetStarPosition(StarPosList[i]);
+
+        lStar_.push_back(pStar_);
     }
 
 }

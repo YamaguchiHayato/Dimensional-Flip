@@ -7,7 +7,7 @@ enum class StageID : uint8_t
     sStage1,
     sStage2,
     sStage3,
-    sStage4,
+    sStageEX,
     sInvalid
 };
 
@@ -17,21 +17,18 @@ class IStage : public Actor
 {
 public:
     IStage() {};
-    virtual ~IStage(){};
+    virtual ~IStage() {};
     virtual bool Start() { return true; }
-    virtual void Update(){};
-    virtual void Render(RenderContext& rc){};
+    virtual void Update() {};
+    virtual void Render(RenderContext& rc) {};
     virtual const std::string InitStage(const std::string& stagename)
     {
         std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
         return Stagepath;
     };
-// ゲッター。
+    // ゲッター。
 public:
-    virtual Vector3 GetStageStartPos() const = 0
-    {
-        return Vector3::Zero;
-    }
+    virtual Vector3 GetStageStartPos() const = 0 { return Vector3::Zero; };
 
 protected:
     ModelRender stageRender_;

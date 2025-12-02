@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "Fade.h"
+#include "Src/Direction/Fade.h"
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
-#include "Src/Scene/SceneManager.h"
+#include "Src/Core/SceneManager.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 

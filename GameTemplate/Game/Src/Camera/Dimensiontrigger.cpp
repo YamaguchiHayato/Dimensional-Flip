@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 #include "DimensionTrigger.h"
-
+#include "Src/Actor/Stage/Stage3.h"
 namespace
 {
 	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//コリジョンの高さ
@@ -47,36 +47,20 @@ void DimensionTrigger::Update()
 
 void DimensionTrigger::Trigger()
 {
-	if(!pPlayer_ || !pTriggerObject_) return; // 両方のポインタをチェック
+    if (!pPlayer_ || !pTriggerObject_)
+        return;
 
-	// コリジョン。
-	pTriggerObject_->SetPosition(triggerPos_ + COLLISION_HEIGHT);
+    pTriggerObject_->SetPosition(triggerPos_ + COLLISION_HEIGHT);
+    bool isCurrentlyHit = pTriggerObject_->IsHit(pPlayer_->GetPlayerCC());
 
-	// 現在ヒットしているかどうか
-	bool isCurrentlyHit = pTriggerObject_->IsHit(pPlayer_->GetPlayerCC());
+    // 状態の変化をチェック
+    if (isCurrentlyHit && !isPlayerInside_)
+        // 【入った瞬間】
+        pPlayer_->EnterTriggerArea();
 
-	// 状態の変化をチェック
-	if (isCurrentlyHit && ! isPlayerInside_) 
-		// 【入った瞬間】カウンターを増やす
-		pPlayer_->EnterTriggerArea();
-	else if (!isCurrentlyHit && isPlayerInside_)
-		// 【出た瞬間】カウンターを減らす
-		pPlayer_->ExitTriggerArea();
+    else
+        // 【出た瞬間】
+        pPlayer_->ExitTriggerArea();
 
-    // ボス部屋前のトリガー処理 (Pos4: 3600.0, 39.2f, -3927.0f)
-    if (std::abs(triggerPos_.x - 3600.0f) < 10.0f && std::abs(triggerPos_.z - (-3927.0f)) < 10.0f)
-    {
-        CameraManager* pCameraManager = FindGO<CameraManager>("CameraManager");
-        if (pCameraManager)
-        {
-            // プレイヤーがこのトリガーに「入った瞬間」だけ反応
-            if (isCurrentlyHit && !isPlayerInside_)
-            {
-                // RequestBossModeを呼び出す
-                // これにより、強制回転(90度)とBossCameraStrategyへの切り替えが実行される
-                pCameraManager->RequestBossMode();
-            }
-        }
-    }
     isPlayerInside_ = isCurrentlyHit;
 }

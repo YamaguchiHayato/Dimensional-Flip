@@ -1,10 +1,16 @@
 #include "stdafx.h"
-#include "Src/Scene/TitleScene.h"
-#include "Src/Scene/SceneManager.h"
 
+// タイトルクラス。
 #include "Src/Scene/title/TitleView.h"
-#include "Fade.h"
 
+// ゲームシーンクラス。
+#include "Src/Scene/TitleScene.h"
+
+// 演出クラス。
+#include "Src/Direction/Fade.h"
+
+// ゲーム管理クラス。
+#include "Src/Core/SceneManager.h"
 
 
 TitleScene::~TitleScene()
@@ -15,7 +21,6 @@ TitleScene::~TitleScene()
 
 bool TitleScene::Start()
 {
-
     // Titleオブジェクトの生成。
     pTitleView_ = NewGO<TitleView>(0, "titleview");
     if (pTitleView_ == nullptr)
@@ -50,6 +55,7 @@ void TitleScene::Update()
             StartFadeOutToInGame();
         }
     }
+
     else
     {
         if (pFade_->IsFadeOutEnd())

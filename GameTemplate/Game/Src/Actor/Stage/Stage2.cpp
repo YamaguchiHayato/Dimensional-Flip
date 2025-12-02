@@ -7,9 +7,9 @@
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 // カメラクラス。
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 // データ統合クラス。
-#include "Game.h"
+#include "Src/Core/Game.h"
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"

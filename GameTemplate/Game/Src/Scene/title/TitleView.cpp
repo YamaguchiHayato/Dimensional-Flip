@@ -1,9 +1,13 @@
 #include "stdafx.h"
-#include "Src/Scene/title/TitleView.h"
-#include "Game.h"
-#include "Fade.h"
+
+// ゲームクラス。
+#include "Src/Core/Game.h"
+
+// 演出クラス。
+#include "Src/Direction/Fade.h"
 
 // タイトルレイヤークラス。
+#include "Src/Scene/title/TitleView.h"
 #include "Src/Scene/title/TitleBackgroundLayer.h"
 #include "Src/Scene/title/TitleButtonActionLayer.h"
 #include "Src/Scene/title/TitleLogoLayer.h"

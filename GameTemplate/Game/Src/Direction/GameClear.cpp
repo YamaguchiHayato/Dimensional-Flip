@@ -9,14 +9,6 @@ bool GameClear::Start()
 	return true;
 }
 
-void GameClear::Update()
-{
-	//if(g_pad[0]->IsTrigger(enButtonB))
-	//{
-	//	//NewGO <TitleScene>(0, "titlescene");
-	//	DeleteGO(this);
-	//}
-}
 
 void GameClear::Render(RenderContext& rc)
 {

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
 #include "Src/UI/ScoreUI.h"

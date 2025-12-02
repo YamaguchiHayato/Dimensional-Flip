@@ -2,8 +2,8 @@
 #include "Fade.h"
 #include "StageClear.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"
-#include "Src/Actor/Stage/StageManager.h"
-#include "Src/Scene/SceneManager.h"
+#include "Src/Core/StageManager.h"
+#include "Src/Core/SceneManager.h"
 
 bool StageClear::Start()
 {

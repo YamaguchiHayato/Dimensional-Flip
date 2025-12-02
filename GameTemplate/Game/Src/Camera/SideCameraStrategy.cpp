@@ -2,7 +2,7 @@
 #include "Src/Camera/SideCameraStrategy.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/camera/FollowStrategy.h"
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 
 SideCameraStrategy::SideCameraStrategy(Player* pPlayer)
 	: pPlayer_(pPlayer)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/CameraManager.h"
+#include "Src/Core/CameraManager.h"
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/JumpPad.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"

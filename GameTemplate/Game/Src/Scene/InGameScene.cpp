@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "Game.h"
+#include "Src/Core/Game.h"
 #include "Src/Scene/InGameScene.h"
-#include "Src/Scene/SceneManager.h"
-#include "Src/Actor/Stage/StageManager.h"
+#include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
 
 InGameScene::~InGameScene()
 {

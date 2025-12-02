@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "Fade.h"
+#include "Src/Direction/Fade.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Scene/LoadingScene.h"
 // UI。
@@ -10,9 +10,9 @@
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/HPbarUI.h"
 // マネージャー。
-#include "Src/Camera/CameraManager.h"
-#include "Src/Scene/SceneManager.h"
-#include "Src/Actor/Stage/StageManager.h"
+#include "Src/Core/CameraManager.h"
+#include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
 
 
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Star.h"
 #include "Src/Actor/Character/Player.h"
-#include "Src/StageClear.h"
+#include "Src/Direction/StageClear.h"
 
 namespace StarStatus
 {

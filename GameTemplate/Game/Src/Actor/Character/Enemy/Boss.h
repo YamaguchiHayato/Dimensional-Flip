@@ -28,8 +28,11 @@ public:
 
 public:
     inline void SetPos(const Vector3& pos) { pos_ = pos; }
+    inline void SetRot(const Quaternion& rot) { rot_ = rot; }
 
     inline Vector3 GetPos() const { return pos_; }
+    inline Quaternion GetRot() const { return rot_; }
+
 private:
     void Attack(Player* target);
     void PlayAnimatipn();

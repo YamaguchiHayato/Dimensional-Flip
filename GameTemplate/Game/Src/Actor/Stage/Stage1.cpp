@@ -17,7 +17,6 @@ namespace
 	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//コリジョンの大きさ
 }
 
-// namespace
 namespace GimmickPos
 {
     // スター。
@@ -52,10 +51,31 @@ namespace GimmickPos
 
 Stage1::~Stage1()
 {
-    DeleteGO(pJumpPad_);
-    DeleteGO(pStar_);
-    DeleteGO(pWall_);
-    DeleteGO(pDimensionTrigger_);
+    for (auto* p : lJumpPad_)
+    {
+        DeleteGO(p);
+    }
+
+
+    for (auto* p : lStar_)
+    {
+        DeleteGO(p);
+    }
+
+    for (auto* p : lWall_)
+    {
+        DeleteGO(p);
+    }
+
+    for (auto* p : lDimensionTrigger_)
+    {
+        DeleteGO(p);
+    }
+
+    lJumpPad_.clear();
+    lStar_.clear();
+    lWall_.clear();
+    lDimensionTrigger_.clear();
 }
 
 bool Stage1::Start()
@@ -116,6 +136,7 @@ void Stage1::JumpPadNewGO()
 	{
 		pJumpPad_= NewGO<JumpPad>(0, "jumppad");
         pJumpPad_->SetJumpPadPosition(JumpPadPosList[i]);
+        lJumpPad_.push_back(pJumpPad_);
 	}
 }
 
@@ -130,6 +151,7 @@ void Stage1::StarNewGO()
 	{
 		auto star = NewGO<Star>(0, "star");
 		star->SetStarPosition(StarPosList[i]);
+        lStar_.push_back(star);
 	}
 
 }
@@ -140,8 +162,6 @@ void Stage1::WallNewGO()
 	{
 		GimmickPos::WallPosition::Pos1,
 		GimmickPos::WallPosition::Pos2,
-	//	WallPosition::Pos3,
-	//	WallPosition::Pos4
 	};
 
 	for (size_t i = 0; i < WallPosList.size(); i++)
@@ -157,7 +177,7 @@ void Stage1::WallNewGO()
 		}
 
         pWall_->SetWallPos(WallPosList[i]);
-
+        lWall_.push_back(pWall_);
 	}
 
 }
@@ -173,6 +193,7 @@ void Stage1::DimensionTriggerNewGO()
 	{
 		pDimensionTrigger_ = NewGO<DimensionTrigger>(0, "dimensiontrigger");
 		pDimensionTrigger_->SetTriggerPos(TriggerList[i]);
+        lDimensionTrigger_.push_back(pDimensionTrigger_);
 	}
 
 }

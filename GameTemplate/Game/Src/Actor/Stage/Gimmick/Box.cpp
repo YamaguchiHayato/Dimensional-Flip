@@ -8,6 +8,15 @@ namespace
 	const Vector3 SCALE(2.0f, 2.0f, 2.0f);	//モデルの大きさ
 }
 
+Box::~Box()
+{
+    if (pGimmickCollision_)
+    {
+        DeleteGO(pGimmickCollision_);
+        pGimmickCollision_ = nullptr;
+    }
+}
+
 bool Box::Start()
 {
     	//ファイルパス

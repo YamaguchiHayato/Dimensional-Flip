@@ -17,8 +17,8 @@ class Star;
 class Stage2 : public IStage
 {
 public:
-	Stage2() {};
-	virtual ~Stage2(){};
+	Stage2() = default;
+	virtual ~Stage2();
 
 	bool Start() override;
 	void Update() override;
@@ -50,16 +50,23 @@ private:
     inline void DimensionTriggerInstance(); // トリガーモデルの生成。
     inline void StarInstance();
 private:
+    // ポインタ。
     // ギミック。
     DimensionTrigger* pDimensionTrigger_ = nullptr;
     RotationFool* pRotationFool_ = nullptr;
     Box* pBox_ = nullptr;
     Star* pStar_ = nullptr;
-    // 敵。
     TrackingEnemy* pTrackingEnemy_ = nullptr;
     Thwomp* pThwomp_ = nullptr;
-
     Player* pPlayer = nullptr;
+
+    // リスト。
+    std::vector<DimensionTrigger*> lDimensionTrigger_;
+    std::vector<RotationFool*> lRotationFool_;
+    std::vector<Box*> lBox_;
+    std::vector<Star*> lStar_;
+    std::vector<TrackingEnemy*> lTrackingEnemy_;
+    std::vector<Thwomp*> lThwomp_;
 
 private:
     ModelRender render_;

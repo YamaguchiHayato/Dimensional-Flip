@@ -4,7 +4,6 @@
 
 namespace StageStartPos
 {
-//    const Vector3 stage2(0.0f, 100.0f, 0.0f);
     const Vector3 stage2(3000.0f, 800.0f, -60.0f);
 }
 
@@ -13,8 +12,8 @@ class StageManager : public IStage
 {
 private:
     IStage* pCurrentStage_ = nullptr;
-    StageID currentID_s_ = StageID::sStage1;
-    StageID requestID_s_ = StageID::sInvalid;
+    StageID stageCurrentID_ = StageID::sStage1;
+    StageID stageRequestID_ = StageID::sInvalid;
 
 public:
     // 初期化処理。
@@ -32,7 +31,7 @@ public:
     // ステージの変更処理。
     inline void ChangeStage(StageID newStageID)
     {
-        requestID_s_ = newStageID;
+        stageRequestID_ = newStageID;
     }
 
 // ゲッター。
@@ -50,10 +49,10 @@ public:
     // ステージ変更検知で使用。
     inline StageID GetCurrentStageID() const
     {
-        return currentID_s_;
+        return stageCurrentID_;
     }
 
-    StageManager() {};
+    StageManager() = default;
     virtual ~StageManager();
 
 

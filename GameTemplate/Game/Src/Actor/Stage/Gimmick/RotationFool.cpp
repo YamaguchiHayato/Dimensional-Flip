@@ -19,6 +19,15 @@ namespace GimmickPos
     }
 }
 
+RotationFool::~RotationFool()
+{
+    if (pGimmickCollision_)
+    {
+        DeleteGO(pGimmickCollision_);
+        pGimmickCollision_ = nullptr;
+    }
+}
+
 bool RotationFool::Start()
 {
 	//ファイルパス

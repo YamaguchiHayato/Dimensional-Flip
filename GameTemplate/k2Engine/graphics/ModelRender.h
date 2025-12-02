@@ -156,6 +156,11 @@ namespace nsK2Engine {
 		{
 			return m_position;
 		}
+
+		const Quaternion& GetRotation() const
+		{
+			return m_rotation;
+		}
 		/// <summary>
 		/// À•W‚ğİ’èB
 		/// </summary>

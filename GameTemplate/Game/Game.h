@@ -31,8 +31,9 @@ class Player;
 class Game : public IGameObject
 {
 public:
-    Game() {};
+    Game() = default;
     virtual ~Game();
+
     bool Start();
     void Update();
 
@@ -40,37 +41,21 @@ public:
     void RequestStageTransition(StageID nextStageID);
 private:
     // Player。
-    inline void PlayerInstance()
-    {
-        pPlayer_ = NewGO<Player>(0, "player");
-    }
+    void PlayerInstance();
     // UI。
     inline void UIInstance();
     // 各UIの生成。
     // タイマーUI。
-    inline void TimerInstance()
-    {
-        pTimerUI_ = NewGO<TimerUI>(0, "timerui");
-    }
+    inline void TimerInstance();
     // ナンバーUI。
-    inline void NumberInstance()
-    {
-        pNumberUI_ = NewGO<NumberUI>(0, "numberui");
-    }
+    inline void NumberInstance();
     // スコアUI。
-    inline void ScoreInstance()
-    {
-        pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
-    }
+    inline void ScoreInstance();
     // HPbar。
-    inline void HPbarInstance()
-    {
-        pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
-    }
-
+    inline void HPbarInstance();
     // その他。
-    inline void InitSkyCube(); // スカイキューブの初期化。
-
+    void InitSkyCube(); // スカイキューブの初期化。
+    // 遷移時の更新処理。
     void UpdateTransition();
 
 private:

@@ -14,7 +14,5 @@ public:
 	ICameraStrategy() = default;
 	virtual ~ICameraStrategy() = default;
 	virtual bool Start() = 0;
-	
-    virtual void Update
-	(nsK2EngineLow::Camera* pCamera, const float deltaTime) = 0;
+    virtual void Update(nsK2EngineLow::Camera* pCamera, const float deltaTime) = 0;
 };

@@ -24,7 +24,7 @@ SceneManager::~SceneManager()
 bool SceneManager::Start()
 {
     // フェードシーンの生成。
-    pFade_ = NewGO<Fade>(1, "fade");
+    pFade_ = NewGO<Fade>(2, "fade");
     if (pFade_ == nullptr)
     {
         return false;

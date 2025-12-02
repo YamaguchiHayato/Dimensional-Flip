@@ -6,18 +6,29 @@
 #include "Src/Camera/SideCameraStrategy.h"
 #include "Src/UI/ScoreUI.h"
 
+#include "Src/Actor/Character/Status.h"
+
+// プレイヤーステータス構造体。
+struct PlauerStatus
+{
+    static const uint8_t MAX_HP = 8;           // 最大体力。
+    static constexpr auto SPEED = 150.0f;      // 移動速度。
+    static constexpr auto JUMP_POWER = 350.0f; // ジャンプ力。
+    static constexpr auto GLAVITY = 15.0f;     // 重力。
+    static constexpr auto ATTACK_POWER = 1.0f; // 攻撃力。
+};
+
 namespace
 {
-    // モデルのスケール。
     const Vector3 SCALE(0.5f, 0.5f, 0.5f);
-    // モデルにかかる重力。
-    const float GLAVITY = 15.0f;
+
     // モデルのファイルパス。
     const char* PLAYER_MODEL = "Assets/modelData/";
     const char* PLAYER_ANIMATION = "Assets/animData/"; // ファイルパス。
     const char* ANIMATION_FILE_EXTENSION = ".tka";     // 拡張子。
     const char* MODEL_FILE_EXTENSION = ".tkm";         // 拡張子。
-} // namespace
+}
+
 
 const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName,bool flag)
 {
@@ -27,6 +38,7 @@ const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, co
     animationClip_[enAnimationClip].SetLoopFlag(flag);
     return AnimationFilePath;
 }
+
 
 const std::string Player::FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag)
 {
@@ -38,14 +50,19 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
     return Player;
 }
 
+
 bool Player::Start()
 {
     // アニメーションの設定。
     SetAnimation();
     render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::Num, enModelUpAxisY);
     charaCon_.Init(20.0f, 25.0f, pos_);
+
+    // プレイヤーのステータスを初期化する。
+    status_.Initial(PlauerStatus::MAX_HP, PlauerStatus::SPEED, PlauerStatus::ATTACK_POWER);
     return true;
 }
+
 
 void Player::Update()
 {
@@ -62,6 +79,7 @@ void Player::Update()
     render_.SetPosition(pos_);
     render_.Update();
 }
+
 
 void Player::Action()
 {
@@ -80,6 +98,10 @@ void Player::Action()
     {
         // 今のカメラモードを取得。
         ICameraStrategy* currentStrategy = pCameraManager_->GetCurrentStrategy();
+
+        if (!currentStrategy)
+            return;
+
         SideCameraStrategy* sideStrategy = dynamic_cast<SideCameraStrategy*>(currentStrategy);
         if (sideStrategy)
         {
@@ -97,6 +119,7 @@ void Player::Action()
     else if (g_pad[0]->IsTrigger(enButtonX) && isInTriggerArea && currentMode == CameraMode::mode3D)
         pCameraManager_->Request2DMode();
 }
+
 
 void Player::Move()
 {
@@ -121,13 +144,14 @@ void Player::Move()
         }
     }
     // 重力の設定。
-    moveSpeed_.y -= GLAVITY;
+    moveSpeed_.y -= PlauerStatus::GLAVITY;
     // 移動速度。
     pos_ = charaCon_.Execute(moveSpeed_, 1.0f / 150.0f);
     // 座標のセット。
     charaCon_.SetPosition(pos_);
     render_.SetPosition(pos_);
 }
+
 
 void Player::Move3Dmode()
 {
@@ -145,6 +169,7 @@ void Player::Move3Dmode()
     moveSpeed_.z *= -1;
 }
 
+
 void Player::Move2_5Dmode()
 {
     Vector3 stickL;
@@ -156,6 +181,7 @@ void Player::Move2_5Dmode()
 
     moveSpeed_ += right * (stickL.x * 480.0f);
 }
+
 
 void Player::ChangeDimensionCamera()
 {
@@ -183,6 +209,7 @@ void Player::ChangeDimensionCamera()
     }
 }
 
+
 void Player::Rotation()
 {
     Vector3 dir = moveSpeed_;
@@ -194,7 +221,7 @@ void Player::Rotation()
     }
 }
 
-// ステート管理
+
 void Player::ManageState()
 {
     // 地面についていなかったら
@@ -214,6 +241,7 @@ void Player::ManageState()
     else
         state_ = PlayerState::sIdle;
 }
+
 
 void Player::PlayAnimation()
 {
@@ -238,10 +266,12 @@ void Player::PlayAnimation()
     }
 }
 
+
 void Player::Render(RenderContext& rc)
 {
     render_.Draw(rc);
 }
+
 
 void Player::SetAnimation()
 {

@@ -31,6 +31,12 @@
     <Filter Include="Src\Scene">
       <UniqueIdentifier>{504a6e0d-194d-4cae-8573-1ea3a7990bb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scene\title">
+      <UniqueIdentifier>{144181d3-b0ee-4297-ae30-471fb1e0e0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Direction">
+      <UniqueIdentifier>{382c0f69-013d-489c-961d-7ab40b48f743}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -53,12 +59,6 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp">
       <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Title.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Player.cpp">
-      <Filter>Src\Actor\Character</Filter>
     </ClCompile>
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
@@ -89,9 +89,6 @@
     </ClCompile>
     <ClCompile Include="Src\Scene\TitleScene.cpp">
       <Filter>Src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\GameClear.cpp">
-      <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
       <Filter>Src\Actor\Stage</Filter>
@@ -124,9 +121,6 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="Src\StageClear.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
@@ -141,6 +135,45 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Stage3.cpp">
       <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleView.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\StageEX.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Status.cpp">
+      <Filter>Src\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\GameClear.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\StageClear.cpp">
+      <Filter>Src\Direction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +197,6 @@
     <ClInclude Include="Src\Actor\Stage\Stage1.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Title.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\WallActor.h">
       <Filter>Src</Filter>
@@ -189,9 +219,6 @@
     <ClInclude Include="Src\UI\ScoreUI.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Player.h">
-      <Filter>Src\Actor\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Src\UI\HPbarUI.h">
       <Filter>Src\UI</Filter>
     </ClInclude>
@@ -200,9 +227,6 @@
     </ClInclude>
     <ClInclude Include="Src\Scene\TitleScene.h">
       <Filter>Src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\GameClear.h">
-      <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage2.h">
       <Filter>Src\Actor\Stage</Filter>
@@ -235,9 +259,6 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="Src\StageClear.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
@@ -252,6 +273,45 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Stage3.h">
       <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\BossCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleLayerBase.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleLogoLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleView.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\StageEX.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\StageEXCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Status.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\GameClear.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\StageClear.h">
+      <Filter>Src\Direction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

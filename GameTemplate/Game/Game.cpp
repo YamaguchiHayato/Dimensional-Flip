@@ -80,8 +80,8 @@ bool Game::Start()
     pFade_->StartFadeIn();
     InitSkyCube();
 
-//    // 物理デバッグワイヤーフレーム表示有効化。
-    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+    // 物理デバッグワイヤーフレーム表示有効化。
+//  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 
@@ -122,10 +122,8 @@ void Game::UpdateTransition()
     // A. 通常状態。
     /////////////////////////////////////////
     case SceneTransitionState::None:
-    {
         // 何もしない。
         break;
-    }
 
     /////////////////////////////////////////
     // B. フェードアウト状態。
@@ -191,9 +189,12 @@ void Game::UpdateTransition()
         pPlayer_->SetPlayerPos(newStartPos);
 
         if (pCameraManager_)
+        {
             // カメラの初期化。
-            pCameraManager_->Request2DMode(); // 2Dモードへ。
+            pCameraManager_->Request2DMode();        // 2Dモードへ。
             pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
+
+        }
 
         // 5. 物理エンジンを1フレーム更新するためFadeInステートへ。
         state_ = SceneTransitionState::Load_WaitFinish;
@@ -252,3 +253,37 @@ void Game::UIInstance()
 	HPbarInstance();
 }
 
+
+void Game:: PlayerInstance()
+{
+    pPlayer_ = NewGO<Player>(0, "player");
+}
+
+
+// 各UIの生成。
+// タイマーUI。
+void Game::TimerInstance()
+{
+    pTimerUI_ = NewGO<TimerUI>(0, "timerui");
+}
+
+
+// ナンバーUI。
+void Game:: NumberInstance()
+{
+    pNumberUI_ = NewGO<NumberUI>(0, "numberui");
+}
+
+
+// スコアUI。
+void Game::ScoreInstance()
+{
+    pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
+}
+
+
+// HPbar。
+void Game::HPbarInstance()
+{
+    pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
+}

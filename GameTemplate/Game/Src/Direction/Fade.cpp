@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Fade.h"
-#include "Src/Actor/Stage/StageManager.h"
+#include "Src/Core/StageManager.h"
 
 bool Fade::Start()
 {

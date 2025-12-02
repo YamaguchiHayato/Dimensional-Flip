@@ -2,10 +2,10 @@
 class GameClear : public IGameObject
 {
 public:
-	GameClear() {};
-	~GameClear() {};
+	GameClear() = default;
+	~GameClear() = default;
 	bool Start();
-	void Update();
+    void Update() {};
 	void Render(RenderContext& rc);
 
 private:

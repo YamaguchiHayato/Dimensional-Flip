@@ -1,6 +1,6 @@
 #pragma once
 #include "stdint.h"
-#include "Game.h"
+#include "Src/Core/Game.h"
 #include "Src/Actor/Stage/IStage.h"
 
 

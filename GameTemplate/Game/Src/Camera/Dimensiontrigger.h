@@ -1,5 +1,6 @@
 #pragma once
 class Player;
+class Stage3;
 class DimensionTrigger : public IGameObject
 {
 public:
@@ -10,8 +11,11 @@ public:
 	void Update();
 
 	void Trigger();
-
-// セッター。
+    inline void SetStage(Stage3* pStage3)
+    {
+        pStage3_ = pStage3;
+    }
+    // セッター。
 public:
 	inline void SetTriggerPos(const Vector3& triggerPos) 
 	{
@@ -22,6 +26,7 @@ public:
 private:
 	CollisionObject* pTriggerObject_ = nullptr;
 	Player* pPlayer_ = nullptr;
+    Stage3* pStage3_ = nullptr;
 
 private:
 	ModelRender triggerRender_;

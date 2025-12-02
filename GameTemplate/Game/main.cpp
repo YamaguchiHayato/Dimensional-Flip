@@ -5,8 +5,8 @@
 #include<dxgidebug.h>
 
 #include "Src/Scene/Scene.h"
-#include "Src/Scene/SceneManager.h"
-#include "Src/Actor/Stage/StageManager.h"
+#include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
 
 void ReportLiveObjects()
 {

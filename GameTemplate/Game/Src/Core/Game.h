@@ -1,8 +1,8 @@
 #pragma once
 #include "stdint.h"
 #include "Level3DRender/LevelRender.h"
-#include "Src/Camera/CameraManager.h"
-#include "Src/Scene/SceneManager.h"
+#include "Src/Core/CameraManager.h"
+#include "Src/Core/SceneManager.h"
 #include "Src/Actor/Stage/IStage.h"
 #include "Src/UI/HPbarUI.h"
 #include "Src/UI/NumberUI.h"

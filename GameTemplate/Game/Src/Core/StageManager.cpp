@@ -1,23 +1,32 @@
 #include "stdafx.h"
+
+// キャラクタークラス。
 #include "Src/Actor/Character/Player.h"
-#include "Src/Camera/CameraManager.h"
+
+
+// カメラクラス。
+#include "Src/Core/CameraManager.h"
+
 
 // ステージ。
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Stage/Stage2.h"
 #include "Src/Actor/Stage/Stage3.h"
 #include "Src/Actor/Stage/StageEX.h"
-#include "Src/Actor/Stage/StageManager.h"
+#include "Src/Core/StageManager.h"
 
+// 演出クラス。
+#include "Src/Direction/Fade.h"
 
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 
 // ゲームシーン。  
-#include "Src/Scene/SceneManager.h"
+#include "Src/Core/SceneManager.h"
 #include "Src/Scene/LoadingScene.h"
-#include "Fade.h"
+
+
 
 StageManager* StageManager::pStageManger_  =nullptr;
 

@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CutInScrollLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
@@ -251,6 +252,8 @@
     <ClCompile Include="Src\Core\Game.cpp" />
     <ClCompile Include="Src\Core\SceneManager.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
+    <ClCompile Include="Src\Direction\CutIn\CutInBase.cpp" />
+    <ClCompile Include="Src\Direction\CutIn\CutInMaskLayer.cpp" />
     <ClCompile Include="Src\Direction\Fade.cpp" />
     <ClCompile Include="Src\Direction\GameClear.cpp" />
     <ClCompile Include="Src\Direction\StageClear.cpp" />
@@ -277,6 +280,7 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CutInScrollLayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />
@@ -305,6 +309,8 @@
     <ClInclude Include="Src\Core\Game.h" />
     <ClInclude Include="Src\Core\SceneManager.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
+    <ClInclude Include="Src\Direction\CutIn\CutInBase.h" />
+    <ClInclude Include="Src\Direction\CutIn\CutInMaskLayer.h" />
     <ClInclude Include="Src\Direction\Fade.h" />
     <ClInclude Include="Src\Direction\GameClear.h" />
     <ClInclude Include="Src\Direction\StageClear.h" />

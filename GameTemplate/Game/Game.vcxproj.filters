@@ -41,7 +41,7 @@
       <UniqueIdentifier>{bc371530-928d-4a8b-9a1a-79bb10ee2b03}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Direction\CutIn">
-      <UniqueIdentifier>{106d9842-38cf-435e-9af8-3976ef7d2984}</UniqueIdentifier>
+      <UniqueIdentifier>{106d9842-38cf-435e-9af8-3976ef7d2984}</UniqueIdentifier
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,7 +121,40 @@
     </ClCompile>
     <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp">
       <Filter>Src\Scene\title</Filter>
+    <ClCompile Include="Src\Direction\Fade.cpp">
+      <Filter>Src\Direction</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Direction\GameClear.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Direction\StageClear.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\CameraManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\Game.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\SceneManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\StageManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
+
     <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
@@ -269,6 +302,39 @@
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h">
+      <Filter>Src\Scene\title</Filter>
+
+    <ClInclude Include="Src\Direction\Fade.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\GameClear.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Direction\StageClear.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\CameraManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\Game.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\SceneManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\StageManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\BossCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\StageEXCameraStrategy.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleLayerBase.h">
       <Filter>Src\Scene\title</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h">

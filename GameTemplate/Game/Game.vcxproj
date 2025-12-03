@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CutInScrollLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
@@ -240,13 +241,22 @@
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage3.cpp" />
-    <ClCompile Include="Src\Actor\Stage\StageManager.cpp" />
-    <ClCompile Include="Src\Camera\CameraManager.cpp" />
+    <ClCompile Include="Src\Actor\Stage\StageEX.cpp" />
+    <ClCompile Include="Src\Camera\BossCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
-    <ClCompile Include="Src\GameClear.cpp" />
+    <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp" />
+    <ClCompile Include="Src\Core\CameraManager.cpp" />
+    <ClCompile Include="Src\Core\Game.cpp" />
+    <ClCompile Include="Src\Core\SceneManager.cpp" />
+    <ClCompile Include="Src\Core\StageManager.cpp" />
+    <ClCompile Include="Src\Direction\CutIn\CutInBase.cpp" />
+    <ClCompile Include="Src\Direction\CutIn\CutInMaskLayer.cpp" />
+    <ClCompile Include="Src\Direction\Fade.cpp" />
+    <ClCompile Include="Src\Direction\GameClear.cpp" />
+    <ClCompile Include="Src\Direction\StageClear.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
     <ClCompile Include="Src\Scene\LoadingScene.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
@@ -270,6 +280,7 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CutInScrollLayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />
@@ -287,13 +298,22 @@
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\Stage3.h" />
-    <ClInclude Include="Src\Actor\Stage\StageManager.h" />
-    <ClInclude Include="Src\Camera\CameraManager.h" />
+    <ClInclude Include="Src\Actor\Stage\StageEX.h" />
+    <ClInclude Include="Src\Camera\BossCameraStrategy.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Camera\FollowStrategy.h" />
     <ClInclude Include="Src\Camera\ICameraStrategy.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
-    <ClInclude Include="Src\GameClear.h" />
+    <ClInclude Include="Src\Camera\StageEXCameraStrategy.h" />
+    <ClInclude Include="Src\Core\CameraManager.h" />
+    <ClInclude Include="Src\Core\Game.h" />
+    <ClInclude Include="Src\Core\SceneManager.h" />
+    <ClInclude Include="Src\Core\StageManager.h" />
+    <ClInclude Include="Src\Direction\CutIn\CutInBase.h" />
+    <ClInclude Include="Src\Direction\CutIn\CutInMaskLayer.h" />
+    <ClInclude Include="Src\Direction\Fade.h" />
+    <ClInclude Include="Src\Direction\GameClear.h" />
+    <ClInclude Include="Src\Direction\StageClear.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />
     <ClInclude Include="Src\Scene\LoadingScene.h" />
     <ClInclude Include="Src\Scene\Scene.h" />

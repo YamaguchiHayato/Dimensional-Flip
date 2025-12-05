@@ -2,6 +2,9 @@
 #include "Src/Actor/Stage/StageEX.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Core/CameraManager.h"
+
+#include "Src/Direction/CutIn/CutInView.h"
+
 namespace
 {
     const Vector3 SCALE(Vector3(10.0f, 10.0f, 10.0f));
@@ -46,12 +49,41 @@ namespace app
                     // カメラをボスモードに変更。
                     pCameraManager_->RequestBossMode(); 
             }
+
+            // プレイヤーの一時停止フラグをセット。
+            if (pPlayer_)
+                pPlayer_->SetPaused(true);
+
+            // カットインの生成。
+            pCutInView_ = NewGO<app::cutIn::CutInView>(0, "CutInView");
+
+            // カットインの寿命(n秒)を設定。
+            pCutInView_->SetLifeDuration(4.0f);
+
             return true;
         }
 
 
         void StageEX::Update()
         {
+
+            // 終了判定。
+            if (pCutInView_)
+            {
+                // 時間切れになったら。
+                if (pCutInView_->IsCutInFinished())
+                {
+                    // CutInViewの破棄。
+                    // レイヤークラスも一緒に破棄される。
+                    DeleteGO(pCutInView_);
+                    pCutInView_ = nullptr;
+
+                    // 一時停止フラグを解除する。
+                    if (pPlayer_)
+                        pPlayer_->SetPaused(false);
+                }
+            }
+
             stageRender_.Update();
         }
 

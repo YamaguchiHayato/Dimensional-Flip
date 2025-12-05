@@ -64,6 +64,30 @@ namespace nsK2Engine
         /// </summary>
         /// <returns>座標。</returns>
         const Vector3& GetPosition() const { return m_position; }
+        
+		/// <summary>
+		/// 2D座標を設定。
+        /// </summary>
+        inline const void SetPos(const Vector2& pos)
+        {
+			pos_ = pos;
+        }
+
+		/// <summary>
+		/// 2D座標を取得。
+        /// </summary>
+        inline const Vector2& GetPos() const
+        {
+			return pos_;
+        }
+        
+        // 透明度
+        inline void SetAlpha(const float alpha)
+        {
+            m_alpha = alpha;
+        }
+
+
         /// <summary>
         /// 大きさを設定。zは1.0fで。
         /// </summary>
@@ -248,8 +272,11 @@ namespace nsK2Engine
         Vector3 m_scale = Vector3::One;                          // 大きさ。
         Vector2 m_pivot = Sprite::DEFAULT_PIVOT;                 // ピボット。
 
+		Vector2 pos_ = Vector2::Zero;
+
     private:
         int fadeState_ = FadeStart;              // フェードステート
+        float m_alpha = 1.0f;                     // 透明度。
         float wipeScrollSpeed_ = 1.0f;           // ワイプ速度
         float screenDrawingEasingSpeed_ = 0.01f; // 画像加工用のイージング速度
     };

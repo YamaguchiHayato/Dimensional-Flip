@@ -1,5 +1,7 @@
 #pragma once
 class Player;
+class CutInView;
+
 class Star : public IGameObject
 {
 public:
@@ -22,6 +24,7 @@ public:
 
 private:
 	Player* m_player = nullptr;
+    CutInView* pCutInView_ = nullptr;
 
 private:
 	ModelRender m_starRender;

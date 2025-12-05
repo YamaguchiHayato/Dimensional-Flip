@@ -2,6 +2,7 @@
 #include "Star.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Direction/StageClear.h"
+#include "Src/Direction/CutIn/CutInView.h"
 
 namespace StarStatus
 {
@@ -18,6 +19,7 @@ bool Star::Start()
 	m_starRender.SetPosition(m_starPosition);
 
 	m_player = FindGO<Player>("player");
+
 	return true;
 }
 
@@ -30,6 +32,8 @@ void Star::Update()
 	{
         NewGO<StageClear>(0, "stageclear");
 		DeleteGO(this);
+        //NewGO<app::cutIn::CutInView>(0, "CutInView");
+        //DeleteGO(this);
 	}
 
 	Rotation();

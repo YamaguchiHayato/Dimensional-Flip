@@ -231,12 +231,25 @@ void Game::UpdateTransition()
         // TimerUIをリセットする。
         pNumberUI_->ResetTimer();
 
-
-        nextStageID_ = StageID::sInvalid;
-        state_ = SceneTransitionState::None; // Aへ遷移。
+        // フェード完了待ちステートへ移行。
+        state_ = SceneTransitionState::FadeIn_Wait;
         break;
     }
-        
+
+    /////////////////////////////////////////
+    // H. フェードイン状態。
+    /////////////////////////////////////////
+    case SceneTransitionState::FadeIn_Wait:
+    {
+        if (pFade_->IsFadeInEnd())
+        {
+            nextStageID_ = StageID::sInvalid;
+            state_ = SceneTransitionState::None; // ここで初めてゲーム開始！
+        }
+        break;
+    }
+
+
     default:
         break;
     }
@@ -260,29 +273,24 @@ void Game:: PlayerInstance()
 }
 
 
-// 各UIの生成。
-// タイマーUI。
 void Game::TimerInstance()
 {
     pTimerUI_ = NewGO<TimerUI>(0, "timerui");
 }
 
 
-// ナンバーUI。
 void Game:: NumberInstance()
 {
     pNumberUI_ = NewGO<NumberUI>(0, "numberui");
 }
 
 
-// スコアUI。
 void Game::ScoreInstance()
 {
     pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
 }
 
 
-// HPbar。
 void Game::HPbarInstance()
 {
     pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");

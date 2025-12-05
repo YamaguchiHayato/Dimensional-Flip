@@ -9,6 +9,15 @@ class CameraManager;
 
 namespace app
 {
+    namespace cutIn
+    {
+        class CutInView;
+    }
+}
+
+
+namespace app
+{
     namespace nsStageEX
     {
         namespace nsBoss
@@ -19,6 +28,7 @@ namespace app
 
     namespace stage
     {
+
         class StageEX : public IStage
         {
         public:
@@ -43,6 +53,11 @@ namespace app
             Boss* pBoss_ = nullptr;
             CameraManager* pCameraManager_ = nullptr;
             Player* pPlayer_ = nullptr;
+            app::cutIn::CutInView* pCutInView_ = nullptr;
+
+        private:
+
+            bool isCutInPlayed_ = false;
         };
 
     }

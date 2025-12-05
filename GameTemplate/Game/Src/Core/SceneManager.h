@@ -11,7 +11,8 @@ enum class SceneTransitionState : uint8_t
     Load_Render,     // ローディング画面の準備。
     Load_Wait,       // 同期ロード実行。
     Load_WaitFinish, // ロード完了待ち。
-    FadeIn           // フェードイン中。
+    FadeIn,          // フェードイン中。
+    FadeIn_Wait,     // フェードイン完了待ち。
 };
 
 class Fade;

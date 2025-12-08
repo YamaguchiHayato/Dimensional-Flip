@@ -17,11 +17,13 @@ namespace
 bool TitleLogoLayer::Start()
 {
     // タイトルロゴ。
-    std::string layerName = Init("TitleText");
+//    std::string layerName = Init("TitleText");
+    std::string layerName = Init("logo");
+
     titleLayerRender_.Init(layerName.c_str(), LOGO_WIDTH, LOGO_HEIGHT);
 
     // プレスボタン。
-    std::string Abutton = Init("PressButton");
+    std::string Abutton = Init("button");
     pressButtonRender_.Init(Abutton.c_str(), BUTTON_WIDTH, BUTTON_HEIGHT);
 
     return true;
@@ -39,6 +41,7 @@ void TitleLogoLayer::Update()
     pressButtonRender_.SetPosition(Vector3(0.0f, -400.0f, 0.0f));
     pressButtonRender_.Update();
 }
+
 
 void TitleLogoLayer::Render(RenderContext& rc)
 {

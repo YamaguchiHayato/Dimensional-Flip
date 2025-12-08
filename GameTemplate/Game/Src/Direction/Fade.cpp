@@ -19,21 +19,19 @@ void Fade::Update()
     ChangeFadeState();
 
     // フェードイン完了判定。
-    if (fadeSprite_.GetWipeSize() < 0.0f &&
-        fadeState_ == FadeState::FadeStart)
-    {
+    if (fadeSprite_.GetWipeSize() < 900.0f && fadeState_ == FadeState::FadeStart)
         fadeInEnd_ = true; 
-    }
 
     // フェードアウト完了判定。
-    if (fadeSprite_.GetWipeSize() > 900.0f && fadeState_ == FadeState::FadeEnd)
-    fadeOutEnd_ = true;
+    if (fadeSprite_.GetWipeSize() > 0.0f && fadeState_ == FadeState::FadeEnd)
+        fadeOutEnd_ = true;
 
     fadeSprite_.Update();
 }
 
 void Fade::Render(RenderContext& rc)
 {
+    // フェードイン完了後は描画しない。
     if (fadeInEnd_ == true) return;
 
     fadeSprite_.Draw(rc);
@@ -47,12 +45,12 @@ void Fade::ChangeFadeState()
         switch (fadeState_)
         {
         case FadeState::FadeStart:
-             fadeSprite_.SetWipeSize(900.0f); // 開始位置 (隠れている)
+             fadeSprite_.SetWipeSize(-50.0f); // 開始位置 (隠れている)
              fadeTransitionFlag_ = true;
              break;
 
         case FadeState::FadeEnd:
-             fadeSprite_.SetWipeSize(-50.0f); // 開始位置 (見えている)
+             fadeSprite_.SetWipeSize(900.0f); // 開始位置 (見えている)
              fadeTransitionFlag_ = true;
              break;
 
@@ -62,21 +60,28 @@ void Fade::ChangeFadeState()
     }
 }
 
+
 void Fade::StartFadeOut()
 {
-  fadeState_ = FadeState::FadeEnd;
-  fadeSprite_.SetWipeScrollSpeed(1000.0f); // フェードの速度。
-  fadeSprite_.SetFadeTransition(fadeState_);
-  fadeTransitionFlag_ = false;
+    fadeState_ = FadeState::FadeEnd;
 
-  fadeInEnd_ = false;
-  fadeOutEnd_ = false;
+    // フェードの速度。
+    fadeSprite_.SetWipeScrollSpeed(-1000.0f);
+
+    fadeSprite_.SetFadeTransition(fadeState_);
+    fadeTransitionFlag_ = false;
+
+    fadeInEnd_ = false;
+    fadeOutEnd_ = false;
 }
+
 
 void Fade::StartFadeIn()
 {
     fadeState_ = FadeState::FadeStart;
-    fadeSprite_.SetWipeScrollSpeed(-1000.0f); // フェードインの速度
+
+    // フェードインの速度
+    fadeSprite_.SetWipeScrollSpeed(1000.0f); 
     fadeSprite_.SetFadeTransition(fadeState_);
     fadeTransitionFlag_ = false;
 

@@ -153,6 +153,7 @@ void Game::UpdateTransition()
         stageClearTimer_.Stop();
 
         // 1.FadeOutの完了を待つ。
+//        if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
         if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
         {
             // 2. Loading画面を表示する。

@@ -206,6 +206,7 @@
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Meteo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -369,6 +370,7 @@
     <ClInclude Include="Src\Camera\BossCameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Meteo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

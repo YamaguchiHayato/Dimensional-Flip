@@ -24,7 +24,7 @@ bool TitleView::Start()
 {
     // 各レイヤーの生成。
     pBackgroundLayer_ = NewGO<TitleBackgroundLayer>(0, "titleBackgroundLayer");
-    pButtonActionLayer = NewGO<TitleButtonActionLayer>(1, "titlebuttonnactionlayer");
+//    pButtonActionLayer = NewGO<TitleButtonActionLayer>(1, "titlebuttonnactionlayer");
     pLogoLayer_ = NewGO<TitleLogoLayer>(1, "titlelogolayer");
 
     return true;    

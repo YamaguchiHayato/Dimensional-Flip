@@ -88,7 +88,7 @@ namespace app
             else if (isVisible && !isAnimating_)
             {
                 // 終了後の大きさ。
-                auto endScale = 2.5f;
+                auto endScale = 1.0;
                 layer_.SetScale(Vector3(endScale, endScale, endScale));
             }
         }

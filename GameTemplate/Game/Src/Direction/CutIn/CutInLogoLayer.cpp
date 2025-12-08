@@ -22,7 +22,7 @@ namespace app
         bool CutInLogoLayer::Start()
         {
             const std::string layerPath = FindLayerPath("Emblem");
-            layer_.Init(layerPath.c_str(), layerParam::WIDHT, layerParam::WIDHT);
+            layer_.Init(layerPath.c_str(), layerParam::WIDHT, layerParam::HEIGHT);
 
             layer_.SetPosition(Vector3(200.0f, 100.0f, 0.0f));
 
@@ -39,8 +39,6 @@ namespace app
 
             // 回転設定。
             layer_.SetRotation(currentRot_);
-
-        //    layer_.SetScale(Vector3(2.0f, 2.0f, 2.0f));
             layer_.SetPosition(layerParam::POSITION);
             layer_.Update();
         }
@@ -90,7 +88,8 @@ namespace app
             else if (isVisible && !isAnimating_)
             {
                 // 終了後の大きさ。
-                layer_.SetScale(Vector3::One);
+                auto endScale = 2.5f;
+                layer_.SetScale(Vector3(endScale, endScale, endScale));
             }
         }
 

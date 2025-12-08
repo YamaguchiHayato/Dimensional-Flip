@@ -190,6 +190,7 @@ void Stage3::TriggerInstace()
 
 }
 
+
 void Stage3::WallActorInstace()
 {
     WallActor* pWallActor = nullptr;
@@ -225,6 +226,7 @@ void Stage3::WallActorInstace()
 
     }
 }
+
 
 void Stage3::StarInstance()
 {

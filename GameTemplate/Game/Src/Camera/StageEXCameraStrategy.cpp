@@ -5,6 +5,12 @@
 #include "Src/Camera/FollowStrategy.h" 
 #include "Src/Camera/StageEXCameraStrategy.h"
 
+namespace
+{
+    // アリーナ視点用にするオフセット。
+    const Vector3 OFFSET(0.0f, 1300.0f, -2000.0f);
+}
+
 namespace app
 {
     namespace camera
@@ -30,6 +36,7 @@ namespace app
             float t = rotationSpeed_ * deltaTime;
             if (t > 1.0f)
                 t = 1.0f;
+
             currentRotation_.Slerp(t, currentRotation_, targetRotation_);
 
             // --- 位置計算 ---
@@ -37,7 +44,7 @@ namespace app
             const Vector3 currentCamPos = camera->GetPosition();
 
             // オフセットを回転させる
-            Vector3 rotatedOffset = baseOffset_;
+            Vector3 rotatedOffset = OFFSET;
             currentRotation_.Apply(rotatedOffset);
 
             // 理想の位置 = プレイヤー + 回転した俯瞰オフセット

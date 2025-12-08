@@ -1,11 +1,22 @@
 #include "stdafx.h"
 
+// TODO: 将来的にはコマンドパターンとして設計。
+
+// キャラクタークラス。
 #include "Src/Actor/Character/Player.h"
+
+
+// カメラクラス。
 #include "Src/Core/CameraManager.h"
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
+
+
+// UIクラス。
 #include "Src/UI/ScoreUI.h"
 
+
+// 内部ステータスクラス。
 #include "Src/Actor/Character/Status.h"
 
 // プレイヤーステータス構造体。
@@ -123,15 +134,41 @@ void Player::Action()
 
 void Player::Move()
 {
-    // 1. 水平移動速度をリセット
     moveSpeed_.x = 0.0f;
     moveSpeed_.z = 0.0f;
 
+    // 今のカメラモードを取得する。
+    CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
     Vector3 stickL;
     stickL.x = g_pad[0]->GetLStickXF();
     stickL.y = g_pad[0]->GetLStickYF();
 
-    ChangeDimensionCamera();
+    // カメラモードがBossMode & 3D & Boss戦仕様なら
+    if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode ==CameraMode::modeStageEX)
+    {
+        // 3D/ボス戦専用のカメラ基準移動を実行
+        Vector3 camForward = g_camera3D->GetForward();
+        Vector3 camRight = g_camera3D->GetRight();
+
+        // Y成分をカットして水平に
+        camForward.y = 0.0f;
+        camRight.y = 0.0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // targetMove = (カメラForward * Y入力) + (カメラRight * X入力)
+        Vector3 targetMove = (camForward * stickL.y) + (camRight * stickL.x);
+
+        // 速度を加算 (PlayerStatus::SPEED を使用)
+        moveSpeed_ += targetMove * PlauerStatus::SPEED;
+    }
+
+    else
+    {
+        Vector3 right = g_camera3D->GetRight();
+        right.y = 0.0f;
+        moveSpeed_ += right * (stickL.x * PlauerStatus::SPEED);
+    }
 
     if (charaCon_.IsOnGround())
     {
@@ -248,21 +285,28 @@ void Player::PlayAnimation()
     // switch文
     switch (state_)
     {
-    // 待機状態だったら
-    case PlayerState::sIdle:
-        // 待機アニメーションの再生
-        render_.PlayAnimation(EnAnimationClip::Idle);
-        break;
-
-    // 歩き状態だったら
-    case PlayerState::sJump:
-        render_.PlayAnimation(EnAnimationClip::Jump);
-        break;
-
-    // ジャンプ中だったら
-    case PlayerState::sRun:
-        render_.PlayAnimation(EnAnimationClip::Run);
-        break;
+        // 待機状態だったら
+        case PlayerState::sIdle:
+        {
+            // 待機アニメーションの再生
+            render_.PlayAnimation(EnAnimationClip::Idle);
+            break;
+        }
+         
+        // 歩き状態だったら
+        case PlayerState::sJump:
+        {
+            // ジャンプアニメーションの再生
+            render_.PlayAnimation(EnAnimationClip::Jump);
+            break;
+        }
+         
+        // ジャンプ中だったら
+        case PlayerState::sRun:
+        {
+            render_.PlayAnimation(EnAnimationClip::Run);
+            break;
+        }
     }
 }
 

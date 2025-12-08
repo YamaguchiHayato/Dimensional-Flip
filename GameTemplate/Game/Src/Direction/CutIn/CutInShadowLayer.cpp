@@ -3,8 +3,8 @@
 #include "Src/Direction/CutIn/CutInSlideLayer.h"
 struct layerSize
 {
-    static constexpr float WIDTH = 1280.0f;
-    static constexpr float HEIGHT = 648.0f;
+    static constexpr float WIDTH = 225.0f;
+    static constexpr float HEIGHT = 185.0f;
 };
 
 namespace app
@@ -24,7 +24,7 @@ namespace app
             // ターゲットに位置を合わせる。
             // ※一度きり。
             if (offset_.Length() == 0.0)
-                offset_ = Vector3(50.0f, -20.0f, 0.0f);
+                offset_ = Vector3(0.0f, 0.0f, 0.0f);
 
             layer_.SetAlpha(0.0f); // 初期は非表示。
             return true;
@@ -88,7 +88,11 @@ namespace app
 
             // レイヤー画像を更新する。
             layer_.SetPosition(currentPos_);
-            layer_.SetScale(Vector3(0.8f, 0.8f, 0.8f));
+
+
+            float scale = 1.0f;
+            layer_.SetScale(Vector3(scale, scale, scale));
+
             layer_.Update();
         }
 

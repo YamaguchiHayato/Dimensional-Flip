@@ -23,9 +23,6 @@ namespace app
         private:
             ::Player* pPlayer_ = nullptr;
 
-            // 俯瞰視点用のオフセット設定
-            Vector3 baseOffset_{0.0f, 800.0f, -400.0f};
-
             Quaternion currentRotation_ = Quaternion::Identity;
             Quaternion targetRotation_ = Quaternion::Identity;
             float rotationSpeed_ = 4.0f;

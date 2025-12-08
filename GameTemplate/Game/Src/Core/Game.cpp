@@ -81,7 +81,7 @@ bool Game::Start()
     InitSkyCube();
 
     // 物理デバッグワイヤーフレーム表示有効化。
-//  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+   PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 

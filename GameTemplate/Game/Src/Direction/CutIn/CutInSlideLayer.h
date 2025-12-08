@@ -37,7 +37,7 @@ namespace app
             {
                 // 右から左へスライドイン。
                 startPos_ = Vector3(500.0f, 0.0f, 0.0f);
-                endPos_ = Vector3(-300.0f, 0.0f, 0.0f);
+                endPos_ = Vector3(-600.0f, 0.0f, 0.0f);
                 currentPos_ = startPos_;
             }
 

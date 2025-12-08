@@ -56,7 +56,6 @@ public:
 
 private:
     void ControlState();
-    void Attack(Player* target);
     void PlayAnimation();
     void SetAnimation();
     void Rotaition();
@@ -83,5 +82,6 @@ private:
     AttackType currentAttackType_ = AttackType::Meteor;
 
     float stateTimer_ = 0.0f;
+    float nextInterval_ = 3.0f;
 };
 

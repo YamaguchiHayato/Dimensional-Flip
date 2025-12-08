@@ -5,7 +5,11 @@
 
 namespace
 {
+    // 攻撃インターバル時間。
     const float INTERVAL = 4.0f;
+
+    // 次の攻撃までのインターバルを管理する変数。
+    const auto NEXT_INTERVAL = 4.0f;
 
 }
 
@@ -62,8 +66,6 @@ namespace
         }
 
 
- void Boss::Attack(Player* target) {}
-
 
  void Boss::Rotaition()
  {
@@ -119,7 +121,7 @@ namespace
          stateTimer_ += g_gameTime->GetFrameDeltaTime();
 
          // stateTimer_ の設定値の分だけカウントが進むと、攻撃が開始される。
-         if (stateTimer_ >= INTERVAL)
+         if (stateTimer_ >= nextInterval_)
          {
              uint8_t randomNum = rand() % (uint8_t) AttackType::Num;
              currentAttackType_ = static_cast<AttackType>(randomNum);
@@ -149,10 +151,18 @@ namespace
              // 攻撃ステートが終わったら待機状態に戻る。
              state_ = BossAnimation::bossAnim_Idle;
              stateTimer_ = 0.0f;
+
+
+             // 攻撃の種類によって次のインターバル時間を与える。
+             if (currentAttackType_ == AttackType::Roar)
+                 nextInterval_ = 4.0f + (static_cast<float>(rand() % 21 / 10.0f));
+
+             else
+                 // 次の攻撃までのインターバル時間をランダムで決める。
+                 nextInterval_ = 2.0f + (static_cast<float>(rand() % 16 / 10.0f));
          }
          break;
      }
-
      default:
          break;
      }

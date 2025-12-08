@@ -1,44 +1,69 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
+#include <memory>
 
 enum BossAnimation : uint8_t
 {
-    bossAnim_Idle = 0,
-    bossAnim_Attack,
+    bossAnim_Idle = 0,      // 待機。
+    bossAnim_AttackCast,    // 攻撃。
+    bossAnim_AttackRoar,    // 咆哮。
+
     bossAnim_Run,
-    bossAnim_Hit,
-    bossAnim_Num,
+    bossAnim_Hit,           // ダメージ時。
+    bossAnim_Num,           // アニメーションの総数。
 };
 
+// 攻撃タイプを管理する列挙型。
+enum class AttackType : uint8_t
+{
+    Meteor, // 隕石
+    Spear,  // 槍
+    Roar,   // 咆哮
+    Num
+};
+
+
 class Player;
+
 class Boss : public IEnemy
 {
 public:
-    Boss() =default;
+    Boss() = default;
     virtual ~Boss() = default;
 
     bool Start() override;
     void Update() override;
     void Render(RenderContext& rc) override;
-    inline const virtual std::string InitModel(const std::string& enemyName)override
-    {
-        std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
-        return enemyPath;
-    };
+    inline const virtual std::string InitModel(const std::string& enemyName) override
+            {
+                std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
+                return enemyPath;
+            };
 
+    // セッター。
 public:
+    // 座標。
     inline void SetPos(const Vector3& pos) { pos_ = pos; }
+    // 回転。
     inline void SetRot(const Quaternion& rot) { rot_ = rot; }
 
+    // ゲッター。
+public:
+    // 座標。
     inline Vector3 GetPos() const { return pos_; }
+    // 回転。
     inline Quaternion GetRot() const { return rot_; }
 
 private:
+    void ControlState();
     void Attack(Player* target);
-    void PlayAnimatipn();
+    void PlayAnimation();
     void SetAnimation();
     void Rotaition();
     void Move();
+
+
+private:
     const std::string GetAnimation(BossAnimation, const std::string animationName, bool flag);
 
 private:
@@ -46,11 +71,17 @@ private:
 
 private:
     AnimationClip animationClip_[BossAnimation::bossAnim_Num];
+
     ModelRender render_;
 
     Vector3 pos_ = Vector3::Zero;
     Vector3 moveSpeed_ = Vector3::Zero;
     Quaternion rot_ = Quaternion::Identity;
 
-    uint8_t state_ = 0;
+    uint8_t state_ = bossAnim_Idle;
+
+    AttackType currentAttackType_ = AttackType::Meteor;
+
+    float stateTimer_ = 0.0f;
 };
+

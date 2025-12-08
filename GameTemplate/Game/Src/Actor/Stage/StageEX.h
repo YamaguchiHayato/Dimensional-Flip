@@ -22,7 +22,12 @@ namespace app
     {
         namespace nsBoss
         {
-            const Vector3 InitPos = Vector3(0.0f, 250.0f, 0.0f);
+            const Vector3 InitPos = Vector3(0.0f, 250.0f, 500.0f);
+        }
+
+        namespace nsPlayer
+        {
+            const Vector3 InitPos =  Vector3(0.0f, 100.0f, -1000.0f);
         }
     } 
 
@@ -39,7 +44,10 @@ namespace app
             void Update() override;
             void Render(RenderContext& rc) override;
 
-            inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 200.0f, 0.0f); }
+            inline Vector3 GetStageStartPos() const override
+            {
+                return nsStageEX::nsPlayer::InitPos;
+            }
 
         private:
             inline void BossInstance()

@@ -16,13 +16,13 @@
 #include "Src/Camera/FollowStrategy.h" 
 
 namespace
-{
-    static constexpr auto ORIGINCAMERA_EVENTTIME = 4.0f; // 演出時間
-    static constexpr auto TARGET_HEIGHT = 150.0f;
-    static constexpr auto SWITCH_SPEED = 10.0f;
+{   
+    const auto ORIGINCAMERA_EVENTTIME = 4.0f; // 演出時間
+    const auto TARGET_HEIGHT = 150.0f;
+    const auto SWITCH_SPEED = 10.0f;
 
-    const Vector3 SIDE_VIEW_OFFSET = {-500.0f, 150.0f, 0.0f};  // 側面視点オフセット
-    const Vector3 DEPTH_VIEW_OFFSET = {0.0f, 150.0f, -500.0f}; // 奥行き視点オフセット
+    const Vector3 SIDE_VIEW_OFFSET = {-1500.0f, 500.0f, 0.0f};
+    const Vector3 DEPTH_VIEW_OFFSET = {0.0f, 500.0f, -1500.0f};
 }; 
 
 namespace app
@@ -97,7 +97,7 @@ namespace app
                     CameraManager* pCamMgr = pPlayer_->GetCameraManager();
                     if (pCamMgr)
                     {
-                        // ★ここでStageExMode(俯瞰視点)へ移行
+                        // カメラモードををBOSS戦仕様に。
                         pCamMgr->RequestStageExMode();
                     }
                 }
@@ -111,21 +111,30 @@ namespace app
 
         void BossCameraStrategy::BattleCamera(nsK2EngineLow::Camera* pCamera, const float deltaTime)
         {
-            // 基本的には RequestStageExMode で切り替わるため、ここは予備のロジックになります
-            if (!pBoss_)
+            if (!pBoss_ || !pPlayer_)
                 return;
 
             Vector3 bossPos = pBoss_->GetPos();
+            Vector3 playerPos = pPlayer_->GetPlayerPos();
+
+            // 1. bossとPlayerの中間地点を計算し、注視点とする
+            Vector3 middlePos = (bossPos + playerPos) * 0.5f;
+
+            // 2. 視点モードに応じたオフセットを取得
             Vector3 targetOffset =
                 (currentViewMode_ == BattleViewMode::SidwView) ? SIDE_VIEW_OFFSET : DEPTH_VIEW_OFFSET;
-            Vector3 idealPos = bossPos + targetOffset;
 
+            // 3. 理想位置 = 中間地点 + オフセット
+            Vector3 idealPos = middlePos + targetOffset;
+
+            // 4. 滑らかに追従する (Lerp引数の順序に注意し、deltaTimeを適用)
             Vector3 currentPos = pCamera->GetPosition();
-            Vector3 newPos = FollowStrategy::Lerp(SWITCH_SPEED * deltaTime, idealPos, currentPos);
+            Vector3 newPos = FollowStrategy::Lerp(SWITCH_SPEED * deltaTime, currentPos, idealPos);
             pCamera->SetPosition(newPos);
 
-            Vector3 target = bossPos;
-            target.y += TARGET_HEIGHT;
+            // 5. 注視点を中間地点に設定
+            Vector3 target = middlePos;
+            target.y += TARGET_HEIGHT; // 中間点を見下ろす高さ
             pCamera->SetTarget(target);
         }
 

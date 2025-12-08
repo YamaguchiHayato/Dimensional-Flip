@@ -3,8 +3,8 @@
 
 struct layerSize
 {
-    static constexpr auto WIDHT = 1280.0;  // カットイン黒背景の横幅。
-    static constexpr auto HEIGHT = 648.0f; // カットイン黒背景の縦幅。
+    static constexpr auto WIDHT = 220.0;  // カットイン黒背景の横幅。   static constexpr auto WIDHT = 220.0;  // カットイン黒背景の横幅。
+    static constexpr auto HEIGHT = 185.0f; // カットイン黒背景の縦幅。
 };
 
 namespace app
@@ -56,7 +56,8 @@ namespace app
 
             else
             {
-                layer_.SetScale(Vector3(0.8f, 0.8f, 0.8f));
+                float scale = 3.0f;
+                layer_.SetScale(Vector3(scale, scale, scale));
             }
 
             layer_.SetPosition(currentPos_);

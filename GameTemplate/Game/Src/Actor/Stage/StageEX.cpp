@@ -75,12 +75,20 @@ namespace app
                 {
                     // CutInViewの破棄。
                     // レイヤークラスも一緒に破棄される。
+                    // ※レイヤークラス …　CutInViewに所属しているCutInを構成するクラス達。
                     DeleteGO(pCutInView_);
                     pCutInView_ = nullptr;
 
                     // 一時停止フラグを解除する。
                     if (pPlayer_)
+                    {
+                        // プレイヤーを所定の位置に移動させる。
+                        pPlayer_->SetPlayerPos(nsStageEX::nsPlayer::InitPos);
+
+                        // 一時停止フラグ解除。
+                        // Bossのカットイン中は行動を制限させたいため。
                         pPlayer_->SetPaused(false);
+                    }
                 }
             }
 

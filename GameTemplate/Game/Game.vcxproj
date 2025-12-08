@@ -240,8 +240,8 @@
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage3.cpp" />
-    <ClCompile Include="Src\Actor\Stage\StageManager.cpp" />
-    <ClCompile Include="Src\Camera\CameraManager.cpp" />
+    <ClCompile Include="Src\Actor\Stage\StageEX.cpp" />
+    <ClCompile Include="Src\Camera\BossCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
@@ -301,8 +301,8 @@
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\Stage3.h" />
-    <ClInclude Include="Src\Actor\Stage\StageManager.h" />
-    <ClInclude Include="Src\Camera\CameraManager.h" />
+    <ClInclude Include="Src\Actor\Stage\StageEX.h" />
+    <ClInclude Include="Src\Camera\BossCameraStrategy.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Camera\FollowStrategy.h" />
     <ClInclude Include="Src\Camera\ICameraStrategy.h" />

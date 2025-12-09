@@ -21,18 +21,18 @@ bool Box::Start()
 {
     	//ファイルパス
     std::string foolPath = InitGimmick("Stage2/Box");
-    gimmickRender_.Init(foolPath.c_str(), 0, 0, enModelUpAxisZ, false, true);// モデルをセットする。
+    render_.Init(foolPath.c_str(), 0, 0, enModelUpAxisZ, false, true);// モデルをセットする。
 	
 	// モデルの大きさ。
-	gimmickRender_.SetScale(SCALE);
+	render_.SetScale(SCALE);
 
 	// モデルの更新作業。
-	gimmickRender_.Update();
+	render_.Update();
 
 	// 探索処理。
 	pPlayer = FindGO<Player>("player");
 
-    gimmickPhysics_.CreateFromModel(gimmickRender_.GetModel(), gimmickRender_.GetModel().GetWorldMatrix());
+    gimmickPhysics_.CreateFromModel(render_.GetModel(), render_.GetModel().GetWorldMatrix());
 
 	// コリジョン。
 	pGimmickCollision_ = NewGO<CollisionObject>(0, "collisionobject");
@@ -41,7 +41,7 @@ bool Box::Start()
 	pGimmickCollision_->CreateBox(gimmickPos_ + GIMMICKCOLLISION,Quaternion::Identity, GIMMICKCOLLISION);
 
 	// 座標を設定。
-	gimmickRender_.SetPosition(gimmickPos_);
+	render_.SetPosition(gimmickPos_);
 	// コリジョンを破棄。
 	pGimmickCollision_->SetIsEnableAutoDelete(false);
 
@@ -51,9 +51,9 @@ bool Box::Start()
 void Box::Update()
 {
     // ギミックモデルの更新。
-    gimmickRender_.Update();
+    render_.Update();
     // ギミックモデルの座標更新。
-    gimmickRender_.SetPosition(gimmickPos_);
+    render_.SetPosition(gimmickPos_);
     // ギミックの座標設定。
     gimmickPhysics_.SetPosition(gimmickPos_);
     // ギミックコリジョンの設定。
@@ -62,5 +62,5 @@ void Box::Update()
 
 void Box::Render(RenderContext& rc)
 {
-    gimmickRender_.Draw(rc);
+    render_.Draw(rc);
 }

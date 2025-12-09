@@ -18,7 +18,7 @@ public:
 
 // メンバ変数。
 protected:
-    ModelRender gimmickRender_;
+    ModelRender render_;
     Vector3 gimmickPos_ = Vector3::Zero;
     Vector3 initGimmickPos_ = Vector3::Zero;
 

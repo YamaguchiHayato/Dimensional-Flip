@@ -35,10 +35,10 @@ public:
     void Update() override;
     void Render(RenderContext& rc) override;
     inline const virtual std::string InitModel(const std::string& enemyName) override
-            {
-                std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
-                return enemyPath;
-            };
+    {
+        std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
+        return enemyPath;
+    };
 
     // セッター。
 public:
@@ -50,9 +50,15 @@ public:
     // ゲッター。
 public:
     // 座標。
-    inline Vector3 GetPos() const { return pos_; }
+    inline Vector3 GetPos() const
+    {
+        return pos_;
+    }
     // 回転。
-    inline Quaternion GetRot() const { return rot_; }
+    inline Quaternion GetRot() const
+    {
+        return rot_;
+    }
 
 private:
     void ControlState();
@@ -60,7 +66,11 @@ private:
     void SetAnimation();
     void Rotaition();
     void Move();
+    // 攻撃Gimmickをまとめて生成させる。
+    void SpawnGimmicks(AttackType type);
 
+    // 座標をランダムに計算するヘルパー関数。
+    Vector3 RandomStagePos();
 
 private:
     const std::string GetAnimation(BossAnimation, const std::string animationName, bool flag);
@@ -70,6 +80,7 @@ private:
 
 private:
     AnimationClip animationClip_[BossAnimation::bossAnim_Num];
+    AttackType currentAttackType_ = AttackType::Meteor;
 
     ModelRender render_;
 
@@ -79,7 +90,8 @@ private:
 
     uint8_t state_ = bossAnim_Idle;
 
-    AttackType currentAttackType_ = AttackType::Meteor;
+    bool isAttackSpawned_ = false;                  // 攻撃オブジェクトが生成済みかチェック。
+
 
     float stateTimer_ = 0.0f;
     float nextInterval_ = 3.0f;

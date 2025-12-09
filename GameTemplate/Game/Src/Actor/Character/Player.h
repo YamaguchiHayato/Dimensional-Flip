@@ -11,10 +11,10 @@ enum PlayerState : uint8_t
 
 enum EnAnimationClip : uint8_t
 {
-    Idle,
-    Jump,
-    Run,
-    Num,
+    animIdle,
+    animJump,
+    animRun,
+    animNum,
 };
 
 class CameraManager;
@@ -101,7 +101,7 @@ private:
     app::status::Status status_;
 
 public:
-    AnimationClip animationClip_[EnAnimationClip::Num];
+    AnimationClip animationClip_[EnAnimationClip::animNum];
     CharacterController charaCon_;
 
     ModelRender render_;

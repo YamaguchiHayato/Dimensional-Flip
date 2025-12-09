@@ -30,6 +30,7 @@
 
 StageManager* StageManager::pStageManger_  =nullptr;
 
+
 StageManager::~StageManager()
 {
     // このポインタをシングルトンで削除。

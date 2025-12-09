@@ -7,8 +7,8 @@ enum BossAnimation : uint8_t
     bossAnim_Idle = 0,      // 待機。
     bossAnim_AttackCast,    // 攻撃。
     bossAnim_AttackRoar,    // 咆哮。
-
-    bossAnim_Run,
+    bossAnim_Tumble,        // 転倒。
+    bossAnim_Run,           // 走る。
     bossAnim_Hit,           // ダメージ時。
     bossAnim_Num,           // アニメーションの総数。
 };

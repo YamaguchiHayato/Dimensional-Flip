@@ -4,6 +4,14 @@
 
 #pragma once
 
+enum EffectList : uint8_t
+{
+	Idle,    // エフェクト非描画中。
+	Waiting, // エフェクト描画中。
+	Num      // エフェクトの総数。
+
+};
+
 namespace nsK2EngineLow {
 	/*!
 	* @brief	エフェクト。

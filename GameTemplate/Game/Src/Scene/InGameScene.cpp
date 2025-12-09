@@ -12,7 +12,7 @@ InGameScene::~InGameScene()
 
 bool InGameScene::Start()
 {
-    pGame_ = NewGO<Game>(0, "game");
+    pGame_ = NewGO<app::core::Game>(0, "game");
     return true;
 }
 

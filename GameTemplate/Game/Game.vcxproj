@@ -223,8 +223,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DelayedEffect.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Meteo.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
@@ -235,7 +235,9 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Meteo.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Spear.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Star.cpp" />
     <ClCompile Include="Src\Actor\Stage\IStage.cpp" />
     <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
@@ -285,7 +287,7 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Meteo.h" />
+    <ClInclude Include="DelayedEffect.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />
@@ -297,7 +299,9 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Meteo.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Spear.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Star.h" />
     <ClInclude Include="Src\Actor\Stage\IStage.h" />
     <ClInclude Include="Src\Actor\Stage\Stage1.h" />

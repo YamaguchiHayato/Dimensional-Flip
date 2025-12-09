@@ -58,6 +58,7 @@ void TitleBackgroundLayer::Update()
     // 画像を更新する。
     titleLayerRender_.SetRotation(rot_);
     titleLayerRender_.SetPosition(Vector3::Zero);
+
     float scale = 4.5f;
     titleLayerRender_.SetScale(Vector3(scale, scale, scale)); 
     titleLayerRender_.Update();

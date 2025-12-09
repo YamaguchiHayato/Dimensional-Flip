@@ -66,7 +66,7 @@ bool Player::Start()
 {
     // アニメーションの設定。
     SetAnimation();
-    render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::Num, enModelUpAxisY);
+    render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::animNum, enModelUpAxisY);
     charaCon_.Init(20.0f, 25.0f, pos_);
 
     // プレイヤーのステータスを初期化する。
@@ -139,35 +139,42 @@ void Player::Move()
 
     // 今のカメラモードを取得する。
     CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
+    // 基準を決める。
+    // 移動速度。
+    auto currentSpeed = PlauerStatus::SPEED;
+    // ジャンプ力。
+    auto currentJumpPower = PlauerStatus::JUMP_POWER;
+
+    if (currentMode == CameraMode::modeStageEX || currentMode == CameraMode::modeBoss)
+    {
+        currentSpeed = 450.0f;     // 速度 3倍
+        currentJumpPower = 600.0f; // ジャンプ力 強化 (通常350 -> 600くらい)
+    }
+
     Vector3 stickL;
     stickL.x = g_pad[0]->GetLStickXF();
     stickL.y = g_pad[0]->GetLStickYF();
 
-    // カメラモードがBossMode & 3D & Boss戦仕様なら
-    if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode ==CameraMode::modeStageEX)
+    // カメラモード判定 (BossMode系)
+    if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode == CameraMode::modeStageEX)
     {
-        // 3D/ボス戦専用のカメラ基準移動を実行
         Vector3 camForward = g_camera3D->GetForward();
         Vector3 camRight = g_camera3D->GetRight();
-
-        // Y成分をカットして水平に
         camForward.y = 0.0f;
         camRight.y = 0.0f;
         camForward.Normalize();
         camRight.Normalize();
-
-        // targetMove = (カメラForward * Y入力) + (カメラRight * X入力)
         Vector3 targetMove = (camForward * stickL.y) + (camRight * stickL.x);
-
-        // 速度を加算 (PlayerStatus::SPEED を使用)
-        moveSpeed_ += targetMove * PlauerStatus::SPEED;
+        moveSpeed_ += targetMove * currentSpeed;
     }
+
 
     else
     {
         Vector3 right = g_camera3D->GetRight();
         right.y = 0.0f;
-        moveSpeed_ += right * (stickL.x * PlauerStatus::SPEED);
+
+        moveSpeed_ += right * (stickL.x * currentSpeed);
     }
 
     if (charaCon_.IsOnGround())
@@ -176,7 +183,7 @@ void Player::Move()
 
         if (g_pad[0]->IsTrigger(enButtonA))
         {
-            moveSpeed_.y = 350.0f;
+            moveSpeed_.y = currentJumpPower;
             didJumpThisFrame_ = true;
         }
     }
@@ -289,7 +296,7 @@ void Player::PlayAnimation()
         case PlayerState::sIdle:
         {
             // 待機アニメーションの再生
-            render_.PlayAnimation(EnAnimationClip::Idle);
+            render_.PlayAnimation(EnAnimationClip::animIdle);
             break;
         }
          
@@ -297,14 +304,14 @@ void Player::PlayAnimation()
         case PlayerState::sJump:
         {
             // ジャンプアニメーションの再生
-            render_.PlayAnimation(EnAnimationClip::Jump);
+            render_.PlayAnimation(EnAnimationClip::animJump);
             break;
         }
          
         // ジャンプ中だったら
         case PlayerState::sRun:
         {
-            render_.PlayAnimation(EnAnimationClip::Run);
+            render_.PlayAnimation(EnAnimationClip::animRun);
             break;
         }
     }
@@ -320,9 +327,9 @@ void Player::Render(RenderContext& rc)
 void Player::SetAnimation()
 {
     // 待機アニメーション。
-    FetchPlayAnimation(EnAnimationClip::Idle, "idle", true);
+    FetchPlayAnimation(EnAnimationClip::animIdle, "idle", true);
     // 走りアニメーション。
-    FetchPlayAnimation(EnAnimationClip::Run, "run", true);
+    FetchPlayAnimation(EnAnimationClip::animRun, "run", true);
     // ジャンプアニメーション。
-    FetchPlayAnimation(EnAnimationClip::Jump, "jump", false);
+    FetchPlayAnimation(EnAnimationClip::animJump, "jump", false);
 }

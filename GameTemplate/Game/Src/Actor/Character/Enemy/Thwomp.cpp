@@ -78,9 +78,7 @@ void Thwomp::Update()
     {
         Vector3 diff = pPlayer_->GetPlayerPos() - triggerPos_;
         if (diff.LengthSq() <= 40000.0f)
-        {
             isActive_ = true;
-        }
     }
 
     if (IsActive() == true)
@@ -157,10 +155,6 @@ void Thwomp::Move(float deltaTime)
         float rollAngle = moveDist / radius_;
 
         Quaternion frameRot;
-        // ■修正: 回転軸は Z軸 (AxisZ)
-        // -X方向に進むとき(moveDistが負)、自然に転がるには「プラスの回転(反時計)」が必要なので
-        // ここでマイナスを掛けて符号を反転させます。
-        // (もし逆回転してしまった場合は、ここのマイナスを外してください)
         frameRot.SetRotation(Vector3::AxisZ, -rollAngle);
 
         rot_ = frameRot * rot_;

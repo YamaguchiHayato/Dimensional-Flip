@@ -1,7 +1,12 @@
 #pragma once
 #include "Src/Scene/Scene.h"
-
-class Game;
+namespace app
+{
+    namespace core
+    {
+        class Game;
+    }
+} 
 
 class InGameScene : public IScene
 {
@@ -14,5 +19,5 @@ public:
 
 
 private:
-    Game* pGame_ = nullptr;
+    app::core::Game* pGame_ = nullptr;
 };

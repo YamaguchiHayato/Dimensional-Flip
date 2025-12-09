@@ -7,11 +7,10 @@
 
 bool StageClear::Start()
 {
-//   StageManager::GetInstance()->ChangeStage(StageID::sStage2);
     StageID nextStageID = DecideStage();
 
     // Gameクラスを探索。
-    Game* pGame = FindGO<Game>("game");
+    app::core::Game* pGame = FindGO<app::core::Game>("game");
     if (pGame )
         pGame->RequestStageTransition(nextStageID);
 

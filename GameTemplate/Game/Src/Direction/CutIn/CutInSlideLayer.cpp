@@ -13,7 +13,6 @@ namespace app
     {
         bool CutInSlideLayer::Start()
         {
-//            const std::string layerPath_Normal = FindLayerPath("StrongEnemy");
             const std::string layerPath_Normal = FindLayerPath("BOSS");
             layer_.Init(layerPath_Normal.c_str(), layerSize::WIDHT, layerSize::HEIGHT);
 

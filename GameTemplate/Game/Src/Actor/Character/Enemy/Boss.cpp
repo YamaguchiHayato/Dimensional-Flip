@@ -119,6 +119,11 @@ namespace
          render_.PlayAnimation(BossAnimation::bossAnim_AttackRoar, 0.1f);
          break;
 
+     // 転倒モーション。
+     case BossAnimation::bossAnim_Tumble:
+         render_.PlayAnimation(BossAnimation::bossAnim_Tumble, 0.1f);
+         break;
+
      // ダメージヒットモーション。
      case BossAnimation::bossAnim_Hit:
          render_.PlayAnimation(BossAnimation::bossAnim_Hit, 0.1f);
@@ -261,6 +266,8 @@ namespace
      GetAnimation(BossAnimation::bossAnim_AttackRoar, "roar", false);
      // ダメージアニメーション。
      GetAnimation(BossAnimation::bossAnim_Hit, "damage", false);
+     // 転倒アニメーション。
+     GetAnimation(BossAnimation::bossAnim_Tumble, "tumble", false);
  }
 
 

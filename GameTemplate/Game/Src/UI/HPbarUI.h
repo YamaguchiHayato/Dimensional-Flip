@@ -25,9 +25,9 @@ private:
     // HPバーのTextをInit。
 	void InitHPbar_Heart();
     // HPバーのFillをInit。
-	void InitHPbar_Fill();
+	void InitHPbar_Slash();
     // HPバーのGhostをInit。
-	void InitHPbar_Ghost();
+	void InitHPbar_Frame();
 
 
     // それぞれのSetPositionをまとめる関数。

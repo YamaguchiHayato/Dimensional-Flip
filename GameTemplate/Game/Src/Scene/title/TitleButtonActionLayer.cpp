@@ -3,8 +3,8 @@
 
 namespace
 {
-    const float WIDTH = 400.0f;
-    const float HEIGHT = 100.0f;
+    const float WIDTH = 720.0f;
+    const float HEIGHT = 720.0f;
 }
 
 bool TitleButtonActionLayer::Start()
@@ -17,7 +17,7 @@ bool TitleButtonActionLayer::Start()
     const std::string howToPlayLayerName = Init("manual");
     howToPlayText_.Init(howToPlayLayerName.c_str(), WIDTH, HEIGHT);
 
-    // ゲームエンド画像。
+    // エンド画像。
     const std::string endLayerName = Init("end");
     endText_.Init(endLayerName.c_str(), WIDTH, HEIGHT);
 
@@ -26,27 +26,20 @@ bool TitleButtonActionLayer::Start()
 
 void TitleButtonActionLayer::Update()
 {
-    // 点滅処理。
-    Blinking();
     // ゲームスタート。
-    titleLayerRender_.SetScale(Vector3(3.0f, 4.0f, 1.0f));
-    titleLayerRender_.SetPosition({0.0f, 100.0f, 0.0f});
+    titleLayerRender_.SetScale(Vector3(0.5f, 0.5f, 0.5f));
+    titleLayerRender_.SetPosition(Vector3(0.0f,-100.0f, 0.0f));
     titleLayerRender_.Update();
 
     // インストカード。
-    howToPlayText_.SetScale(Vector3(3.0f, 4.0f,1.0f ));
-    howToPlayText_.SetPosition(Vector3(120.0f, -50.0f, 0.0f));
+    howToPlayText_.SetScale(Vector3(0.5f, 0.5f, 0.5f));
+    howToPlayText_.SetPosition(Vector3(0.0f, -250.0f, 0.0f));
     howToPlayText_.Update();
 
     // ゲームエンド。
-    endText_.SetScale(Vector3(3.0f, 4.0f, 1.0f));
-    endText_.SetPosition(Vector3(10.0f, -250.0f, 0.0f));
+    endText_.SetScale(Vector3(0.5f, 0.5f, 0.5f));
+    endText_.SetPosition(Vector3(0.0f, -400.0f, 0.0f));
     endText_.Update();
-}
-
-void TitleButtonActionLayer::Blinking()
-{
-
 }
 
 void TitleButtonActionLayer::Render(RenderContext& rc)

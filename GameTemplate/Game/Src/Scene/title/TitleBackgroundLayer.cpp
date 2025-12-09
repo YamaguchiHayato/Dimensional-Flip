@@ -14,7 +14,7 @@ namespace
 
 
     // 回転速度。
-    const float SPEED = 3.0f; // 1秒間にn(設定値)秒。
+    const float SPEED = 1.5f; // 1秒間にn(設定値)秒。
 
     // 回転用イージング時間。
 
@@ -72,108 +72,16 @@ void TitleBackgroundLayer::Update()
 
 void TitleBackgroundLayer::Rotation()
 {
-    float dt = g_gameTime->GetFrameDeltaTime();
-    stateTimer_ += dt;
+    float angle = -SPEED * g_gameTime->GetFrameDeltaTime();
 
-    switch (state_)
-    {
-    // ------------------------------------------------
-    // A. 待機中。
-    // ------------------------------------------------
-    case FlipState::Idle:
-        currentAngle_ += IDLE_SPPED * dt;
+    // Y軸回転。
+    Quaternion deltaRot = Quaternion::Identity;
+    deltaRot.SetRotation(Vector3::AxisZ, angle);
 
-        if (stateTimer_ >= IDLE_DURATION)
-        {
-           // 次の状態へ遷移する。
-           state_ = FlipState::PreFlip;
-           stateTimer_ = 0.0f;
-
-           // 現在の角度から少し左へ戻す事を目標に設定。
-           startAngle_ = currentAngle_;
-           targetAngle_ = currentAngle_ + PRE_FLIP_AMOUNT;
-        }
-        break;
-
-    // ------------------------------------------------
-    // B. 予備動作。
-    // ------------------------------------------------
-    case FlipState::PreFlip:
-    {
-        float t = stateTimer_ / PRE_FLIP_DURATION;
-        if (t >= 1.0f)
-        {
-            t = 1.0f;
-
-            // 次の状態へ遷移する。
-            state_ = FlipState::Flipping;
-            stateTimer_ = 0.0f;
-
-            // 元の進行方向に少し戻す。
-            startAngle_ = currentAngle_;
-
-            // ゴール地点。
-            targetAngle_ = startAngle_ - PRE_FLIP_AMOUNT + Math::PI;
-        }
-
-        else
-        {
-            // 遷移時ない場合のみイージングを課す。
-            float easeDT = EaseInBack(t);
-            currentAngle_ = Math::Lerp(startAngle_, targetAngle_, easeDT);
-        }
-    }
-    break;
-
-
-    // ------------------------------------------------
-    // C. 反転中: 高速で回転
-    // ------------------------------------------------
-    case FlipState::Flipping:
-    {
-        float t = stateTimer_ / FLIP_DURATION;
-        if (t >= 1.0f)
-        {
-            t = 1.0f;
-
-            // 目標値の角度で止める。
-            currentAngle_ = targetAngle_;
-
-            // 次の状態へ遷移する。
-            state_ = FlipState::PostFlip;
-            stateTimer_ = 0.0f;
-        }
-
-        else
-        {
-            // 三次関数を用いてイージング。
-            float easedT = EaseInOutCubic(t);
-            currentAngle_ = Math::Lerp(startAngle_, targetAngle_, easedT);
-        }
-
-    }
-    break;
-
-
-    // ------------------------------------------------
-    // D. 余韻
-    // ------------------------------------------------
-    case FlipState::PostFlip:
-        // 角度は固定する。
-        currentAngle_ = targetAngle_;
-
-        if (stateTimer_ >= POST_FLIP_DURATION)
-        {
-            // 初期状態へ戻す。
-            state_ = FlipState::Idle;
-            stateTimer_ = 0.0f;
-        }
-        break;
-    default:
-        break;
-    }
-
-    rot_.SetRotation(Vector3::AxisZ, currentAngle_);
+    // 新しい回転を合成させる。
+    rot_ *= deltaRot;
+    // 回転ベクトルを正規化する。
+    rot_.Normalize();
 }
 
 

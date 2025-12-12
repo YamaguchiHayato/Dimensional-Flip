@@ -233,6 +233,7 @@
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
     <ClCompile Include="Src\Actor\Character\Status.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Meteo.cpp" />
@@ -297,6 +298,7 @@
     <ClInclude Include="Src\Actor\Character\Player.h" />
     <ClInclude Include="Src\Actor\Character\Status.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Meteo.h" />

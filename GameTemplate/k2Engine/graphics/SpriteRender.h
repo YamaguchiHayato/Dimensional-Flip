@@ -33,9 +33,9 @@ namespace nsK2Engine
      */
     enum FadeState
     {
-        FadeStart, // フェードイン。
+        Fade_In, // フェードイン。
         Loading,   // ローディング中。
-        FadeEnd,   // フェードアウト。
+        Fade_Out,   // フェードアウト。
         StateNum   // 状態数。
     };
 
@@ -193,7 +193,9 @@ namespace nsK2Engine
         /// リニアワイプの速度を設定
         /// </summary>
         /// <param name="wipeScroolSpeed">速度</param>
-        void SetWipeScrollSpeed(float wipeScroolSpeed) { wipeScrollSpeed_ = wipeScroolSpeed; }
+        void SetWipeScrollSpeed(float wipeScroolSpeed) { 
+            wipeScrollSpeed_ = wipeScroolSpeed; 
+        }
 
         /// <summary>
         /// リニアワイプ(方向)
@@ -240,15 +242,15 @@ namespace nsK2Engine
 		void LinearWipeUpdate()
 		{
 			////フェードステートがフェードインならワイプサイズを大きくする
-			if (fadeState_ == FadeStart)
+			if (fadeState_ == FadeState::Fade_In)
 			{
-				m_spriteRenderConstantBuffer.linearWipe.size += wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
+				m_spriteRenderConstantBuffer.linearWipe.size -= wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
 			}
 
 			//フェードステートがフェードアウトならワイプサイズを小さくする
-			else if (fadeState_ == FadeEnd)
+			else if (fadeState_ == FadeState::Fade_Out)
 			{
-			    m_spriteRenderConstantBuffer.linearWipe.size += wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
+			    m_spriteRenderConstantBuffer.linearWipe.size -= wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
 			}
 		}
 
@@ -275,7 +277,7 @@ namespace nsK2Engine
 		Vector2 pos_ = Vector2::Zero;
 
     private:
-        int fadeState_ = FadeStart;              // フェードステート
+        int fadeState_ = FadeState::Fade_In;              // フェードステート
         float m_alpha = 1.0f;                     // 透明度。
         float wipeScrollSpeed_ = 1.0f;           // ワイプ速度
         float screenDrawingEasingSpeed_ = 0.01f; // 画像加工用のイージング速度

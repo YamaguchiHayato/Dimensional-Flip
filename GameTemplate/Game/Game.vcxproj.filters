@@ -215,6 +215,9 @@
     <ClCompile Include="DelayedEffect.cpp">
       <Filter>Src\Direction</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -386,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="DelayedEffect.h">
       <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h">
+      <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

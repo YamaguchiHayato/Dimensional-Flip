@@ -19,6 +19,7 @@ TitleScene::~TitleScene()
     DeleteGO(pTitleView_);
 }
 
+
 bool TitleScene::Start()
 {
     // Titleオブジェクトの生成。
@@ -35,11 +36,12 @@ bool TitleScene::Start()
     // フェード合うとフラグをリセット。
     isFadingOut = false;
 
-    // シーン開始と同時にFadeStartを開始する。
+    // シーン開始と同時にFadeInを開始する。
     pFade_->StartFadeIn();
 
     return true;
 }
+
 
 void TitleScene::Update()
 {
@@ -64,6 +66,7 @@ void TitleScene::Update()
         }
     }
 }
+
 
 void TitleScene::StartFadeOutToInGame()
 {

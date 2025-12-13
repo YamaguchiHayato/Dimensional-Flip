@@ -56,19 +56,17 @@ void TitleScene::Update()
         if (g_pad[0]->IsTrigger(enButtonA))
         {
             //// フェードアウトを開始する。
-            //StartFadeOutToInGame();
-            SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
-
+            StartFadeOutToInGame();
         }
     }
 
-    //else
-    //{
-    //    if (pFade_->IsFadeOutEnd())
-    //    {
-    //        SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
-    //    }
-    //}
+    else
+    {
+        if (pFade_->IsFadeOutEnd())
+        {
+            SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+        }
+    }
 }
 
 

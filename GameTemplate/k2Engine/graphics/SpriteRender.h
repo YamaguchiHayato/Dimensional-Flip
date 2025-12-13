@@ -244,7 +244,7 @@ namespace nsK2Engine
 			////フェードステートがフェードインならワイプサイズを大きくする
 			if (fadeState_ == FadeState::Fade_In)
 			{
-				m_spriteRenderConstantBuffer.linearWipe.size -= wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
+				m_spriteRenderConstantBuffer.linearWipe.size += wipeScrollSpeed_ * g_gameTime->GetFrameDeltaTime();
 			}
 
 			//フェードステートがフェードアウトならワイプサイズを小さくする

@@ -37,7 +37,7 @@ struct PlayerStatus
     struct Jump
     {
         static constexpr float GLAVITY = 2.5f;         // 落下中の重力倍率。
-        static constexpr float CUT = 2.5f;             // ボタンを押した後の重力倍率。。
+        static constexpr float CUT = 5.0f;             // ボタンを押した後の重力倍率。。
         static constexpr float FALLINGSPEED = -600.0f; // 落下速度。
     };
 };
@@ -163,12 +163,17 @@ void Player::Action()
 
 void Player::Move()
 {
-    // 移動する各成分を初期化する。
-    moveSpeed_.x = 0.0f;
-    moveSpeed_.z = 0.0f;
+    const bool GROUND = charaCon_.IsOnGround();
 
-    // 移動処理。
-    MoveHorizontal();
+    if (GROUND)
+    {
+        // 移動する各成分を初期化する。
+        moveSpeed_.x = 0.0f;
+        moveSpeed_.z = 0.0f;
+
+        // 移動処理。
+        MoveHorizontal();
+    }
 
     // ジャンプ処理。
     UpdateJumpAndGravity();
@@ -238,6 +243,15 @@ void Player::MoveHorizontal()
     Vector3 stickL;
     stickL.x = g_pad[0]->GetLStickXF();
     stickL.y = g_pad[0]->GetLStickYF();
+
+    // スティックの入力判定を精度を高めるために設定。
+    // x軸。
+    if (fabsf(stickL.x) < 0.2f)
+        stickL.x = 0.0f;
+
+    // y軸。
+    if (fabsf(stickL.y) < 0.2f)
+        stickL.y = 0.0f;
 
     // カメラモードの判定処理。
     if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode == CameraMode::modeStageEX)

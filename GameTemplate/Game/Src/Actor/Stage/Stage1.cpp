@@ -78,10 +78,11 @@ Stage1::~Stage1()
     lDimensionTrigger_.clear();
 }
 
+
 bool Stage1::Start()
 {
 
-	const std::string stagePath = InitStage("Stage1/Stage1");
+	const std::string stagePath = InitStage("Stage1/stage");
 	stageRender_.Init(stagePath.c_str());
 
 	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());

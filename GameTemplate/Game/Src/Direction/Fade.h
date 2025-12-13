@@ -4,7 +4,7 @@
 class Fade : public IGameObject
 {
 public:
-    Fade() {};
+    Fade();
     virtual ~Fade() {};
 
     bool Start();

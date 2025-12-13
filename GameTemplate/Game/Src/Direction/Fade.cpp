@@ -2,13 +2,17 @@
 #include "Fade.h"
 #include "Src/Core/StageManager.h"
 
-bool Fade::Start()
+Fade::Fade()
 {
     fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 1920, 1080);
-    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round); 
+    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round);
     fadeSprite_.SetWipeScrollSpeed(-1000.0f);
     fadeSprite_.SetWipeSize(900.0f);
+}
 
+bool Fade::Start()
+{
+    
 
     return true;
 }

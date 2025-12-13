@@ -11,12 +11,12 @@ namespace
 	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 
     // 各桁のスコア画像の座標。
-	const Vector3 HundredThousandDigit(730.0f, 500.0f, 0.0f);
-	const Vector3 TenThousandDigit(770.0f, 500.0f, 0.0f);
-	const Vector3 ThousandDigit(810.0f, 500.0f, 0.0f);
-	const Vector3 HundredDigit(850.0f, 500.0f, 0.0f);
-	const Vector3 TensDigit(890.0f, 500.0f, 0.0f);
-	const Vector3 OnesDigit(930.0f, 500.0f, 0.0f);
+	const Vector3 HundredThousandDigit(730.0f, 490.0f, 0.0f);
+	const Vector3 TenThousandDigit(770.0f, 490.0f, 0.0f);
+	const Vector3 ThousandDigit(810.0f, 490.0f, 0.0f);
+	const Vector3 HundredDigit(850.0f, 490.0f, 0.0f);
+	const Vector3 TensDigit(890.0f, 490.0f, 0.0f);
+	const Vector3 OnesDigit(930.0f, 490.0f, 0.0f);
 
 	const Vector3 UI_SCALE(0.5f, 0.5f, 0.5f);
 
@@ -24,7 +24,7 @@ namespace
 	const int MAX_SCORE = 9999;
 
     // SCOREテキストの座標。
-	const Vector3 ScoreTextPos{ 650.0f, 500.0f, 0.0f };
+	const Vector3 ScoreTextPos{ 655.0f, 480.0f, 0.0f };
 
 }
 

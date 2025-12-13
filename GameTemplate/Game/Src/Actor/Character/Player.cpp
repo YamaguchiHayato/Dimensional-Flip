@@ -20,13 +20,26 @@
 #include "Src/Actor/Character/Status.h"
 
 // プレイヤーステータス構造体。
-struct PlauerStatus
+struct PlayerStatus
 {
-    static const uint8_t MAX_HP = 8;           // 最大体力。
-    static constexpr auto SPEED = 150.0f;      // 移動速度。
-    static constexpr auto JUMP_POWER = 350.0f; // ジャンプ力。
-    static constexpr auto GLAVITY = 15.0f;     // 重力。
-    static constexpr auto ATTACK_POWER = 1.0f; // 攻撃力。
+    static const uint8_t MAX_HP = 8;               // 最大体力。
+    static constexpr auto GLAVITY = 15.0f;         // 重力。
+    static constexpr auto ATTACK_POWER = 1.0f;     // 攻撃力。
+
+    // 移動速度パラメータ。
+    struct Move
+    {
+        static constexpr float SPEED = 1500.0f;        // 移動速度アップ
+        static constexpr float JUMP_POWER = 600.0f;   // ジャンプ力アップ
+    };
+
+    // ジャンプ用のパラメータ。
+    struct Jump
+    {
+        static constexpr float GLAVITY = 2.5f;         // 落下中の重力倍率。
+        static constexpr float CUT = 2.5f;             // ボタンを押した後の重力倍率。。
+        static constexpr float FALLINGSPEED = -600.0f; // 落下速度。
+    };
 };
 
 namespace
@@ -38,6 +51,22 @@ namespace
     const char* PLAYER_ANIMATION = "Assets/animData/"; // ファイルパス。
     const char* ANIMATION_FILE_EXTENSION = ".tka";     // 拡張子。
     const char* MODEL_FILE_EXTENSION = ".tkm";         // 拡張子。
+}
+
+
+void Player::SetStageParam(bool isStageEX)
+{
+    if (isStageEX)
+    {
+        walkSpeed_ = PlayerStatus::Move::SPEED;
+        jumpPower_ = PlayerStatus::Move::JUMP_POWER;
+    }
+
+    else
+    {
+        walkSpeed_ = PlayerStatus::Move::SPEED;
+        jumpPower_ = PlayerStatus::Move::JUMP_POWER;
+    }
 }
 
 
@@ -70,7 +99,7 @@ bool Player::Start()
     charaCon_.Init(20.0f, 25.0f, pos_);
 
     // プレイヤーのステータスを初期化する。
-    status_.Initial(PlauerStatus::MAX_HP, PlauerStatus::SPEED, PlauerStatus::ATTACK_POWER);
+    status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
     return true;
 }
 
@@ -134,30 +163,86 @@ void Player::Action()
 
 void Player::Move()
 {
+    // 移動する各成分を初期化する。
     moveSpeed_.x = 0.0f;
     moveSpeed_.z = 0.0f;
 
-    // 今のカメラモードを取得する。
-    CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
-    // 基準を決める。
-    // 移動速度。
-    auto currentSpeed = PlauerStatus::SPEED;
-    // ジャンプ力。
-    auto currentJumpPower = PlauerStatus::JUMP_POWER;
+    // 移動処理。
+    MoveHorizontal();
 
-    if (currentMode == CameraMode::modeStageEX || currentMode == CameraMode::modeBoss)
+    // ジャンプ処理。
+    UpdateJumpAndGravity();
+
+    // 移動を与える処理。
+    ApplyMovement();
+}
+
+
+void Player::UpdateJumpAndGravity()
+{
+    const bool isGround = charaCon_.IsOnGround();
+
+    // --- 地面上での処理 ---
+    if (isGround)
     {
-        currentSpeed = 450.0f;     // 速度 3倍
-        currentJumpPower = 600.0f; // ジャンプ力 強化 (通常350 -> 600くらい)
+        // 地面にいる間は落下速度をリセット
+        if (moveSpeed_.y < 0.0f)
+            moveSpeed_.y = 0.0f;
+
+        // Aボタンを押した瞬間だけジャンプ開始
+        if (g_pad[0]->IsTrigger(enButtonA))
+        {
+            moveSpeed_.y = jumpPower_;
+            didJumpThisFrame_ = true;
+        }
     }
 
+    // 地上かつ完全停止中のときは重力をかけない（勝手に動かない）
+    if (isGround && moveSpeed_.y <= 0.0f)
+        return;
+
+    // ==== ここから空中処理 ====
+
+    if (moveSpeed_.y > 0.0f)
+    {
+        // 上昇中
+        // ジャンプボタンを離したらジャンプを早めに切る（低いジャンプ）
+        if (!g_pad[0]->IsPress(enButtonA))
+            // ジャンプカット時は強めの重力
+            moveSpeed_.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
+
+        else
+            // 通常上昇中は普通の重力
+            moveSpeed_.y -= PlayerStatus::GLAVITY;
+    }
+    else
+        // 下降中：落下中の重力を強める
+        moveSpeed_.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
+
+
+    // 落下速度の制限（下向きがマイナス）
+    if (moveSpeed_.y < PlayerStatus::Jump::FALLINGSPEED)
+        moveSpeed_.y = PlayerStatus::Jump::FALLINGSPEED;
+}
+
+
+void Player::MoveHorizontal()
+{
+    if (!pCameraManager_)
+        return;
+
+    // 現在のカメラモードの取得。
+    CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
+
+    // スティックの取得。
     Vector3 stickL;
     stickL.x = g_pad[0]->GetLStickXF();
     stickL.y = g_pad[0]->GetLStickYF();
 
-    // カメラモード判定 (BossMode系)
+    // カメラモードの判定処理。
     if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode == CameraMode::modeStageEX)
     {
+        // カメラの各方向ベクトルを取得する。
         Vector3 camForward = g_camera3D->GetForward();
         Vector3 camRight = g_camera3D->GetRight();
         camForward.y = 0.0f;
@@ -165,32 +250,24 @@ void Player::Move()
         camForward.Normalize();
         camRight.Normalize();
         Vector3 targetMove = (camForward * stickL.y) + (camRight * stickL.x);
-        moveSpeed_ += targetMove * currentSpeed;
+        moveSpeed_ += targetMove * walkSpeed_;
     }
-
 
     else
     {
         Vector3 right = g_camera3D->GetRight();
         right.y = 0.0f;
 
-        moveSpeed_ += right * (stickL.x * currentSpeed);
+        moveSpeed_ += right * (stickL.x * walkSpeed_);
     }
+}
 
-    if (charaCon_.IsOnGround())
-    {
-        moveSpeed_.y = 0.0f;
 
-        if (g_pad[0]->IsTrigger(enButtonA))
-        {
-            moveSpeed_.y = currentJumpPower;
-            didJumpThisFrame_ = true;
-        }
-    }
-    // 重力の設定。
-    moveSpeed_.y -= PlauerStatus::GLAVITY;
-    // 移動速度。
+void Player::ApplyMovement()
+{
+    // 移動処理。
     pos_ = charaCon_.Execute(moveSpeed_, 1.0f / 150.0f);
+
     // 座標のセット。
     charaCon_.SetPosition(pos_);
     render_.SetPosition(pos_);

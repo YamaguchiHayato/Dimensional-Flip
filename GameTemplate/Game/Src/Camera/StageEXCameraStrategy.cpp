@@ -8,7 +8,7 @@
 namespace
 {
     // アリーナ視点用にするオフセット。
-    const Vector3 OFFSET(0.0f, 1300.0f, -2000.0f);
+    const Vector3 OFFSET(0.0f, 150.0f, -400.0f);
 }
 
 namespace app

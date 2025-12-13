@@ -51,6 +51,7 @@ namespace app
             Vector3 currentPos_ = Vector3::Zero;
 
             float timer_ = 0.0f;
+            float lifeTime_ = 0.0f;
             float fallSpeed_ = 30.0f;  // 落下速度
             float warningTime_ = 2.0f; // 警告時間
         };

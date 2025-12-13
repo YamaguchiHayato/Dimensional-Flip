@@ -35,6 +35,13 @@ namespace app
 
         void Spear::Update()
         {
+            lifeTime_ += g_gameTime->GetFrameDeltaTime();
+            if (lifeTime_ > 10.0f)
+            {
+                DeleteGO(this);
+                return;
+            }
+
             // 状態を更新する。
             UpdateState();
 

@@ -48,6 +48,7 @@ namespace app
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
 
+
         bool Game::Start()
         {
             // StageManagerの生成。
@@ -92,6 +93,7 @@ namespace app
             return true;
         }
 
+
         void Game::Update()
         {
             // フェードイン開始。
@@ -122,6 +124,7 @@ namespace app
                     pCameraManager_->Update();
             }
         }
+
 
         void Game::RequestStageTransition(StageID nextStageID)
         {
@@ -291,20 +294,24 @@ namespace app
             HPbarCreateInstance();
         }
 
+
         void Game::PlayerCreateInstance()
         {
             pPlayer_ = NewGO<Player>(0, "player");
         }
+
 
         void Game::TimerCreateInstance()
         {
             pTimerUI_ = NewGO<TimerUI>(0, "timerui");
         }
 
+
         void Game::NumberCreateInstance()
         {
             pNumberUI_ = NewGO<NumberUI>(0, "numberui");
         }
+
 
         void Game::ScoreCreateInstance()
         {

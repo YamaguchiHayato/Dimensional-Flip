@@ -45,6 +45,7 @@ namespace app
             Vector3 targetPos_ = Vector3::Zero;
             Vector3 currentPos_ = Vector3::Zero;
             float timer_ = 0.0f;
+            float lifeTime_ = 0.0f;
         };
 
     }

@@ -13,6 +13,11 @@ namespace app
     {
         class CutInView;
     }
+
+    namespace gimmick
+    {
+        class FloatingPlatform;
+    }
 }
 
 
@@ -22,12 +27,12 @@ namespace app
     {
         namespace nsBoss
         {
-            const Vector3 InitPos = Vector3(0.0f, 250.0f, 500.0f);
+            const Vector3 InitPos = Vector3(0.0f, 100.0f, 200.0f);
         }
 
         namespace nsPlayer
         {
-            const Vector3 InitPos =  Vector3(0.0f, 100.0f, -1000.0f);
+            const Vector3 InitPos =  Vector3(0.0f, 100.0f, -300.0f);
         }
     } 
 
@@ -62,7 +67,7 @@ namespace app
             CameraManager* pCameraManager_ = nullptr;
             Player* pPlayer_ = nullptr;
             app::cutIn::CutInView* pCutInView_ = nullptr;
-
+            app::gimmick::FloatingPlatform* pFloatingPlatform_ = nullptr;
         private:
 
             bool isCutInPlayed_ = false;

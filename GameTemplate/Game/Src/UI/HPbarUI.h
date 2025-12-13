@@ -20,15 +20,11 @@ public:
 
 
 private:
-    // HPバーUIの初期化処理。
 	void InitHPbar();
-    // HPバーのTextをInit。
 	void InitHPbar_Heart();
-    // HPバーのFillをInit。
 	void InitHPbar_Slash();
-    // HPバーのGhostをInit。
 	void InitHPbar_Frame();
-
+    void InitHPbar_Life();
 
     // それぞれのSetPositionをまとめる関数。
 	void SetPositions();
@@ -39,10 +35,13 @@ private:
 
 private:
     // HPバー関連変数。
-    SpriteRender Heart_; // HPバーのテキスト部分。
-    SpriteRender HPText_;// HPバーのテキスト。
-    SpriteRender Fill_;  // HPバーのFill部分。
-    SpriteRender Ghost_; // HPバーのGhost部分。
+    SpriteRender heart_;  // HPバーのハート(装飾)部分。
+    SpriteRender life_;   // HPバーのライフ。
+    SpriteRender slash_;  
+    SpriteRender flame_;  // HPバーのGhost部分。
 
+	SpriteRender life_Left[static_cast<uint8_t>(enUINumber::enNumber_Num)];
+    SpriteRender life_light[static_cast<uint8_t>(enUINumber::enNumber_Num)];
+    
 };
 

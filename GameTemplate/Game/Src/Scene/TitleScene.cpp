@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#include "Src/Core/Game.h"
 
 // タイトルクラス。
 #include "Src/Scene/title/TitleView.h"
 
 // ゲームシーンクラス。
 #include "Src/Scene/TitleScene.h"
+#include "Src/Scene/InGameScene.h"
 
 // 演出クラス。
 #include "Src/Direction/Fade.h"
@@ -53,18 +55,20 @@ void TitleScene::Update()
     {
         if (g_pad[0]->IsTrigger(enButtonA))
         {
-            // フェードアウトを開始する。
-            StartFadeOutToInGame();
+            //// フェードアウトを開始する。
+            //StartFadeOutToInGame();
+            SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+
         }
     }
 
-    else
-    {
-        if (pFade_->IsFadeOutEnd())
-        {
-            SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
-        }
-    }
+    //else
+    //{
+    //    if (pFade_->IsFadeOutEnd())
+    //    {
+    //        SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+    //    }
+    //}
 }
 
 

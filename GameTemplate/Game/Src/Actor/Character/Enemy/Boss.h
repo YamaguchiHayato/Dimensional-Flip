@@ -1,5 +1,6 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
+#include <vector>
 #include <memory>
 
 enum BossAnimation : uint8_t
@@ -22,9 +23,15 @@ enum class AttackType : uint8_t
     Num
 };
 
+namespace app
+{
+    namespace gimmick
+    {
+        class FloatingPlatform;
+    }
+}
 
 class Player;
-
 class Boss : public IEnemy
 {
 public:
@@ -43,9 +50,15 @@ public:
     // セッター。
 public:
     // 座標。
-    inline void SetPos(const Vector3& pos) { pos_ = pos; }
+    inline void SetPos(const Vector3& pos)
+    {
+        pos_ = pos;
+    }
     // 回転。
-    inline void SetRot(const Quaternion& rot) { rot_ = rot; }
+    inline void SetRot(const Quaternion& rot)
+    {
+        rot_ = rot;
+    }
 
     // ゲッター。
 public:
@@ -65,23 +78,22 @@ private:
     void PlayAnimation();
     void SetAnimation();
     void Rotaition();
-    void Move();
     // 攻撃Gimmickをまとめて生成させる。
     void SpawnGimmicks(AttackType type);
+
+    // 足場を生成するヘルパー。
+    void SpawnPlatforms();
 
     // 座標をランダムに計算するヘルパー関数。
     Vector3 RandomStagePos();
 
 private:
-    const std::string GetAnimation(BossAnimation, const std::string animationName, bool flag);
-
-private:
     Player* pPlayer_ = nullptr;
+    std::vector<app::gimmick::FloatingPlatform*> pFloatingPlatform_;
+    CollisionObject* pWeeekPoint_ = nullptr;
 
 private:
-    AnimationClip animationClip_[BossAnimation::bossAnim_Num];
     AttackType currentAttackType_ = AttackType::Meteor;
-
     ModelRender render_;
 
     Vector3 pos_ = Vector3::Zero;
@@ -89,9 +101,11 @@ private:
     Quaternion rot_ = Quaternion::Identity;
 
     uint8_t state_ = bossAnim_Idle;
+    uint8_t attackCount_ = 0;
+    uint8_t hp = 3;
 
     bool isAttackSpawned_ = false;                  // 攻撃オブジェクトが生成済みかチェック。
-
+    bool canBeAttacked_ = true;                     // ダメージを受け付けるかどうか。
 
     float stateTimer_ = 0.0f;
     float nextInterval_ = 3.0f;

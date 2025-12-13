@@ -2,13 +2,17 @@
 #include "Fade.h"
 #include "Src/Core/StageManager.h"
 
-bool Fade::Start()
+Fade::Fade()
 {
     fadeSprite_.Init("Assets/fade/fadeSprite.DDS", 1920, 1080);
-    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round); 
+    fadeSprite_.SetLinearWipeDrawingMode(LinearWipeDrawingMode_Round);
     fadeSprite_.SetWipeScrollSpeed(-1000.0f);
     fadeSprite_.SetWipeSize(900.0f);
+}
 
+bool Fade::Start()
+{
+    
 
     return true;
 }
@@ -19,11 +23,11 @@ void Fade::Update()
     ChangeFadeState();
 
     // フェードイン完了判定。
-    if (fadeSprite_.GetWipeSize() < 900.0f && fadeState_ == FadeState::FadeStart)
+    if (fadeSprite_.GetWipeSize() > 2000.0f && fadeState_ == FadeState::Fade_In)
         fadeInEnd_ = true; 
 
     // フェードアウト完了判定。
-    if (fadeSprite_.GetWipeSize() > 0.0f && fadeState_ == FadeState::FadeEnd)
+    if (fadeSprite_.GetWipeSize() < -800.0f && fadeState_ == FadeState::Fade_Out)
         fadeOutEnd_ = true;
 
     fadeSprite_.Update();
@@ -44,12 +48,12 @@ void Fade::ChangeFadeState()
     {
         switch (fadeState_)
         {
-        case FadeState::FadeStart:
+        case FadeState::Fade_In:
              fadeSprite_.SetWipeSize(-50.0f); // 開始位置 (隠れている)
              fadeTransitionFlag_ = true;
              break;
 
-        case FadeState::FadeEnd:
+        case FadeState::Fade_Out:
              fadeSprite_.SetWipeSize(900.0f); // 開始位置 (見えている)
              fadeTransitionFlag_ = true;
              break;
@@ -63,10 +67,10 @@ void Fade::ChangeFadeState()
 
 void Fade::StartFadeOut()
 {
-    fadeState_ = FadeState::FadeEnd;
+    fadeState_ = FadeState::Fade_Out;
 
     // フェードの速度。
-    fadeSprite_.SetWipeScrollSpeed(-1000.0f);
+    fadeSprite_.SetWipeScrollSpeed(1000.0f);
 
     fadeSprite_.SetFadeTransition(fadeState_);
     fadeTransitionFlag_ = false;
@@ -78,7 +82,7 @@ void Fade::StartFadeOut()
 
 void Fade::StartFadeIn()
 {
-    fadeState_ = FadeState::FadeStart;
+    fadeState_ = FadeState::Fade_In;
 
     // フェードインの速度
     fadeSprite_.SetWipeScrollSpeed(1000.0f); 

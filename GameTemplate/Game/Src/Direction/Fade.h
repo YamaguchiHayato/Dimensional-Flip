@@ -4,7 +4,7 @@
 class Fade : public IGameObject
 {
 public:
-    Fade() {};
+    Fade();
     virtual ~Fade() {};
 
     bool Start();
@@ -30,7 +30,7 @@ private:
     void ChangeFadeState();
 
 private:
-    FadeState fadeState_ = FadeState::FadeStart;
+    FadeState fadeState_ = FadeState::Fade_In;
     SpriteRender fadeSprite_;
     Sprite sprite_;
 

@@ -33,7 +33,8 @@ namespace app
         {
             // 状態を更新する。
             UpdateState();
-
+            // スケールをセットする。
+            render_.SetScale(Vector3(0.5f, 0.5f, 0.5f));
             // 座標を更新する。
             render_.SetPosition(currentPos_);
             // オブジェクト本体を更新する。
@@ -56,9 +57,16 @@ namespace app
                 break;
 
             case State::Falling:
-
                 // 落下処理。
                 currentPos_.y -= fallSpeed_;
+
+                lifeTime_ += g_gameTime->GetFrameDeltaTime();
+
+                if (lifeTime_ > 10.0f)
+                {
+                    DeleteGO(this);
+                    return;
+                }
 
                 // 目標の座標に達したらオブジェクトを削除する。
                 if (currentPos_.y < -300.0f)

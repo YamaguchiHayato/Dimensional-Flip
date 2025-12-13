@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#include "Src/Core/Game.h"
 
 // タイトルクラス。
 #include "Src/Scene/title/TitleView.h"
 
 // ゲームシーンクラス。
 #include "Src/Scene/TitleScene.h"
+#include "Src/Scene/InGameScene.h"
 
 // 演出クラス。
 #include "Src/Direction/Fade.h"
@@ -18,6 +20,7 @@ TitleScene::~TitleScene()
     // Titleオブジェクトの削除。
     DeleteGO(pTitleView_);
 }
+
 
 bool TitleScene::Start()
 {
@@ -35,11 +38,12 @@ bool TitleScene::Start()
     // フェード合うとフラグをリセット。
     isFadingOut = false;
 
-    // シーン開始と同時にFadeStartを開始する。
+    // シーン開始と同時にFadeInを開始する。
     pFade_->StartFadeIn();
 
     return true;
 }
+
 
 void TitleScene::Update()
 {
@@ -51,7 +55,7 @@ void TitleScene::Update()
     {
         if (g_pad[0]->IsTrigger(enButtonA))
         {
-            // フェードアウトを開始する。
+            //// フェードアウトを開始する。
             StartFadeOutToInGame();
         }
     }
@@ -64,6 +68,7 @@ void TitleScene::Update()
         }
     }
 }
+
 
 void TitleScene::StartFadeOutToInGame()
 {

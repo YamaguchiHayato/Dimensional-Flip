@@ -42,6 +42,7 @@ public:
         pos_ = pos;
     };
 
+
 private:
     Player* pPlayer_ = nullptr;
 

@@ -48,23 +48,22 @@ namespace app
 
         private:
             // Player。
-            void PlayerInstance();
+            void PlayerCreateInstance();
             // UI。
-            inline void UIInstance();
+            inline void UICreateInstance();
             // 各UIの生成。
             // タイマーUI。
-            inline void TimerInstance();
+            inline void TimerCreateInstance();
             // ナンバーUI。
-            inline void NumberInstance();
+            inline void NumberCreateInstance();
             // スコアUI。
-            inline void ScoreInstance();
+            inline void ScoreCreateInstance();
             // HPbar。
-            inline void HPbarInstance();
+            inline void HPbarCreateInstance();
             // その他。
             void InitSkyCube(); // スカイキューブの初期化。
             // 遷移時の更新処理。
             void UpdateTransition();
-
         private:
             std::unique_ptr<CameraManager> pCameraManager_;
             TimerUI* pTimerUI_ = nullptr;
@@ -84,6 +83,10 @@ namespace app
         private:
             // 現在のステージ番号を追跡するための変数。
             uint8_t currentStageNum_ = -1;
+
+        private:
+            // フェードが終了しているかどうか
+            bool m_isFadeInEnd = false;
         };
     }
 }

@@ -36,6 +36,7 @@ namespace app
             StageManager::DeleteInstance();
         }
 
+
         void Game::InitSkyCube()
         {
             DeleteGO(pSkyCube_);
@@ -47,6 +48,7 @@ namespace app
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
 
+
         bool Game::Start()
         {
             // StageManagerの生成。
@@ -54,14 +56,20 @@ namespace app
             StageManager::GetInstance()->Start();
 
             // UIの生成。
-            UIInstance();
+            UICreateInstance();
 
             // Playerの生成。
-            PlayerInstance();
+            PlayerCreateInstance();
 
             // CameraManagerの生成。
             pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
             pPlayer_->InitCameraManager(pCameraManager_.get());
+
+
+            // 現在のステージに合わせてPlayerのパラメータをせて地。
+            StageID currentStage = StageManager::GetInstance()->GetCurrentStageID();
+            bool isEX = (currentStage == StageID::sStageEX);
+            pPlayer_->SetStageParam(isEX);
 
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
@@ -76,18 +84,32 @@ namespace app
             // Playerの初期位置設定。
             Vector3 startPos = StageManager::GetInstance()->GetStageStartPos();
             pPlayer_->SetPlayerPos(startPos);
-
-            // フェードイン開始。
-            pFade_->StartFadeIn();
+           
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
             // PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+            pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }
 
+
         void Game::Update()
         {
+            // フェードイン開始。
+            if (!m_isFadeInEnd)
+            {
+                pFade_->StartFadeIn();
+
+                m_isFadeInEnd = true;
+            }
+            
+            if (!pFade_->IsFadeInEnd())
+            {
+                return;
+            }
+
+
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
 
@@ -103,6 +125,7 @@ namespace app
             }
         }
 
+
         void Game::RequestStageTransition(StageID nextStageID)
         {
             // 遷移中でければばリクエストを受け付ける。
@@ -113,6 +136,7 @@ namespace app
                 state_ = SceneTransitionState::FadeOut;
             }
         }
+
 
         void Game::UpdateTransition()
         {
@@ -185,6 +209,10 @@ namespace app
                 // 3. 同期ロードを実行。
                 StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
+                // Playerのステージパラメータを更新。
+                bool isEX = (nextStageID_ == StageID::sStageEX);
+                pPlayer_->SetStageParam(isEX);
+
                 // 4. ロード完了後、PlayerとCameraをリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
                 pPlayer_->SetPlayerPos(newStartPos);
@@ -254,38 +282,43 @@ namespace app
             }
         }
 
-        void Game::UIInstance()
+
+        void Game::UICreateInstance()
         {
-            TimerInstance();
+            TimerCreateInstance();
 
-            NumberInstance();
+            NumberCreateInstance();
 
-            ScoreInstance();
+            ScoreCreateInstance();
 
-            HPbarInstance();
+            HPbarCreateInstance();
         }
 
-        void Game::PlayerInstance()
+
+        void Game::PlayerCreateInstance()
         {
             pPlayer_ = NewGO<Player>(0, "player");
         }
 
-        void Game::TimerInstance()
+
+        void Game::TimerCreateInstance()
         {
             pTimerUI_ = NewGO<TimerUI>(0, "timerui");
         }
 
-        void Game::NumberInstance()
+
+        void Game::NumberCreateInstance()
         {
             pNumberUI_ = NewGO<NumberUI>(0, "numberui");
         }
 
-        void Game::ScoreInstance()
+
+        void Game::ScoreCreateInstance()
         {
             pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
         }
 
-        void Game::HPbarInstance()
+        void Game::HPbarCreateInstance()
         {
             pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
         }

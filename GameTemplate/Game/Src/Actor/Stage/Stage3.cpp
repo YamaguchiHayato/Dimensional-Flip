@@ -31,8 +31,8 @@ namespace nsStage3
 
     namespace nsStar
     {
-//        const Vector3 Pos1(3500.0f, 39.2f, -4300.0f);
-        const Vector3 Pos1(100.0f, 39.2f, -10.0f);
+        const Vector3 Pos1(3500.0f, 39.2f, -4300.0f);
+//        const Vector3 Pos1(100.0f, 39.2f, -10.0f);
     }
 }
 
@@ -80,7 +80,7 @@ bool Stage3::Start()
 
     TriggerInstace();
     WallActorInstace();
-    StarInstance();
+//    StarInstance();
 
     pPlayer_ = FindGO<Player>("player");
     return true;

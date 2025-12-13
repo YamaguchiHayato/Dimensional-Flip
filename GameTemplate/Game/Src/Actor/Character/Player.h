@@ -31,7 +31,22 @@ public:
     void Action();
 
 private:
+    ////////////////////////////
+    // 移動処理をまとめる処理 // 
     void Move();
+    ////////////////////////////
+    ////////////////////////////
+
+    // @TODO : 後ほど、ステートマシン化する予定。//
+
+    // 移動処理を分割。//
+    // XZ成分の移動を管轄。
+    void MoveHorizontal();
+    // ジャンプ処理を管轄。
+    void UpdateJumpAndGravity();
+    // 移動処理を加える。
+    void ApplyMovement();
+
     void Rotation();
     void PlayAnimation();
     void ManageState();
@@ -71,6 +86,13 @@ public:
     }
     // 一時停止フラグ。
     inline void SetPaused(bool isPaused) { isPaused_ = isPaused; }
+    // CameraMaangerの初期化。
+    inline void InitCameraMnager(CameraManager* pCameraManager)
+    {
+        pCameraManager_ = pCameraManager;
+    }
+    // ステージタイプに合わせてパラメータを設定する
+    void SetStageParam(bool isStageEX);
 
     // ゲッター。
 public:
@@ -116,11 +138,10 @@ private:
     // トリガーエリア内フラグ
     uint8_t triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
 
-    float jumpPower_ = 50.0f;
+    float jumpPower_ = 0.0f;
+    float walkSpeed_ = 0.0f;
 
     bool didJumpThisFrame_ = false;
     bool isPaused_ = false;
-
-private:
     bool is3DMode_ = false;
 };

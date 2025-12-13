@@ -3,20 +3,19 @@
 
 namespace
 {
-	const float UI_WIDTH = 300.0f;
-	const float UI_HEIGHT = 300.0f;
+	const auto WIDTH = 441.0f;
+	const auto HEIGHT = 428.0f;
 
-	const Vector3 UI_POS{00.0f, 450.0f,0.0f};
-	const Vector3 UI_SCALE{ 1.25f, 1.25f, 1.25f };
+	const Vector3 UI_POS{-880.0f, 370.0f,0.0f};
+	const Vector3 UI_SCALE(Vector3(0.125f, 0.125f, 0.125f));
 }
 
 
 bool TimerUI::Start()
 {
-	const std::string TimerUIPath = InitUI("progressBar/UI_Time");
-	UISprite_.Init(TimerUIPath.c_str(), UI_WIDTH, UI_HEIGHT);
+	const std::string TimerUIPath = InitUI("progressBar/Time");
+	UISprite_.Init(TimerUIPath.c_str(), WIDTH, HEIGHT);
 
-	UISprite_.SetScale(UI_SCALE);
 	UISprite_.SetPosition(UI_POS);
 	UISprite_.Update();
 	return true;
@@ -25,7 +24,7 @@ bool TimerUI::Start()
 void TimerUI::Update()
 {
 	UISprite_.SetPosition(UI_POS);
-	UISprite_.SetScale(UI_SCALE);
+	UISprite_.SetScale(Vector3(0.25f, 0.25f, 0.25f));
 	UISprite_.Update();
 }
 

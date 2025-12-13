@@ -10,9 +10,10 @@ namespace
 	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 
 
-	const Vector3 TensDigit(-45.0f, 450.0f, 0.0f); 
-	const Vector3 OnesDigit(45.0f, 450.0f, 0.0f);   
-	const Vector3 UI_SCALE(1.0f, 1.0f, 1.0f );
+	const Vector3 TensDigit(-900.0f, 370.0f, 0.0f); 
+	const Vector3 OnesDigit(-855.0f, 370.0f, 0.0f);
+
+	const Vector3 UI_SCALE(0.5f, 0.5f, 0.5f );
 }
 
 bool NumberUI::Start()

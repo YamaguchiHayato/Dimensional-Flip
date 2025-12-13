@@ -2,7 +2,7 @@
 #include "Src/Actor/Stage/StageEX.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Core/CameraManager.h"
-
+#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 #include "Src/Direction/CutIn/CutInView.h"
 
 namespace

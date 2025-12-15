@@ -47,6 +47,7 @@ private:
     std::vector<Star*> lStar_;
 
 private:
+    ///////////////////////
     // デバッグ用。////////
     FontRender debugFont_x;
     FontRender debugFont_y;

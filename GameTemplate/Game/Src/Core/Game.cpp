@@ -88,7 +88,7 @@ namespace app
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
-            // PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }

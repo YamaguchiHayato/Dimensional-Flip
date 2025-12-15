@@ -69,10 +69,12 @@ void RotationFool::Update()
     pGimmickCollision_->SetPosition(gimmickPos_ + GIMMICKCOLLISION);
 }
 
+
 void RotationFool::Render(RenderContext& rc)
 {
     render_.Draw(rc);
 }
+
 
 void RotationFool::Move(float deltaTime)
 {

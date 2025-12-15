@@ -1,5 +1,7 @@
 #pragma once
 
+class Player;
+
 namespace app
 {
     namespace stage
@@ -14,7 +16,7 @@ namespace app
             void Update();
             void Render(RenderContext& rc);
 
-            void DestryCollision();
+            void DestroyCollision();
 
         // セッター。
         public:
@@ -32,12 +34,20 @@ namespace app
                 return pos_;
             }
 
-
+        private:
+            CollisionObject* pCollision_ = nullptr;
+            Player* pPlayer_ = nullptr;
         private:
             ModelRender render_;
+
             Vector3 pos_;
+            Vector3 initPos_;
+
+            PhysicsStaticObject wallPhysics_;
             Quaternion rot_;
 
+            // 多重削除防止用フラグ。
+            bool isCollisionActive_ = true;
         };
 
     }

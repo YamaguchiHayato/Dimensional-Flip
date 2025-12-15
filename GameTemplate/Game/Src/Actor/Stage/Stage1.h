@@ -8,6 +8,8 @@ class WallActor;
 class DimensionTrigger;
 class RotationFool;
 
+class Player;
+
 namespace app{
     namespace stage{
         class Wall;
@@ -23,15 +25,15 @@ public:
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
+
+    // Playerがカメラアクションをしたかチェックする関数。
+    void CheckCameraAction();
+
     // モデルのファイルパスをセット。
 	inline const std::string InitStage(const std::string& stagename)override
 	{
 		return IStage::InitStage(stagename);
 	};
-    inline Vector3 GetStageStartPos() const override
-    {
-        return Vector3(0.0f, 100.0f, 0.0f);
-    }
 
 private:
     // ギミック生成。
@@ -42,7 +44,14 @@ private:
     inline void RotationFoolNewGO();     // 回転トリック。
     inline void WallCreateInstance();    // 壁インスタンス生成。
 
+public:
+    inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 100.0f, 0.0f); }
+
+
 private:
+
+    Player* pPlayer_ = nullptr;
+
     // ギミック。
     JumpPad* pJumpPad_ = nullptr;
     Star* pStar_ = nullptr;        
@@ -59,6 +68,7 @@ private:
     std::vector<app::stage::Wall*> lWallInstance_;
 
     Vector3 scale_ = Vector3::One;
+    Vector3 basePos_ = Vector3::Zero;
     Quaternion rot_ = Quaternion::Identity;
     Quaternion rot_90_Y = Quaternion::Identity;
 

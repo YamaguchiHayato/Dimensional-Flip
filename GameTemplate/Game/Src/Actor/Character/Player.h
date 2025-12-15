@@ -30,6 +30,21 @@ public:
     bool DoJumpCheck() const { return didJumpThisFrame_; };
 
     void Action();
+    //
+    bool IsDimensionSwitchAction();
+
+    // 敵を踏みつけた際に行うバウンド処理。
+    inline void Bound()
+    {
+        moveSpeed_.y = jumpPower_;
+        moveSpeed_.x = 0.0f;
+        moveSpeed_.z = 0.0f;
+
+        state_ = PlayerState::sJump;
+
+        // バウンド時は空中での操作を可能にする。
+        canAirControl_ = true;
+    }
 
 private:
     ////////////////////////////
@@ -60,6 +75,8 @@ private:
 
     // リスポーン処理。
     void ReSpwan();
+
+
     // セッター。
 public:
     // CameraManagerの初期化。
@@ -121,8 +138,11 @@ public:
     {
         return respawnFlag_;
     }
-
-
+    // 現在の移動速度を取得。
+    inline const Vector3& GetMoveSpeed() const
+    {
+        return moveSpeed_;
+    }
 
 private:
     // アニメーションを取得して再生する関数。
@@ -158,6 +178,7 @@ private:
     float jumpPower_ = 0.0f;
     float walkSpeed_ = 0.0f;
 
+    bool canAirControl_ = false;
     bool didJumpThisFrame_ = false;
     bool isPaused_ = false;
     bool is3DMode_ = false;

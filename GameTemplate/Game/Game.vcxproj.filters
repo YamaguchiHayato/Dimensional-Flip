@@ -219,6 +219,7 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
+    <ClCompile Include="NormalEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -395,6 +396,7 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
+    <ClInclude Include="NormalEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

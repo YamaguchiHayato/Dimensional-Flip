@@ -6,6 +6,13 @@ class JumpPad;
 class Star;
 class WallActor;
 class DimensionTrigger;
+class RotationFool;
+
+namespace app{
+    namespace stage{
+        class Wall;
+    }
+}
 
 // メインクラス。
 class Stage1 : public IStage
@@ -32,18 +39,29 @@ private:
     inline void StarNewGO();// スター。
     inline void WallNewGO();// 透明壁。
     inline void DimensionTriggerNewGO(); // カメラトリガー。
-
+    inline void RotationFoolNewGO();     // 回転トリック。
+    inline void WallCreateInstance();    // 壁インスタンス生成。
 
 private:
     // ギミック。
     JumpPad* pJumpPad_ = nullptr;
     Star* pStar_ = nullptr;        
-    WallActor* pWall_ = nullptr;
+    WallActor* pWallActor_ = nullptr;
+    app::stage::Wall* pWall_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
+
 
     std::vector<JumpPad*> lJumpPad_;
     std::vector<Star*> lStar_;
     std::vector<WallActor*> lWall_;
     std::vector<DimensionTrigger*> lDimensionTrigger_;
+    std::vector<RotationFool*> lRotationFool_;
+    std::vector<app::stage::Wall*> lWallInstance_;
+
+    Vector3 scale_ = Vector3::One;
+    Quaternion rot_ = Quaternion::Identity;
+    Quaternion rot_90_Y = Quaternion::Identity;
+
+
 };
 

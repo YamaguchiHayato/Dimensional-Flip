@@ -8,6 +8,7 @@
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
+#include "Src/Actor/Stage/Gimmick/Wall.h"
 
 
 namespace
@@ -31,7 +32,7 @@ namespace GimmickPos
         const Vector3 Pos1(1400.0f, -60.0f, -1800.0f);
     }
 
-        // 透明壁。
+    // 透明壁。
     namespace WallPosition
     {
         const Vector3 Pos1(0.0f, 0.0f, 25.0f);
@@ -46,6 +47,44 @@ namespace GimmickPos
         const Vector3 Pos1 = Vector3(200.0f, 0.0f, 0.0f);
         const Vector3 Pos2 = Vector3(1500.0f,-75.0f, 0.0f );
         const Vector3 Pos3 = Vector3(1400.0f, -60.0f, -1800.0f);
+    }
+
+
+    // 回転トリック。
+    namespace RotationFool
+    {
+        // リフト共通のY座標。
+        const float COMMONBUTTOM_Y = 0.0f;
+
+        // 座標設定。
+        namespace Pos
+        {
+            // Y座標を上昇上限とする。
+            const Vector3 Pos1(2050.0f, 500.0f, -2200.0f);
+            const Vector3 Pos2(2050.0f, 700.0f, -2400.0f);
+            const Vector3 Pos3(2050.0f, 1000.0f, -2600.0f);
+
+            // 別ルート用。
+            const Vector3 Pos4(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos5(1500.0f, 100.0f, -60.0f);
+            const Vector3 Pos6(1500.0f, 100.0f, -60.0f);
+        } 
+
+        // リフトの移動速度リスト。
+        const std::vector<float> SpeedList =
+        {
+            400.0f, // 1台目。
+            450.0f, // 2台目。
+            500.0f  // 3台目。
+        };
+
+    }
+
+
+    // 壁。
+    namespace Wall
+    {
+        const Vector3 Pos1 = Vector3(2200.0f, 0.0f, 0.0f);
     }
 }
 
@@ -72,10 +111,23 @@ Stage1::~Stage1()
         DeleteGO(p);
     }
 
+    for (auto* p : lRotationFool_)
+    {
+        DeleteGO(p);
+    }
+
+    for (auto* p : lWallInstance_)
+    {
+        DeleteGO(p);
+    }
+
+
     lJumpPad_.clear();
     lStar_.clear();
     lWall_.clear();
     lDimensionTrigger_.clear();
+    lRotationFool_.clear();
+    lWallInstance_.clear();
 }
 
 
@@ -105,10 +157,16 @@ bool Stage1::Start()
     // カメラトリガー生成。
     DimensionTriggerNewGO();
 
+    // 回転トリック生成。
+    RotationFoolNewGO();
+
+    // 壁インスタンス生成。
+    WallCreateInstance();
 
 	stageRender_.Update();
 	return true;
 }
+
 
 void Stage1::Update()
 {
@@ -117,14 +175,14 @@ void Stage1::Update()
 
 	// 当たり判定。
 	stagePhysics_.SetPosition(stagePos_);
-
-
 }
+
 
 void Stage1::Render(RenderContext& rc)
 {
 	stageRender_.Draw(rc);
 }
+
 
 void Stage1::JumpPadNewGO()
 {
@@ -140,6 +198,7 @@ void Stage1::JumpPadNewGO()
         lJumpPad_.push_back(pJumpPad_);
 	}
 }
+
 
 void Stage1::StarNewGO()
 {
@@ -157,6 +216,7 @@ void Stage1::StarNewGO()
 
 }
 
+
 void Stage1::WallNewGO()
 {
 	std::vector<Vector3> WallPosList =
@@ -168,20 +228,21 @@ void Stage1::WallNewGO()
 	for (size_t i = 0; i < WallPosList.size(); i++)
 	{
        
-		pWall_ = NewGO<WallActor>(0, "wall");
+		pWallActor_ = NewGO<WallActor>(0, "wall");
 
 		if (i == 3) 
 		{
 			Quaternion wallRot;
 			wallRot.SetRotationDegY(90.0f);
-			pWall_->SetWallRot(wallRot);
+			pWallActor_->SetWallRot(wallRot);
 		}
 
-        pWall_->SetWallPos(WallPosList[i]);
-        lWall_.push_back(pWall_);
+        pWallActor_->SetWallPos(WallPosList[i]);
+        lWall_.push_back(pWallActor_);
 	}
 
 }
+
 
 void Stage1::DimensionTriggerNewGO()
 {
@@ -200,3 +261,83 @@ void Stage1::DimensionTriggerNewGO()
 }
 
 
+void Stage1::RotationFoolNewGO()
+{
+    // ---------------------------------------------------
+    // 1. 設置座標リスト
+    // ---------------------------------------------------
+    std::vector<Vector3> RotFoolPosList =
+    {
+        GimmickPos::RotationFool::Pos::Pos1,
+        GimmickPos::RotationFool::Pos::Pos2,
+        GimmickPos::RotationFool::Pos::Pos3,
+    };
+
+    // ---------------------------------------------------
+    // 2. 速度リスト
+    // ---------------------------------------------------
+    const auto& RotFoolSpeedList = GimmickPos::RotationFool::SpeedList;
+
+    // ---------------------------------------------------
+    // 3. 回転の準備 (全て90度にする)
+    // ---------------------------------------------------
+    Quaternion rot90;
+
+    // ---------------------------------------------------
+    // 4. 生成ループ
+    // ---------------------------------------------------
+
+    // 共通のY座標
+    const float CommonButtomY = GimmickPos::RotationFool::COMMONBUTTOM_Y;
+
+    // 安全対策：座標と速度のリスト数が合っているかチェック
+    if (RotFoolPosList.size() != RotFoolSpeedList.size())
+        return;
+
+    // モデルの生成
+    for (size_t i = 0; i < RotFoolPosList.size(); i++)
+    {
+        auto rotFool = NewGO<RotationFool>(0, "rotationfool");
+
+        // A. 座標の設定
+        Vector3 topPos = RotFoolPosList[i];
+        rotFool->SetPos(topPos);
+        rotFool->SetTopPos(topPos);
+
+        Vector3 bottomPos = topPos;
+        bottomPos.y = CommonButtomY;
+        rotFool->SetInitPos(bottomPos);
+
+        // B. 速度の設定
+        rotFool->SetMoveSpeed(RotFoolSpeedList[i]);
+
+        // C. 回転の設定 【ここですべてに90度を適用】
+        rotFool->SetDirection(rot90);
+
+        // D. 大きさ
+        rotFool->SetScale(scale_);
+
+        // E. 回転角度の設定
+        rot90.SetRotationDegY(90.0f);
+
+        lRotationFool_.push_back(rotFool);
+    }
+
+    
+}
+
+
+void Stage1::WallCreateInstance()
+{
+    std::vector<Vector3> WallPosList =
+    {
+        GimmickPos::Wall::Pos1,
+    };
+
+    for (size_t i = 0; i < WallPosList.size(); i++)
+    {
+        pWall_ = NewGO<app::stage::Wall>(0, "wall");
+        pWall_->SetPos(WallPosList[i]);
+        lWallInstance_.push_back(pWall_);
+    }
+}

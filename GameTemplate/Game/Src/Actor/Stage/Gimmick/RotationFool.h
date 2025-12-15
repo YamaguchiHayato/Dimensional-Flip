@@ -58,6 +58,10 @@ public:
     {
         moveSpeed_ = moveSpeed;
     }
+    inline void SetDirection(const Quaternion& direction)
+    {
+        direction_ = direction;
+    }
 
 // ゲッター。
 public:
@@ -89,5 +93,5 @@ private:
     float moveSpeed_ = 100.0f;             // 移動速度。
     float stopTime_ = 2.0f;               // 停止時間。
     FoolState foolState_ = FoolState::TOP; // ギミックステートの初期値。
-
+    Quaternion direction_ = Quaternion::Identity; // ギミックの向き。
 };

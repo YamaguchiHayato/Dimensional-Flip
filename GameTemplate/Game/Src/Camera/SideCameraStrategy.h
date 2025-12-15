@@ -40,7 +40,6 @@ private:
 
 private:
 	Vector3 idealOffset_{0.0f, 10.0f, 0.0f};
-	Vector3 baseOffset_{0.0f, 50.0f, -500.0f};                                 
 
 	Quaternion currentRotation_ = Quaternion::Identity;
 	Quaternion targetRotation_ = Quaternion::Identity;

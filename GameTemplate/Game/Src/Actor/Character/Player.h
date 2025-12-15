@@ -28,6 +28,7 @@ public:
     void Update() override;
     void Render(RenderContext& rendercontext) override;
     bool DoJumpCheck() const { return didJumpThisFrame_; };
+
     void Action();
 
 private:
@@ -57,6 +58,8 @@ private:
     // 3Dカメラと2Dカメラの切り替え
     void ChangeDimensionCamera();
 
+    // リスポーン処理。
+    void ReSpwan();
     // セッター。
 public:
     // CameraManagerの初期化。
@@ -93,6 +96,11 @@ public:
     }
     // ステージタイプに合わせてパラメータを設定する
     void SetStageParam(bool isStageEX);
+    // リスポーン座標の設定。
+    void SetRespwanPos(const Vector3& pos)
+    {
+        respwanPos_ = pos;
+    }
 
     // ゲッター。
 public:
@@ -108,6 +116,13 @@ public:
     inline bool GetInTriggerArea() const { return triggerOverlapCount_ > 0; }
     // カメラモードを取得。
     inline CameraManager* GetCameraManager() { return pCameraManager_; }
+    // リスポーンしたか。
+    inline bool IsRespawn()
+    {
+        return respawnFlag_;
+    }
+
+
 
 private:
     // アニメーションを取得して再生する関数。
@@ -130,8 +145,10 @@ public:
     Vector3 diff_ = Vector3::Zero;
     Vector3 moveSpeed_ = Vector3::Zero;
     Vector3 pos_ = Vector3::Zero;
+    Vector3 respwanPos_ = Vector3::Zero;
     Vector3 forward_ = Vector3::Front;
     Quaternion rot_ = Quaternion::Identity;
+    Quaternion respwanRot_ = Quaternion::Identity;
 
 private:
     uint8_t state_;
@@ -144,4 +161,5 @@ private:
     bool didJumpThisFrame_ = false;
     bool isPaused_ = false;
     bool is3DMode_ = false;
+    bool respawnFlag_ = false;
 };

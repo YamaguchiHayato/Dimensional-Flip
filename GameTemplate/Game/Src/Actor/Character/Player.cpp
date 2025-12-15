@@ -166,6 +166,10 @@ void Player::Move()
     const bool GROUND = charaCon_.IsOnGround();
 
     if (GROUND)
+        canAirControl_ = false;
+
+
+    if (GROUND || canAirControl_)
     {
         // 移動する各成分を初期化する。
         moveSpeed_.x = 0.0f;
@@ -254,6 +258,25 @@ void Player::ReSpwan()
 }
 
 
+//
+bool Player::IsDimensionSwitchAction()
+{
+    // カメラマネージャーを取得する。
+    if (!pCameraManager_)
+        return false;
+
+    bool isInTriggerArea = GetInTriggerArea();
+    auto currentMode = pCameraManager_->GetCurrentCameraMode();
+
+    // カメラトリガー内かつ 2.5Dモードのときかつ Bボタンが押されたら。
+    if (isInTriggerArea && currentMode == CameraMode::mode2_5D && g_pad[0]->IsTrigger(enButtonB))
+    {
+        return true;
+    }
+    return false;
+}
+
+
 void Player::MoveHorizontal()
 {
     if (!pCameraManager_)
@@ -267,70 +290,63 @@ void Player::MoveHorizontal()
     stickL.x = g_pad[0]->GetLStickXF();
     stickL.y = g_pad[0]->GetLStickYF();
 
-    // スティックの入力判定を精度を高めるために設定。
-    // x軸。
+    // デッドゾーン処理
     if (fabsf(stickL.x) < 0.2f)
         stickL.x = 0.0f;
-
-    // y軸。
     if (fabsf(stickL.y) < 0.2f)
         stickL.y = 0.0f;
 
-    // y座標が-500以下になったらリスポーン。
+    // 落下リスポーン処理
     if (pos_.y <= -200.0f)
     {
         ReSpwan();
         return;
     }
 
-    // カメラモードの判定処理。
-    if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode == CameraMode::modeStageEX)
+    Vector3 camRight = g_camera3D->GetRight();
+    Vector3 camForward = g_camera3D->GetForward();
+    camRight.y = 0.0f;
+    camForward.y = 0.0f;
+    camRight.Normalize();
+    camForward.Normalize();
+
+    if (fabsf(camForward.z) > fabsf(camForward.x))
     {
-        // カメラの各方向ベクトルを取得する。
-        Vector3 camForward = g_camera3D->GetForward();
-        Vector3 camRight = g_camera3D->GetRight();
-        camForward.y = 0.0f;
-        camRight.y = 0.0f;
-        camForward.Normalize();
-        camRight.Normalize();
-        Vector3 targetMove = (camForward * stickL.y) + (camRight * stickL.x);
+        // Z軸主体の移動。
+        camForward.x = 0.0f;
+        camForward.z = (camForward.z > 0.0f) ? 1.0f : -1.0f;
+
+        // 右方向はx軸
+        camRight.z = 0.0f;
+        camRight.x = (camRight.x > 0.0f) ? 1.0f : -1.0f;
+    }
+
+    else
+    {
+        // X軸主体の向き（横向き）
+        camForward.z = 0.0f;
+        camForward.x = (camForward.x > 0.0f) ? 1.0f : -1.0f;
+
+        // 右方向はZ軸になる
+        camRight.x = 0.0f;
+        camRight.z = (camRight.z > 0.0f) ? 1.0f : -1.0f;
+    }
+
+    bool isRotatedView = fabsf(camRight.z) > fabsf(camRight.x);
+
+    if (currentMode == CameraMode::mode3D || currentMode == CameraMode::modeBoss || currentMode == CameraMode::modeStageEX || isRotatedView)
+    {
+        Vector3 targetMove = (camRight * stickL.x) + (camForward * stickL.y);
         moveSpeed_ += targetMove * walkSpeed_;
     }
 
     else
     {
-        // カメラの右ベクトルを取得。
-        Vector3 right = g_camera3D->GetRight();
-        right.y = 0.0f;
-
-        // 移動方向をXかZか判断する。
-        if (fabsf(right.x) > fabsf(right.z))
-        {
-            // X方向移動。
-            right.x = (right.x > 0.0f) ? 1.0f : -1.0f;
-            right.z = 0.0f;
-
-            // 移動量の計算。
-            moveSpeed_ += right * (stickL.x * walkSpeed_);
-
-            // 移動しない軸は0.0にする。
-            moveSpeed_.z = 0.0f;
-        }
-
-        else
-        {
-            // X成分は完全に消す
-            right.x = 0.0f;
-            // Z方向を完全な 1.0 または -1.0 に固定
-            right.z = (right.z > 0.0f) ? 1.0f : -1.0f;
-
-            // 移動力を加算
-            moveSpeed_ += right * (stickL.x * walkSpeed_);
-
-            moveSpeed_.x = 0.0f;
-        }
+        Vector3 targetMove = camRight * stickL.x;
+        moveSpeed_ += targetMove * walkSpeed_;
     }
 }
+
 
 
 void Player::ApplyMovement()

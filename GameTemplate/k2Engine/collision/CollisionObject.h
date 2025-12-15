@@ -113,45 +113,6 @@ namespace nsK2Engine {
 		       return Quaternion(q.getX(), q.getY(), q.getZ(), q.getW());
 	    }
 
-		/// <summary>
-		/// 球形状の「動的な剛体(Rigidbody)」を作成します。
-		/// </summary>
-  //      void CreateDynamicSphere(Vector3 pos, float radius, float mass)
-		//{
-		//	// 1. 球の「形状(Shape)」を作成
-		//	// (※ 形状は使い回せるため、本当は new しない方がよいが、一旦これで動かす)
-		//	btCollisionShape* collisionShape = new btSphereShape(radius);
-
-		//	// 2. 「モーション状態(MotionState)」を作成 (位置や回転の管理)
-		//	btTransform startTransform;
-		//	startTransform.setIdentity();
-		//	// ↓ 【バグ修正】pos_ ではなく引数の pos を使う
-		//	startTransform.setOrigin(ConvertToBtVector3(pos)); 
-		//	btMotionState* motionState = new btDefaultMotionState(startTransform);
-
-		//	// 3. 慣性(Inertia)の計算 (質量が0でなければ)
-		//	btVector3 localInertia(0, 0, 0);
-		//	if (mass != 0.0f) {
-		//		collisionShape->calculateLocalInertia(mass, localInertia);
-		//	}
-
-		//	// 4. 剛体(Rigidbody)の「構築情報」を作成
-		//	// ↓ 【バグ修正】localInertia を追加
-		//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShape, localInertia);
-
-		//	// 5. 剛体(Rigidbody)を new で作成
-		//	// ↓ 【バグ修正】const を削除
-		//	btRigidBody* body = new btRigidBody(rbInfo);
-
-		//	// 6. メンバー変数に保存
-		//	this->btRigidBody_ = body;
-
-		//	// 7. 物理ワールドに剛体を追加 (※この関数はあなたのエンジンに合わせてください)
-		//	PhysicsWorld::GetInstance()->AddRigidBody(body); 
-
-		//	// 8. 剛体に紐づける (当たり判定のコールバックで使うため)
-		//	body->setUserPointer(this);
-		//}
 		const Quaternion GetRot() const
 		{
 			return rot_;

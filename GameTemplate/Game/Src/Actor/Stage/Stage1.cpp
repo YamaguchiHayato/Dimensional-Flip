@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/Stage1.h"
 #include "Src/Actor/Character/Player.h"
+#include "NormalEnemy.h"
+
 #include "Src/Core/CameraManager.h"
+
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/JumpPad.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"
@@ -84,7 +87,7 @@ namespace GimmickPos
     // 壁。
     namespace Wall
     {
-        const Vector3 Pos1 = Vector3(2200.0f, 0.0f, 0.0f);
+        const Vector3 Pos1 = Vector3(5400.0f, -50.0f, -50.0);
     }
 }
 
@@ -158,23 +161,46 @@ bool Stage1::Start()
     DimensionTriggerNewGO();
 
     // 回転トリック生成。
-    RotationFoolNewGO();
+//    RotationFoolNewGO();
 
     // 壁インスタンス生成。
     WallCreateInstance();
 
 	stageRender_.Update();
+
+    pPlayer_ = FindGO<Player>("player");
 	return true;
 }
 
 
 void Stage1::Update()
 {
-
 	stageRender_.Update();
 
 	// 当たり判定。
 	stagePhysics_.SetPosition(stagePos_);
+
+    // Playerがカメラアクションをしたかチェックする関数。
+    CheckCameraAction();
+}
+
+
+void Stage1::CheckCameraAction()
+{
+    Vector3 playerPos = pPlayer_->GetPlayerPos();
+    // 判定範囲。
+    auto checkRange = 100.0f * 100.0f;
+
+    // 壁インスタンスとの距離を調べる。
+    for (auto* wall : lWallInstance_)
+    {
+        Vector3 diff = wall->GetPos() - playerPos;
+
+        // 距離の2乗で比較する。
+        if (diff.LengthSq() < checkRange)
+            // コリジョンを削除する。
+            wall->DestroyCollision();
+    }
 }
 
 
@@ -329,8 +355,8 @@ void Stage1::RotationFoolNewGO()
 
 void Stage1::WallCreateInstance()
 {
-    std::vector<Vector3> WallPosList =
-    {
+    // --- (前半の壁生成コードはそのまま) ---
+    std::vector<Vector3> WallPosList = {
         GimmickPos::Wall::Pos1,
     };
 
@@ -339,5 +365,29 @@ void Stage1::WallCreateInstance()
         pWall_ = NewGO<app::stage::Wall>(0, "wall");
         pWall_->SetPos(WallPosList[i]);
         lWallInstance_.push_back(pWall_);
+    }
+    Vector3 startPos = GimmickPos::Wall::Pos1;
+
+    // 敵同士の間隔
+    float spacingX = 80.0f; 
+    float spacingZ = 80.0f; 
+
+    for (uint8_t x = 0; x < 3; x++)
+    {
+        for (uint8_t z = 0; z < 3; z++)
+        {
+            // 座標を計算
+            Vector3 pos = startPos;
+            pos.x += x * spacingX; // 横にずらす
+            pos.z += z * spacingZ; // 奥にずらす
+
+            // 少し空中に浮かせる場合（めり込み防止）
+            pos.y += 0.0f;
+
+            // 敵を生成
+            // NewGOの引数に名前("enemy")を追加しておくとデバッグしやすいです
+            auto enemy = NewGO<app::enemy::NormalEnemy>(0, "enemy");
+            enemy->SetPos(pos);
+        }
     }
 }

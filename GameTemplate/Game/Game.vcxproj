@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="DelayedEffect.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
@@ -290,6 +291,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
+    <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />

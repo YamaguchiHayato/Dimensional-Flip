@@ -4,6 +4,13 @@
 #include "Src/camera/FollowStrategy.h"
 #include "Src/Core/CameraManager.h"
 
+namespace
+{
+    //const Vector3 OFFSET(0.0f, 30.0f, -200.0f);
+    const Vector3 OFFSET(0.0f, 0.0f, -200.0f);
+
+}
+
 SideCameraStrategy::SideCameraStrategy(Player* pPlayer)
 	: pPlayer_(pPlayer)
 {
@@ -11,37 +18,43 @@ SideCameraStrategy::SideCameraStrategy(Player* pPlayer)
 	currentRotation_ = targetRotation_;
 }
 
+
 void SideCameraStrategy::Update(nsK2EngineLow::Camera* camera, const float deltaTime)
 {
     if (!pPlayer_) return;
 
-	// 現在の回転を目標の回転んに滑らかに近づける。*/
-	float t =  rotationSpeed_ * deltaTime;
-	// t が 1.0fを超えないようにする。*/
-	if (t > 1.0f) t = 1.0f;
-	// Slerp … 球面線形補完。(結果は currentRotation_ 自身に格納される) */
-	currentRotation_.Slerp(t, currentRotation_, targetRotation_); //
 
-    camera->SetRotation(currentRotation_);
+    {
+        // 現在の回転を目標の回転んに滑らかに近づける。*/
+        float t = rotationSpeed_ * deltaTime;
+        // t が 1.0fを超えないようにする。*/
+        if (t > 1.0f)
+            t = 1.0f;
+        // Slerp … 球面線形補完。(結果は currentRotation_ 自身に格納される) */
+        currentRotation_.Slerp(t, currentRotation_, targetRotation_); //
 
-	// --- 位置計算 ---
-	const Vector3 targetPos = pPlayer_->GetPlayerPos();
-	const Vector3 currentCamPos = camera->GetPosition();
+        camera->SetRotation(currentRotation_);
 
-	Vector3 rotatedOffset = baseOffset_; 
-	currentRotation_.Apply(rotatedOffset); 
+        // --- 位置計算 ---
+        const Vector3 targetPos = pPlayer_->GetPlayerPos();
+        const Vector3 currentCamPos = camera->GetPosition();
 
-	// 理想の位置 = プレイヤーの位置 + 回転したオフセット
-	const Vector3 idealPos = targetPos + rotatedOffset;
-	
-	const float followSpeed = 15.0f * deltaTime;
-	// Lerp関数はFollowStrategyのstatic関数を使う
-	const Vector3 newPos = FollowStrategy::Lerp(followSpeed, currentCamPos, idealPos);
+        Vector3 rotatedOffset = OFFSET;
+        currentRotation_.Apply(rotatedOffset);
 
-	camera->SetPosition(newPos);
+        // 理想の位置 = プレイヤーの位置 + 回転したオフセット
+        const Vector3 idealPos = targetPos + rotatedOffset;
 
-	// --- 注視点計算 ---
-	Vector3 lookAtTarget = targetPos; 
-	lookAtTarget.y += 30.0f; // プレイヤーの少し上を見る 	
-	camera->SetTarget(lookAtTarget);
+        const float followSpeed = 15.0f * deltaTime;
+        // Lerp関数はFollowStrategyのstatic関数を使う
+        Vector3 newPos = FollowStrategy::Lerp(followSpeed, currentCamPos, idealPos);
+        newPos.y = targetPos.y + 30.0f;
+        camera->SetPosition(newPos);
+
+        // --- 注視点計算 ---
+        Vector3 lookAtTarget = targetPos;
+        lookAtTarget.y += 45.0f; // プレイヤーの少し上を見る
+        camera->SetTarget(lookAtTarget);
+    }
 }
+

@@ -40,7 +40,7 @@ void CameraManager::Request2DMode()
     if (pCameraStrategy_->Start())
     {
         currentMode_ = CameraMode::mode2_5D;
-        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Ortho);
+        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
     }
 }
 

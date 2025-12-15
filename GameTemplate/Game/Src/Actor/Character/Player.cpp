@@ -29,7 +29,7 @@ struct PlayerStatus
     // 移動速度パラメータ。
     struct Move
     {
-        static constexpr float SPEED = 1500.0f;        // 移動速度アップ
+        static constexpr float SPEED = 1125.0f;        // 移動速度アップ
         static constexpr float JUMP_POWER = 600.0f;   // ジャンプ力アップ
     };
 
@@ -175,6 +175,13 @@ void Player::Move()
         MoveHorizontal();
     }
 
+    if (pos_.y <= -100.0f)
+    {
+        // リスポーン処理。
+        ReSpwan();
+        return;
+    }
+
     // ジャンプ処理。
     UpdateJumpAndGravity();
 
@@ -231,6 +238,22 @@ void Player::UpdateJumpAndGravity()
 }
 
 
+void Player::ReSpwan()
+{
+    pos_ = respwanPos_;
+    rot_ = respwanRot_;
+
+    render_.SetPosition(pos_);
+    render_.SetRotation(rot_);
+    charaCon_.SetPosition(pos_);
+
+    // 移動速度のリセット。
+    moveSpeed_ = Vector3::Zero;
+
+    respawnFlag_ = true;
+}
+
+
 void Player::MoveHorizontal()
 {
     if (!pCameraManager_)
@@ -253,6 +276,13 @@ void Player::MoveHorizontal()
     if (fabsf(stickL.y) < 0.2f)
         stickL.y = 0.0f;
 
+    // y座標が-500以下になったらリスポーン。
+    if (pos_.y <= -200.0f)
+    {
+        ReSpwan();
+        return;
+    }
+
     // カメラモードの判定処理。
     if (currentMode == CameraMode::modeBoss || currentMode == CameraMode::mode3D || currentMode == CameraMode::modeStageEX)
     {
@@ -269,10 +299,36 @@ void Player::MoveHorizontal()
 
     else
     {
+        // カメラの右ベクトルを取得。
         Vector3 right = g_camera3D->GetRight();
         right.y = 0.0f;
 
-        moveSpeed_ += right * (stickL.x * walkSpeed_);
+        // 移動方向をXかZか判断する。
+        if (fabsf(right.x) > fabsf(right.z))
+        {
+            // X方向移動。
+            right.x = (right.x > 0.0f) ? 1.0f : -1.0f;
+            right.z = 0.0f;
+
+            // 移動量の計算。
+            moveSpeed_ += right * (stickL.x * walkSpeed_);
+
+            // 移動しない軸は0.0にする。
+            moveSpeed_.z = 0.0f;
+        }
+
+        else
+        {
+            // X成分は完全に消す
+            right.x = 0.0f;
+            // Z方向を完全な 1.0 または -1.0 に固定
+            right.z = (right.z > 0.0f) ? 1.0f : -1.0f;
+
+            // 移動力を加算
+            moveSpeed_ += right * (stickL.x * walkSpeed_);
+
+            moveSpeed_.x = 0.0f;
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdint.h"
+#include "GameSoundEngine.h"
 #include "Level3DRender/LevelRender.h"
 #include "Src/Actor/Stage/IStage.h"
 #include <DirectXTK/Inc/Audio.h>
@@ -74,6 +75,7 @@ namespace app
             LoadingScene* pLoadingScene_ = nullptr;
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
+            nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
             // 遷移管理用メンバ。
             SceneTransitionState state_ = SceneTransitionState::None;
@@ -87,6 +89,7 @@ namespace app
         private:
             // フェードが終了しているかどうか
             bool m_isFadeInEnd = false;
+            bool m_hasAppliedStageBgm_ = false;
         };
     }
 }

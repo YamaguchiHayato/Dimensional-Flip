@@ -224,6 +224,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DelayedEffect.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
@@ -243,10 +244,12 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\Star.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\IStage.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Stage1.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Stage2.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Stage3.cpp" />
-    <ClCompile Include="Src\Actor\Stage\StageEX.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Props\Box.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Props\Wall.cpp" />
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
@@ -256,6 +259,7 @@
     <ClCompile Include="Src\Core\CameraManager.cpp" />
     <ClCompile Include="Src\Core\Game.cpp" />
     <ClCompile Include="Src\Core\SceneManager.cpp" />
+    <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
     <ClCompile Include="Src\Direction\CutIn\CutInBase.cpp" />
     <ClCompile Include="Src\Direction\CutIn\CutInLogoLayer.cpp" />
@@ -291,6 +295,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
+    <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
@@ -310,10 +315,12 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\Star.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\IStage.h" />
-    <ClInclude Include="Src\Actor\Stage\Stage1.h" />
-    <ClInclude Include="Src\Actor\Stage\Stage2.h" />
-    <ClInclude Include="Src\Actor\Stage\Stage3.h" />
-    <ClInclude Include="Src\Actor\Stage\StageEX.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\StageEX.h" />
+    <ClInclude Include="Src\Actor\Stage\Props\Box.h" />
+    <ClInclude Include="Src\Actor\Stage\Props\Wall.h" />
     <ClInclude Include="Src\Camera\BossCameraStrategy.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Camera\FollowStrategy.h" />
@@ -323,6 +330,7 @@
     <ClInclude Include="Src\Core\CameraManager.h" />
     <ClInclude Include="Src\Core\Game.h" />
     <ClInclude Include="Src\Core\SceneManager.h" />
+    <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
     <ClInclude Include="Src\Direction\CutIn\CutInBase.h" />
     <ClInclude Include="Src\Direction\CutIn\CutInLogoLayer.h" />

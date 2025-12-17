@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Src/Direction/Fade.h"
+
+#include "GameSoundEngine.h"
 #include "Src/Actor/Character/Player.h"
 #include "Src/Scene/LoadingScene.h"
 // UI。
@@ -9,10 +11,29 @@
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/HPbarUI.h"
+
 // マネージャー。
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
+#include "Src/Core/SoundManager.h"
+
+static GameSoundList StageToBgm(StageID id)
+{
+    
+    switch (id)
+    {
+    case StageID::sStage1:
+        return GameSoundList_BGM_Stage1;
+
+    case StageID::sStageEX:
+        return GameSoundList_BGM_BOSS;
+
+    default:
+        return GameSoundList_BGM_Stage1;
+    }
+
+}
 
 namespace app
 {
@@ -34,6 +55,7 @@ namespace app
             }
 
             StageManager::DeleteInstance();
+            SoundManager::DeleteInstence();
         }
 
 
@@ -55,6 +77,10 @@ namespace app
             StageManager::CreateInstance();
             StageManager::GetInstance()->Start();
 
+            app::core::SoundManager::CreateInstence();
+            app::core::SoundManager::GetInstance()->Init();
+
+
             // UIの生成。
             UICreateInstance();
 
@@ -64,7 +90,6 @@ namespace app
             // CameraManagerの生成。
             pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
             pPlayer_->InitCameraManager(pCameraManager_.get());
-
 
             // 現在のステージに合わせてPlayerのパラメータをせて地。
             StageID currentStage = StageManager::GetInstance()->GetCurrentStageID();
@@ -88,7 +113,7 @@ namespace app
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
-            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+//            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }
@@ -103,15 +128,20 @@ namespace app
 
                 m_isFadeInEnd = true;
             }
-            
+            // 遷移処理を毎フレーム更新。
+            UpdateTransition();
+
             if (!pFade_->IsFadeInEnd())
             {
                 return;
             }
 
-
-            // 遷移処理を毎フレーム更新。
-            UpdateTransition();
+            if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
+            {
+                const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+                app::core::SoundManager::GetInstance()->PlayBGM(StageToBgm(stage));
+                m_hasAppliedStageBgm_ = true;
+            }
 
             // ケースをNoneの状態でのみ、ゲームのメインロジックを実行。
             if (state_ == SceneTransitionState::None)
@@ -132,6 +162,7 @@ namespace app
             if (state_ == SceneTransitionState::None)
             {
                 nextStageID_ = nextStageID;
+                m_hasAppliedStageBgm_ = false;
                 // フェードアウト開始。
                 state_ = SceneTransitionState::FadeOut;
             }
@@ -222,6 +253,18 @@ namespace app
                     // カメラの初期化。
                     pCameraManager_->Request2DMode();        // 2Dモードへ。
                     pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
+                }
+
+                if (pFade_->IsFadeInEnd())
+                {
+                    const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+                    const GameSoundList bgm = StageToBgm(stage);
+
+                    app::core::SoundManager::GetInstance()->PlayBGM(bgm); // ←ここで切替
+                    // PlayBGMは前のBGMを止める実装になってるので基本これでOK :contentReference[oaicite:5]{index=5}
+                    m_hasAppliedStageBgm_ = true;
+                    nextStageID_ = StageID::sInvalid;
+                    state_ = SceneTransitionState::None;
                 }
 
                 // 5. 物理エンジンを1フレーム更新するためFadeInステートへ。
@@ -318,10 +361,10 @@ namespace app
             pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
         }
 
+
         void Game::HPbarCreateInstance()
         {
             pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
         }
-
     }
 }

@@ -256,6 +256,7 @@
     <ClCompile Include="AI\PathFinding\PathFinding.cpp" />
     <ClCompile Include="gameObject\Gameobjectmanager.cpp" />
     <ClCompile Include="gameObject\IGameObject.cpp" />
+    <ClCompile Include="GameSoundEngine.cpp" />
     <ClCompile Include="geometry\AABB.cpp" />
     <ClCompile Include="geometry\BSP.cpp" />
     <ClCompile Include="graphics\Animation.cpp" />
@@ -342,6 +343,7 @@
     <ClInclude Include="dbg\MyLog.h" />
     <ClInclude Include="gameObject\GameObjectManager.h" />
     <ClInclude Include="gameObject\IGameobject.h" />
+    <ClInclude Include="GameSoundEngine.h" />
     <ClInclude Include="geometry\AABB.h" />
     <ClInclude Include="geometry\BSP.h" />
     <ClInclude Include="graphics\Animation.h" />

@@ -18,7 +18,7 @@
 
 // 内部ステータスクラス。
 #include "Src/Actor/Character/Status.h"
-
+#include "Src/Core/SoundManager.h"
 // プレイヤーステータス構造体。
 struct PlayerStatus
 {
@@ -100,6 +100,12 @@ bool Player::Start()
 
     // プレイヤーのステータスを初期化する。
     status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
+
+
+    posFont_.SetPosition({-600.0f, 300.0f, 0.0f});
+    posFont_.SetScale(1.0f);                     // 文字の大きさ
+    posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // 白文字
+
     return true;
 }
 
@@ -118,6 +124,14 @@ void Player::Update()
     render_.SetScale(SCALE);
     render_.SetPosition(pos_);
     render_.Update();
+
+
+
+
+    wchar_t text[256];
+    // %.1f は「小数点以下1桁まで表示」という意味です
+    swprintf_s(text, L"Player Pos\nX: %.1f\nY: %.1f\nZ: %.1f", pos_.x, pos_.y, pos_.z);
+    posFont_.SetText(text);
 }
 
 
@@ -131,6 +145,8 @@ void Player::Action()
     CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
     // トリガーエリア内かどうか取得。
     bool isInTriggerArea = GetInTriggerArea();
+
+
 
     // ボタンアクション。
     // Bボタンで2Dカメラ回転トグル (エリア内 かつ 2Dモード)
@@ -149,9 +165,19 @@ void Player::Action()
 
             // トグル操作。
             if (fabsf(currentTargetAngle - 90.0f) < 1.0f)
+            {
                 pCameraManager_->Request3DModeRot(0.0f);
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Flip);
+
+
+            }
+
             else
+            {
                 pCameraManager_->Request3DModeRot(90.0f);
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Flip);
+
+            }
         }
     }
 
@@ -209,6 +235,7 @@ void Player::UpdateJumpAndGravity()
         if (g_pad[0]->IsTrigger(enButtonA))
         {
             moveSpeed_.y = jumpPower_;
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
             didJumpThisFrame_ = true;
         }
     }
@@ -484,6 +511,7 @@ void Player::PlayAnimation()
 void Player::Render(RenderContext& rc)
 {
     render_.Draw(rc);
+    posFont_.Draw(rc);
 }
 
 

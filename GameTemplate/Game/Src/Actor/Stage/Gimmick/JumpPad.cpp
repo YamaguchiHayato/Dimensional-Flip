@@ -65,7 +65,7 @@ void JumpPad::Update()
 
 void JumpPad::LaunchPlayer()
 {
-	if (m_jumpPadCollision->IsHit(m_player->GetPlayerCC()))
+	if (m_jumpPadCollision->IsHit(m_player->GetCharacterController()))
 	{
 		m_player->moveSpeed_.y = 400.0f;
 	}

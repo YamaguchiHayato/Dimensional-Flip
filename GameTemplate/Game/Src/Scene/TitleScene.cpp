@@ -11,9 +11,9 @@
 // 演出クラス。
 #include "Src/Direction/Fade.h"
 
-// ゲーム管理クラス。
+// コアクラス。
 #include "Src/Core/SceneManager.h"
-
+#include "Src/Core/SoundManager.h"
 
 TitleScene::~TitleScene()
 {
@@ -31,6 +31,8 @@ bool TitleScene::Start()
         // Titleの生成に失敗するとシーン開始も失敗させる。
         return false;
     }
+
+    app::core::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_Title);
 
     // Fadeオブジェクトの取得。
     pFade_ = SceneManager::GetInstance()->GetFade();

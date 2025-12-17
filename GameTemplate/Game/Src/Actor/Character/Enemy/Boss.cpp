@@ -53,15 +53,14 @@ namespace ScaffoldingPosList
         // --- パターンA: スタンダードな階段 ---
         // プレイヤーの目の前から、ボスの懐まで真っ直ぐ登る
         {
-            Vector3(0.0f, 50.0f, -250.0f), 
-            Vector3(0.0f, 100.0f, -150.0f),
-            Vector3(0.0f, 150.0f, -50.0f),
-            Vector3(0.0f, 200.0f,  50.0f),
-            Vector3(0.0f, 250.0f, 150.0f), 
+            Vector3(0.0f, 40.0f, -250.0f),
+            Vector3(0.0f, 60.0f, -190.0f),
+            Vector3(0.0f, 80.0f, -130.0f),
+            Vector3(0.0f, 100.0f, -70.0f),
+            Vector3(0.0f, 120.0f, -20.0f),
         },
 
         // --- パターンB: ジグザグ配置 (小) ---
-        // 横幅を以前の半分(150)にして、小さいステージでもはみ出さないように調整
         {
             Vector3(0.0f, 50.0f, -250.0f),   // 中央
             Vector3(150.0f, 100.0f, -150.0f), // 右へ
@@ -336,16 +335,16 @@ bool Boss::Start()
          {
              // ボス頭上付近の座標。
              // @TODO : ボスの頭(攻撃可能な判定) の位置を設定する。 
-             Vector3 headPos = pos_ + Vector3(0.0f, 200.0f, 0.0f);
+             Vector3 headPos = pos_ + Vector3(0.0f, 150.0f, 0.0f);
 
              // プレイヤーの位置。
              Vector3 playerPos = pPlayer_->GetPlayerPos();
 
              Vector3 diff = playerPos - headPos;
              float distXZ = sqrtf(diff.x * diff.x + diff.z * diff.z);
-             bool isAbove = (diff.y > 0.0f);
+             bool isAbove = (diff.y > -50.0f);
 
-             if (distXZ < 150.0f && isAbove)
+             if (distXZ < 200.0f && isAbove)
              {
                  // 弱点にヒット。
                  canBeAttacked_ = false;

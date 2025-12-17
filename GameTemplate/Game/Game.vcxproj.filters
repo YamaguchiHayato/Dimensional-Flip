@@ -62,9 +62,6 @@
     <ClCompile Include="Src\Actor\Stage\IStage.cpp">
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\Stage1.cpp">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
     <ClCompile Include="Src\Scene\TitleScene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\Stage2.cpp">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene\InGameScene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
@@ -115,9 +109,6 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\Stage3.cpp">
-      <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp">
       <Filter>Src\Scene\title</Filter>
@@ -200,9 +191,6 @@
     <ClCompile Include="Src\Core\StageManager.cpp">
       <Filter>Src\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\StageEX.cpp">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
@@ -220,6 +208,14 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
     <ClCompile Include="NormalEnemy.cpp" />
+    <ClCompile Include="Src\Core\SoundManager.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Props\Box.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Props\Wall.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -236,9 +232,6 @@
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\IStage.h">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\Stage1.h">
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
@@ -272,9 +265,6 @@
     <ClInclude Include="Src\Scene\TitleScene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\Stage2.h">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Scene\InGameScene.h">
       <Filter>Src\Scene</Filter>
     </ClInclude>
@@ -292,9 +282,6 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\Stage3.h">
-      <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h">
       <Filter>Src\Scene\title</Filter>
@@ -377,9 +364,6 @@
     <ClInclude Include="Src\Core\StageManager.h">
       <Filter>Src\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\StageEX.h">
-      <Filter>Src\Actor\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Camera\BossCameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
@@ -397,6 +381,14 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
     <ClInclude Include="NormalEnemy.h" />
+    <ClInclude Include="Src\Core\SoundManager.h" />
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="Src\Actor\Stage\Props\Box.h" />
+    <ClInclude Include="Src\Actor\Stage\Props\Wall.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\StageEX.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

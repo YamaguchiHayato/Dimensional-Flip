@@ -124,7 +124,7 @@ public:
     // ジャンプ力の取得。
     inline const float& GetJumpPower() const { return jumpPower_; }
     // プレイヤーのCC取得。
-    inline CharacterController& GetPlayerCC() { return charaCon_; }
+    inline CharacterController& GetCharacterController() { return charaCon_; }
     // プレイヤーの座標の取得。
     inline const Vector3 GetPlayerPos() const { return pos_; }
     // プレイヤーの前方向ベクトル取得。
@@ -169,6 +169,7 @@ public:
     Vector3 forward_ = Vector3::Front;
     Quaternion rot_ = Quaternion::Identity;
     Quaternion respwanRot_ = Quaternion::Identity;
+    FontRender posFont_;
 
 private:
     uint8_t state_;

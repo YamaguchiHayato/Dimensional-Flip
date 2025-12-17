@@ -9,10 +9,10 @@
 
 
 // ステージ。
-#include "Src/Actor/Stage/Stage1.h"
-#include "Src/Actor/Stage/Stage2.h"
-#include "Src/Actor/Stage/Stage3.h"
-#include "Src/Actor/Stage/StageEX.h"
+#include "Src/Actor/Stage/MainUnit/Stage1.h"
+#include "Src/Actor/Stage/MainUnit/Stage2.h"
+#include "Src/Actor/Stage/MainUnit/Stage3.h"
+#include "Src/Actor/Stage/MainUnit/StageEX.h"
 #include "Src/Core/StageManager.h"
 
 // 演出クラス。

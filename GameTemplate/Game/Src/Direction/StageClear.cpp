@@ -31,14 +31,14 @@ StageID StageClear::DecideStage()
     switch (currentStageID)
     {
     case StageID::sStage1:
-         nextStageID = StageID::sStage2;
+         nextStageID = StageID::sStageEX;
          break;
 
-    case StageID::sStage2:
-         nextStageID = StageID::sStage3;
-         break;
+    //case StageID::sStage2:
+    //     nextStageID = StageID::sStage3;
+    //     break;
 
-    case StageID::sStage3:
+    case StageID::sStageEX:
          nextStageID = StageID::sStageEX;
          break;
 

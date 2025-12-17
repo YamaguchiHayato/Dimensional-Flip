@@ -4,7 +4,8 @@
 namespace
 {
     const auto SPAWN_DEPTH = -300.0f; // 地中の深さ
-    const Vector3 COLLISION_SIZE = Vector3(600.0f, 100.0f, 600.0f);
+    const Vector3 COLLISION_SIZE = Vector3(150.0f, 20.0f, 40.0f);
+
     const Vector3 GIMMICKCOLLISION(0.0f, 0.0f, 0.0f); // コリジョンの高さ
 
 } 
@@ -22,7 +23,7 @@ namespace app
             currentPos_ = Vector3::Zero;
             targetPos_ = Vector3::Zero;
 
-            render_.SetScale(Vector3(2.0f, 2.0f, 2.0f));
+            render_.SetScale(Vector3::One);
             render_.SetPosition(currentPos_);
             render_.Update();
 
@@ -64,6 +65,9 @@ namespace app
             gimmickPhysics_.SetPosition(currentPos_);
             // ギミックコリジョンの設定。
             pGimmickCollision_->SetPosition(currentPos_);
+
+            if (pGimmickCollision_)
+                pGimmickCollision_->SetPosition(currentPos_);
         }
 
 

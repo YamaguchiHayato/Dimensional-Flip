@@ -11,7 +11,7 @@
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
-#include "Src/Actor/Stage/Props/Wall.h"
+#include "Src/Actor/Stage/Gimmick/Wall.h"
 
 
 namespace
@@ -181,7 +181,7 @@ bool Stage1::Start()
 	JumpPadNewGO();
 
     // 透明壁生成。
-    WallNewGO();
+//    WallNewGO();
 
     // カメラトリガー生成。
     DimensionTriggerNewGO();
@@ -193,7 +193,7 @@ bool Stage1::Start()
     WallCreateInstance();
 
     // ノーマルエネミー生成。
-    NormalEnemyCreateInstance();
+//    NormalEnemyCreateInstance();
 
 	stageRender_.Update();
 

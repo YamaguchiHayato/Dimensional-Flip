@@ -53,7 +53,6 @@ public:
     void Update() override;
     void Render(RenderContext& rendercontext) override;
 
-    void Action();
     bool IsDimensionSwitchAction();
 
     // 敵を踏みつけた際に行うバウンド処理。
@@ -69,25 +68,12 @@ public:
         canAirControl_ = true;
     }
 
-    ////////////////////////////
-    // 移動処理をまとめる処理 // 
-    void Move();
-    ////////////////////////////
-    ////////////////////////////
-
-    // @TODO : 後ほど、ステートマシン化する予定。//
-
-    // 移動処理を分割。//
-    // XZ成分の移動を管轄。
-    void MoveHorizontal();
     // ジャンプ処理を管轄。
     void UpdateJumpAndGravity();
     // 移動処理を加える。
     void ApplyMovement();
 
     void Rotation();
-    void PlayAnimation();
-    void ManageState();
     void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
     void ReSpwan();
 

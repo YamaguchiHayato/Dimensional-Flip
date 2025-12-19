@@ -148,68 +148,15 @@ void Player::Update()
 
     didJumpThisFrame_ = false;
 
-//    Move();
-    Action();
     Rotation();
-    //PlayAnimation();
-    //ManageState();
     render_.SetScale(SCALE);
     render_.SetPosition(pos_);
     render_.Update();
-
-
-
 
     wchar_t text[256];
     // %.1f は「小数点以下1桁まで表示」という意味です
     swprintf_s(text, L"Player Pos\nX: %.1f\nY: %.1f\nZ: %.1f", pos_.x, pos_.y, pos_.z);
     posFont_.SetText(text);
-}
-
-void Player::UpdateJumpAndGravity()
-{
-    const bool isGround = charaCon_.IsOnGround();
-
-    // --- 地面上での処理 ---
-    if (isGround)
-    {
-        // 地面にいる間は落下速度をリセット
-        if (moveSpeed_.y < 0.0f)
-            moveSpeed_.y = 0.0f;
-
-        // Aボタンを押した瞬間だけジャンプ開始
-        if (g_pad[0]->IsTrigger(enButtonA))
-        {
-            moveSpeed_.y = jumpPower_;
-            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
-            didJumpThisFrame_ = true;
-        }
-    }
-
-    // 地上かつ完全停止中のときは重力をかけない（勝手に動かない）
-    if (isGround && moveSpeed_.y <= 0.0f)
-        return;
-
-    if (moveSpeed_.y > 0.0f)
-    {
-        // 上昇中
-        // ジャンプボタンを離したらジャンプを早めに切る（低いジャンプ）
-        if (!g_pad[0]->IsPress(enButtonA))
-            // ジャンプカット時は強めの重力
-            moveSpeed_.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
-
-        else
-            // 通常上昇中は普通の重力
-            moveSpeed_.y -= PlayerStatus::GLAVITY;
-    }
-    else
-        // 下降中：落下中の重力を強める
-        moveSpeed_.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
-
-
-    // 落下速度の制限（下向きがマイナス）
-    if (moveSpeed_.y < PlayerStatus::Jump::FALLINGSPEED)
-        moveSpeed_.y = PlayerStatus::Jump::FALLINGSPEED;
 }
 
 
@@ -239,7 +186,7 @@ bool Player::IsDimensionSwitchAction()
     auto currentMode = pCameraManager_->GetCurrentCameraMode();
 
     // カメラトリガー内かつ 2.5Dモードのときかつ Bボタンが押されたら。
-    if (isInTriggerArea && currentMode == CameraMode::mode2_5D && g_pad[0]->IsTrigger(enButtonB))
+    if (isInTriggerArea && currentMode == CameraMode::mode2D && g_pad[0]->IsTrigger(enButtonB))
     {
         return true;
     }
@@ -272,11 +219,19 @@ void Player::Rotation()
 }
 
 
-
-
 void Player::Render(RenderContext& rc)
 {
     render_.Draw(rc);
     posFont_.Draw(rc);
 }
 
+
+void Player::SetAnimation()
+{
+    // アイドルアニメーション。
+    FetchPlayAnimation(EnAnimationClip::animIdle, "idle", true);
+    // 走るアニメーション。
+    FetchPlayAnimation(EnAnimationClip::animRun, "run", true);
+    // ジャンプアニメーション。
+    FetchPlayAnimation(EnAnimationClip::animJump, "jump", false);
+}

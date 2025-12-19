@@ -1,5 +1,16 @@
 #pragma once
+
+#include "Src/Actor/Character/IState.h"
 #include "Src/Actor/Character/Status.h"
+#include "Src/Actor/Character/Character.h"
+
+#include "Src/Core/CameraManager.h"
+
+#include "Src/Actor/Character/Player/PlayerIdleState.h"
+#include "Src/Actor/Character/Player/PlayerRunState.h"
+#include "Src/Actor/Character/Player/PlayerJumpState.h"
+#include "Src/Actor/Character/Player/PlayerFallState.h"
+
 
 enum PlayerState : uint8_t
 {
@@ -9,6 +20,17 @@ enum PlayerState : uint8_t
     sNum,
 };
 
+
+enum EnPlayerState : uint8_t
+{
+    enState_Idle,
+    enState_Run,
+    enState_Jump,
+    enState_Fall,
+    enState_Num,
+};
+
+
 enum EnAnimationClip : uint8_t
 {
     animIdle,
@@ -17,20 +39,21 @@ enum EnAnimationClip : uint8_t
     animNum,
 };
 
+class IState;
 class CameraManager;
-class Player : public IGameObject
+class Player : public Character
 {
 public:
+
+
     Player() = default;
     virtual ~Player() = default;
 
     bool Start() override;
     void Update() override;
     void Render(RenderContext& rendercontext) override;
-    bool DoJumpCheck() const { return didJumpThisFrame_; };
 
     void Action();
-    //
     bool IsDimensionSwitchAction();
 
     // 敵を踏みつけた際に行うバウンド処理。
@@ -46,7 +69,6 @@ public:
         canAirControl_ = true;
     }
 
-private:
     ////////////////////////////
     // 移動処理をまとめる処理 // 
     void Move();
@@ -67,13 +89,6 @@ private:
     void PlayAnimation();
     void ManageState();
     void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
-    void Move3Dmode();
-    void Move2_5Dmode();
-
-    // 3Dカメラと2Dカメラの切り替え
-    void ChangeDimensionCamera();
-
-    // リスポーン処理。
     void ReSpwan();
 
 
@@ -106,11 +121,6 @@ public:
     }
     // 一時停止フラグ。
     inline void SetPaused(bool isPaused) { isPaused_ = isPaused; }
-    // CameraMaangerの初期化。
-    inline void InitCameraMnager(CameraManager* pCameraManager)
-    {
-        pCameraManager_ = pCameraManager;
-    }
     // ステージタイプに合わせてパラメータを設定する
     void SetStageParam(bool isStageEX);
     // リスポーン座標の設定。
@@ -118,15 +128,22 @@ public:
     {
         respwanPos_ = pos;
     }
-
+    // 空中での操作が可能かどうかの設定。
+    void SetCanAirControl(bool flag)
+    {
+        canAirControl_ = flag;
+    }
+    // 今フレームでジャンプしたかどうかの設定。
+    inline void SetJumpedThisFrame(bool flag)
+    {
+        didJumpThisFrame_ = flag;
+    }
     // ゲッター。
 public:
     // ジャンプ力の取得。
     inline const float& GetJumpPower() const { return jumpPower_; }
-    // プレイヤーのCC取得。
-    inline CharacterController& GetCharacterController() { return charaCon_; }
     // プレイヤーの座標の取得。
-    inline const Vector3 GetPlayerPos() const { return pos_; }
+    inline const Vector3& GetPlayerPos() const { return pos_; }
     // プレイヤーの前方向ベクトル取得。
     inline const Vector3 GetForward() const { return forward_; }
     // トリガーエリア内かどうかの取得。
@@ -138,11 +155,15 @@ public:
     {
         return respawnFlag_;
     }
-    // 現在の移動速度を取得。
-    inline const Vector3& GetMoveSpeed() const
+    // walkSpeedの取得。
+    inline const float GetWalkSpeed() const
     {
-        return moveSpeed_;
-    }
+        return walkSpeed_; }
+    // 今フレームでジャンプしたかどうか。
+    inline bool DoJumpCheck() const
+    {
+        return didJumpThisFrame_;
+    };
 
 private:
     // アニメーションを取得して再生する関数。
@@ -157,11 +178,10 @@ private:
     CameraManager* pCameraManager_ = nullptr;
     app::status::Status status_;
 
+
 public:
     AnimationClip animationClip_[EnAnimationClip::animNum];
-    CharacterController charaCon_;
 
-    ModelRender render_;
     Vector3 diff_ = Vector3::Zero;
     Vector3 moveSpeed_ = Vector3::Zero;
     Vector3 pos_ = Vector3::Zero;
@@ -184,4 +204,45 @@ private:
     bool isPaused_ = false;
     bool is3DMode_ = false;
     bool respawnFlag_ = false;
+
+
+
+
+
+
+    //////////////////////////////////////////////////
+public:
+    friend PlayerIdleState;
+    friend PlayerRunState;
+    friend PlayerJumpState;
+    friend PlayerFallState;
+
+public:
+    ModelRender render_;
+    CharacterController charaCon_;
+
+private:
+private:
+    // ステートマシン用
+    IState* pCurrentState_ = nullptr;
+    IState* pNextState = nullptr;
+    IState* pStateArray_[enState_Num];
+    // std::map<uint8_t,IState*> pStateArray_;
+
+public:
+    // モデルレンダーのゲッター
+    inline ModelRender& GetModelRender() { return render_; }
+    // キャラクターコントローラーのゲッター
+    inline CharacterController& GetCharacterController() { return charaCon_; }
+    // 移動速度のゲッター
+    inline Vector3& GetMoveSpeed() { return moveSpeed_; }
+
+public:
+    /**
+     * ステートの追加
+     */
+    template <typename T> void RegisterState(EnPlayerState state)
+    {
+        pStateArray_[state] = new T(this);
+    }
 };

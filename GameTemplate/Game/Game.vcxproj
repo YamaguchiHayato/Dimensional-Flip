@@ -227,12 +227,19 @@
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NormalEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Character.cpp" />
+    <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\IState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\PlayerIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\PlayerJumpState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\PlayerRunState.cpp" />
     <ClCompile Include="Src\Actor\Character\Status.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp" />
@@ -248,7 +255,6 @@
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Props\Box.cpp" />
     <ClCompile Include="Src\Actor\Stage\Props\Wall.cpp" />
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
@@ -297,6 +303,8 @@
     <ClInclude Include="DelayedEffect.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="NormalEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Character.h" />
+    <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />
@@ -304,6 +312,11 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Player.h" />
+    <ClInclude Include="Src\Actor\Character\Player\IState.h" />
+    <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
+    <ClInclude Include="Src\Actor\Character\Player\PlayerIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Player\PlayerJumpState.h" />
+    <ClInclude Include="Src\Actor\Character\Player\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Status.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h" />
@@ -319,8 +332,6 @@
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\StageEX.h" />
-    <ClInclude Include="Src\Actor\Stage\Props\Box.h" />
-    <ClInclude Include="Src\Actor\Stage\Props\Wall.h" />
     <ClInclude Include="Src\Camera\BossCameraStrategy.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Camera\FollowStrategy.h" />

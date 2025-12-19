@@ -1,112 +1,91 @@
 #include "stdafx.h"
+#include "Src/Core/CameraManager.h"
 
-#include "Src/Actor/Character/Enemy/Boss.h"
 #include "Src/Actor/Character/Player.h"
 
-#include "Src/Core/StageManager.h"
-
 // 戦略カメラクラス。
-#include "Src/Core/CameraManager.h"
-#include "Src/Camera/BossCameraStrategy.h"
-#include "Src/Camera/FollowStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
+#include "Src/Camera/FollowStrategy.h"
+#include "Src/Camera/BossCameraStrategy.h"
 #include "Src/Camera/StageEXCameraStrategy.h" 
+
+
+namespace
+{
+    const float INIT_CAMERA_ANGLE_2D = 0.0f;
+    const float INIT_CAMERA_ANGLE_3D = 90.0f;
+}
 
 
 bool CameraManager::Start()
 {
     pPlayer_ = FindGO<Player>("player");
-    pBoss_ = FindGO<Boss>("boss");
-
+    // ゲームスタート時は2Dモードに設定
     Request2DMode();
+
     return true;
 }
 
 
 void CameraManager::Update()
 {
-    if (pCameraStrategy_)
-        pCameraStrategy_->Update(g_camera3D, g_gameTime->GetFrameDeltaTime());
+    if (!pCameraStrategy_){return;}
+
+    pCameraStrategy_->Update();
+
+    ChangeCamera();
 }
 
 
 void CameraManager::Request2DMode()
 {
-    // 戦略が存在する場合は、モードが同じでも生成する。
-    if (currentMode_ == CameraMode::mode2_5D && pCameraStrategy_)
-        return;
-
-    pCameraStrategy_ = std::make_unique<SideCameraStrategy>(pPlayer_);
-    if (pCameraStrategy_->Start())
-    {
-        currentMode_ = CameraMode::mode2_5D;
-        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
-    }
+    RequestCameraMode<SideCameraStrategy>(INIT_CAMERA_ANGLE_2D, CameraMode::mode2D, nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Ortho);
 }
 
 
 void CameraManager::Request3DMode()
 {
-    if (currentMode_ == CameraMode::mode3D)
-        return;
-
-    pCameraStrategy_ = std::make_unique<FollowStrategy>(pPlayer_);
-    if (pCameraStrategy_->Start())
-    {
-        currentMode_ = CameraMode::mode3D;
-        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
-    }
+    RequestCameraMode<FollowStrategy>(INIT_CAMERA_ANGLE_3D, CameraMode::mode3D, nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
 }
 
 
 void CameraManager::RequestBossMode(float targetAngleDegrees)
 {
-    if (StageManager::GetInstance()->GetCurrentStageID() != StageID::sStageEX)
-        return;
-
-    pCameraStrategy_ = std::make_unique<app::camera::BossCameraStrategy>(pPlayer_);
-    if (pCameraStrategy_->Start())
-    {
-        currentMode_ = CameraMode::modeBoss;
-        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
-    }
+    RequestCameraMode<app::camera::BossCameraStrategy>(targetAngleDegrees, CameraMode::modeBoss, nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
 }
 
 
 void CameraManager::RequestStageExMode()
 {
-    if (StageManager::GetInstance()->GetCurrentStageID() != StageID::sStageEX)
-        return;
+    RequestCameraMode<app::camera::StageEXCameraStrategy>(0.0f, CameraMode::modeStageEX, nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
+}
 
-    if (currentMode_ == CameraMode::modeStageEX)
-        return;
 
-    pCameraStrategy_ = std::make_unique<app::camera::StageEXCameraStrategy>(pPlayer_);
-
+template <typename CameraType>
+void CameraManager::RequestCameraMode(const float angle, CameraMode cameraMode, const nsK2EngineLow::Camera::EnUpdateProjMatrixFunc mode)
+{
+    pCameraStrategy_ = std::make_unique<CameraType>(pPlayer_);
+    pCameraStrategy_.get()->SetTargetRotationY(angle);
     if (pCameraStrategy_->Start())
     {
-        currentMode_ = CameraMode::modeStageEX;
-        // 俯瞰視点なのでパースペクティブ（遠近感あり）
-        g_camera3D->SetUpdateProjMatrixFunc(nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
+        currentMode_ = cameraMode;
+        g_camera3D->SetUpdateProjMatrixFunc(mode);
     }
 }
 
 
-void CameraManager::Request3DModeRot(float targetAngleDegrees)
+void CameraManager::ChangeCamera()
 {
-    // 1 ～ 3ステージにて適応。
-    if (currentMode_ == CameraMode::mode2_5D)
+    // Bボタンが押されたらカメラモードを切り替え
+    // 2Dモードなら3Dモードへ、3Dモードなら2Dモードへ
+    if (g_pad[0]->IsTrigger(enButtonB) && currentMode_ == CameraMode::mode2D)
     {
-        auto* strategy = dynamic_cast<SideCameraStrategy*>(pCameraStrategy_.get());
-        if (strategy)
-            strategy->SetTargetRotationY(targetAngleDegrees);
+        Request3DMode();
+        return;
     }
-
-    // ボスステージの場合、適応。
-    else if (currentMode_ == CameraMode::modeStageEX)
+    else if (g_pad[0]->IsTrigger(enButtonB) && currentMode_ == CameraMode::mode3D)
     {
-        auto* strategy = dynamic_cast<app::camera::StageEXCameraStrategy*>(pCameraStrategy_.get());
-        if (strategy)
-            strategy->SetTargetRotationY(targetAngleDegrees);
+        Request2DMode();
+        return;
     }
 }

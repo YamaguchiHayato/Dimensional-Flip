@@ -13,7 +13,7 @@
 
 // カメラクラス。
 #include "Src/Camera/BossCameraStrategy.h"
-#include "Src/Camera/FollowStrategy.h" 
+
 
 namespace
 {   
@@ -51,7 +51,7 @@ namespace app
         }
 
 
-        void BossCameraStrategy::Update(nsK2EngineLow::Camera* pCamera, const float deltaTime)
+        void BossCameraStrategy::Update()
         {
             if (StageManager::GetInstance()->GetCurrentStageID() != StageID::sStageEX)
                 return;
@@ -60,7 +60,7 @@ namespace app
                 return;
 
             // 現在の状態に応じて処理を分岐
-            BossCameraGetState(pCamera, deltaTime);
+            BossCameraGetState(g_camera3D, g_gameTime->GetFrameDeltaTime());
         }
 
 
@@ -80,7 +80,7 @@ namespace app
             // 現在位置から滑らかに移動
             Vector3 currentPos = pCamera->GetPosition();
             float t = 2.0f * g_gameTime->GetFrameDeltaTime();
-            Vector3 newPos = FollowStrategy::Lerp(t, currentPos, targetPos);
+            Vector3 newPos = Lerp(t, currentPos, targetPos);
             pCamera->SetPosition(newPos);
 
             // ボスを見下ろす
@@ -129,7 +129,7 @@ namespace app
 
             // 4. 滑らかに追従する (Lerp引数の順序に注意し、deltaTimeを適用)
             Vector3 currentPos = pCamera->GetPosition();
-            Vector3 newPos = FollowStrategy::Lerp(SWITCH_SPEED * deltaTime, currentPos, idealPos);
+            Vector3 newPos = Lerp(SWITCH_SPEED * deltaTime, currentPos, idealPos);
             pCamera->SetPosition(newPos);
 
             // 5. 注視点を中間地点に設定

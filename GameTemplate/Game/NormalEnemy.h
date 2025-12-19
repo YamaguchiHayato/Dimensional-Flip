@@ -29,7 +29,7 @@ namespace app
             };
 
             
-
+            void Press();
 
         public:
             // セッター。
@@ -38,14 +38,40 @@ namespace app
                 pos_ = pos;
             }
 
+            // モデルごとに大きさを設定する。
+            inline void SetScale(const Vector3& scale, float radius = 80.0f)
+            {
+                scale_ = scale;
+                radius_ = radius;
+            }
+
+            // 敵を踏みつけて倒せるかどうか判定する。
+            inline void SetIsStompable(bool enable)
+            {
+                isStompable_ = enable;
+            }
         private:
             Vector3 initPos_ = Vector3::Zero;
             Vector3 pos_ = Vector3::Zero;
+            Vector3 scale_ = Vector3(0.25f, 0.25f, 0.25f);
 
+            ModelRender bigEnemy;
+
+            bool isStompable_ = true;
             float radius_ = 80.0f;
+            bool isCrushed_ = false;
+            int crushedFrame_ = 0;
 
+            Vector3 crushStartPos_ = Vector3::Zero;
+            Vector3 crushStartScale_ = Vector3::Zero;
+
+            static constexpr int kCrushFrames = 6;      // 潰れるまでのフレーム数
+            static constexpr int kCrushWaitFrames = 10; // 潰れたまま残すフレーム数
+            float crushScaleYRate_ = 0.2f;              // 最終Yスケール比
+            float crushPosYOffset_ = 15.0f;             // 下に沈める量（見た目用）
         private:
             Player* pPlayer_ = nullptr;
+            CharacterController charaCon_;
         };
 
     }

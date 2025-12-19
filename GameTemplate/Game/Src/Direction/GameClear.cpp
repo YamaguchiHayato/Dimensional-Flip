@@ -5,7 +5,7 @@
 
 bool GameClear::Start()
 {
-	m_gameClearRender.Init("Assets/sprite/GameResultScene.DDS", 1980, 1080);
+	m_gameClearRender.Init("Assets/sprite/RESULT.DDS", 1980, 1080);
 	return true;
 }
 

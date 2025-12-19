@@ -3,6 +3,8 @@
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Direction/GameClear.h"
+#include "GameClearScene.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 
@@ -88,6 +90,8 @@ IScene* SceneManager::CreateScene(SceneID id)
              newScene = new InGameScene();
              break;
 
+        case SceneID::sResult:
+            newScene = new GameClearScene();
         default:
              break;
     }

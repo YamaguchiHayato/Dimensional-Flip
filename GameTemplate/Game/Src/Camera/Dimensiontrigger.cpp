@@ -2,7 +2,7 @@
 #include "Src/Actor/Character/Player.h"
 #include "Src/Core/CameraManager.h"
 #include "DimensionTrigger.h"
-#include "Src/Actor/Stage/Stage3.h"
+#include "Src/Actor/Stage/MainUnit/Stage3.h"
 namespace
 {
 	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//コリジョンの高さ
@@ -51,7 +51,7 @@ void DimensionTrigger::Trigger()
         return;
 
     pTriggerObject_->SetPosition(triggerPos_ + COLLISION_HEIGHT);
-    bool isCurrentlyHit = pTriggerObject_->IsHit(pPlayer_->GetPlayerCC());
+    bool isCurrentlyHit = pTriggerObject_->IsHit(pPlayer_->GetCharacterController());
 
     // 状態の変化をチェック
     if (isCurrentlyHit && !isPlayerInside_)

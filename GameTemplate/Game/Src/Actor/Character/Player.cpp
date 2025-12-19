@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-// TODO: 将来的にはコマンドパターンとして設計。
 
 // キャラクタークラス。
 #include "Src/Actor/Character/Player.h"
@@ -18,6 +17,13 @@
 
 // 内部ステータスクラス。
 #include "Src/Actor/Character/Status.h"
+#include "Src/Core/SoundManager.h"
+
+
+#include "Src/Actor/Character/Player/PlayerIdleState.h"
+#include "Src/Actor/Character/Player/PlayerRunState.h"
+#include "Src/Actor/Character/Player/PlayerJumpState.h"
+#include "Src/Actor/Character/Player/PlayerFallState.h"
 
 // プレイヤーステータス構造体。
 struct PlayerStatus
@@ -30,7 +36,7 @@ struct PlayerStatus
     struct Move
     {
         static constexpr float SPEED = 1125.0f;        // 移動速度アップ
-        static constexpr float JUMP_POWER = 600.0f;   // ジャンプ力アップ
+        static constexpr float JUMP_POWER = 600.0f;    // ジャンプ力アップ
     };
 
     // ジャンプ用のパラメータ。
@@ -93,6 +99,18 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
 
 bool Player::Start()
 {
+
+    RegisterState<PlayerIdleState>(enState_Idle);
+    RegisterState<PlayerRunState>(enState_Run);
+    RegisterState<PlayerJumpState>(enState_Jump);
+    RegisterState<PlayerFallState>(enState_Fall);
+
+    pCurrentState_ = pStateArray_[enState_Idle];
+    pCurrentState_->Enter();
+
+
+
+
     // アニメーションの設定。
     SetAnimation();
     render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::animNum, enModelUpAxisY);
@@ -100,6 +118,12 @@ bool Player::Start()
 
     // プレイヤーのステータスを初期化する。
     status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
+
+
+    posFont_.SetPosition({-600.0f, 300.0f, 0.0f});
+    posFont_.SetScale(1.0f);                     // 文字の大きさ
+    posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // 白文字
+
     return true;
 }
 
@@ -108,91 +132,39 @@ void Player::Update()
 {
     if (isPaused_)
         return;
+
+    ////////// 更新処理。///////////
+    _ASSERT(pCurrentState_ != nullptr);
+
+    uint8_t request;
+    if (pCurrentState_->RequestID(request))
+    {
+        pCurrentState_->Exit();
+        pCurrentState_ = pStateArray_[request];
+        pCurrentState_->Enter();
+    }
+    pCurrentState_->Update();
+    /////////////////////////////////
+
     didJumpThisFrame_ = false;
 
-    Move();
+//    Move();
     Action();
     Rotation();
-    PlayAnimation();
-    ManageState();
+    //PlayAnimation();
+    //ManageState();
     render_.SetScale(SCALE);
     render_.SetPosition(pos_);
     render_.Update();
+
+
+
+
+    wchar_t text[256];
+    // %.1f は「小数点以下1桁まで表示」という意味です
+    swprintf_s(text, L"Player Pos\nX: %.1f\nY: %.1f\nZ: %.1f", pos_.x, pos_.y, pos_.z);
+    posFont_.SetText(text);
 }
-
-
-void Player::Action()
-{
-    // カメラマネージャーのポインタを取得。
-    if (!pCameraManager_)
-        return;
-
-    // 現在のカメラモードを取得。
-    CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
-    // トリガーエリア内かどうか取得。
-    bool isInTriggerArea = GetInTriggerArea();
-
-    // ボタンアクション。
-    // Bボタンで2Dカメラ回転トグル (エリア内 かつ 2Dモード)
-    if (g_pad[0]->IsTrigger(enButtonB) && isInTriggerArea && currentMode == CameraMode::mode2_5D)
-    {
-        // 今のカメラモードを取得。
-        ICameraStrategy* currentStrategy = pCameraManager_->GetCurrentStrategy();
-
-        if (!currentStrategy)
-            return;
-
-        SideCameraStrategy* sideStrategy = dynamic_cast<SideCameraStrategy*>(currentStrategy);
-        if (sideStrategy)
-        {
-            float currentTargetAngle = sideStrategy->GetTargetRotationY();
-
-            // トグル操作。
-            if (fabsf(currentTargetAngle - 90.0f) < 1.0f)
-                pCameraManager_->Request3DModeRot(0.0f);
-            else
-                pCameraManager_->Request3DModeRot(90.0f);
-        }
-    }
-
-    // Xボタンで元の2Dモード要求 (エリア内 かつ 3Dモード)
-    else if (g_pad[0]->IsTrigger(enButtonX) && isInTriggerArea && currentMode == CameraMode::mode3D)
-        pCameraManager_->Request2DMode();
-}
-
-
-void Player::Move()
-{
-    const bool GROUND = charaCon_.IsOnGround();
-
-    if (GROUND)
-        canAirControl_ = false;
-
-
-    if (GROUND || canAirControl_)
-    {
-        // 移動する各成分を初期化する。
-        moveSpeed_.x = 0.0f;
-        moveSpeed_.z = 0.0f;
-
-        // 移動処理。
-        MoveHorizontal();
-    }
-
-    if (pos_.y <= -100.0f)
-    {
-        // リスポーン処理。
-        ReSpwan();
-        return;
-    }
-
-    // ジャンプ処理。
-    UpdateJumpAndGravity();
-
-    // 移動を与える処理。
-    ApplyMovement();
-}
-
 
 void Player::UpdateJumpAndGravity()
 {
@@ -209,6 +181,7 @@ void Player::UpdateJumpAndGravity()
         if (g_pad[0]->IsTrigger(enButtonA))
         {
             moveSpeed_.y = jumpPower_;
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
             didJumpThisFrame_ = true;
         }
     }
@@ -216,8 +189,6 @@ void Player::UpdateJumpAndGravity()
     // 地上かつ完全停止中のときは重力をかけない（勝手に動かない）
     if (isGround && moveSpeed_.y <= 0.0f)
         return;
-
-    // ==== ここから空中処理 ====
 
     if (moveSpeed_.y > 0.0f)
     {
@@ -258,7 +229,6 @@ void Player::ReSpwan()
 }
 
 
-//
 bool Player::IsDimensionSwitchAction()
 {
     // カメラマネージャーを取得する。
@@ -277,77 +247,6 @@ bool Player::IsDimensionSwitchAction()
 }
 
 
-void Player::MoveHorizontal()
-{
-    if (!pCameraManager_)
-        return;
-
-    // 現在のカメラモードの取得。
-    CameraMode currentMode = pCameraManager_->GetCurrentCameraMode();
-
-    // スティックの取得。
-    Vector3 stickL;
-    stickL.x = g_pad[0]->GetLStickXF();
-    stickL.y = g_pad[0]->GetLStickYF();
-
-    // デッドゾーン処理
-    if (fabsf(stickL.x) < 0.2f)
-        stickL.x = 0.0f;
-    if (fabsf(stickL.y) < 0.2f)
-        stickL.y = 0.0f;
-
-    // 落下リスポーン処理
-    if (pos_.y <= -200.0f)
-    {
-        ReSpwan();
-        return;
-    }
-
-    Vector3 camRight = g_camera3D->GetRight();
-    Vector3 camForward = g_camera3D->GetForward();
-    camRight.y = 0.0f;
-    camForward.y = 0.0f;
-    camRight.Normalize();
-    camForward.Normalize();
-
-    if (fabsf(camForward.z) > fabsf(camForward.x))
-    {
-        // Z軸主体の移動。
-        camForward.x = 0.0f;
-        camForward.z = (camForward.z > 0.0f) ? 1.0f : -1.0f;
-
-        // 右方向はx軸
-        camRight.z = 0.0f;
-        camRight.x = (camRight.x > 0.0f) ? 1.0f : -1.0f;
-    }
-
-    else
-    {
-        // X軸主体の向き（横向き）
-        camForward.z = 0.0f;
-        camForward.x = (camForward.x > 0.0f) ? 1.0f : -1.0f;
-
-        // 右方向はZ軸になる
-        camRight.x = 0.0f;
-        camRight.z = (camRight.z > 0.0f) ? 1.0f : -1.0f;
-    }
-
-    bool isRotatedView = fabsf(camRight.z) > fabsf(camRight.x);
-
-    if (currentMode == CameraMode::mode3D || currentMode == CameraMode::modeBoss || currentMode == CameraMode::modeStageEX || isRotatedView)
-    {
-        Vector3 targetMove = (camRight * stickL.x) + (camForward * stickL.y);
-        moveSpeed_ += targetMove * walkSpeed_;
-    }
-
-    else
-    {
-        Vector3 targetMove = camRight * stickL.x;
-        moveSpeed_ += targetMove * walkSpeed_;
-    }
-}
-
-
 
 void Player::ApplyMovement()
 {
@@ -359,62 +258,6 @@ void Player::ApplyMovement()
     render_.SetPosition(pos_);
 }
 
-
-void Player::Move3Dmode()
-{
-    // スティックの取得。
-    Vector3 stickL;
-    stickL.x = g_pad[0]->GetLStickXF();
-    stickL.y = g_pad[0]->GetLStickYF();
-
-    //// 移動方式。
-    //// 上下移動。
-    moveSpeed_.x += stickL.y * 480.0f;
-    //// 左右移動。
-    moveSpeed_.z += stickL.x * 480.0f;
-    //反転して正常の向きに修正
-    moveSpeed_.z *= -1;
-}
-
-
-void Player::Move2_5Dmode()
-{
-    Vector3 stickL;
-    stickL.x = g_pad[0]->GetLStickXF();
-    stickL.y = g_pad[0]->GetLStickYF();
-
-    Vector3 right = g_camera3D->GetRight();
-    right.y = 0.0f;
-
-    moveSpeed_ += right * (stickL.x * 480.0f);
-}
-
-
-void Player::ChangeDimensionCamera()
-{
-    // カメラのモードを設定、初期値は2D
-    CameraMode currentMode = CameraMode::mode2_5D;
-
-    if (pCameraManager_)
-        // 現在のカメラのモードを取得
-        currentMode = pCameraManager_->GetCurrentCameraMode();
-
-    // 3Dモードの処理
-    if (currentMode == CameraMode::mode2_5D && g_pad[0]->IsTrigger(enButtonB))
-    {
-        is3DMode_ = true;
-    }
-
-    if (is3DMode_)
-    {
-        Move3Dmode();
-    }
-    else
-    {
-        Move2_5Dmode();
-        is3DMode_ = false;
-    }
-}
 
 
 void Player::Rotation()
@@ -429,70 +272,11 @@ void Player::Rotation()
 }
 
 
-void Player::ManageState()
-{
-    // 地面についていなかったら
-    if (charaCon_.IsOnGround() == false)
-    {
-        // ステートを1にする
-        state_ = PlayerState::sJump;
-        return;
-    }
-
-    // 地面に着地したら
-    // x zの移動速度があったらスティックの入力
-    if (fabsf(moveSpeed_.x) >= 0.001f || fabsf(moveSpeed_.z) >= 0.001f)
-        state_ = PlayerState::sRun;
-
-    // 何も入力しなかったら
-    else
-        state_ = PlayerState::sIdle;
-}
-
-
-void Player::PlayAnimation()
-{
-    // switch文
-    switch (state_)
-    {
-        // 待機状態だったら
-        case PlayerState::sIdle:
-        {
-            // 待機アニメーションの再生
-            render_.PlayAnimation(EnAnimationClip::animIdle);
-            break;
-        }
-         
-        // 歩き状態だったら
-        case PlayerState::sJump:
-        {
-            // ジャンプアニメーションの再生
-            render_.PlayAnimation(EnAnimationClip::animJump);
-            break;
-        }
-         
-        // ジャンプ中だったら
-        case PlayerState::sRun:
-        {
-            render_.PlayAnimation(EnAnimationClip::animRun);
-            break;
-        }
-    }
-}
 
 
 void Player::Render(RenderContext& rc)
 {
     render_.Draw(rc);
+    posFont_.Draw(rc);
 }
 
-
-void Player::SetAnimation()
-{
-    // 待機アニメーション。
-    FetchPlayAnimation(EnAnimationClip::animIdle, "idle", true);
-    // 走りアニメーション。
-    FetchPlayAnimation(EnAnimationClip::animRun, "run", true);
-    // ジャンプアニメーション。
-    FetchPlayAnimation(EnAnimationClip::animJump, "jump", false);
-}

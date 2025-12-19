@@ -48,12 +48,12 @@ void SideCameraStrategy::Update(nsK2EngineLow::Camera* camera, const float delta
         const float followSpeed = 15.0f * deltaTime;
         // Lerp関数はFollowStrategyのstatic関数を使う
         Vector3 newPos = FollowStrategy::Lerp(followSpeed, currentCamPos, idealPos);
-        newPos.y = targetPos.y + 30.0f;
+        newPos.y = targetPos.y + 10;
         camera->SetPosition(newPos);
 
         // --- 注視点計算 ---
         Vector3 lookAtTarget = targetPos;
-        lookAtTarget.y += 45.0f; // プレイヤーの少し上を見る
+        lookAtTarget.y += 15.0f; // プレイヤーの少し上を見る
         camera->SetTarget(lookAtTarget);
     }
 }

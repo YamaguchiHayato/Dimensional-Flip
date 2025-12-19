@@ -210,7 +210,6 @@
     <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Props\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />

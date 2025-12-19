@@ -255,7 +255,6 @@
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Props\Wall.cpp" />
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />

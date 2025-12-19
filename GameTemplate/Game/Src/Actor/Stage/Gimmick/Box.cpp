@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Src/Actor/Stage/Props/Box.h"
+#include "Src/Actor/Stage/Gimmick/Box.h"
 #include "Src/Actor/Character/Player.h"
 
 namespace

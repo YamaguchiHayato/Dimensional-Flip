@@ -22,24 +22,32 @@ public:
     CameraManager() = default;
     virtual ~CameraManager() = default;
 
-    bool Start() override;
-    void Update() override;
 
+public:
+    bool Start() ;
+    void Update();
+
+
+public:
     // カメラモード。
     void Request2DMode();
     void Request3DMode();
     void RequestBossMode(float targetAngleDegrees = 0.0f);
     void RequestStageExMode();
 
-    // 回転リクエスト
-    void Request3DModeRot(float targetAngleDegrees);
-
-    // ゲッター
-    CameraMode GetCurrentCameraMode() const { return currentMode_; }
-    ICameraStrategy* GetCurrentStrategy() { return pCameraStrategy_.get(); }
 
 private:
-    std::unique_ptr<ICameraStrategy> pCameraStrategy_;
+    // カメラモード切り替え処理。
+    void ChangeCameraMode();
+
+
+public:
+    // ゲッター
+    CameraMode GetCurrentCameraMode() const { return currentMode_; }
+    ICameraStrategy* GetCurrentStrategy() { return pCurrentCameraStrategy_.get(); }
+
+private:
+    std::unique_ptr<ICameraStrategy> pCurrentCameraStrategy_;
     CameraMode currentMode_ = CameraMode::mode2_5D;
 
     Player* pPlayer_ = nullptr;

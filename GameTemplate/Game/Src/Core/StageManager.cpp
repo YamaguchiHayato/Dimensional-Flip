@@ -154,9 +154,9 @@ IStage* StageManager::CreateStage(StageID id)
 
 void StageManager::Render(RenderContext& rc)
 {
-    LoadingScene* pLoadingScene = FindGO<LoadingScene>("LoadingScene");
+    /*LoadingScene* pLoadingScene = FindGO<LoadingScene>("LoadingScene");
 
     if (pLoadingScene == nullptr && pCurrentStage_ != nullptr)
-    {}
+    {}*/
 }
 

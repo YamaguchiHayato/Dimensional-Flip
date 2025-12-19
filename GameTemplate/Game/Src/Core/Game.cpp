@@ -39,7 +39,6 @@ namespace app
 {
     namespace core
     {
-
         Game::~Game()
         {
             ///////////////////////////////////////////
@@ -62,15 +61,14 @@ namespace app
         void Game::InitSkyCube()
         {
             DeleteGO(pSkyCube_);
-            SkyCube* m_SkyCube = NewGO<SkyCube>(0, "skycube");
+            SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 
             // 環境光の計算のためのIBLテクスチャをセットする。
-            g_renderingEngine->SetAmbientByIBLTexture(m_SkyCube->GetTextureFilePath(), 1.0f);
+            g_renderingEngine->SetAmbientByIBLTexture(skyCube->GetTextureFilePath(), 1.0f);
             // 環境日光の影響が分かりやすいように、ディレクションライトはオフに。
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
+            skyCube->SetScale(3000.0f);
         }
-
-
         bool Game::Start()
         {
             // StageManagerの生成。
@@ -128,13 +126,13 @@ namespace app
 
                 m_isFadeInEnd = true;
             }
+
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
 
             if (!pFade_->IsFadeInEnd())
-            {
                 return;
-            }
+
 
             if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
             {
@@ -151,14 +149,16 @@ namespace app
 
                 // カメラマネージャーの更新。
                 if (pCameraManager_)
-                    pCameraManager_->Update();
+                {
+                }
+                    //pCameraManager_->Update();
             }
         }
 
 
         void Game::RequestStageTransition(StageID nextStageID)
         {
-            // 遷移中でければばリクエストを受け付ける。
+            // 遷移中でなければリクエストを受け付ける。
             if (state_ == SceneTransitionState::None)
             {
                 nextStageID_ = nextStageID;
@@ -252,7 +252,7 @@ namespace app
                 {
                     // カメラの初期化。
                     pCameraManager_->Request2DMode();        // 2Dモードへ。
-                    pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
+                    //pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
                 }
 
                 if (pFade_->IsFadeInEnd())

@@ -16,19 +16,6 @@ public:
 	void Update(nsK2EngineLow::Camera* pCamera, const float deltaTime) override;
 
 public:
-	inline void SetTargetRotationY(float angleDeg)
-	{
-		targetRotation_.SetRotationY(Math::DegToRad(angleDeg));
-	};
-
-    // ターゲットのY回転角度を取得。
-	inline float GetTargetRotationY() const
-	{
-		Vector3 angles;
-		float angleRad = 2.0f* atan2f(targetRotation_.y, targetRotation_.w);
-		return Math::RadToDeg(angleRad);
-	}
-
 	inline const nsK2EngineLow::Quaternion& GetCurrentRotation() const
 	{
 		return currentRotation_;
@@ -41,8 +28,7 @@ private:
 private:
 	Vector3 idealOffset_{0.0f, 10.0f, 0.0f};
 
-	Quaternion currentRotation_ = Quaternion::Identity;
-	Quaternion targetRotation_ = Quaternion::Identity;
+
 
 private:
 	float rotationSpeed_ = 5.0f; 

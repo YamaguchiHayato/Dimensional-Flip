@@ -32,5 +32,4 @@ private:
 private:	
 	Quaternion playerRot_;
 	Vector3 axisX;
-    Vector3 idealOffset_ = {0.0f, 10.0f, -20.0f};
 };

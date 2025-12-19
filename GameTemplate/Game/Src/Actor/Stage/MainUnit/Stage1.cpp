@@ -11,7 +11,7 @@
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
-#include "Src/Actor/Stage/Props/Wall.h"
+#include "Src/Actor/Stage/Gimmick/Wall.h"
 
 
 namespace
@@ -163,7 +163,8 @@ Stage1::~Stage1()
 bool Stage1::Start()
 {
 
-	const std::string stagePath = InitStage("Stage1/stage");
+//	const std::string stagePath = InitStage("Stage1/stage");
+	const std::string stagePath = InitStage("Stage1/Stage1");
 	stageRender_.Init(stagePath.c_str());
 
 	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
@@ -190,10 +191,10 @@ bool Stage1::Start()
 //    RotationFoolNewGO();
 
     // 壁インスタンス生成。
-    WallCreateInstance();
+//    WallCreateInstance();
 
     // ノーマルエネミー生成。
-    NormalEnemyCreateInstance();
+//    NormalEnemyCreateInstance();
 
 	stageRender_.Update();
 

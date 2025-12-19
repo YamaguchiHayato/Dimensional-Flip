@@ -1,10 +1,13 @@
 #include "k2EngineLowPreCompile.h"
 #include "k2EngineLow.h"
 #include "graphics/Texture.h"
+#include "GameSoundEngine.h"
 
 namespace nsK2EngineLow {
 	K2EngineLow* g_engine = nullptr;
 	GameTime* g_gameTime = nullptr;
+    GameSoundEngine* g_gameSoundEngine = nullptr;
+
 
 	K2EngineLow::~K2EngineLow()
 	{

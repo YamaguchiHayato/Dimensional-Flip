@@ -8,6 +8,7 @@
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 
+
 SceneManager::~SceneManager()
 {
     if (pCurrentScene_ != nullptr)
@@ -22,6 +23,7 @@ SceneManager::~SceneManager()
         pFade_ = nullptr;
     }
 }
+
 
 bool SceneManager::Start()
 {
@@ -45,6 +47,7 @@ bool SceneManager::Start()
     }
     return false;
 } 
+
 
 void SceneManager::Update()
 {
@@ -70,9 +73,7 @@ void SceneManager::Update()
 
 
     if (pCurrentScene_ != nullptr)
-    {
         pCurrentScene_->Update();
-    }
 }
 
 IScene* SceneManager::CreateScene(SceneID id)
@@ -91,7 +92,7 @@ IScene* SceneManager::CreateScene(SceneID id)
              break;
 
         case SceneID::sResult:
-            newScene = new GameClearScene();
+            newScene = new app::scene::GameClearScene();
         default:
              break;
     }

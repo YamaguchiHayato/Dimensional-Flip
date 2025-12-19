@@ -13,7 +13,7 @@
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
-#include "Src/Actor/Stage/Gimmick/Box.h"
+#include "Src/Actor/Stage/Props/Box.h"
 #include "Src/Camera/Dimensiontrigger.h"
 
 namespace

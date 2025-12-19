@@ -99,7 +99,6 @@ namespace app
             }
         }
 
-
         void NormalEnemy::Render(RenderContext& rc)
         {
             render_.Draw(rc);

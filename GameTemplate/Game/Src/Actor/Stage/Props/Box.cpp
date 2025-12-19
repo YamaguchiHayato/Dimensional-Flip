@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Src/Actor/Stage/Gimmick/Box.h"
+#include "Src/Actor/Stage/Props/Box.h"
 #include "Src/Actor/Character/Player.h"
 
 namespace
@@ -20,7 +20,7 @@ Box::~Box()
 bool Box::Start()
 {
     	//ファイルパス
-    std::string foolPath = InitGimmick("Stage1/Block");
+    std::string foolPath = InitGimmick("Stage2/Box");
     render_.Init(foolPath.c_str(), 0, 0, enModelUpAxisZ, false, true);// モデルをセットする。
 	
 	// モデルの大きさ。

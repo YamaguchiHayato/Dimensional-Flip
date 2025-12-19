@@ -11,7 +11,7 @@
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
-#include "Src/Actor/Stage/Gimmick/Wall.h"
+#include "Src/Actor/Stage/Props/Wall.h"
 
 
 namespace
@@ -195,6 +195,9 @@ bool Stage1::Start()
 
     // ノーマルエネミー生成。
 //    NormalEnemyCreateInstance();
+
+    // ノーマルエネミー生成。
+    NormalEnemyCreateInstance();
 
 	stageRender_.Update();
 

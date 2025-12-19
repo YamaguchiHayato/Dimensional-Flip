@@ -1,39 +1,32 @@
 #include "stdafx.h"
+#include "Src/Camera/StageEXCameraStrategy.h"
 
 #include "Src/Actor/Character/Player.h"
-#include "Src/Core/StageManager.h"
-#include "Src/Camera/FollowStrategy.h" 
-#include "Src/Camera/StageEXCameraStrategy.h"
 
 namespace
 {
     // アリーナ視点用にするオフセット。
     const Vector3 OFFSET(0.0f, 150.0f, -400.0f);
+    const float ROTATION_SPEED = 4.0f;
 }
 
 namespace app
 {
     namespace camera
     {
-        StageEXCameraStrategy::StageEXCameraStrategy(::Player* pPlayer) : pPlayer_(pPlayer)
+        StageEXCameraStrategy::StageEXCameraStrategy(Player* pPlayer)
         {
+            pPlayer_ = pPlayer;
             currentRotation_ = targetRotation_;
 
             // 遠くまで見えるようにFarを調整。
             g_camera3D->SetFar(5000.0f);
         }
 
-        void StageEXCameraStrategy::Update(nsK2EngineLow::Camera* camera, const float deltaTime)
+        void StageEXCameraStrategy::Update()
         {
-
-            if (StageManager::GetInstance()->GetCurrentStageID() != StageID::sStageEX)
-                return;
-
-            if (!pPlayer_)
-                return;
-
             // --- 回転処理 ---
-            float t = rotationSpeed_ * deltaTime;
+            float t = ROTATION_SPEED * g_gameTime->GetFrameDeltaTime();
             if (t > 1.0f)
                 t = 1.0f;
 
@@ -41,7 +34,7 @@ namespace app
 
             // --- 位置計算 ---
             const Vector3 targetPos = pPlayer_->GetPlayerPos();
-            const Vector3 currentCamPos = camera->GetPosition();
+            const Vector3 currentCamPos = g_camera3D->GetPosition();
 
             // オフセットを回転させる
             Vector3 rotatedOffset = OFFSET;
@@ -52,14 +45,14 @@ namespace app
 
             // 滑らかに移動
             // FollowStrategy はグローバル名前空間にある想定です
-            const float followSpeed = 5.0f * deltaTime;
-            const Vector3 newPos = ::FollowStrategy::Lerp(followSpeed, currentCamPos, idealPos);
+            const float followSpeed = 5.0f * g_gameTime->GetFrameDeltaTime();
+            const Vector3 newPos = Lerp(followSpeed, currentCamPos, idealPos);
 
-            camera->SetPosition(newPos);
+            g_camera3D->SetPosition(newPos);
 
             // --- 注視点計算 ---
             // プレイヤーを見下ろす
-            camera->SetTarget(targetPos);
+            g_camera3D->SetTarget(targetPos);
         }
     } 
 } 

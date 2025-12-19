@@ -29,7 +29,7 @@ namespace app
             virtual ~BossCameraStrategy() = default;
 
             bool Start() override;
-            void Update(nsK2EngineLow::Camera* pCamera, const float deltaTime) override;
+            void Update() override;
 
         private:
             // 内部処理関数

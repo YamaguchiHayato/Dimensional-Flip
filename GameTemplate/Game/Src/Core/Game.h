@@ -63,8 +63,12 @@ namespace app
             inline void HPbarCreateInstance();
             // その他。
             void InitSkyCube(); // スカイキューブの初期化。
+
+        private:
             // 遷移時の更新処理。
             void UpdateTransition();
+
+
         private:
             std::unique_ptr<CameraManager> pCameraManager_;
             TimerUI* pTimerUI_ = nullptr;

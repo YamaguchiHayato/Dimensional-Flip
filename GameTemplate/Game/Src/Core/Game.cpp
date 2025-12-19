@@ -148,10 +148,6 @@ namespace app
             {
                 // ステージマネージャーの更新。
                 StageManager::GetInstance()->Update();
-
-                // カメラマネージャーの更新。
-                if (pCameraManager_)
-                    pCameraManager_->Update();
             }
         }
 
@@ -247,13 +243,6 @@ namespace app
                 // 4. ロード完了後、PlayerとCameraをリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
                 pPlayer_->SetPlayerPos(newStartPos);
-
-                if (pCameraManager_)
-                {
-                    // カメラの初期化。
-                    pCameraManager_->Request2DMode();        // 2Dモードへ。
-                    pCameraManager_->Request3DModeRot(0.0f); // 回転角度をリセット。
-                }
 
                 if (pFade_->IsFadeInEnd())
                 {

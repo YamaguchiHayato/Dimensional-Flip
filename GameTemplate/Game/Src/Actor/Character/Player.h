@@ -39,6 +39,7 @@ enum EnAnimationClip : uint8_t
     animNum,
 };
 
+
 class IState;
 class CameraManager;
 class Player : public Character
@@ -278,10 +279,10 @@ private:
 
     //////////////////////////////////////////////////
 public:
-    friend PlayerIdleState;
-    friend PlayerRunState;
-    friend PlayerJumpState;
-    friend PlayerFallState;
+    friend app::state::PlayerIdleState;
+    friend app::state::PlayerRunState;
+    friend app::state::PlayerJumpState;
+    friend app::state::PlayerFallState;
 
 public:
     ModelRender render_;

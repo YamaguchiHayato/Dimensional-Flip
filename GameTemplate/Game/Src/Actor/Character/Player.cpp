@@ -99,16 +99,16 @@ const std::string Player::FetchPlayerModel(const std::string& modelName, Animati
 
 bool Player::Start()
 {
+    // ステートの登録。
+    RegisterState<app::state::PlayerIdleState>(enState_Idle);
+    RegisterState<app::state::PlayerRunState>(enState_Run);
+    RegisterState<app::state::PlayerJumpState >(enState_Jump);
+    RegisterState<app::state::PlayerFallState >(enState_Fall);
 
-    RegisterState<PlayerIdleState>(enState_Idle);
-    RegisterState<PlayerRunState>(enState_Run);
-    RegisterState<PlayerJumpState>(enState_Jump);
-    RegisterState<PlayerFallState>(enState_Fall);
 
+    // 初期ステートの設定。
     pCurrentState_ = pStateArray_[enState_Idle];
     pCurrentState_->Enter();
-
-
 
 
     // アニメーションの設定。

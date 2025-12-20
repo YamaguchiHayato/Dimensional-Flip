@@ -5,23 +5,36 @@
 
 class Player;
 class CameraManager;
-class PlayerRunState : public IState
+
+namespace app
 {
-private:
-    Player* pPlayer_ = nullptr;
-    CameraManager* pCameraManager_ = nullptr;
+    namespace state
+    {
+        class PlayerRunState : public IState
+        {
+        private:
+            Player* pPlayer_ = nullptr;
+            CameraManager* pCameraManager_ = nullptr;
 
-public:
-    PlayerRunState(Player* player) : pPlayer_(player) {};
-    virtual ~PlayerRunState() {};
 
-public:
-    void Enter() override;
-    void Update() override;
-    void Exit() override;
-    bool RequestID(uint8_t& request) override;
+        public:
+            PlayerRunState(Player* player) : pPlayer_(player) {};
+            virtual ~PlayerRunState() {};
 
-private:
-    void CalculateRunMovement(); // 移動計算
-    void ApplyMovement();        // 物理反映
-};
+
+        public:
+            void Enter() override;
+            void Update() override;
+            void Exit() override;
+            bool RequestID(uint8_t& request) override;
+
+
+        private:
+            void CalculateRunMovement(); // 移動計算
+            void ApplyMovement();        // 物理反映
+        };
+
+    }
+    
+}
+

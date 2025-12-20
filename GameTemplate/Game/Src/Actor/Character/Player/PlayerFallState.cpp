@@ -3,48 +3,40 @@
 #include "Src/Actor/Character/Player/PlayerFallState.h"
 
 
+namespace
+{
+    // リスポーンするかを決めるライン。
+    const auto DEAD_LINE = -500.0f;
+
+    // 重力。
+    const auto GRAVITY = 15.0f;
+
+    //
+    const auto FALL_GRAVITY_SCALE = 2.5f;
+
+    // 最大落下速度。
+    const auto MAX_FALL_SPEED = -1000.0f;
+}
+
+
 void PlayerFallState::Enter()
 {
-    //　めも。
-    // カメラを切り替る角度を正確に調査。
-
-    // 落下処理をどこに入れんねん。
-    // → 多分ジャンプすテートに。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // 落下アニメーションはないので空。
 }
 
 void PlayerFallState::Update()
 {
-    // 
+    // 重力をかける。
+    ApplyGravity();
 
+    // 移動を反映させる。
+    pPlayer_->ApplyMovement();
 
-    //pPlayer_->GetMoveSpeed():
+    // 描画更新。
+    pPlayer_->GetModelRender();
 
-    //pos_ = respwanPos_;
-    //rot_ = respwanRot_;
-
-    //pPlayer_->render_.SetPosition(pos_);
-    //pPlayer_->render_.SetRotation(rot_);
-    //pPlayer_->GetCharacterController().SetPosition(pos_);
-
-    //// 移動速度のリセット。
-    //moveSpeed_ = Vector3::Zero;
-
+    // 落下したかチェックする。
+    CheckRespawn();
 }
 
 
@@ -55,6 +47,59 @@ void PlayerFallState::Exit()
 
 bool PlayerFallState::RequestID(uint8_t & request)
 {
+    // リスポーンした or 地面に着地した場合。
+    if (pPlayer_->GetCharacterController().IsOnGround())
+    {
+        // Idle状態へ遷移。
+        request = EnPlayerState::enState_Idle;
+        return true;
+    }
     
     return false;
+}
+
+
+void PlayerFallState::ApplyGravity()
+{
+    Vector3& speed = pPlayer_->GetMoveSpeed();
+
+    // 落下中は重力を強くする。
+    speed.y -= GRAVITY * FALL_GRAVITY_SCALE;
+
+    // 落下速度を制限する。
+    if (speed.y < MAX_FALL_SPEED)
+        speed.y = MAX_FALL_SPEED;
+}
+
+
+void PlayerFallState::CheckRespawn()
+{
+    // 現在のY座標がデッドゾーンより下かどうか判断する。
+    if (pPlayer_->GetPlayerPos().y < DEAD_LINE)
+    {
+        // リスポーン処理。
+        Respawn();
+    }
+}
+
+
+void PlayerFallState::Respawn()
+{
+    if (pPlayer_->GetPlayerPos().y < DEAD_LINE)
+    {
+        // 座標と物理のセット。
+        pPlayer_->SetPlayerPos(pPlayer_->GetRespwanPos());
+
+
+        // 回転軸をセットする。
+        pPlayer_->SetRotation(pPlayer_->GetRespwanRot());
+
+
+        // 移動速度をリセット。
+        pPlayer_->GetMoveSpeed() = Vector3::Zero;
+
+
+        // フラグの設定。
+        pPlayer_->SetRespawnFlag(true);
+    }
 }

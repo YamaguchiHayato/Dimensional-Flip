@@ -16,5 +16,11 @@ public:
     void Update()override;
     void Exit()override;
     bool RequestID(uint8_t& request)override;
+
+
+private:
+    void ApplyGravity(); // 重力処理。
+    void CheckRespawn(); // リスポーンかをチェックする。
+    void Respawn();      // リスポーン処理。
 };
 

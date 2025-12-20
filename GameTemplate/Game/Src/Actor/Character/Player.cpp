@@ -160,22 +160,6 @@ void Player::Update()
 }
 
 
-void Player::ReSpwan()
-{
-    pos_ = respwanPos_;
-    rot_ = respwanRot_;
-
-    render_.SetPosition(pos_);
-    render_.SetRotation(rot_);
-    charaCon_.SetPosition(pos_);
-
-    // 移動速度のリセット。
-    moveSpeed_ = Vector3::Zero;
-
-    respawnFlag_ = true;
-}
-
-
 bool Player::IsDimensionSwitchAction()
 {
     // カメラマネージャーを取得する。

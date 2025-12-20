@@ -44,8 +44,6 @@ class CameraManager;
 class Player : public Character
 {
 public:
-
-
     Player() = default;
     virtual ~Player() = default;
 
@@ -75,17 +73,22 @@ public:
 
     void Rotation();
     void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
-    void ReSpwan();
 
 
     // セッター。
 public:
     // CameraManagerの初期化。
     inline void InitCameraManager(CameraManager* pCameraManager) { pCameraManager_ = pCameraManager; }
+
+
     // ジャンプ力の設定。
     inline void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
+
+
     // トリガーエリア内で呼ばれる処理。
     inline void EnterTriggerArea() { triggerOverlapCount_++; }
+
+
     // トリガーエリア外で呼ばれる処理。
     inline void ExitTriggerArea()
     {
@@ -95,6 +98,8 @@ public:
         if (triggerOverlapCount_ < 0)
             triggerOverlapCount_ = 0;
     }
+
+
     // 座標。
     inline void SetPlayerPos(const Vector3& pos)
     {
@@ -105,53 +110,128 @@ public:
         // モデルの移動。
         render_.SetPosition(pos_);
     }
+
+
     // 一時停止フラグ。
-    inline void SetPaused(bool isPaused) { isPaused_ = isPaused; }
+    inline void SetPaused(bool isPaused)
+    {
+        isPaused_ = isPaused;
+    }
+
+
     // ステージタイプに合わせてパラメータを設定する
     void SetStageParam(bool isStageEX);
+
+
     // リスポーン座標の設定。
-    void SetRespwanPos(const Vector3& pos)
+    inline void SetRespwanPos(const Vector3& pos)
     {
         respwanPos_ = pos;
     }
+
+
     // 空中での操作が可能かどうかの設定。
-    void SetCanAirControl(bool flag)
+    inline void SetCanAirControl(bool flag)
     {
         canAirControl_ = flag;
     }
+
+
     // 今フレームでジャンプしたかどうかの設定。
     inline void SetJumpedThisFrame(bool flag)
     {
         didJumpThisFrame_ = flag;
     }
+
+
+    // 回転軸。
+    inline void SetRotation(const Quaternion& rot)
+    {
+        rot_ = rot;
+        render_.SetRotation(rot_);
+    }
+
+
+    // リスポーンフラグのセット。
+    inline void SetRespawnFlag(bool flag)
+    {
+        respawnFlag_ = flag;
+    }
+
     // ゲッター。
 public:
     // ジャンプ力の取得。
-    inline const float& GetJumpPower() const { return jumpPower_; }
+    inline const float& GetJumpPower() const
+    {
+        return jumpPower_;
+    }
+
+
     // プレイヤーの座標の取得。
-    inline const Vector3& GetPlayerPos() const { return pos_; }
+    inline const Vector3& GetPlayerPos() const
+    {
+        return pos_;
+    }
+
+
     // プレイヤーの前方向ベクトル取得。
-    inline const Vector3 GetForward() const { return forward_; }
+    inline const Vector3 GetForward() const
+    {
+        return forward_;
+    }
+
+
     // トリガーエリア内かどうかの取得。
-    inline bool GetInTriggerArea() const { return triggerOverlapCount_ > 0; }
+    inline bool GetInTriggerArea() const
+    {
+        return triggerOverlapCount_ > 0;
+    }
+
+
     // カメラモードを取得。
-    inline CameraManager* GetCameraManager() { return pCameraManager_; }
+    inline CameraManager* GetCameraManager()
+    {
+        return pCameraManager_;
+    }
+
+
     // リスポーンしたか。
     inline bool IsRespawn()
     {
         return respawnFlag_;
     }
+
+
     // walkSpeedの取得。
     inline const float GetWalkSpeed() const
     {
-        return walkSpeed_; }
+        return walkSpeed_;
+    }
+
+
     // 今フレームでジャンプしたかどうか。
     inline bool DoJumpCheck() const
     {
         return didJumpThisFrame_;
     };
 
-private:
+
+    // リスポーン座標の取得。
+    inline const Vector3& GetRespwanPos() const
+    {
+        return respwanPos_;
+    }
+
+
+    // リスポーン時の回転軸の取得。
+    inline const Quaternion& GetRespwanRot() const
+    {
+        return respwanRot_;
+    }
+
+
+    // 
+ private:
     // アニメーションを取得して再生する関数。
     const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
     // モデルを取得して再生する関数。
@@ -160,7 +240,7 @@ private:
     void SetAnimation();
 
 private:
-    ::Player* player_ = nullptr;
+    Player* player_ = nullptr;
     CameraManager* pCameraManager_ = nullptr;
     app::status::Status status_;
 

@@ -40,6 +40,36 @@ protected:
     }
 
 
+    inline float LerpFloat(float start, float end, float speed)
+    {
+        float t = speed * g_gameTime->GetFrameDeltaTime();
+        if (t > 1.0f)
+            t = 1.0f;
+        return start + (end - start) * t;
+    }
+
+    // playerY   : プレイヤーの現在のY座標
+    // threshold : 追従を開始する高さライン（例: 100.0f）
+    // offset    : カメラが維持したい高さオフセット（Sideなら60固定、FollowならStick入力等）
+    inline float CalculateThresholdY(float playerY, float threshold, float offset)
+    {
+        float destY = 0.0f;
+
+        // ラインより低い場合：地面基準の高さ（固定）
+        if (playerY < threshold)
+        {
+            destY = offset;
+        }
+        // ラインを超えた場合：超えた分だけ持ち上げる
+        else
+        {
+            float excess = playerY - threshold;
+            destY = offset + excess;
+        }
+        return destY;
+    }
+
+
 protected:
     Player* pPlayer_ = nullptr;
 

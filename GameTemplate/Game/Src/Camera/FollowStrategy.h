@@ -13,4 +13,9 @@ public:
 public:
 	bool Start() override;
 	void Update() override;
+
+
+    private:
+        //直前の地面に居たときのY座標を保存。
+    float lastGroundY_ = 0.0f;
 };

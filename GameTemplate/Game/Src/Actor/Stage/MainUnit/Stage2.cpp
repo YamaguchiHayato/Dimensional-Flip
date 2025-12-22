@@ -253,7 +253,7 @@ void Stage2::TrackingInstance()
 
     for (size_t i = 0; i < EnemySpawnList.size(); i++)
     {
-        pTrackingEnemy_ = NewGO<TrackingEnemy>(0, "TrackingEnemy");
+        pTrackingEnemy_ = NewGO<app::enemy::TrackingEnemy>(0, "TrackingEnemy");
         pTrackingEnemy_->SetPos(EnemySpawnList[i]);
 
         lTrackingEnemy_.push_back(pTrackingEnemy_);
@@ -273,7 +273,7 @@ void Stage2::ThwompInstance()
         spawnTimer_ += g_gameTime->GetFrameDeltaTime();
 
         // Thwompの生成。
-        pThwomp_ = NewGO<Thwomp>(0, "Thwomp");
+        pThwomp_ = NewGO<app::enemy::Thwomp>(0, "Thwomp");
         // 座標。
         pThwomp_->InitPos(ThwompSpawnList[i]);
         // 削除ライン。

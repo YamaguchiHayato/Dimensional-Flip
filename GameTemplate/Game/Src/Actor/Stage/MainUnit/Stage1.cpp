@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/MainUnit/Stage1.h"
+
 #include "Src/Actor/Character/Player.h"
-#include "NormalEnemy.h"
+
+// 敵。
+#include "Src/Actor/Character/Enemy/IEnemy.h"
+#include "Src/Actor/Character/Enemy/EnemyFactory.h"
+#include "Src/Actor/Character/Enemy/NormalEnemy.h"
 
 #include "Src/Core/CameraManager.h"
 
@@ -90,14 +95,14 @@ namespace GimmickPos
     // 壁。
     namespace Wall
     {
-        const Vector3 Pos1 = Vector3(5400.0f, -50.0f, -40.0);
+        const Vector3 Pos1 = Vector3(5400.0f, -50.0f, -116.0);
     }
 
 
     // 通常敵の出現位置。
     namespace NormalEnemyPos
     {
-        const Vector3 Pos1 = Vector3(5400.0f, -50.0f, -20.0);
+        const Vector3 Pos1 = Vector3(5400.0f,  0.0f, -20.0);
 
     }
 
@@ -130,22 +135,36 @@ Stage1::~Stage1()
         DeleteGO(p);
     }
 
+
+
     for (auto* p : lWall_)
     {
         DeleteGO(p);
     }
+
+
 
     for (auto* p : lDimensionTrigger_)
     {
         DeleteGO(p);
     }
 
+
+
     for (auto* p : lRotationFool_)
     {
         DeleteGO(p);
     }
 
+
+
     for (auto* p : lWallInstance_)
+    {
+        DeleteGO(p);
+    }
+
+
+    for (auto* p : lEnemySpawnList_)
     {
         DeleteGO(p);
     }
@@ -157,6 +176,7 @@ Stage1::~Stage1()
     lDimensionTrigger_.clear();
     lRotationFool_.clear();
     lWallInstance_.clear();
+    lEnemySpawnList_.clear();
 }
 
 
@@ -193,7 +213,7 @@ bool Stage1::Start()
     WallCreateInstance();
 
     // ノーマルエネミー生成。
-//    NormalEnemyCreateInstance();
+    NormalEnemyCreateInstance();
 
 	stageRender_.Update();
 
@@ -401,39 +421,48 @@ void Stage1::WallCreateInstance()
 
 void Stage1::NormalEnemyCreateInstance()
 {
-    // 密集生成箇所の生成位置。
+    // 関数ポインタのようなエイリアス定義
+    using Factory = app::enemy::EnemyFactory;
+    using enemyType = EnemyType;
+
+    // --- A. 通常サイズの敵（3x3配置） ---
+    // 生成を始める座標。
     Vector3 startPos = GimmickPos::NormalEnemyPos::Pos1;
 
     // 敵同士の間隔
-    float spacingX = 60.0f;
-    float spacingZ = 60.0f;
+    float distanceX = 60.0f;
+    float distanceZ = 60.0f;
 
+    // 3×3 の計9体生成するループ
     for (uint8_t x = 0; x < 3; x++)
     {
         for (uint8_t z = 0; z < 3; z++)
         {
-            // 座標を計算
+            // 座標計算
             Vector3 pos = startPos;
-            pos.x += x * spacingX; // 横にずらす
-            pos.z += z * spacingZ; // 奥にずらす
+            pos.x += x * distanceX;
+            pos.z += z * distanceZ;
 
-            // 少し空中に浮かせる場合（めり込み防止）
-            pos.y += 10.0f;
+            auto* enemy = Factory::CreateEnemy(enemyType::type_Normal, pos);
 
-            auto enemy = NewGO<app::enemy::NormalEnemy>(0, "enemy");
-            enemy->SetPos(pos);
+            if (enemy)
+                lEnemySpawnList_.push_back(enemy);
         }
     }
 
-    // サイズを変えて生成。
-    auto bigEnemy = NewGO<app::enemy::NormalEnemy>(0, "bigEnemy");
+    //{
+    //    // 生成座標。
+    //    Vector3 pos = GimmickPos::BigEnemyPos::Pos1;
 
-    Vector3 pos = GimmickPos::BigEnemyPos::Pos1;
+    //    // 生成。
+    //    auto* bigEnemy = Factory::CreateEnemy(enemyType::type_Normal, pos);
 
-    // 座標。
-    bigEnemy->SetPos(pos);
-    // 大きさ。
-    bigEnemy->SetScale(Vector3(1.5f, 1.5f, 0.0f), 320.0f);
-    // サイズが大きい敵は踏みつけて倒せないようにする。
-    bigEnemy->SetIsStompable(false);
+    //    if (bigEnemy)
+    //    {
+    //        bigEnemy->SetScale(Vector3(1.5f, 1.5f, 0.0f));
+    //        bigEnemy->SetStompable(false);
+
+    //        lEnemySpawnList_.push_back(bigEnemy);
+    //    }
+    //}
 }

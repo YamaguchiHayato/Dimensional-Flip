@@ -2,7 +2,11 @@
 #include "Src/Camera/ICameraStrategy.h"
 
 class CameraManager;
-class Boss;
+namespace app{
+    namespace enemy{
+        class Boss;
+    }
+}
 class Player;
 
 enum class BattleViewMode : uint8_t
@@ -46,7 +50,7 @@ namespace app
             }
 
         private:
-            Boss* pBoss_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_ = nullptr;
 

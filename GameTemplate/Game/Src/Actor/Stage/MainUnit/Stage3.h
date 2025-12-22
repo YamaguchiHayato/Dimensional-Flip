@@ -2,7 +2,11 @@
 #include "Src/Actor/Stage/IStage.h"
 #include <vector>
 
-class Boss;
+namespace app{
+    namespace enemy{
+        class Boss;
+    }
+}
 class DimensionTrigger;
 class Player;
 class WallActor;
@@ -31,7 +35,7 @@ private:
 
 private:
     Player* pPlayer_ = nullptr;
-    Boss* pBoss_ = nullptr;
+    app::enemy::Boss* pBoss_ = nullptr;
     CollisionObject* pCollisionObject_ = nullptr;
 
     // ポインタ。

@@ -11,8 +11,14 @@ class DimensionTrigger;
 class RotationFool;
 class Player;
 class CameraManager;
-class Thwomp;
-class TrackingEnemy;
+
+namespace app{
+    namespace enemy{
+        class Thwomp;
+        class TrackingEnemy;
+
+    }
+}
 class Star;
 class Stage2 : public IStage
 {
@@ -56,8 +62,8 @@ private:
     RotationFool* pRotationFool_ = nullptr;
     Box* pBox_ = nullptr;
     Star* pStar_ = nullptr;
-    TrackingEnemy* pTrackingEnemy_ = nullptr;
-    Thwomp* pThwomp_ = nullptr;
+    app::enemy::TrackingEnemy* pTrackingEnemy_ = nullptr;
+    app::enemy::Thwomp* pThwomp_ = nullptr;
     Player* pPlayer = nullptr;
 
     // リスト。
@@ -65,8 +71,8 @@ private:
     std::vector<RotationFool*> lRotationFool_;
     std::vector<Box*> lBox_;
     std::vector<Star*> lStar_;
-    std::vector<TrackingEnemy*> lTrackingEnemy_;
-    std::vector<Thwomp*> lThwomp_;
+    std::vector<app::enemy::TrackingEnemy*> lTrackingEnemy_;
+    std::vector<app::enemy::Thwomp*> lThwomp_;
 
 private:
     ModelRender render_;

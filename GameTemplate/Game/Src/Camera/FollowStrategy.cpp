@@ -7,8 +7,8 @@ namespace
 {
 
     // 追従ライン（これ以下ならカメラ位置の基準は下がらない）
-    const float THRESHOLD_Y = 100.0f;
-    const Vector3 OFFSET(0.0f, 20.0f, -200.0f);
+    const auto THRESHOLD_Y = 100.0f;
+    const Vector3 OFFSET(0.0f, 200.0f, -200.0f);
 }
 
 

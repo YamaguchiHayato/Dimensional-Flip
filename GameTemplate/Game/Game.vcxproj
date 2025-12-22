@@ -226,8 +226,9 @@
     <ClCompile Include="DelayedEffect.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
@@ -301,8 +302,9 @@
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
     <ClInclude Include="GameClearScene.h" />
-    <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />

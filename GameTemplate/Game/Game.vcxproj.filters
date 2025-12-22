@@ -207,7 +207,6 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
-    <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
@@ -221,6 +220,8 @@
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
     <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -385,7 +386,6 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
-    <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
@@ -399,6 +399,8 @@
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

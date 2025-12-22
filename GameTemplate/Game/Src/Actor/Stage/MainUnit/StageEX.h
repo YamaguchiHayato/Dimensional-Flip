@@ -57,13 +57,13 @@ namespace app
         private:
             inline void BossInstance()
             {
-                pBoss_ = NewGO<Boss>(0, "boss");
+                pBoss_ = NewGO<app::enemy::Boss>(0, "boss");
                 pBoss_->SetPos(nsStageEX::nsBoss::InitPos);   
             }
 
 
         private:
-            Boss* pBoss_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr;
             CameraManager* pCameraManager_ = nullptr;
             Player* pPlayer_ = nullptr;
             app::cutIn::CutInView* pCutInView_ = nullptr;

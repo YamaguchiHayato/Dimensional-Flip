@@ -34,7 +34,7 @@ namespace app
         bool BossCameraStrategy::Start()
         {
             // ボスを検索
-            pBoss_ = FindGO<Boss>("boss");
+            pBoss_ = FindGO<app::enemy::Boss>("boss");
             if (!pBoss_)
                 K2_LOG("BossCameraStrategy::Start() Boss not found.\n");
 

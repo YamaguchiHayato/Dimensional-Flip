@@ -1,4 +1,5 @@
 #pragma once
+#include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Stage/IStage.h"
 
 // ギミック。
@@ -7,12 +8,15 @@ class Star;
 class WallActor;
 class DimensionTrigger;
 class RotationFool;
-
 class Player;
 
 namespace app{
     namespace stage{
         class Wall;
+    }
+
+    namespace enemy{
+        class NormalEnemy;
     }
 }
 
@@ -59,7 +63,7 @@ private:
     WallActor* pWallActor_ = nullptr;
     app::stage::Wall* pWall_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
-
+    app::enemy::NormalEnemy* pNormalEnemy_ = nullptr;
 
     std::vector<JumpPad*> lJumpPad_;
     std::vector<Star*> lStar_;
@@ -67,6 +71,10 @@ private:
     std::vector<DimensionTrigger*> lDimensionTrigger_;
     std::vector<RotationFool*> lRotationFool_;
     std::vector<app::stage::Wall*> lWallInstance_;
+    std::vector<app::enemy::NormalEnemy*> lNormalEnemy_;
+
+    // 敵生成リスト。
+    std::vector<app::enemy::IEnemy*> lEnemySpawnList_;
 
     Vector3 pos_ = Vector3::One;
     Vector3 scale_ = Vector3::One;

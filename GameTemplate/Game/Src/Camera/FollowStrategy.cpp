@@ -33,67 +33,102 @@ bool FollowStrategy::Start()
 void FollowStrategy::Update()
 {
     if (!pPlayer_)
+    {
         return;
+    }
 
-    // 取得。
-    // 座標。
     const Vector3 targetPos = pPlayer_->GetPlayerPos();
     const Vector3 currentCamPos = g_camera3D->GetPosition();
-    // スティック
     const float stickX = g_pad[0]->GetRStickXF();
     const float stickY = g_pad[0]->GetRStickYF() * -1.0f;
 
-
-    if (pPlayer_->GetCharacterController().IsOnGround())
-        lastGroundY_ = targetPos.y;
-    // ズレ防止用に初期化。
-    if (lastGroundY_ == 0.0f && targetPos.y > 0.0f)
-        lastGroundY_ = targetPos.y;
-
-
     Vector3 idealOffset = OFFSET;
-
-    // Y軸回転
     Quaternion rotY;
     rotY.SetRotationDeg(Vector3::AxisY, 1.3f * stickX);
     rotY.Apply(idealOffset);
-    targetRotation_.Apply(idealOffset); // 外部回転があれば適用
+    targetRotation_.Apply(idealOffset);
 
-
-    // X軸回転
+    // Cross関数はグローバル呼び出しでOKです
     Vector3 axisX = Cross(Vector3::AxisY, idealOffset);
     axisX.Normalize();
     Quaternion rotX;
     rotX.SetRotationDeg(axisX, 1.3f * stickY);
     rotX.Apply(idealOffset);
 
-
-    // 高さ制限
-    float desiredHeightOffset = idealOffset.y;
-    Vector3 idealPosXZ = targetPos + idealOffset;
-
-
-    // プレイヤーの座標を計算。
-    float destY = CalculateThresholdY(targetPos.y, THRESHOLD_Y, desiredHeightOffset);
-
-
-    // カメラ位置を補完。
+    const Vector3 idealPos = targetPos + idealOffset;
     const float followSpeed = 15.0f * g_gameTime->GetFrameDeltaTime();
-    Vector3 newPos = Lerp(followSpeed, currentCamPos, idealPosXZ);
+    const Vector3 newPos = Lerp(followSpeed, currentCamPos, idealPos);
 
-
-    // Y座標の補完処理。
-    float nextY = LerpFloat(currentCamPos.y, destY, 5.0f);
-
-
-    // Y座標を適用
-    newPos.y = nextY;
     g_camera3D->SetPosition(newPos);
 
-
-    // 注視点 (プレイヤーの少し上を見る)
     Vector3 lookAtPoint = targetPos;
-    // + する値は要調整。
-    lookAtPoint.y =   lastGroundY_ + 30.0f;
+    lookAtPoint.y += 30.0f;
     g_camera3D->SetTarget(lookAtPoint);
+
+
+
+    //if (!pPlayer_)
+    //    return;
+
+    //// 取得。
+    //// 座標。
+    //const Vector3 targetPos = pPlayer_->GetPlayerPos();
+    //const Vector3 currentCamPos = g_camera3D->GetPosition();
+    //// スティック
+    //const float stickX = g_pad[0]->GetRStickXF();
+    //const float stickY = g_pad[0]->GetRStickYF() * -1.0f;
+
+
+    //if (pPlayer_->GetCharacterController().IsOnGround())
+    //    lastGroundY_ = targetPos.y;
+    //// ズレ防止用に初期化。
+    //if (lastGroundY_ == 0.0f && targetPos.y > 0.0f)
+    //    lastGroundY_ = targetPos.y;
+
+
+    //Vector3 idealOffset = OFFSET;
+
+    //// Y軸回転
+    //Quaternion rotY;
+    //rotY.SetRotationDeg(Vector3::AxisY, 1.3f * stickX);
+    //rotY.Apply(idealOffset);
+    //targetRotation_.Apply(idealOffset); // 外部回転があれば適用
+
+
+    //// X軸回転
+    //Vector3 axisX = Cross(Vector3::AxisY, idealOffset);
+    //axisX.Normalize();
+    //Quaternion rotX;
+    //rotX.SetRotationDeg(axisX, 1.3f * stickY);
+    //rotX.Apply(idealOffset);
+
+
+    //// 高さ制限
+    //float desiredHeightOffset = idealOffset.y;
+    //Vector3 idealPosXZ = targetPos + idealOffset;
+
+
+    //// プレイヤーの座標を計算。
+    //float destY = CalculateThresholdY(targetPos.y, THRESHOLD_Y, desiredHeightOffset);
+
+
+    //// カメラ位置を補完。
+    //const float followSpeed = 15.0f * g_gameTime->GetFrameDeltaTime();
+    //Vector3 newPos = Lerp(followSpeed, currentCamPos, idealPosXZ);
+
+
+    //// Y座標の補完処理。
+    //float nextY = LerpFloat(currentCamPos.y, destY, 5.0f);
+
+
+    //// Y座標を適用
+    //newPos.y = nextY;
+    //g_camera3D->SetPosition(newPos);
+
+
+    //// 注視点 (プレイヤーの少し上を見る)
+    //Vector3 lookAtPoint = targetPos;
+    //// + する値は要調整。
+    //lookAtPoint.y =   lastGroundY_ + 30.0f;
+    //g_camera3D->SetTarget(lookAtPoint);
 }

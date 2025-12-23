@@ -19,6 +19,7 @@ namespace app
 {
     namespace enemy
     {
+        class IEnemy;
         class EnemyFactory
         {
         public:

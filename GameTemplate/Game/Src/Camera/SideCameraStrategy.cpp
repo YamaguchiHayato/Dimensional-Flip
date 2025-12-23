@@ -5,7 +5,7 @@
 namespace
 {
     const Vector3 OFFSET(0.0f, 0.0f, -200.0f);
-    const float HEIGHT_OFFSET = 60.0f; // 注視点と視点を一律で上げる
+    const float HEIGHT_OFFSET = 3.0f; // 注視点と視点を一律で上げる
     const float ROTATION_SPEED = 5.0f;
     // 追従ライン。
     const auto THRESHOLD_Y = 100.0f;

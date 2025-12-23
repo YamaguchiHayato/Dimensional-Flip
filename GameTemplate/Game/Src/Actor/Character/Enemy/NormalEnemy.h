@@ -27,7 +27,10 @@ namespace app
 
 
                 // デフォルト値を設定。
-                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3::One, float radius = -1.0f, bool flag = true) : paramPos_(pos), paramScale(scale), paramCollision(radius), paramFlag(flag){}
+                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3::One, float radius = -1.0f, bool flag = true)
+                    : paramPos_(pos), paramScale(scale), paramCollision(radius), paramFlag(flag)
+                {
+                }
             };
 
 
@@ -75,6 +78,11 @@ namespace app
 
 
         private:
+            // 浮遊移動処理。
+            void MoveFloating();
+
+
+        private:
             Vector3 initPos_ = Vector3::Zero;
             Vector3 pos_ = Vector3::Zero;
             Vector3 scale_ = Vector3(0.25f, 0.25f, 0.25f);
@@ -89,6 +97,13 @@ namespace app
             float radius_ = 80.0f;
             float crushScaleYRate_ = 0.2f;  // 最終Yスケール比
             float crushPosYOffset_ = 15.0f; // 下に沈める量（見た目用）
+
+
+             float angle_ = 0.0f;      // 浮遊の角度。
+             float spped_ = 0.05f;     // 上下の速度。
+             float range_ = 10.0f;     // 上下の幅。
+             float moveSpeed_ = 1.0f;  // 追従速度。
+
 
             uint8_t crushedFrame_ = 0;
 

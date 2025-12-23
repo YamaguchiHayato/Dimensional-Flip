@@ -32,6 +32,11 @@ namespace app
         private:
             void CalculateRunMovement(); // 移動計算
             void ApplyMovement();        // 物理反映
+            
+            void UpdatePlayerMove();
+
+        private:
+            float currentTime_ = 0.0f;
         };
 
     }

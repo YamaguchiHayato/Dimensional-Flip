@@ -6,7 +6,7 @@
 namespace
 {
     // リスポーンするかを決めるライン。
-    const auto DEAD_LINE = -500.0f;
+    const auto DEAD_LINE = -100.0f;
 
     // 重力。
     const auto GRAVITY = 15.0f;
@@ -16,6 +16,11 @@ namespace
 
     // 最大落下速度。
     const auto MAX_FALL_SPEED = -1000.0f;
+
+    // 空中での移動倍率。
+    // デフォルトの移動速度の n(設定値)倍。
+    const auto AIR_MOVE_RATE = 0.4f;
+
 }
 
 
@@ -103,6 +108,8 @@ namespace app
                 pPlayer_->SetRespawnFlag(true);
             }
         }
+
+
     }
 }
 

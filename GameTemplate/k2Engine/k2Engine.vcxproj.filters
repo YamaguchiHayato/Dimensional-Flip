@@ -34,6 +34,9 @@
     <Filter Include="graphics\light">
       <UniqueIdentifier>{098d7f12-6f25-45fe-b2f2-3519670804f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2DRender">
+      <UniqueIdentifier>{547bbfbc-6cd3-4a78-820b-12f9825f2dcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\ModelRender.cpp">

@@ -35,6 +35,7 @@ static GameSoundList StageToBgm(StageID id)
 
 }
 
+
 namespace app
 {
     namespace core
@@ -91,10 +92,6 @@ namespace app
             pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
             pPlayer_->InitCameraManager(pCameraManager_.get());
 
-            // 現在のステージに合わせてPlayerのパラメータをせて地。
-            StageID currentStage = StageManager::GetInstance()->GetCurrentStageID();
-            bool isEX = (currentStage == StageID::sStageEX);
-            pPlayer_->SetStageParam(isEX);
 
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
@@ -113,7 +110,7 @@ namespace app
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
-//            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+        //    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }
@@ -236,9 +233,6 @@ namespace app
                 // 3. 同期ロードを実行。
                 StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
-                // Playerのステージパラメータを更新。
-                bool isEX = (nextStageID_ == StageID::sStageEX);
-                pPlayer_->SetStageParam(isEX);
 
                 // 4. ロード完了後、PlayerとCameraをリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();

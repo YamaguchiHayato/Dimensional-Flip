@@ -28,7 +28,7 @@ public:
     };
     // ゲッター。
 public:
-    virtual Vector3 GetStageStartPos() const = 0 { return Vector3::Zero; };
+    virtual Vector3 GetStageStartPos() const = 0 { return Vector3(0.7f, 0.1f, 0.0f); };
 
 protected:
     ModelRender stageRender_;

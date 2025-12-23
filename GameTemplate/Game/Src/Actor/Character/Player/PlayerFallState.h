@@ -25,9 +25,10 @@ namespace app
 
 
         private:
-            void ApplyGravity(); // 重力処理。
-            void CheckRespawn(); // リスポーンかをチェックする。
-            void Respawn();      // リスポーン処理。
+            void AirMovement(float moveRate); // 空中での移動処理。
+            void ApplyGravity();              // 重力処理。
+            void CheckRespawn();              // リスポーンかをチェックする。
+            void Respawn();                   // リスポーン処理。
         };
     }
 }

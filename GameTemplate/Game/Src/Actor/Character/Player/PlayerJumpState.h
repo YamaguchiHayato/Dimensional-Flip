@@ -28,6 +28,7 @@ namespace app
 
 
         private:
+            void Move(float speedRate);
             void UpdateJumpAndGravity();
             void ApplyMovement();
         };

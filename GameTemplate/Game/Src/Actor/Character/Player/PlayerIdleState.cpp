@@ -15,6 +15,13 @@ namespace app
 
         void PlayerIdleState::Update()
         {
+            if (pPlayer_->GetKeyDirection().x < 0.0f)
+                pPlayer_->SetCurrentIndex(0);
+
+            else
+                pPlayer_->SetCurrentIndex(4);
+
+
             // 待機中はPlayerの移動速度を0にする。
             Vector3& speed = pPlayer_->GetMoveSpeed();
             speed.x = 0.0f;
@@ -51,6 +58,14 @@ namespace app
                     return true;
                 }
             }
+
+
+            // 地面から離れたら落下ステートへ
+            else if (pPlayer_->GetPlayerPos().y < -100.0f)
+            {
+                request = EnPlayerState::enState_Fall;
+                return true;
+            }
             return false;
         }
 
@@ -58,7 +73,6 @@ namespace app
         void PlayerIdleState::ApplyMovement()
         {
             // 移動処理。
-
             const Vector3 pos = pPlayer_->GetCharacterController().Execute(pPlayer_->GetMoveSpeed(), 1.0f / 150.0f);
             // 座標のセット。
             pPlayer_->GetCharacterController().SetPosition(pPlayer_->GetPlayerPos());

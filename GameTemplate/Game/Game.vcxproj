@@ -236,6 +236,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Player.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\IState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerIdleState.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Player.h" />
+    <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
     <ClInclude Include="Src\Actor\Character\Player\IState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerIdleState.h" />

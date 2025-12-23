@@ -19,6 +19,7 @@
 #include "Src/Actor/Character/Status.h"
 #include "Src/Core/SoundManager.h"
 
+#include "Src/Actor/Character/Player/Character2DRender.h"
 
 #include "Src/Actor/Character/Player/PlayerIdleState.h"
 #include "Src/Actor/Character/Player/PlayerRunState.h"
@@ -29,51 +30,62 @@
 struct PlayerStatus
 {
     static const uint8_t MAX_HP = 8;               // 最大体力。
-    static constexpr auto GLAVITY = 15.0f;         // 重力。
     static constexpr auto ATTACK_POWER = 1.0f;     // 攻撃力。
 
-    // 移動速度パラメータ。
+
     struct Move
     {
-        static constexpr float SPEED = 1125.0f;        // 移動速度アップ
-        static constexpr float JUMP_POWER = 600.0f;    // ジャンプ力アップ
+        static constexpr float SPEED = 100.0f; // 移動速度アップ
     };
+
 
     // ジャンプ用のパラメータ。
     struct Jump
     {
         static constexpr float GLAVITY = 2.5f;         // 落下中の重力倍率。
-        static constexpr float CUT = 5.0f;             // ボタンを押した後の重力倍率。。
-        static constexpr float FALLINGSPEED = -600.0f; // 落下速度。
+        static constexpr float CUT = 2.5f;             // ボタンを押した後の重力倍率。。
     };
 };
 
+
 namespace
 {
-    const Vector3 SCALE(0.5f, 0.5f, 0.5f);
+    const Vector3 SCALE = Vector3(0.125f, 0.125f, 0.125f);
+    const uint8_t MAX_NUM = 8; // モデルの数。
 
     // モデルのファイルパス。
-    const char* PLAYER_MODEL = "Assets/modelData/";
+    const char* PATH = "Assets/modelData/girl/facing_/"; // ファイルパス。
+    const char* FILE_EXTENSION = ".tkm";                 // 拡張子。
+
+     // モデルのパスリスト。
+     const std::string PARH_LIST[MAX_NUM] =
+     {
+         // 左。
+        "Assets/modelData/girl/facing_left/L_idle.tkm",
+        "Assets/modelData/girl/facing_left/L_jump.tkm",
+        "Assets/modelData/girl/facing_left/L_run_front_legRight.tkm",
+        "Assets/modelData/girl/facing_left/L_run_front_legLeft.tkm",
+
+
+        // 右。
+        "Assets/modelData/girl/facing_right/R_idle.tkm",
+        "Assets/modelData/girl/facing_right/R_jump.tkm",
+        "Assets/modelData/girl/facing_right/R_run_front_legRight.tkm",
+        "Assets/modelData/girl/facing_right/R_run_front_legLeft.tkm",
+    };
+
+
+    static Character2DRender* render;
+
+    const auto CURRENT_TIME = 0.0f;
+    const auto MAX_TIME = 0.8f;
+
+
+    // モデルのファイルパス。
     const char* PLAYER_ANIMATION = "Assets/animData/"; // ファイルパス。
     const char* ANIMATION_FILE_EXTENSION = ".tka";     // 拡張子。
-    const char* MODEL_FILE_EXTENSION = ".tkm";         // 拡張子。
 }
 
-
-void Player::SetStageParam(bool isStageEX)
-{
-    if (isStageEX)
-    {
-        walkSpeed_ = PlayerStatus::Move::SPEED;
-        jumpPower_ = PlayerStatus::Move::JUMP_POWER;
-    }
-
-    else
-    {
-        walkSpeed_ = PlayerStatus::Move::SPEED;
-        jumpPower_ = PlayerStatus::Move::JUMP_POWER;
-    }
-}
 
 
 const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName,bool flag)
@@ -86,17 +98,6 @@ const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, co
 }
 
 
-const std::string Player::FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag)
-{
-    // モデルをロード(tkmファイル名を打ち込む)。
-    std::string Player = PLAYER_MODEL + modelName + MODEL_FILE_EXTENSION;
-
-    animationClip_[enAnimationClip].Load(Player.c_str());
-    animationClip_[enAnimationClip].SetLoopFlag(flag);
-    return Player;
-}
-
-
 bool Player::Start()
 {
     // ステートの登録。
@@ -105,21 +106,23 @@ bool Player::Start()
     RegisterState<app::state::PlayerJumpState >(enState_Jump);
     RegisterState<app::state::PlayerFallState >(enState_Fall);
 
-
     // 初期ステートの設定。
     pCurrentState_ = pStateArray_[enState_Idle];
     pCurrentState_->Enter();
 
+    // 移動速度。
+    walkSpeed_ = PlayerStatus::Move::SPEED;
 
-    // アニメーションの設定。
-    SetAnimation();
-    render_.Init("Assets/modelData/unityChan.tkm", animationClip_, EnAnimationClip::animNum, enModelUpAxisY);
-    charaCon_.Init(20.0f, 25.0f, pos_);
+    // モデルの初期化。
+    render = new Character2DRender();
+    render->Init(std::vector<std::string>(PARH_LIST, PARH_LIST + MAX_NUM));
 
+    charaCon_.Init(2.0f, 1.0f, pos_);
     // プレイヤーのステータスを初期化する。
     status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
 
 
+    // プレイヤーの座標を描画。
     posFont_.SetPosition({-600.0f, 300.0f, 0.0f});
     posFont_.SetScale(1.0f);                     // 文字の大きさ
     posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // 白文字
@@ -148,15 +151,39 @@ void Player::Update()
 
     didJumpThisFrame_ = false;
 
+
+    // カメラの状態に応じてOffset回転を取る    
+    CameraOffsetRot();
+
+
     Rotation();
-    render_.SetScale(SCALE);
-    render_.SetPosition(pos_);
-    render_.Update();
+
+    render->SetCurrentIndex(currentIndex);
+    render->SetScale(SCALE);
+    render->SetPosition(pos_);
+    render->Update();
+
+
+
 
     wchar_t text[256];
     // %.1f は「小数点以下1桁まで表示」という意味です
     swprintf_s(text, L"Player Pos\nX: %.1f\nY: %.1f\nZ: %.1f", pos_.x, pos_.y, pos_.z);
     posFont_.SetText(text);
+}
+
+
+void Player::CameraOffsetRot()
+{
+    {
+        const auto cameraType = pCameraManager_->GetCurrentCameraMode();
+
+        if (cameraType == CameraMode::mode2D)
+            offsetRot_.SetRotationY(0.0f);
+
+        else
+            offsetRot_.SetRotationY(-90.0f);
+    }
 }
 
 
@@ -186,26 +213,25 @@ void Player::ApplyMovement()
 
     // 座標のセット。
     charaCon_.SetPosition(pos_);
-    render_.SetPosition(pos_);
+
+    render->SetPosition(pos_);
 }
 
 
 
 void Player::Rotation()
 {
-    Vector3 dir = moveSpeed_;
-
-    if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f)
-    {
-        rot_.SetRotationYFromDirectionXZ(dir);
-        render_.SetRotation(rot_);
-    }
+    rot_ = offsetRot_;
+    render->SetRotation(rot_);
 }
 
 
 void Player::Render(RenderContext& rc)
 {
-    render_.Draw(rc);
+    // キャラモデル。
+    render->Render(rc);
+
+    // 座標表示。    
     posFont_.Draw(rc);
 }
 
@@ -219,3 +245,5 @@ void Player::SetAnimation()
     // ジャンプアニメーション。
     FetchPlayAnimation(EnAnimationClip::animJump, "jump", false);
 }
+
+

@@ -1,10 +1,21 @@
 #pragma once
 
+//// ステージをを識別する列挙型。
+//enum class StageID : uint8_t
+//{
+//    sStage1,
+//    sStage2,
+//    sStage3,
+//    sStageEX,
+//    sInvalid
+//};
+
+
 class IState
 {
 public:
-    IState() {};
-    virtual ~IState() {};
+    IState() =default;
+    virtual ~IState() = default;
 
 
 public:
@@ -16,5 +27,29 @@ public:
     virtual void Exit() = 0;
     // ステート遷移要求処理。
     virtual bool RequestID(uint8_t& request) = 0;
+
+public:
+    // モデルのパスを取得。
+    virtual const std::string InitStage(const std::string& stagename)
+    {
+        std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
+        return Stagepath;
+    };
+
+// ゲッター。
+public:
+    virtual Vector3 GetStageStartPos() const
+    {
+        return startPos_;
+    }
+
+
+protected:
+    ModelRender render_;
+
+    Vector3 startPos_ = Vector3(0.0f, -3.0f, 0.0f);
+    Vector3 initPos_ = Vector3::Zero;
+    PhysicsStaticObject physics_;
+
 };
 

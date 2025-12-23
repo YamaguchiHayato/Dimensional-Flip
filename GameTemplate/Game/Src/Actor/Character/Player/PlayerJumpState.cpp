@@ -4,22 +4,27 @@
 
 struct PlayerStatus
 {
+    // 通常の重力。
     static constexpr auto GLAVITY = 15.0f; // 重力。
 
 
     // 移動速度パラメータ。
     struct Move
     {
-        static constexpr float SPEED = 1125.0f;     // 移動速度アップ
-        static constexpr float JUMP_POWER = 600.0f; // ジャンプ力アップ
+        static constexpr float JUMP_POWER = 150.0f;  // ジャンプ力アップ
+        static constexpr float WALK_SPEED = 100.0f;  // 地上での移動速度。
+        static constexpr float AIR_MOVE_RATE = 0.6f; // 空中で動ける移動倍率。        
     };
 
     // ジャンプ用のパラメータ。
     struct Jump
     {
-        static constexpr float GLAVITY = 2.5f;         // 落下中の重力倍率。
-        static constexpr float CUT = 5.0f;             // ボタンを押した後の重力倍率。。
-        static constexpr float FALLINGSPEED = -600.0f; // 落下速度。
+        // ジャンプ中の重力倍率。
+        static constexpr float GLAVITY = 2.5f;
+        // ボタンを押した後の重力倍率。。
+        static constexpr float CUT = 5.0f;
+        // 落下速度。
+        static constexpr float FALLINGSPEED = -200.0f; 
     };
 };
 
@@ -37,6 +42,25 @@ namespace app
 
         void PlayerJumpState::Update()
         {
+            if (pPlayer_->GetKeyDirection().x < 0.0f)
+                pPlayer_->SetCurrentIndex(1);
+
+            else
+                pPlayer_->SetCurrentIndex(5);
+
+            //Vector3 keyDir = pPlayer_->GetKeyDirection();
+            //if (keyDir.x < 0.0f)
+            //{
+            //    pPlayer_->SetCurrentIndex(1); // 左向き
+            //}
+            //else if (keyDir.x > 0.0f)
+            //{
+            //    pPlayer_->SetCurrentIndex(5); // 右向き
+            //}
+
+            //// 空中での移動処理。
+            //Move(PlayerStatus::Move::AIR_MOVE_RATE);
+
             // ジャンプと重力の更新処理。
             UpdateJumpAndGravity();
 
@@ -116,6 +140,15 @@ namespace app
             pPlayer_->SetPlayerPos(pos);
         }
 
+
+        void PlayerJumpState::Move(float speedRate)
+        {
+            // プレイヤーの入力方向を取得。
+            const Vector3& keyDir = pPlayer_->GetKeyDirection();
+
+            pPlayer_->GetMoveSpeed().x = keyDir.x * PlayerStatus::Move::WALK_SPEED * speedRate;
+            pPlayer_->GetMoveSpeed().z = keyDir.z * PlayerStatus::Move::WALK_SPEED * speedRate;
+        }
     }
 }
 

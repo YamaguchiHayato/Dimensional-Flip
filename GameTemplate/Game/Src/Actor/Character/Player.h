@@ -52,6 +52,7 @@ public:
     void Update() override;
     void Render(RenderContext& rendercontext) override;
 
+    // 全ステート共通で使える移動計算処理。
     bool IsDimensionSwitchAction();
 
     // 敵を踏みつけた際に行うバウンド処理。
@@ -74,7 +75,8 @@ public:
 
     void Rotation();
     void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
-
+    void CameraOffsetRot();
+    void CaluculateMovement();
 
     // セッター。
 public:
@@ -120,10 +122,6 @@ public:
     }
 
 
-    // ステージタイプに合わせてパラメータを設定する
-    void SetStageParam(bool isStageEX);
-
-
     // リスポーン座標の設定。
     inline void SetRespwanPos(const Vector3& pos)
     {
@@ -159,6 +157,19 @@ public:
         respawnFlag_ = flag;
     }
 
+
+    // 現在のモデルインデックスをセット。
+    inline void SetCurrentIndex(uint8_t index)
+    {
+        currentIndex = index;
+    }
+
+
+    // キー入力保持のため設定
+    inline void SetKeyDirection(const Vector3& direction)
+    {
+        keyDirection_ = direction;
+    }
     // ゲッター。
 public:
     // ジャンプ力の取得。
@@ -230,8 +241,9 @@ public:
         return respwanRot_;
     }
 
+    // キー入力方向の取得。 
+    inline Vector3 GetKeyDirection() const { return keyDirection_; }
 
-    // 
  private:
     // アニメーションを取得して再生する関数。
     const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
@@ -254,14 +266,19 @@ public:
     Vector3 pos_ = Vector3::Zero;
     Vector3 respwanPos_ = Vector3::Zero;
     Vector3 forward_ = Vector3::Front;
+    Vector3 keyDirection_ = Vector3::Zero;
+
     Quaternion rot_ = Quaternion::Identity;
     Quaternion respwanRot_ = Quaternion::Identity;
+    Quaternion offsetRot_ = Quaternion::Identity;
+
     FontRender posFont_;
 
 private:
     uint8_t state_;
     // トリガーエリア内フラグ
     uint8_t triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
+    uint8_t currentIndex = 0;
 
     float jumpPower_ = 0.0f;
     float walkSpeed_ = 0.0f;

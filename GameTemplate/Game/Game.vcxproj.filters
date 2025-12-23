@@ -222,6 +222,7 @@
     <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -401,6 +402,7 @@
     <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

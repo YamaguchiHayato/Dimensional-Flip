@@ -4,6 +4,17 @@
 #include "Src/Actor/Character/Player.h"
 #include "Src/Core/CameraManager.h"
 
+
+namespace
+{
+    const auto MAX_TIME = 0.8f;
+
+    struct Move
+    {
+        static constexpr float SPEED = 100.0f; // 移動速度アップ
+    };
+}
+
 namespace app
 {
     namespace state
@@ -17,18 +28,26 @@ namespace app
 
         void PlayerRunState::Update()
         {
-
             // 地面にいるかチェック
             bool isGround = pPlayer_->GetCharacterController().IsOnGround();
 
             if (isGround)
                 pPlayer_->SetCanAirControl(true);
 
+
+            UpdatePlayerMove();
+
+            // 移動計算。
             CalculateRunMovement();
 
+
+            // @TODO : このApplyMovement関数はPlayerクラスに移動させるべきなのか検証。
             ApplyMovement();
 
-            pPlayer_->render_.SetPosition(pPlayer_->GetMoveSpeed());
+            // 移動速度の設定。
+            pPlayer_->GetMoveSpeed().x = pPlayer_->GetMoveSpeed().x = Move::SPEED;
+
+            pPlayer_->render_.SetPosition(pPlayer_->GetPlayerPos());
             pPlayer_->render_.Update();
         }
 
@@ -86,11 +105,17 @@ namespace app
             if (fabsf(stickL.y) < 0.2f)
                 stickL.y = 0.0f;
 
+
+            // キー入力保持。
+            pPlayer_->SetKeyDirection(stickL);
+
+
             // Y軸の速度（重力など）は維持しつつ、XZ速度をリセットして再計算
             Vector3& moveSpeed = pPlayer_->GetMoveSpeed();
             float currentY = moveSpeed.y;
             moveSpeed.x = 0.0f;
             moveSpeed.z = 0.0f;
+
 
             // カメラ情報の取得
             Vector3 camRight = g_camera3D->GetRight();
@@ -99,6 +124,7 @@ namespace app
             camForward.y = 0.0f;
             camRight.Normalize();
             camForward.Normalize();
+
 
             // 視点による軸の補正（2.5D的な挙動のための補正）
             if (fabsf(camForward.z) > fabsf(camForward.x))
@@ -121,8 +147,7 @@ namespace app
             bool isRotatedView = fabsf(camRight.z) > fabsf(camRight.x);
             CameraMode currentMode = pCameraManager->GetCurrentCameraMode();
 
-            float walkSpeed = pPlayer_->GetWalkSpeed();
-
+            auto walkSpeed = pPlayer_->GetWalkSpeed();
             moveSpeed.y = currentY;
 
             Vector3 targetVelocity = (camRight * stickL.x) + (camForward * stickL.y);
@@ -143,6 +168,48 @@ namespace app
             pPlayer_->SetPlayerPos(newPos);
             pPlayer_->GetCharacterController().SetPosition(newPos);
             pPlayer_->GetModelRender().SetPosition(newPos);
+        }
+
+
+        void PlayerRunState::UpdatePlayerMove()
+        {
+            currentTime_ += g_gameTime->GetFrameDeltaTime();
+
+            if (currentTime_ >= 0.4f)
+                currentTime_ = 0.0f;
+
+            if (pPlayer_->GetKeyDirection().x < 0.0f)
+            {
+                if (currentTime_ < 0.1f)
+                    pPlayer_->SetCurrentIndex(2);
+
+                else if (currentTime_ < 0.2f)
+                    pPlayer_->SetCurrentIndex(0);
+
+                else if (currentTime_ < 0.3f)
+                    pPlayer_->SetCurrentIndex(3);
+
+                else if (currentTime_ < 0.4f)
+                    pPlayer_->SetCurrentIndex(0);
+            }
+
+            else
+            {
+                if (currentTime_ < 0.1f)
+                    pPlayer_->SetCurrentIndex(6);
+
+                else if (currentTime_ < 0.2f)
+                    pPlayer_->SetCurrentIndex(4);
+
+                else if (currentTime_ < 0.3f)
+                    pPlayer_->SetCurrentIndex(7);
+
+                else
+                    pPlayer_->SetCurrentIndex(4);
+            }
+
+
+
         }
     }
 }

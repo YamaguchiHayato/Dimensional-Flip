@@ -31,7 +31,7 @@ private:
     inline void SetCameraAspect()
     {
         auto aspect = 16.0 / 9.0f;
-        auto zoomHeight = 220.0f;
+        auto zoomHeight = 15.0f;
 
         g_camera3D->SetHeight(zoomHeight);
         g_camera3D->SetWidth(zoomHeight * aspect);

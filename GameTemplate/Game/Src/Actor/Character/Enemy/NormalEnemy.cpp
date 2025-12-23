@@ -10,13 +10,13 @@ namespace
 }
 
 
+
 namespace app
 {
     namespace enemy
     {
         bool NormalEnemy::Start()
         {
-//            render_.Init("Assets/modelData/enemy/boss.tkm");
             render_.Init("Assets/modelData/enemy/umbrella_yellow.tkm");
 
 
@@ -51,6 +51,9 @@ namespace app
             if (!pPlayer_)
                 return;
 
+
+            // 浮遊移動処理。
+            MoveFloating();
 
             Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
             float distSq = diff.LengthSq();
@@ -117,10 +120,44 @@ namespace app
         }
 
 
+        void NormalEnemy::MoveFloating()
+        {
+            // Sin波で上下移動。
+            angle_ += spped_;
+            float yOffset = sinf(angle_) * range_;
+
+            // 基準の高さ + 浮遊分。
+            pos_.y = initPos_.y + yOffset;
+
+            // 水平移動。
+            if (!pPlayer_)
+                return;
+
+            Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+            diff.y = 0.0f; // Y成分は無視。
+            float distSq = diff.LengthSq();
+
+            if (distSq < 1000.0f * 1000.0f && distSq > 10.0f)
+            {
+                diff.Normalize();
+                pos_ += diff * moveSpeed_;
+
+
+                // 水平移動。
+                initPos_.x = pos_.x;
+                initPos_.z = pos_.z;
+            }
+
+        }
+
+
         void NormalEnemy::InitParam(const SpawnParam& param)
         {
             // 座標を保持。
             pos_ = param.paramPos_;
+
+            // sin波用の基準座標を保持。
+            initPos_ = param.paramPos_;
 
             // 大きさを保持。
             scale_ = param.paramScale;

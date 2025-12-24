@@ -20,9 +20,9 @@ struct PlayerStatus
     struct Jump
     {
         // ジャンプ中の重力倍率。
-        static constexpr float GLAVITY = 2.5f;
+        static constexpr float GLAVITY = 1.5f;
         // ボタンを押した後の重力倍率。。
-        static constexpr float CUT = 5.0f;
+        static constexpr float CUT = 2.5f;
         // 落下速度。
         static constexpr float FALLINGSPEED = -200.0f; 
     };
@@ -35,40 +35,50 @@ namespace app
     {
         void PlayerJumpState::Enter()
         {
-            // ジャンプアニメーション再生。
-            pPlayer_->render_.PlayAnimation(EnAnimationClip::animJump);
+            pPlayer_->SetCurrentIndex(0); // ジャンプアニメーション
         }
 
 
         void PlayerJumpState::Update()
         {
-            if (pPlayer_->GetKeyDirection().x < 0.0f)
-                pPlayer_->SetCurrentIndex(1);
 
-            else
-                pPlayer_->SetCurrentIndex(5);
+            // スティックを離せば MoveSpeed.x は 0 になり、その場に垂直落下します
+            Move(PlayerStatus::Move::AIR_MOVE_RATE);
 
-            //Vector3 keyDir = pPlayer_->GetKeyDirection();
-            //if (keyDir.x < 0.0f)
-            //{
-            //    pPlayer_->SetCurrentIndex(1); // 左向き
-            //}
-            //else if (keyDir.x > 0.0f)
-            //{
-            //    pPlayer_->SetCurrentIndex(5); // 右向き
-            //}
-
-            //// 空中での移動処理。
-            //Move(PlayerStatus::Move::AIR_MOVE_RATE);
-
-            // ジャンプと重力の更新処理。
             UpdateJumpAndGravity();
 
-            // 移動処理。
-            ApplyMovement();
 
-            pPlayer_->render_.SetPosition(pPlayer_->GetMoveSpeed());
-            pPlayer_->render_.Update();
+
+           Vector3 stick;
+           stick.x = g_pad[0]->GetLStickXF();
+           stick.z = g_pad[0]->GetLStickYF() * -1.0f;
+           pPlayer_->SetKeyDirection(stick);
+
+           // 着地判定を先に取る。
+           const bool ground = pPlayer_->GetCharacterController().IsOnGround();
+
+           if (ground && pPlayer_->GetMoveSpeed().y)
+           {
+               // 着地後は水平方向の速度をリセットする。
+               pPlayer_->GetMoveSpeed().x = 0.0f;
+               pPlayer_->GetMoveSpeed().z = 0.0f;
+
+           }
+
+           // アニメーションの向き：入力があるときだけ更新するようにする
+           if (stick.x < -0.01f)
+               pPlayer_->SetCurrentIndex(1); // 左
+           else if (stick.x > 0.01f)
+               pPlayer_->SetCurrentIndex(5); // 右
+           // 入力がないときは向きを変えない（これだけで「勝手に進む感」が減ります）
+
+           pPlayer_->ApplyMovement();
+
+           if (pPlayer_->pRender_)
+           {
+               pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
+               pPlayer_->pRender_->Update();
+           }
         }
 
 
@@ -78,12 +88,19 @@ namespace app
         bool PlayerJumpState::RequestID(uint8_t& request)
         {
             // 地面についていたら
-            if (pPlayer_->GetCharacterController().IsOnGround())
+            if (pPlayer_->GetCharacterController().IsOnGround() && pPlayer_->GetMoveSpeed().y <= 0.0f)
             {
                 // ジャンプが終わったらIdel状態へ移行。
                 request = EnPlayerState::enState_Idle;
                 return true;
             }
+
+            if (pPlayer_->IsRespawn())
+            {
+                request = EnPlayerState::enState_Idle;
+                return true;
+            }
+
             return false;
         }
 

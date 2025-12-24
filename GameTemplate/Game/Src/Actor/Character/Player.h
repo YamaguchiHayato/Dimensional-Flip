@@ -1,4 +1,5 @@
 #pragma once
+#include "Src/Actor/Character/Player/Character2DRender.h"
 
 #include "Src/Actor/Character/IState.h"
 #include "Src/Actor/Character/Status.h"
@@ -44,6 +45,44 @@ class IState;
 class CameraManager;
 class Player : public Character
 {
+private:
+    Player* player_ = nullptr;
+    CameraManager* pCameraManager_ = nullptr;
+    Character2DRender* pRender_ = nullptr;
+    app::status::Status status_;
+
+public:
+    AnimationClip animationClip_[EnAnimationClip::animNum];
+
+    Vector3 diff_ = Vector3::Zero;
+    Vector3 moveSpeed_ = Vector3::Zero;
+    Vector3 pos_ = Vector3::Zero;
+    Vector3 respwanPos_ = Vector3::Zero;
+    Vector3 forward_ = Vector3::Front;
+    Vector3 keyDirection_ = Vector3::Zero;
+
+    Quaternion rot_ = Quaternion::Identity;
+    Quaternion respwanRot_ = Quaternion::Identity;
+    Quaternion offsetRot_ = Quaternion::Identity;
+
+    FontRender posFont_;
+private:
+    uint8_t state_;
+    // トリガーエリア内フラグ
+    uint8_t triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
+    uint8_t currentIndex = 0;
+
+    float jumpPower_ = 0.0f;
+    float walkSpeed_ = 0.0f;
+
+    bool canAirControl_ = false;
+    bool didJumpThisFrame_ = false;
+    bool isPaused_ = false;
+    bool is3DMode_ = false;
+    bool respawnFlag_ = false;
+
+
+
 public:
     Player() = default;
     virtual ~Player() = default;
@@ -76,7 +115,7 @@ public:
     void Rotation();
     void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
     void CameraOffsetRot();
-    void CaluculateMovement();
+    void CheckRespawn();
 
     // セッター。
 public:
@@ -110,8 +149,13 @@ public:
         pos_ = pos;
         // キャラコンを移動。
         charaCon_.SetPosition(pos_);
-        // モデルの移動。
-        render_.SetPosition(pos_);
+
+        if (pRender_)
+        {
+            // モデルの移動。
+            pRender_->SetPosition(pos_);
+
+        }
     }
 
 
@@ -147,7 +191,7 @@ public:
     inline void SetRotation(const Quaternion& rot)
     {
         rot_ = rot;
-        render_.SetRotation(rot_);
+        pRender_->SetRotation(rot_);
     }
 
 
@@ -170,6 +214,7 @@ public:
     {
         keyDirection_ = direction;
     }
+
     // ゲッター。
 public:
     // ジャンプ力の取得。
@@ -244,6 +289,10 @@ public:
     // キー入力方向の取得。 
     inline Vector3 GetKeyDirection() const { return keyDirection_; }
 
+
+//    inline ModelRender& GetModelRender() { return render_; }
+    CharacterController charaCon_;
+
  private:
     // アニメーションを取得して再生する関数。
     const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
@@ -252,74 +301,27 @@ public:
     // アニメーションを格納
     void SetAnimation();
 
-private:
-    Player* player_ = nullptr;
-    CameraManager* pCameraManager_ = nullptr;
-    app::status::Status status_;
-
 
 public:
-    AnimationClip animationClip_[EnAnimationClip::animNum];
-
-    Vector3 diff_ = Vector3::Zero;
-    Vector3 moveSpeed_ = Vector3::Zero;
-    Vector3 pos_ = Vector3::Zero;
-    Vector3 respwanPos_ = Vector3::Zero;
-    Vector3 forward_ = Vector3::Front;
-    Vector3 keyDirection_ = Vector3::Zero;
-
-    Quaternion rot_ = Quaternion::Identity;
-    Quaternion respwanRot_ = Quaternion::Identity;
-    Quaternion offsetRot_ = Quaternion::Identity;
-
-    FontRender posFont_;
-
-private:
-    uint8_t state_;
-    // トリガーエリア内フラグ
-    uint8_t triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
-    uint8_t currentIndex = 0;
-
-    float jumpPower_ = 0.0f;
-    float walkSpeed_ = 0.0f;
-
-    bool canAirControl_ = false;
-    bool didJumpThisFrame_ = false;
-    bool isPaused_ = false;
-    bool is3DMode_ = false;
-    bool respawnFlag_ = false;
-
-
-
-
-
-
-    //////////////////////////////////////////////////
-public:
+    // ステートマシン用のフレンド宣言
     friend app::state::PlayerIdleState;
     friend app::state::PlayerRunState;
     friend app::state::PlayerJumpState;
     friend app::state::PlayerFallState;
 
-public:
-    ModelRender render_;
-    CharacterController charaCon_;
-
-private:
 private:
     // ステートマシン用
     IState* pCurrentState_ = nullptr;
     IState* pNextState = nullptr;
     IState* pStateArray_[enState_Num];
-    // std::map<uint8_t,IState*> pStateArray_;
 
 public:
-    // モデルレンダーのゲッター
-    inline ModelRender& GetModelRender() { return render_; }
     // キャラクターコントローラーのゲッター
     inline CharacterController& GetCharacterController() { return charaCon_; }
     // 移動速度のゲッター
     inline Vector3& GetMoveSpeed() { return moveSpeed_; }
+
+    inline Character2DRender* GetCharacter2DRender() { return pRender_; }
 
 public:
     /**

@@ -38,7 +38,6 @@ namespace app
         private:
             float currentTime_ = 0.0f;
         };
-
     }
     
 }

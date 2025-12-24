@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "Src/Collision/NonCopyable.h"
 
 class Character2DRender:public Noncopyable
 {
@@ -34,17 +35,17 @@ public:
 
 public:
     /** 座標取得 */
-    const Vector3& GetPosition() const { m_position; }
+    const Vector3& GetPosition() const {return m_position; }
     /** 座標設定 */
     void SetPosition(const Vector3& position) { m_position = position; }
 
     /** 拡縮取得 */
-    const Vector3& GetScale() const { m_scale; }
+    const Vector3& GetScale() const {return m_scale; }
     /** 拡縮設定 */
     void SetScale(const Vector3& scale) { m_scale = scale; }
 
     /** 回転取得 */
-    const Quaternion& GetRotation() const { m_rotation; }
+    const Quaternion& GetRotation() const {return m_rotation; }
     /** 回転設定 */
     void SetRotation(const Quaternion& rotation) { m_rotation = rotation; }
 

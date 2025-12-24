@@ -114,8 +114,8 @@ bool Player::Start()
     walkSpeed_ = PlayerStatus::Move::SPEED;
 
     // モデルの初期化。
-    render = new Character2DRender();
-    render->Init(std::vector<std::string>(PARH_LIST, PARH_LIST + MAX_NUM));
+    pRender_ = new Character2DRender();
+    pRender_->Init(std::vector<std::string>(PARH_LIST, PARH_LIST + MAX_NUM));
 
     charaCon_.Init(2.0f, 1.0f, pos_);
     // プレイヤーのステータスを初期化する。
@@ -127,6 +127,8 @@ bool Player::Start()
     posFont_.SetScale(1.0f);                     // 文字の大きさ
     posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // 白文字
 
+
+    SetRespwanPos(pos_);
     return true;
 }
 
@@ -147,24 +149,24 @@ void Player::Update()
         pCurrentState_->Enter();
     }
     pCurrentState_->Update();
+
+    if (pRender_)
+    {
+        pRender_->SetCurrentIndex(currentIndex);
+        pRender_->SetScale(SCALE);
+        pRender_->Update();
+    }
     /////////////////////////////////
 
     didJumpThisFrame_ = false;
 
-
     // カメラの状態に応じてOffset回転を取る    
     CameraOffsetRot();
 
+    CheckRespawn();
 
+    // プレイヤーの回転をセット。
     Rotation();
-
-    render->SetCurrentIndex(currentIndex);
-    render->SetScale(SCALE);
-    render->SetPosition(pos_);
-    render->Update();
-
-
-
 
     wchar_t text[256];
     // %.1f は「小数点以下1桁まで表示」という意味です
@@ -205,7 +207,6 @@ bool Player::IsDimensionSwitchAction()
 }
 
 
-
 void Player::ApplyMovement()
 {
     // 移動処理。
@@ -214,7 +215,10 @@ void Player::ApplyMovement()
     // 座標のセット。
     charaCon_.SetPosition(pos_);
 
-    render->SetPosition(pos_);
+
+    if (pRender_)
+        pRender_->SetPosition(pos_);
+
 }
 
 
@@ -222,14 +226,14 @@ void Player::ApplyMovement()
 void Player::Rotation()
 {
     rot_ = offsetRot_;
-    render->SetRotation(rot_);
+    pRender_->SetRotation(rot_);
 }
 
 
 void Player::Render(RenderContext& rc)
 {
     // キャラモデル。
-    render->Render(rc);
+    pRender_->Render(rc);
 
     // 座標表示。    
     posFont_.Draw(rc);
@@ -247,3 +251,14 @@ void Player::SetAnimation()
 }
 
 
+void Player::CheckRespawn()
+{
+    const auto line = -100.0f;
+
+    if (pos_.y < line)
+    {
+        SetPlayerPos(respwanPos_);
+        moveSpeed_ = Vector3::Zero;
+        respawnFlag_ = true;
+    }
+}

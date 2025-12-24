@@ -22,7 +22,7 @@ namespace app
         void PlayerRunState::Enter()
         {
             // 走りアニメーション再生
-            pPlayer_->GetModelRender().PlayAnimation(EnAnimationClip::animRun);
+            pPlayer_->SetCurrentIndex(0); 
         }
 
 
@@ -41,14 +41,10 @@ namespace app
             CalculateRunMovement();
 
 
-            // @TODO : このApplyMovement関数はPlayerクラスに移動させるべきなのか検証。
-            ApplyMovement();
+            pPlayer_->ApplyMovement();
 
-            // 移動速度の設定。
-            pPlayer_->GetMoveSpeed().x = pPlayer_->GetMoveSpeed().x = Move::SPEED;
-
-            pPlayer_->render_.SetPosition(pPlayer_->GetPlayerPos());
-            pPlayer_->render_.Update();
+            pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
+            pPlayer_->pRender_->Update();
         }
 
 
@@ -57,32 +53,37 @@ namespace app
 
         bool PlayerRunState::RequestID(uint8_t& request)
         {
-            Vector3 speed = pPlayer_->GetMoveSpeed();
-
-            Vector3 stick;
-            stick.x = g_pad[0]->GetLStickXF();
-            stick.y = g_pad[0]->GetLStickYF();
-
-            // 待機ステート遷移
-            if (fabsf(stick.x) < 0.20f && fabsf(stick.y) < 0.20f)
-            {
-                request = EnPlayerState::enState_Idle;
-                return true;
-            }
-
-            // Aボタンでジャンプ
+            // 1. まずジャンプをチェック
             if (g_pad[0]->IsTrigger(enButtonA))
             {
                 request = EnPlayerState::enState_Jump;
                 return true;
             }
 
-            // 地面から離れたら落下ステートへ
-            if (!pPlayer_->GetCharacterController().IsOnGround())
+
+            // 2. 次に「地面から離れたか」をチェック（タスク：OnGroundがFalseの時に落下へ）
+            if (!pPlayer_->charaCon_.IsOnGround())
             {
                 request = EnPlayerState::enState_Fall;
                 return true;
             }
+
+
+            // 3. 入力がなくなったら待機へ
+            Vector3 stick = {g_pad[0]->GetLStickXF(), 0.0f, g_pad[0]->GetLStickYF()};
+            if (fabsf(stick.x) < 0.20f && fabsf(stick.z) < 0.20f)
+            {
+                request = EnPlayerState::enState_Idle;
+                return true;
+            }
+
+            if (pPlayer_->IsRespawn())
+            {
+                request = EnPlayerState::enState_Idle;
+                return true;
+            }
+
+
             return false;
         }
 
@@ -167,7 +168,6 @@ namespace app
             // 座標のセット。
             pPlayer_->SetPlayerPos(newPos);
             pPlayer_->GetCharacterController().SetPosition(newPos);
-            pPlayer_->GetModelRender().SetPosition(newPos);
         }
 
 

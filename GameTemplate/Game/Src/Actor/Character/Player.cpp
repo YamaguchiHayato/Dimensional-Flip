@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "DimensionManager.h"
 
 // キャラクタークラス。
 #include "Src/Actor/Character/Player.h"
@@ -138,6 +139,12 @@ void Player::Update()
     if (isPaused_)
         return;
 
+
+    if (IsDimensionSwitchAction())
+        app::core::DimensionManager::GetInstance()->FlipDimension(pCameraManager_,app::collision::CollisionManager::GetInstance());
+    
+
+
     ////////// 更新処理。///////////
     _ASSERT(pCurrentState_ != nullptr);
 
@@ -163,13 +170,14 @@ void Player::Update()
     // カメラの状態に応じてOffset回転を取る    
     CameraOffsetRot();
 
+    // リスポーンチェック。
     CheckRespawn();
 
     // プレイヤーの回転をセット。
     Rotation();
 
+    // 座標表示の更新。
     wchar_t text[256];
-    // %.1f は「小数点以下1桁まで表示」という意味です
     swprintf_s(text, L"Player Pos\nX: %.1f\nY: %.1f\nZ: %.1f", pos_.x, pos_.y, pos_.z);
     posFont_.SetText(text);
 }
@@ -199,9 +207,13 @@ bool Player::IsDimensionSwitchAction()
     auto currentMode = pCameraManager_->GetCurrentCameraMode();
 
     // カメラトリガー内かつ 2.5Dモードのときかつ Bボタンが押されたら。
-    if (isInTriggerArea && currentMode == CameraMode::mode2D && g_pad[0]->IsTrigger(enButtonB))
+    if (isInTriggerArea && g_pad[0]->IsTrigger(enButtonB))
     {
-        return true;
+        // 2Dまたは3Dの時のみ切り替えを許可（ボス戦中などは防ぐ）
+        if (currentMode == CameraMode::mode2D || currentMode == CameraMode::mode3D)
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -222,7 +234,6 @@ void Player::ApplyMovement()
         pRender_->SetPosition(pos_);
 
 }
-
 
 
 void Player::Rotation()

@@ -13,7 +13,6 @@
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/Star.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
-#include "Src/Actor/Stage/Gimmick/Box.h"
 #include "Src/Camera/Dimensiontrigger.h"
 
 namespace
@@ -124,14 +123,12 @@ Stage2::~Stage2()
 {
     for (auto* p : lDimensionTrigger_){ DeleteGO(p); }
     for (auto* p : lRotationFool_){ DeleteGO(p); }
-    for (auto* p : lBox_){ DeleteGO(p); }
     for (auto* p : lStar_){ DeleteGO(p); }
     for (auto* p : lTrackingEnemy_){ DeleteGO(p);}
     for (auto* p : lThwomp_){ DeleteGO(p); }
 
     lDimensionTrigger_.clear();
     lRotationFool_.clear();
-    lBox_.clear();
     lStar_.clear();
     lTrackingEnemy_.clear();
     lThwomp_.clear();
@@ -157,8 +154,6 @@ bool Stage2::Start()
 
     // ギミック生成。
     RotationFoolNewGO();
-    // ボックス(足場)の生成。
-    BoxInstance();
     // 敵生成。
     // TrackingInstance();
     // 回転敵の生成。
@@ -227,22 +222,6 @@ void Stage2::RotationFoolNewGO()
 
 }
 
-void Stage2::BoxInstance()
-{
-    // 設置座標。
-    std::vector<Vector3> BoxPosList =
-	{
-        GimmickParam::Box::Pos::Pos1,
-    };
-
-    for (size_t i = 0; i < BoxPosList.size(); i++)
-    {
-        pBox_ = NewGO<Box>(0, "Box");
-        pBox_->SetPos(BoxPosList[i]);
-
-        lBox_.push_back(pBox_);
-    }
-}
 
 void Stage2::TrackingInstance()
 {

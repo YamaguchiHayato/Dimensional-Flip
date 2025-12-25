@@ -33,7 +33,8 @@ void CameraManager::Update()
 
     pCameraStrategy_->Update();
 
-    ChangeCamera();
+    // カメラモードの切り替え要求をチェックs
+//    ChangeCamera();
 }
 
 

@@ -104,9 +104,6 @@
     <ClCompile Include="Src\Scene\LoadingScene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp">
-      <Filter>Src\Actor\Stage\Gimmick</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClCompile>
@@ -206,7 +203,6 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
@@ -223,6 +219,10 @@
     <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
+    <ClCompile Include="Src\Collision\NonCopyable.cpp" />
+    <ClCompile Include="Src\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
+    <ClCompile Include="DimensionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -283,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="Src\Scene\LoadingScene.h">
       <Filter>Src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h">
-      <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
@@ -386,7 +383,6 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h">
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
@@ -403,6 +399,10 @@
     <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
+    <ClInclude Include="Src\Collision\NonCopyable.h" />
+    <ClInclude Include="Src\Collision\CollisionManager.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
+    <ClInclude Include="DimensionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

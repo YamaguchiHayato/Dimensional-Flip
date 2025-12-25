@@ -6,7 +6,6 @@ namespace
     const Vector3 StartPos(98.077f, 140.0f,-60.0f);
 }
 
-class Box;
 class DimensionTrigger;
 class RotationFool;
 class Player;
@@ -52,7 +51,6 @@ private:
     inline void ThwompInstance();           // トゥワンプ型敵の生成。
     // ギミック。
     inline void RotationFoolNewGO();        // 回転トリック。
-    inline void BoxInstance();              // 箱モデルの生成。
     inline void DimensionTriggerInstance(); // トリガーモデルの生成。
     inline void StarInstance();
 private:
@@ -60,7 +58,6 @@ private:
     // ギミック。
     DimensionTrigger* pDimensionTrigger_ = nullptr;
     RotationFool* pRotationFool_ = nullptr;
-    Box* pBox_ = nullptr;
     Star* pStar_ = nullptr;
     app::enemy::TrackingEnemy* pTrackingEnemy_ = nullptr;
     app::enemy::Thwomp* pThwomp_ = nullptr;
@@ -69,7 +66,6 @@ private:
     // リスト。
     std::vector<DimensionTrigger*> lDimensionTrigger_;
     std::vector<RotationFool*> lRotationFool_;
-    std::vector<Box*> lBox_;
     std::vector<Star*> lStar_;
     std::vector<app::enemy::TrackingEnemy*> lTrackingEnemy_;
     std::vector<app::enemy::Thwomp*> lThwomp_;

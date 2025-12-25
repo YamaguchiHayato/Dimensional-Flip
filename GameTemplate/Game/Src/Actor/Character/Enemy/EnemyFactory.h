@@ -19,6 +19,10 @@ namespace app
 {
     namespace enemy
     {
+        using CreateFn = std::vector<IEnemy*> (*) (const Vector3&);
+
+
+
         class IEnemy;
         class EnemyFactory
         {
@@ -29,7 +33,7 @@ namespace app
 
 
             // 敵を生成するメソッド。
-            static IEnemy* CreateEnemy(EnemyType enemyType, const Vector3& pos);
+            static std::vector<IEnemy*>CreateEnemy(EnemyType enemyType, const Vector3& pos);
         };
     }
 }

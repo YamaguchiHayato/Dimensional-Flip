@@ -27,7 +27,7 @@ namespace app
 
 
                 // デフォルト値を設定。
-                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3::One, float radius = -1.0f, bool flag = true)
+                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3(0.5f, 0.5f, 0.5f), float radius = -1.0f, bool flag = true)
                     : paramPos_(pos), paramScale(scale), paramCollision(radius), paramFlag(flag)
                 {
                 }

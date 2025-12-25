@@ -224,6 +224,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DelayedEffect.cpp" />
+    <ClCompile Include="DimensionManager.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
@@ -243,7 +244,6 @@
     <ClCompile Include="Src\Actor\Character\Player\PlayerJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerRunState.cpp" />
     <ClCompile Include="Src\Actor\Character\Status.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Box.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
@@ -263,6 +263,8 @@
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp" />
+    <ClCompile Include="Src\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Src\Collision\NonCopyable.cpp" />
     <ClCompile Include="Src\Core\CameraManager.cpp" />
     <ClCompile Include="Src\Core\Game.cpp" />
     <ClCompile Include="Src\Core\SceneManager.cpp" />
@@ -302,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
+    <ClInclude Include="DimensionManager.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -321,7 +324,6 @@
     <ClInclude Include="Src\Actor\Character\Player\PlayerJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Status.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Box.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
@@ -341,6 +343,8 @@
     <ClInclude Include="Src\Camera\ICameraStrategy.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Camera\StageEXCameraStrategy.h" />
+    <ClInclude Include="Src\Collision\CollisionManager.h" />
+    <ClInclude Include="Src\Collision\NonCopyable.h" />
     <ClInclude Include="Src\Core\CameraManager.h" />
     <ClInclude Include="Src\Core\Game.h" />
     <ClInclude Include="Src\Core\SceneManager.h" />

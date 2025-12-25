@@ -10,7 +10,7 @@ namespace app
         {
         public:
             Wall() = default;
-            virtual ~Wall() = default;
+            virtual ~Wall();
 
             bool Start();
             void Update();
@@ -42,7 +42,7 @@ namespace app
 
             Vector3 pos_;
             Vector3 initPos_;
-
+            Vector3 scale_ = Vector3(0.1f, 0.1f, 0.1f);
             PhysicsStaticObject wallPhysics_;
             Quaternion rot_;
 

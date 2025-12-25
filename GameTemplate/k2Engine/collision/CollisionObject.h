@@ -7,6 +7,8 @@
 #include "BulletCollision/CollisionShapes/btSphereShape.h"
 #include "LinearMath/btDefaultMotionState.h"
 
+#include "../../Game/Src/Collision/CollisionManager.h"
+
 namespace nsK2Engine {
 	/// <summary>
 	/// 他のコリジョンと当たり判定を行うクラス。
@@ -18,6 +20,35 @@ namespace nsK2Engine {
 		~CollisionObject();
 		bool Start();
 		void Update();
+
+		// セッター。
+		void SetCollisionProperty(app::collision::CollisionProperty prop)
+		{
+			property_ = prop;
+		}
+
+
+		void OnDimensionChanged(app::collision::DimensionMode newMode)
+		{
+			bool shouldEnable = false;
+
+			switch (property_)
+			{
+			case app::collision::CollisionProperty::AlwaysSolid:
+				shouldEnable = true;
+				break;
+			case app::collision::CollisionProperty::SolidOnly2D:
+				shouldEnable = (newMode == app::collision::DimensionMode::dim2D);
+				break;
+			case app::collision::CollisionProperty::SolidOnly3D:
+				shouldEnable = (newMode == app::collision::DimensionMode::dim3D);
+				break;
+			} // ここで switch を閉じる
+
+			// 物理的な当たり判定の有効・無効を設定（必ず switch の外で呼ぶ）
+			SetIsEnable(shouldEnable);
+		}
+
 		/// <summary>
 	    /// ボックス形状のゴーストオブジェクトを作成。
 	    /// </summary>
@@ -233,6 +264,8 @@ namespace nsK2Engine {
 			return m_isEnable;
 		}
 	private:
+		app::collision::CollisionProperty property_ = app::collision::CollisionProperty::AlwaysSolid;
+
 		btRigidBody* btRigidBody_ = nullptr; // 動的な剛体(Rigidbody)。
 		Quaternion rot_ = Quaternion::Identity;	//回転。
 		Vector3 pos_ = Vector3::Zero;		//座標。
@@ -368,6 +401,9 @@ namespace nsK2Engine {
 			}
 		}
 	private:
+
+
+
 		std::vector<CollisionObject*>		m_collisionObjectVector;
 		std::vector<CollisionObject*>		m_findsCollisionObjectVector;
 		std::vector<CollisionObject*>		m_findMatchForwardNameCollisionObjectVector;

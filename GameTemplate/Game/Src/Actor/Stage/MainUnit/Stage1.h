@@ -1,6 +1,8 @@
 #pragma once
-#include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Stage/IStage.h"
+
+#include "Src/Actor/Character/Enemy/IEnemy.h"
+#include "Src/Actor/Character/Enemy/EnemyFactory.h"
 
 // ギミック。
 class JumpPad;
@@ -26,10 +28,15 @@ class Stage1 : public IStage
 public:
 	Stage1() = default;
 	virtual ~Stage1();
+
+
+public:
 	bool Start()override;
 	void Update()override;
 	void Render(RenderContext & rc)override;
 
+
+public:
     // Playerがカメラアクションをしたかチェックする関数。
     void CheckCameraAction();
 
@@ -47,7 +54,9 @@ private:
     inline void DimensionTriggerNewGO(); // カメラトリガー。
     inline void RotationFoolNewGO();     // 回転トリック。
     inline void WallCreateInstance();    // 壁インスタンス生成。
-    inline void NormalEnemyCreateInstance();      // ノーマルエネミー。
+
+    // 敵生成。
+    void CreateNormalEnemy();
 
 public:
     inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 20.0f, 0.0f); }
@@ -71,7 +80,6 @@ private:
     std::vector<DimensionTrigger*> lDimensionTrigger_;
     std::vector<RotationFool*> lRotationFool_;
     std::vector<app::stage::Wall*> lWallInstance_;
-    std::vector<app::enemy::NormalEnemy*> lNormalEnemy_;
 
     // 敵生成リスト。
     std::vector<app::enemy::IEnemy*> lEnemySpawnList_;

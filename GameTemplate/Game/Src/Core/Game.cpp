@@ -32,7 +32,6 @@ static GameSoundList StageToBgm(StageID id)
     default:
         return GameSoundList_BGM_Stage1;
     }
-
 }
 
 
@@ -103,14 +102,15 @@ namespace app
             nextStageID_ = StageID::sInvalid;
             pLoadingScene_ = nullptr;
 
+
             // Playerの初期位置設定。
-            Vector3 startPos = StageManager::GetInstance()->GetStageStartPos();
-            pPlayer_->SetPlayerPos(startPos);
+//            pPlayer_->SetPlayerPos(Vector3::Zero);
+            pPlayer_->SetPlayerPos(Vector3(800.0f, 0.0f, 0.0f));
            
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
-        //    PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+            //  PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }

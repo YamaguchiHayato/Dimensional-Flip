@@ -5,26 +5,25 @@
 struct PlayerStatus
 {
     // 通常の重力。
-    static constexpr auto GLAVITY = 15.0f; // 重力。
-
+    static constexpr auto GLAVITY = 8.0f; // 重力。
 
     // 移動速度パラメータ。
     struct Move
     {
-        static constexpr float JUMP_POWER = 150.0f;  // ジャンプ力アップ
-        static constexpr float WALK_SPEED = 100.0f;  // 地上での移動速度。
-        static constexpr float AIR_MOVE_RATE = 0.6f; // 空中で動ける移動倍率。        
+        static constexpr auto JUMP_POWER = 150.0f;  // ジャンプ力アップ
+        static constexpr auto WALK_SPEED = 100.0f;  // 地上での移動速度。
+        static constexpr auto AIR_MOVE_RATE = 0.7f; // 空中で動ける移動倍率。        
     };
 
     // ジャンプ用のパラメータ。
     struct Jump
     {
         // ジャンプ中の重力倍率。
-        static constexpr float GLAVITY = 1.5f;
+        static constexpr auto GLAVITY = 1.2f;
         // ボタンを押した後の重力倍率。。
-        static constexpr float CUT = 2.5f;
+        static constexpr auto CUT = 2.0f;
         // 落下速度。
-        static constexpr float FALLINGSPEED = -200.0f; 
+        static constexpr float FALLINGSPEED = -200.0f;
     };
 };
 
@@ -36,51 +35,79 @@ namespace app
         void PlayerJumpState::Enter()
         {
             pPlayer_->SetCurrentIndex(0); // ジャンプアニメーション
+
+            // ステートに遷移した瞬間にジャンプの初速を与える。
+            pPlayer_->GetMoveSpeed().y = PlayerStatus::Move::JUMP_POWER;
+            pPlayer_->SetJumpedThisFrame(true);
         }
 
 
-        void PlayerJumpState::Update()
+void PlayerJumpState::Update()
         {
+            // 1. スティック入力の取得
+            Vector3 stick;
+            stick.x = g_pad[0]->GetLStickXF();
+            stick.y = g_pad[0]->GetLStickYF();
 
-            // スティックを離せば MoveSpeed.x は 0 になり、その場に垂直落下します
+            // 2. カメラの向きに基づいた軸補正（斜め移動防止）
+            Vector3 camRight = g_camera3D->GetRight();
+            Vector3 camForward = g_camera3D->GetForward();
+            camRight.y = 0.0f;
+            camForward.y = 0.0f;
+            camRight.Normalize();
+            camForward.Normalize();
+
+            // 視点による軸の補正（2D/3Dどちらでもステージの軸にスナップさせる）
+            if (fabsf(camForward.z) > fabsf(camForward.x))
+            {
+                // Z軸主体の移動（X軸が横）
+                camForward.x = 0.0f;
+                camForward.z = (camForward.z > 0.0f) ? 1.0f : -1.0f;
+                camRight.z = 0.0f;
+                camRight.x = (camRight.x > 0.0f) ? 1.0f : -1.0f;
+            }
+            else
+            {
+                // X軸主体の移動（Z軸が横）
+                camForward.z = 0.0f;
+                camForward.x = (camForward.x > 0.0f) ? 1.0f : -1.0f;
+                camRight.x = 0.0f;
+                camRight.z = (camRight.z > 0.0f) ? 1.0f : -1.0f;
+            }
+
+            // 3. 移動ベクトルの合成
+            // 左右移動（stick.x）は常に適用
+            Vector3 moveDir = camRight * stick.x;
+
+            // 3Dモードの時のみ、奥行き移動（stick.y）を許可
+            if (pPlayer_->GetCameraManager()->GetCurrentCameraMode() != CameraMode::mode2D)
+            {
+                moveDir += camForward * stick.y;
+            }
+
+            // 計算した方向をプレイヤーにセット（Move関数で使用される）
+            pPlayer_->SetKeyDirection(moveDir);
+
+            // 4. 移動計算・重力計算
             Move(PlayerStatus::Move::AIR_MOVE_RATE);
-
             UpdateJumpAndGravity();
 
+            // 5. アニメーションの向き更新（入力の正負で判定）
+            if (stick.x < -0.01f)
+                pPlayer_->SetCurrentIndex(1); // 左向き
+            else if (stick.x > 0.01f)
+                pPlayer_->SetCurrentIndex(5); // 右向き
 
+            // 6. 物理の実行（Player.cppの共通処理を呼ぶ）
+            pPlayer_->ApplyMovement();
 
-           Vector3 stick;
-           stick.x = g_pad[0]->GetLStickXF();
-           stick.z = g_pad[0]->GetLStickYF() * -1.0f;
-           pPlayer_->SetKeyDirection(stick);
-
-           // 着地判定を先に取る。
-           const bool ground = pPlayer_->GetCharacterController().IsOnGround();
-
-           if (ground && pPlayer_->GetMoveSpeed().y)
-           {
-               // 着地後は水平方向の速度をリセットする。
-               pPlayer_->GetMoveSpeed().x = 0.0f;
-               pPlayer_->GetMoveSpeed().z = 0.0f;
-
-           }
-
-           // アニメーションの向き：入力があるときだけ更新するようにする
-           if (stick.x < -0.01f)
-               pPlayer_->SetCurrentIndex(1); // 左
-           else if (stick.x > 0.01f)
-               pPlayer_->SetCurrentIndex(5); // 右
-           // 入力がないときは向きを変えない（これだけで「勝手に進む感」が減ります）
-
-           pPlayer_->ApplyMovement();
-
-           if (pPlayer_->pRender_)
-           {
-               pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
-               pPlayer_->pRender_->Update();
-           }
+            // 7. 描画位置の同期
+            if (pPlayer_->pRender_)
+            {
+                pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
+                pPlayer_->pRender_->Update();
+            }
         }
-
 
         void PlayerJumpState::Exit() {}
 
@@ -107,55 +134,35 @@ namespace app
 
         void PlayerJumpState::UpdateJumpAndGravity()
         {
+            Vector3& speed = pPlayer_->GetMoveSpeed();
             const bool isGround = pPlayer_->GetCharacterController().IsOnGround();
 
-            // --- 地面上での処理 ---
-            if (isGround)
+            // 接地中のリセット
+            if (isGround && speed.y <= 0.0f)
             {
-                // 地面にいる間は落下速度をリセット
-                if (pPlayer_->GetMoveSpeed().y < 0.0f)
-                    pPlayer_->GetMoveSpeed().y = 0.0f;
-
-                // Aボタンを押した瞬間だけジャンプ開始
-                if (g_pad[0]->IsTrigger(enButtonA))
-                {
-                    pPlayer_->GetMoveSpeed().y = pPlayer_->GetMoveSpeed().y = PlayerStatus::Move::JUMP_POWER;
-                    pPlayer_->SetJumpedThisFrame(true);
-                }
+                speed.y = 0.0f;
+                return;
             }
 
-            // 地上かつ完全停止中のときは重力をかけない（勝手に動かない）
-            if (isGround && pPlayer_->GetMoveSpeed().y <= 0.0f)
-                return;
-
-            if (pPlayer_->GetMoveSpeed().y > 0.0f)
+            // 【修正】deltaTimeを掛けずに、一定の値を引く方式に戻します
+            if (speed.y > 0.0f)
             {
                 // 上昇中
-                // ジャンプボタンを離したらジャンプを早めに切る（低いジャンプ）
                 if (!g_pad[0]->IsPress(enButtonA))
-                    // ジャンプカット時は強めの重力
-                    pPlayer_->GetMoveSpeed().y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
-
+                    speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
                 else
-                    // 通常上昇中は普通の重力
-                    pPlayer_->GetMoveSpeed().y -= PlayerStatus::GLAVITY;
+                    speed.y -= PlayerStatus::GLAVITY;
             }
             else
-                // 下降中：落下中の重力を強める
-                pPlayer_->GetMoveSpeed().y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
+            {
+                // 下降中
+                speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
+            }
 
-            // 落下速度の制限（下向きがマイナス）
-            if (pPlayer_->GetMoveSpeed().y < PlayerStatus::Jump::FALLINGSPEED)
-                pPlayer_->GetMoveSpeed().y = PlayerStatus::Jump::FALLINGSPEED;
+            if (speed.y < PlayerStatus::Jump::FALLINGSPEED)
+                speed.y = PlayerStatus::Jump::FALLINGSPEED;
         }
 
-
-        void PlayerJumpState::ApplyMovement()
-        {
-            const Vector3 pos = pPlayer_->GetCharacterController().Execute(pPlayer_->GetMoveSpeed(), 1.0f / 150.0f);
-
-            pPlayer_->SetPlayerPos(pos);
-        }
 
 
         void PlayerJumpState::Move(float speedRate)

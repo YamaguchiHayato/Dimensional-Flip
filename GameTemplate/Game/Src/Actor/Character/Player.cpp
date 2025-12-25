@@ -209,8 +209,10 @@ bool Player::IsDimensionSwitchAction()
 
 void Player::ApplyMovement()
 {
+    auto ficedTime = 1.0f / 150.0f;
+
     // 移動処理。
-    pos_ = charaCon_.Execute(moveSpeed_, 1.0f / 150.0f);
+    pos_ = charaCon_.Execute(moveSpeed_, ficedTime);
 
     // 座標のセット。
     charaCon_.SetPosition(pos_);
@@ -262,3 +264,5 @@ void Player::CheckRespawn()
         respawnFlag_ = true;
     }
 }
+
+

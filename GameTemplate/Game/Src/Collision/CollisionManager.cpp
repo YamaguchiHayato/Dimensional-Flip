@@ -59,5 +59,29 @@ namespace app
             bool enable = TABLE[index](currentMode_);
             entry.pObj->SetIsEnable(enable);
         }
+
+
+        void CollisionManager::RegisterObject(nsK2Engine::CollisionObject* obj, CollisionProperty prop)
+        {
+            if (!obj)
+                return;
+
+
+            // 既に追加されているか確認する。
+            auto it = std::find_if(pObserver_.begin(), pObserver_.end(),
+                [obj](const CollisionEntry& e) { return e.pObj == obj; });
+
+            // 存在確認。
+            if (it != pObserver_.end())
+                // 既に存在する場合はプロパティだけ更新
+                it->property_ = prop;
+            else
+                // 新規登録
+                pObserver_.push_back({prop, obj});
+
+
+            // 登録直後に状態を適用。
+            ApplyCollisionState(pObserver_.back());
+        }
     } 
 } 

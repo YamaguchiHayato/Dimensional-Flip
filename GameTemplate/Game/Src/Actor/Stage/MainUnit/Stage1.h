@@ -57,6 +57,7 @@ private:
 
     // 敵生成。
     void CreateNormalEnemy();
+    void CreateTrackingEnemy();
 
 public:
     inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 20.0f, 0.0f); }

@@ -249,7 +249,7 @@ void Player::Render(RenderContext& rc)
     pRender_->Render(rc);
 
     // 座標表示。    
-    posFont_.Draw(rc);
+//    posFont_.Draw(rc);
 }
 
 

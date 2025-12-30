@@ -104,8 +104,8 @@ namespace app
 
 
             // Playerの初期位置設定。
-            pPlayer_->SetPlayerPos(Vector3::Zero);
-//            pPlayer_->SetPlayerPos(Vector3(780.0f, 0.0f, 0.0f));
+//            pPlayer_->SetPlayerPos(Vector3::Zero);
+            pPlayer_->SetPlayerPos(Vector3(780.0f, 0.0f, 0.0f));
            
             InitSkyCube();
 

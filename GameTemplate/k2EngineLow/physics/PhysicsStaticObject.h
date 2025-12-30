@@ -57,6 +57,8 @@ namespace nsK2EngineLow {
 			btTrans.setOrigin(btPos);
 		}
 
+
+
 	private:
 		MeshCollider m_meshCollider;		//メッシュコライダー。
 		RigidBody m_rigidBody;				//剛体。

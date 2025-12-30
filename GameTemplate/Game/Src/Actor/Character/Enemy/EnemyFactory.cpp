@@ -22,28 +22,53 @@ namespace app
         std::vector<IEnemy*> CreateNormal(const Vector3& pos)
         {
             std::vector<IEnemy*> spawnedEnemies;
-            const uint8_t num = 3;
+
+            const float rectW = 25.0f;  // 壁の内側の「横幅」(X方向)  ※壁の厚みや内側幅
+            const float rectD = 25.0f; // 壁の内側の「奥行き」(Z方向)
+
+            const float marginX = 20.0f; // 壁から内側へ寄せる量（X）
+            const float marginZ = 20.0f; // 壁から内側へ寄せる量（Z）
+
+            const float desiredSpacingX =  10.0f; // “狙い”の密度（小さいほど密集）
+            const float desiredSpacingZ =  10.0f;
+
+            // 使える範囲
+            const float usableW = rectW - marginX * 2.0f;
+            const float usableD = rectD - marginZ * 2.0f;
+
+            // 個数を決める（最低1）
+            int nx = 6;
+            int nz = 6;
+            if (usableW > 0.0f)
+                nx = static_cast<int>(usableW / desiredSpacingX) + 1;
+            if (usableD > 0.0f)
+                nz = static_cast<int>(usableD / desiredSpacingZ) + 1;
+            if (nx < 1)
+                nx = 1;
+            if (nz < 1)
+                nz = 1;
+
+            const float stepX = (nx <= 1) ? 0.0f : (usableW / (nx - 1));
+            const float stepZ = (nz <= 1) ? 0.0f : (usableD / (nz - 1));
 
 
-            for (uint8_t i = 0; i < num; ++i)
+            const float startX = (-rectW * 0.5f) + marginX;
+            const float startZ = (-rectD * 0.5f) + marginZ;
+
+            for (int ix = 0; ix < nx; ++ix)
             {
-                for (uint8_t j = 0; j < num; j++)
+                for (int iz = 0; iz < nz; ++iz)
                 {
-                    // pos を起点に座標計算。
-                    Vector3 offsetPos = {(float) i * 100.0f, 0.0f, (float) j * 100.0f};
-                    Vector3 finalPos = pos + offsetPos;
+                    const float x = startX + ix * stepX;
+                    const float z = startZ + iz * stepZ;
 
+                    Vector3 finalPos = pos + Vector3(x, 0.0f, z);
 
-                    auto* pNormal = NewGO<NormalEnemy>(0);
-                    pNormal->SetPos(finalPos);
-
-
-                    // ここでサイン波移動などの初期設定を行う
-                    // pNormal->SetAmplitude(50.0f);
-
-
-                    pNormal->SetStompable(true);
-                    spawnedEnemies.push_back(pNormal);
+                    auto* e = NewGO<app::enemy::NormalEnemy>(0);
+                    app::enemy::NormalEnemy::SpawnParam param(finalPos, Vector3(0.25f, 0.25f, 0.25f), 80.0f, true);
+                    e->InitParam(param);
+                    e->SetStompable(true);
+                    spawnedEnemies.push_back(e);
                 }
             }
             return spawnedEnemies;
@@ -51,16 +76,23 @@ namespace app
 
 
         std::vector<IEnemy*> CreateTracking(const Vector3& pos)
-        {
-            std::vector<IEnemy*> list;
-            auto* p = NewGO<TrackingEnemy>(0);
+        {   
+            std::vector<IEnemy*> spawnList;
+            const uint8_t num = 6;
+            const auto interval = 150.0f;
 
+            for (uint8_t i = 0; i < num; ++i)
+            {
+                Vector3 offsetPos = {(float) i * interval, 0.0f, 0.0f};
+                Vector3 finalPos = pos + offsetPos;
 
-            p->SetPos(pos);
-            list.push_back(p);
+                auto* pTracking = NewGO<TrackingEnemy>(0);
+                pTracking->SetPos(finalPos);
 
+                spawnList.push_back(pTracking);
+            }
 
-            return list;
+            return spawnList;
         }
 
 
@@ -77,6 +109,7 @@ namespace app
             return list;
         }
 
+
         constexpr size_t enemyTypeCount = static_cast<size_t>(EnemyType::type_Num);
 
 
@@ -84,6 +117,7 @@ namespace app
             &CreateNormal,   // 通常敵（隊列）。
             &CreateTracking, // 追跡敵。
             &CreateThwomp,   // 回転敵。
+            
             nullptr,         // ボス（未実装）。
         };
 

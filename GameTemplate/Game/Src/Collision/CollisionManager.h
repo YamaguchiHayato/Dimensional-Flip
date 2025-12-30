@@ -50,17 +50,8 @@ namespace app
 
 
             // オブザーバーへの登録。
-            inline void RegisterObject(nsK2Engine::CollisionObject* obj,CollisionProperty prop = CollisionProperty::AlwaysSolid)
-            {
-                if (!obj)
-                    return;
+            void RegisterObject(nsK2Engine::CollisionObject* obj,CollisionProperty prop = CollisionProperty::AlwaysSolid);
 
-                CollisionEntry entry = {prop, obj};
-                pObserver_.push_back(entry);
-
-                // 登録直後に状態を適用
-                ApplyCollisionState(pObserver_.back());
-            }
 
             // オブザーバーの登録解除。
             inline void UnRegisterObject(nsK2Engine::CollisionObject* unObj)

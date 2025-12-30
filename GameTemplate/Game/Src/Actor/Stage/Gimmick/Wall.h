@@ -15,41 +15,33 @@ namespace app
             bool Start();
             void Update();
             void Render(RenderContext& rc);
-
             void DestroyCollision();
 
-        // セッター。
-        public:
-            inline void SetPos(const Vector3& pos)
-            {
-                pos_ = pos;
-            }
-
-
-        // ゲッター。
-        public:
-            // Playerがカメラアクションをするとこのオブジェクトのコリジョンを消す関数。
-            inline const Vector3 GetPos() const
-            {
-                return pos_;
-            }
+            void SetPos(const Vector3& pos) { pos_ = pos; }
+            const Vector3 GetPos() const { return pos_; }
 
         private:
+            // 2D側（CollisionManagerで使われる）
             CollisionObject* pCollision_ = nullptr;
-            Player* pPlayer_ = nullptr;
-        private:
-            ModelRender render_;
 
-            Vector3 pos_;
-            Vector3 initPos_;
-            Vector3 scale_ = Vector3(0.1f, 0.1f, 0.1f);
+            // 3D側（キャラコンが物理を見るならこれが必要）
             PhysicsStaticObject wallPhysics_;
-            Quaternion rot_;
 
-            // 多重削除防止用フラグ。
-            bool isCollisionActive_ = true;
+            ModelRender render_;
+            Player* pPlayer_ = nullptr;
+
+            Vector3 pos_ = Vector3::Zero;
+            Vector3 initPos_ = Vector3::Zero;
+
+
+            Vector3 collisionHalfWorld_ = Vector3(20.0f, 30.0f, 50.0f); // 半径（HalfExtents）
+            Vector3 collisionOffsetWorld_ = Vector3(0.0f, 30.0f, 0.0f); // 中心位置オフセット
+
+            // 見た目（Wallモデルに合わせてる前提）
+            Vector3 scale_ = Vector3(0.1f, 0.1f, 0.1f);
+            Quaternion rot_ = Quaternion::Identity;
+
+            bool isCollisionActive_ = false;
         };
-
-    }
-
-}
+    } // namespace stage
+} // namespace app

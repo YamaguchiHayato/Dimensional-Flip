@@ -25,27 +25,25 @@ namespace app
                 float paramCollision;
                 bool paramFlag;
 
-
                 // デフォルト値を設定。
-                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3(0.5f, 0.5f, 0.5f), float radius = -1.0f, bool flag = true)
+                SpawnParam(const Vector3& pos, const Vector3& scale = Vector3(0.5f, 0.5f, 0.5f), float radius = -1.0f,
+                           bool flag = true)
                     : paramPos_(pos), paramScale(scale), paramCollision(radius), paramFlag(flag)
                 {
                 }
             };
 
-
         public:
             NormalEnemy() = default;
             virtual ~NormalEnemy() = default;
 
-        // エンジンの基本関数。
+            // エンジンの基本関数。
         public:
             bool Start() override;
             void Update() override;
             void Render(RenderContext& rc) override;
 
-
-        // 独自の関数。
+            // 独自の関数。
         public:
             void Press();
             void InitParam(const SpawnParam& param);
@@ -54,33 +52,23 @@ namespace app
                 return IEnemy::InitModel(enemyName);
             };
 
-
         public:
             // 座標をセット。
-            inline  void SetPos(const Vector3& pos) override
+            inline void SetPos(const Vector3& pos) override
             {
                 pos_ = pos;
+                initPos_ = pos;
             }
-
 
             // モデルごとに大きさを設定する。
-            inline void SetScale(const Vector3& scale) override
-            {
-                scale_ = scale;
-            }
-
+            inline void SetScale(const Vector3& scale) override { scale_ = scale; }
 
             // 敵を踏みつけて倒せるかどうか判定する。
-            inline void SetStompable(bool enable) override
-            {
-                isStompable_ = enable;
-            }
-
+            inline void SetStompable(bool enable) override { isStompable_ = enable; }
 
         private:
             // 浮遊移動処理。
             void MoveFloating();
-
 
         private:
             Vector3 initPos_ = Vector3::Zero;
@@ -93,25 +81,27 @@ namespace app
             bool isStompable_ = true;
             bool isCrushed_ = false;
 
+            float angle_ = 0.0f;      // 浮遊の角度。
+            float spped_ = 0.05f;     // 上下の速度。
+            float range_ = 10.0f;     // 上下の幅。
+            float moveSpeed_ = 0.25f; // 最大速度（1フレームあたりの移動量）
+            Vector3 velocity_ = Vector3::Zero;
+            float aggroRadius_ = 220.0f; // この距離以内で追いかけ開始（範囲を狭める）
+            float stopRadius_ = 80.0f;   // この距離以内では止まる（張り付き防止）
+            float accel_ = 0.08f;        // 速度のなめらかさ（小さいほど急に加速しない）
 
-            float radius_ = 80.0f;
-            float crushScaleYRate_ = 0.2f;  // 最終Yスケール比
-            float crushPosYOffset_ = 15.0f; // 下に沈める量（見た目用）
+            // ★近接判定用（踏める距離など）
+            float collisionRadius_ = 80.0f;
 
-
-             float angle_ = 0.0f;      // 浮遊の角度。
-             float spped_ = 0.05f;     // 上下の速度。
-             float range_ = 10.0f;     // 上下の幅。
-             float moveSpeed_ = 1.0f;  // 追従速度。
-
+            // ★潰れ演出の調整
+            float crushScaleYRate_ = 0.25f; // Yを何倍に潰すか(0..1)
+            float crushPosYOffset_ = 40.0f; // 潰れる時に下へずらす量
 
             uint8_t crushedFrame_ = 0;
-
 
         private:
             Player* pPlayer_ = nullptr;
         };
 
-    }
-}
-
+    } // namespace enemy
+} // namespace app

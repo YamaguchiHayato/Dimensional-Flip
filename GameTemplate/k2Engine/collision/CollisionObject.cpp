@@ -13,14 +13,13 @@ namespace nsK2Engine {
 		// マネージャーから解除。
 		app::collision::CollisionManager::GetInstance().UnRegisterObject(this);
 
-		if (g_collisionObjectManager) {
+		if (g_collisionObjectManager) 
 			g_collisionObjectManager->RemoveCollisionObject(this);
-		}
+		
 	}
 
 	bool CollisionObject::Start()
 	{
-		// 2. グローバルマネージャーに登録。
 		if( g_collisionObjectManager == nullptr ) {
 			g_collisionObjectManager->AddCollisionObject(this);
 		}

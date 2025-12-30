@@ -26,6 +26,7 @@ namespace
 	const Vector3 COLLISION_SIZE(100.0f, 100.0f, 100.0f);//コリジョンの大きさ
 }
 
+
 namespace GimmickPos
 {
     // スター。
@@ -40,8 +41,6 @@ namespace GimmickPos
     {
         const Vector3 Pos1(1400.0f, -60.0f, -1800.0f);
     }
-
-
 
 
     // カメラトリガー。
@@ -93,24 +92,16 @@ namespace GimmickPos
     // 通常敵の出現位置。
     namespace NormalEnemyPos
     {
-        const Vector3 Pos1 = Vector3(820.0f,  0.0f, 0.0);
+        const Vector3 Pos1 = Vector3(810.0f,  0.0f, 0.0);
 
     }
 
 
-    namespace BigEnemyPos
+    namespace TrackingEnemy
     {
-        const Vector3 Pos1 = Vector3(6900.0f, -25.7f, -11.7f);
+        const Vector3 pos = Vector3(280.0f, 0.0f, 0.0f);
     }
 }
-
-
-struct  BigEnemySpawnParam
-{
-    void InitParam()
-    {
-    }
-};
 
 
 Stage1::~Stage1()
@@ -203,6 +194,9 @@ bool Stage1::Start()
     // ノーマルエネミー生成。
     CreateNormalEnemy();
 
+    // 追従敵の生成。
+    CreateTrackingEnemy();
+
 	stageRender_.Update();
 
     pPlayer_ = FindGO<Player>("player");
@@ -218,28 +212,28 @@ void Stage1::Update()
 	stagePhysics_.SetPosition(stagePos_);
 
     // Playerがカメラアクションをしたかチェックする関数。
-    CheckCameraAction();
+//    CheckCameraAction();
 }
 
 
-void Stage1::CheckCameraAction()
-{
-    Vector3 playerPos = pPlayer_->GetPlayerPos();
-    // 判定範囲。
-    auto checkRange = 100.0f * 100.0f;
-
-    // 壁インスタンスとの距離を調べる。
-    for (auto* wall : lWallInstance_)
-    {
-        Vector3 diff = wall->GetPos() - playerPos;
-
-        // 距離の2乗で比較する。
-        if (diff.LengthSq() < checkRange)
-            // コリジョンを削除する。
-            wall->DestroyCollision();
-    }
-}
-
+//void Stage1::CheckCameraAction()
+//{
+//    Vector3 playerPos = pPlayer_->GetPlayerPos();
+//    // 判定範囲。
+//    auto checkRange = 100.0f * 100.0f;
+//
+//    // 壁インスタンスとの距離を調べる。
+//    for (auto* wall : lWallInstance_)
+//    {
+//        Vector3 diff = wall->GetPos() - playerPos;
+//
+//        // 距離の2乗で比較する。
+//        if (diff.LengthSq() < checkRange)
+//            // コリジョンを削除する。
+//            wall->DestroyCollision();
+//    }
+//}
+//
 
 void Stage1::Render(RenderContext& rc)
 {
@@ -413,6 +407,25 @@ void Stage1::CreateNormalEnemy()
     (
         EnemyType::type_Normal,
         GimmickPos::NormalEnemyPos::Pos1
+    );
+
+
+    // 生成する敵をリストに追加。
+    for (auto* enemy : enemys)
+    {
+        if (enemy)
+            lEnemySpawnList_.push_back(enemy);
+    }
+}
+
+
+void Stage1::CreateTrackingEnemy()
+{
+    // モデルの生成と座標の指定。
+    auto enemys = app::enemy::EnemyFactory::CreateEnemy
+    (
+        EnemyType::type_Tracking,
+        GimmickPos::TrackingEnemy::pos
     );
 
 

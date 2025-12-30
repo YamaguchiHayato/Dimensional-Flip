@@ -1,246 +1,148 @@
 #include "stdafx.h"
-#include "Src/Actor/Character/Player.h"
+
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
-#include "graphics/effect/EffectEmitter.h"
+#include "Src/Actor/Character/Player.h"
 
 namespace
 {
-	// キャラコンの定数。
-	const float RADIUS = 25.0f;
-	const float HEIGHT = 100.0f;
-
-	// EnemyStateの定数。
-	const float ENEMYSTATE_ZERO = 270.0f;
-	const float ENEMYSTATE_ONE = 90.0f;
-	const float ENEMYSTATE_TWO = -180.0f;
-
-	// スケール。
-	const Vector3 SCALE(5.0f, 5.0f, 5.0f);
-}
+    static constexpr uint8_t kCrushFrames = 6;
+    static constexpr uint8_t kCrushWaitFrames = 10;
+} // namespace
 
 namespace app
 {
     namespace enemy
     {
-        // アニメーションメソッド。
-        const ::std::string TrackingEnemy::FetchAnimation(EnEnemyAnimation enemyAnimation,
-                                                          const std::string& animationName, bool flag)
-        {
-            std::string Animation = ENEMY_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
-
-            // アニメーションのロード。
-            animationclip_[enemyAnimation].Load(Animation.c_str());
-            animationclip_[enemyAnimation].SetLoopFlag(flag);
-
-            return Animation;
-        }
-
-        // 初期化処理。
         bool TrackingEnemy::Start()
         {
-
-            // アニメーションの設定。
             SetEnemyAnimation();
-
-            // モデルの初期化。
-            render_.Init("Assets/modelData/Skeleton.tkm", animationclip_, Num, enModelUpAxisY, true);
-
-            // 大きさをセット。
-            render_.SetScale(SCALE);
-
-            // キャラコン。
-            charaCon_.Init(RADIUS, HEIGHT, pos_);
-
-            // 座標をセット。
-            render_.SetPosition(pos_);
-
-            // 更新処理。
-            render_.Update();
-
-            // エフェクトの初期化。
-            //	EffectEngine::GetInstance()->ResistEffect(EffectList_EnemyHit, u"Assets/effect/enemyhiteffect.efk");
-
-            // 探索処理。
+            // enNum を使用
+            render_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enNum, enModelUpAxisY, true);
+            render_.SetScale(scale_);
+            charaCon_.Init(2.0f, 1.0f, pos_);
+            initPos_ = pos_;
             pPlayer_ = FindGO<Player>("player");
-
             return true;
         }
 
-        // 更新処理。
         void TrackingEnemy::Update()
         {
-            // 追跡処理。
+            if (isCrushed_)
+            {
+                Press();
+                return;
+            }
+
+            if (!pPlayer_)
+                return;
+
             Tracking();
-
-            // 動作処理。
             Move();
-
-            // 回転処理。
-            Rotation();
-
-            // アニメーション。
+            Rotation(); 
             EnemyAnimation();
 
-            // モデルをセット。
-            render_.SetPosition(pos_);
-
-            // 更新処理。
-            render_.Update();
-
-            Vector3 diff = pPlayer_->pos_ - pos_;
-            if (diff.Length() <= 100.0f && animaState_ != 1)
+            // 踏みつけ判定 (NormalEnemyと共通)
+            Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+            if (diff.LengthSq() <= 80.0f * 80.0f)
             {
-                if (pPlayer_->charaCon_.IsOnGround() == false)
+                if (isStompable_ && pPlayer_->GetMoveSpeed().y < 0.0f && (pPlayer_->GetPlayerPos().y - pos_.y) > 0.0f)
                 {
-                    animaState_ = 1;
-                    pPlayer_->moveSpeed_.y = 500.0f;
+                    pPlayer_->Bound();
+                    isCrushed_ = true;
+                    crushedFrame_ = 0;
+                    crushStartScale_ = scale_;
+                    crushStartPos_ = pos_;
                     charaCon_.RemoveRigidBoby();
-
-                    ////エフェクトの処理
-                    // EffectEmitter* effectEmitter = NewGO<EffectEmitter>(0);
-                    // effectEmitter->Init(EffectList_EnemyHit);
-
-                    ////エフェクトの位置の設定
-                    // Vector3 enemyLocalPos = { 0.0f,120.0f,0.0f };
-                    // enemyLocalPos += m_position;
-                    // effectEmitter->SetPosition(enemyLocalPos);
-
-                    ////エフェクトの大きさの設定
-                    // effectEmitter->SetScale({ 30.0f,30.0f,30.0f });
-
-                    ////エフェクトの再生
-                    // effectEmitter->Play();
-
-                    ////プレイヤーが敵を踏んだ時の音を再生。
-                    // g_gameSoundEngine->PlaySE(GameSoundList_SE_Player_StepOnEnemy, 1.0f);
-                }
-                else
-                {
-                    // プレイヤーに触れた
-                    touchPlayerFlag_ = true;
+                    return;
                 }
             }
+
+            render_.SetPosition(pos_);
+            render_.SetRotation(rot_); // 計算した回転をセット
+            render_.SetScale(scale_);
+            render_.Update();
         }
 
-        // 動作処理。
-        void TrackingEnemy::Move()
-        {
-            if (!isChasing_)
-            {
-                if (animaState_ == 0)
-                {
-                    moveSpeed_.x = -2.0f;
-                }
-                else if (animaState_ == 1)
-                {
-                    moveSpeed_.x = 2.0f;
-                }
-                if (pos_.x >= initPos_.x + 200.0f)
-                {
-                    animaState_ = 0;
-                }
-                else if (pos_.x <= initPos_.x - 200.0f)
-                {
-                    animaState_ = 1;
-                }
-            }
-
-            if (animaState_ == 1)
-            {
-                moveSpeed_.x = 0;
-                if (!render_.IsPlayingAnimation())
-                {
-                    DeleteGO(this);
-                }
-            }
-            pos_ = charaCon_.Execute(moveSpeed_, 1.0f);
-            float glavity = 3.0f;
-            if (charaCon_.IsOnGround())
-            {
-                // 重力をなくす
-                moveSpeed_.y = 0.0f;
-            }
-            moveSpeed_.y -= glavity;
-        }
-
-        // 追跡処理。
         void TrackingEnemy::Tracking()
         {
-            Vector3 diff = pPlayer_->pos_ - pos_;
-            const bool inRadius = (diff.Length() < 100.0f);
-
-            // B) 座標トリガ（敵があるX座標を越えたら）
-            const bool passX = (pos_.x >= triggerX_);
-
-            if (!isChasing_ && (inRadius || passX))
+            Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+            if (!isChasing_ && diff.Length() < DETECT_RANGE)
             {
                 isChasing_ = true;
+                animaState_ = enWalk;
             }
 
-            // ---- 追跡中の移動ベクトルを設定 ----
             if (isChasing_)
             {
-                diff.y = 0.0f; // 水平面だけで追う（必要ならYも可）
-                if (diff.LengthSq() > 1e-4f)
+                diff.y = 0.0f;
+                if (diff.LengthSq() > 1.0f)
                 {
                     diff.Normalize();
-                    moveSpeed_.x = diff.x * chaseSpeed_;
-                    moveSpeed_.z = diff.z * chaseSpeed_;
+                    moveSpeed_.x = diff.x * CHASE_SPEED;
+                    moveSpeed_.z = diff.z * CHASE_SPEED;
                 }
-
-                else
-                    moveSpeed_.x = moveSpeed_.z = 0.0f; // ほぼ重なったら停止
             }
         }
 
-        // 回転処理。
+        void TrackingEnemy::Move()
+        {
+            if (charaCon_.IsOnGround())
+                moveSpeed_.y = 0.0f;
+            else
+                moveSpeed_.y -= 9.8f * GameTime().GetFrameDeltaTime();
+            pos_ = charaCon_.Execute(moveSpeed_, GameTime().GetFrameDeltaTime());
+        }
+
+
         void TrackingEnemy::Rotation()
         {
-            if (animaState_ == EnEnemyAnimation::enIdle)
-                rot_.SetRotationDegY(ENEMYSTATE_ZERO);
+            Quaternion offsetRot_ = Quaternion::Identity;
 
-            else if (animaState_ == EnEnemyAnimation::enDeath)
-                rot_.SetRotationDegY(ENEMYSTATE_ONE);
-
-            rot_.AddRotationDegX(ENEMYSTATE_TWO);
-            // 絵描きさんに回転を教える。
+            rot_ = offsetRot_;
             render_.SetRotation(rot_);
+
+       }
+
+        void TrackingEnemy::Press()
+        {
+            crushedFrame_++;
+            float t = (float) crushedFrame_ / (float) kCrushFrames;
+            if (t > 1.0f)
+                t = 1.0f;
+            scale_.y = crushStartScale_.y * (1.0f + (CRUSH_SCALE_Y_RATE - 1.0f) * t);
+            pos_.y = crushStartPos_.y - (CRUSH_POS_Y_OFFSET * t);
+            render_.SetScale(scale_);
+            render_.SetPosition(pos_);
+            render_.Update();
+            if (crushedFrame_ >= kCrushFrames + kCrushWaitFrames)
+                DeleteGO(this);
         }
 
-        // Enemyのアニメーション。
         void TrackingEnemy::EnemyAnimation()
         {
-            switch (animaState_)
-            {
-            case EnEnemyAnimation::enIdle:
-                render_.PlayAnimation(EnEnemyAnimation::enIdle, 0.1f);
-                break;
-
-            case EnEnemyAnimation::enDeath:
-                render_.PlayAnimation(EnEnemyAnimation::enDeath, 0.1f);
-                break;
-            }
+            render_.PlayAnimation(animaState_, 0.2f);
         }
 
-        // 描画処理。
+        const std::string TrackingEnemy::FetchAnimation(EnEnemyAnimation type, const std::string& name, bool loop)
+        {
+            std::string path = "Assets/animData/" + name + ".tka";
+            animationclip_[type].Load(path.c_str());
+            animationclip_[type].SetLoopFlag(loop);
+            return path;
+        }
+
+        void TrackingEnemy::SetEnemyAnimation()
+        {
+            FetchAnimation(enIdle, "SkeletonIdle", true);
+            FetchAnimation(enWalk, "SkeletonWalk", true);
+            FetchAnimation(enDeath, "SkeletonDeath", false);
+        }
+
         void TrackingEnemy::Render(RenderContext& rc)
         {
             render_.Draw(rc);
         }
 
-        // アニメーションの再生。
-        void TrackingEnemy::SetEnemyAnimation()
-        {
-            // 待機モーション。
-            FetchAnimation(EnEnemyAnimation::enIdle, "SkeletonIdle", true);
-
-            // 歩きモーション。
-            FetchAnimation(EnEnemyAnimation::enWalk, "SkeletonWalk", true);
-
-            // 死亡モーション。
-            FetchAnimation(EnEnemyAnimation::enDeath, "SkeletonDeath", false);
-        }
-
     }
-}
 
+} // namespace app::enemy

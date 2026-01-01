@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Src/Camera/StageEXCameraStrategy.h"
 
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace
 {

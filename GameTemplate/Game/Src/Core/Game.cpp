@@ -3,7 +3,7 @@
 #include "Src/Direction/Fade.h"
 
 #include "GameSoundEngine.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Scene/LoadingScene.h"
 // UI。
 #include "Src/UI/UIBase.h"

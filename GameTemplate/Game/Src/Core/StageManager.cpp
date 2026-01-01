@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // キャラクタークラス。
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 
 // カメラクラス。

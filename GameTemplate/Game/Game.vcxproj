@@ -225,18 +225,22 @@
   <ItemGroup>
     <ClCompile Include="DelayedEffect.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\IState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
@@ -305,10 +309,15 @@
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
     <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Player\Player.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
@@ -316,7 +325,6 @@
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />
-    <ClInclude Include="Src\Actor\Character\Player.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
     <ClInclude Include="Src\Actor\Character\Player\IState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />

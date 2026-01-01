@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace
 {

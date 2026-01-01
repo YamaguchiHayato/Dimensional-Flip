@@ -3,7 +3,7 @@
 #include "Src/Actor/Stage/MainUnit/Stage2.h"
 #include "Src/Actor/Stage/IStage.h"
 // キャラクタークラス。
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 // カメラクラス。

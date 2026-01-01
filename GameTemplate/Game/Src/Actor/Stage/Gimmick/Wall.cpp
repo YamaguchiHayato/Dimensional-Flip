@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/Wall.h"
 // #include "Src/Input/InputManager.h"
 

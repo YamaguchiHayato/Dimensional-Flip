@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
 #include "DimensionTrigger.h"
 #include "Src/Actor/Stage/MainUnit/Stage3.h"

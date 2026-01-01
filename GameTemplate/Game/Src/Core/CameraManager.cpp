@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Src/Core/CameraManager.h"
 
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 // 戦略カメラクラス。
 #include "Src/Camera/SideCameraStrategy.h"

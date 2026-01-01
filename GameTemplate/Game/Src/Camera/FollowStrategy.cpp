@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "FollowStrategy.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 
 namespace

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Src/Camera/SideCameraStrategy.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace
 {

@@ -1,15 +1,5 @@
 #pragma once
 
-//// ステージをを識別する列挙型。
-//enum class StageID : uint8_t
-//{
-//    sStage1,
-//    sStage2,
-//    sStage3,
-//    sStageEX,
-//    sInvalid
-//};
-
 
 class IState
 {

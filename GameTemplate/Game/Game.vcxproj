@@ -224,8 +224,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DelayedEffect.cpp" />
-    <ClCompile Include="DimensionManager.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
@@ -304,8 +304,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DelayedEffect.h" />
-    <ClInclude Include="DimensionManager.h" />
     <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />

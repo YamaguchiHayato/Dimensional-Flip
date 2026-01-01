@@ -90,10 +90,8 @@ namespace app
             float stopRadius_ = 80.0f;   // この距離以内では止まる（張り付き防止）
             float accel_ = 0.08f;        // 速度のなめらかさ（小さいほど急に加速しない）
 
-            // ★近接判定用（踏める距離など）
             float collisionRadius_ = 80.0f;
 
-            // ★潰れ演出の調整
             float crushScaleYRate_ = 0.25f; // Yを何倍に潰すか(0..1)
             float crushPosYOffset_ = 40.0f; // 潰れる時に下へずらす量
 

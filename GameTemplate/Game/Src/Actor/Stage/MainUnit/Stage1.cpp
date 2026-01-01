@@ -46,7 +46,7 @@ namespace GimmickPos
     // カメラトリガー。
     namespace TriggerPos
     {
-        const Vector3 Pos1 = Vector3(200.0f, 0.0f, 0.0f);
+        const Vector3 Pos1 = Vector3(800.0f, 0.0f, -10.0f);
         const Vector3 Pos2 = Vector3(1500.0f,-75.0f, 0.0f );
         const Vector3 Pos3 = Vector3(1400.0f, -60.0f, -1800.0f);
     }
@@ -92,7 +92,7 @@ namespace GimmickPos
     // 通常敵の出現位置。
     namespace NormalEnemyPos
     {
-        const Vector3 Pos1 = Vector3(810.0f,  0.0f, 0.0);
+        const Vector3 Pos1 = Vector3(800.0f,  0.0f, 0.0);
 
     }
 
@@ -130,7 +130,6 @@ Stage1::~Stage1()
     {
         DeleteGO(p);
     }
-
 
 
     for (auto* p : lRotationFool_)
@@ -315,7 +314,6 @@ void Stage1::DimensionTriggerNewGO()
 	}
 
 }
-
 
 void Stage1::RotationFoolNewGO()
 {

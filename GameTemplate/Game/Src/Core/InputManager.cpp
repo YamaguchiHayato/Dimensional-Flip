@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "DimensionManager.h"
+#include "Src/Core/InputManager.h"
 
 
 namespace app
 {
     namespace core
     {
-        DimensionManager* DimensionManager::instance_ = nullptr;
+        InputManager* InputManager::instance_ = nullptr;
 
 
-        void DimensionManager::FlipDimension(CameraManager* pCamera, app::collision::CollisionManager& collision)
+        void InputManager::FlipDimension(CameraManager* pCamera, app::collision::CollisionManager& collision)
         {
             auto currentCamMode = pCamera->GetCurrentCameraMode();
 

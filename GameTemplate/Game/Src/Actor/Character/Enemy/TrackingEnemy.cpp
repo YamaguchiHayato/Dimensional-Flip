@@ -7,6 +7,18 @@ namespace
 {
     static constexpr uint8_t kCrushFrames = 6;
     static constexpr uint8_t kCrushWaitFrames = 10;
+
+
+    // Enemyが踏まれるときの値の調整をする構造体。
+    struct StompParam
+    {
+        // 踏まれる判定を司る距離。
+        static constexpr float RADIUS = 30.0f; 
+        // Y座標の最小値。
+        static constexpr float MIN_Y = 0.0f;
+        // Y座標の最大値。
+        static constexpr float MAX_Y = 50.0f;
+    };
 } // namespace
 
 namespace app
@@ -24,6 +36,7 @@ namespace app
             pPlayer_ = FindGO<Player>("player");
             return true;
         }
+
 
         void TrackingEnemy::Update()
         {
@@ -43,11 +56,25 @@ namespace app
 
             // 踏みつけ判定 (NormalEnemyと共通)
             Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
-            if (diff.LengthSq() <= 80.0f * 80.0f)
+
+
+            // Playerが落下中のみ判定を行う。
+            if (isStompable_ && pPlayer_->GetMoveSpeed().y < 0.0f)
             {
-                if (isStompable_ && pPlayer_->GetMoveSpeed().y < 0.0f && (pPlayer_->GetPlayerPos().y - pos_.y) > 0.0f)
+                // XZ成分の距離の2乗。
+                // → それぞれの成分の2乗を加算。 
+                auto distXZ = diff.x * diff.x + diff.z * diff.z;
+                auto dy = diff.y;
+
+                // 直径。
+                auto diameter = StompParam::RADIUS * StompParam::RADIUS;
+
+                // 水平方向かつ範囲内の場合。
+                if (distXZ <= diameter && dy > StompParam::MIN_Y && dy < StompParam::MAX_Y)
                 {
+                    // Playerにバウンド処理をさせる。
                     pPlayer_->Bound();
+
                     isCrushed_ = true;
                     crushedFrame_ = 0;
                     crushStartScale_ = scale_;

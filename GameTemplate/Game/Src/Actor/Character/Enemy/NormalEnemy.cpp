@@ -36,6 +36,7 @@ namespace app
             return true;
         }
 
+
         void NormalEnemy::Update()
         {
             if (isCrushed_)
@@ -64,15 +65,18 @@ namespace app
 
                 // 「上から踏む」高さ範囲（調整ノブ）
                 const float stompMinY = 0.0f;
-                const float stompMaxY = 120.0f;
+                const float stompMaxY = 30.0f;
 
                 // XZだけ小さく判定（調整ノブ：小さいほど一括が起きにくい）
-                const float stompRadius = 25.0f;
+                const float stompRadius = 3.0f;
                 const float distXZSq = diff.x * diff.x + diff.z * diff.z;
 
                 if (dy > stompMinY && dy < stompMaxY && distXZSq <= stompRadius * stompRadius)
                 {
-                    v.y = 12.0f; 
+                    v.y = 60.0f; 
+
+                    // バウンド処理。
+                    pPlayer_->Bound();
 
                     isCrushed_ = true;
                     crushedFrame_ = 0;

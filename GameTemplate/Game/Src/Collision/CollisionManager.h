@@ -20,6 +20,7 @@ namespace app
             dim3D
         };
 
+
         // 衝突プロパティ。
         enum class CollisionProperty : uint8_t {
             AlwaysSolid, // 常に有効
@@ -34,6 +35,12 @@ namespace app
             nsK2Engine::CollisionObject* pObj;
         };
 
+
+        struct IDimensionObserver
+        {
+            virtual ~IDimensionObserver() = default;
+            virtual void IDimensionChanged(DimensionMode mode) = 0;
+        };
 
         // エンジン内蔵のNonCopyableではなく、自作。
         class CollisionManager : public NonCopyable
@@ -63,6 +70,10 @@ namespace app
             // コリジョンのON/OFF/適用する関数。
             void ApplyCollisionState(CollisionEntry& entry);
 
+
+            // 通知。
+            void RegisterObserver(IDimensionObserver* obs);
+            void UnRegisterObserver(IDimensionObserver* obs);
 
         // セッター。
         public:
@@ -94,7 +105,9 @@ namespace app
         private:
             CollisionManager() = default;
             std::vector<CollisionEntry> pObserver_;
+            std::vector<IDimensionObserver*> pDimensionObservers_;
             DimensionMode currentMode_ = DimensionMode::dim2D;
+            
         };
     }
 }

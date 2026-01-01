@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
-#include "DimensionManager.h"
-
+#include "Src/Core/InputManager.h"
 // キャラクタークラス。
 #include "Src/Actor/Character/Player.h"
 
@@ -141,7 +140,7 @@ void Player::Update()
 
 
     if (IsDimensionSwitchAction())
-        app::core::DimensionManager::GetInstance()->FlipDimension(pCameraManager_,app::collision::CollisionManager::GetInstance());
+        app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_,app::collision::CollisionManager::GetInstance());
     
 
 
@@ -222,10 +221,17 @@ bool Player::IsDimensionSwitchAction()
 void Player::ApplyMovement()
 {
     auto ficedTime = 1.0f / 150.0f;
+    bool is2Dmode = (pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D);
+    charaCon_.Set2DMode(is2Dmode);
 
     // 移動処理。
     pos_ = charaCon_.Execute(moveSpeed_, ficedTime);
 
+
+    if (pCameraManager_ && pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D)
+    {
+        pos_.z = 0.0f;
+    }
     // 座標のセット。
     charaCon_.SetPosition(pos_);
 

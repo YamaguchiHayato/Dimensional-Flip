@@ -2,20 +2,7 @@
 
 #include "Src/Actor/Character/Player.h"
 #include "Src/Actor/Stage/Gimmick/Wall.h"
-#include "Src/Collision/CollisionManager.h"
-
-namespace
-{
-    const Vector3 BOX_BASE_HALF(150.0f, 400.0f, 500.0f);
-
-    inline Vector3 CalcCenterOffset(const Vector3& halfExtents)
-    {
-        return Vector3(0.0f, halfExtents.y, 0.0f);
-    }
-    constexpr auto COLLISION_PROPERTY = app::collision::CollisionProperty::SolidOnly2D;
-} // namespace
-
-
+// #include "Src/Input/InputManager.h"
 
 namespace app
 {
@@ -23,101 +10,90 @@ namespace app
     {
         Wall::~Wall()
         {
-            DestroyCollision();
+            // ポインタなので、オブジェクトが削除される時に中身も消す必要があります
+            if (pPhysics_ != nullptr)
+            {
+                delete pPhysics_;
+            }
         }
-
 
         bool Wall::Start()
         {
             pPlayer_ = FindGO<Player>("player");
-            initPos_ = pos_;
 
-            // 見た目
+            // 初期状態設定
+            is2DMode_ = false;
+            currentScale_ = scale_3D_Normal;
+
+            // --- 見た目 ---
             render_.Init("Assets/stage/Stage1/Wall.tkm");
-            render_.SetScale(scale_);
+            render_.SetScale(currentScale_);
             render_.SetPosition(pos_);
             render_.SetRotation(rot_);
-            render_.Update();
+            render_.Update(); // ★ここで行列を確定
 
+            // --- 物理 ---
+            RefreshPhysics();
 
-            wallPhysics_.CreateFromModel(render_.GetModel(), render_.GetModel().GetWorldMatrix());
-
-            // コリジョン。
-            pCollision_ = NewGO<CollisionObject>(0);
-            // コリジョンのモード設定。
-            pCollision_->SetCollisionProperty(COLLISION_PROPERTY);
-
-            //　コリジョンの形状。
-            const Vector3 halfExtents
-            (
-                BOX_BASE_HALF.x * scale_.x,
-                BOX_BASE_HALF.y * scale_.y,
-                BOX_BASE_HALF.z * scale_.z
-            );
-
-            const Vector3 centerOffset = CalcCenterOffset(halfExtents);
-            pCollision_->CreateBox(pos_ + centerOffset, rot_, halfExtents);
-            pCollision_->SetIsEnableAutoDelete(false);
             return true;
         }
 
-
         void Wall::Update()
         {
-            // コリジョンマネージャの現在の状態を受け取る。
-            // collision … SingletonInstance。
-            auto mode = collision::CollisionManager::GetInstance().GetCurrentMode();
-
-            // モードに応じた通行の有無。
-            if (mode == collision::CollisionManager::GetInstance().GetCurrentMode())
-                render_.SetAlpha(0.5f);
-
-            else
-                render_.SetAlpha(1.0f) ;
-
-
-            // 見た目更新
-            render_.SetScale(scale_);
-            render_.SetPosition(pos_);
-            render_.SetRotation(rot_);
-            render_.Update();
-
-
-            if (pCollision_)
+            // ボタンでモード切替
+            if (g_pad[0]->IsTrigger(enButtonB))
             {
-                const Vector3 halfExtents
-                (
-                    BOX_BASE_HALF.x * scale_.x,
-                    BOX_BASE_HALF.y * scale_.y,
-                    BOX_BASE_HALF.z * scale_.z
-                );
+                // フラグを反転
+                is2DMode_ = !is2DMode_;
 
+                Vector3 nextPos = pos_;
 
-                pCollision_->SetPosition(pos_ + CalcCenterOffset(halfExtents));
+                if (is2DMode_)
+                {
+                    // もしここで「3Dになってしまっていた」なら、薄くする設定をここに書けばOKです
+                    // [3D設定 (薄く)]
+                    currentScale_ = scale_3D_Normal;
+                    nextPos = pos_;         // 位置もそのまま
+                    render_.SetAlpha(0.5f); // 半透明
+                }
+                else
+                {
+                    // [2D設定 (分厚く)]
+                    currentScale_ = scale_2D_Wide;
+                    nextPos.z = 0.0f;       // 通せんぼ用にZ=0固定
+                    render_.SetAlpha(1.0f); // くっきり
+                }
+                // --- 変更を適用して物理を作り直す ---
+
+                // 1. 見た目の更新
+                render_.SetScale(currentScale_);
+                render_.SetPosition(nextPos);
+                render_.Update(); // ★重要: ここでモデルの大きさを確定させる
+
+                // 2. 物理を作り直す
+                RefreshPhysics();
             }
         }
 
+        void Wall::RefreshPhysics()
+        {
+            // 1. 古い物理があれば削除 (DeleteGO)
+            if (pPhysics_ != nullptr)
+            {
+                delete pPhysics_;
+            }
+
+            pPhysics_ = new PhysicsStaticObject();
+
+            // 3. 確定したモデルの形に合わせて当たり判定を生成
+            // (render_.Update()された後のモデル情報を使います)
+            pPhysics_->CreateFromModel(render_.GetModel(), render_.GetModel().GetWorldMatrix());
+           
+        }
 
         void Wall::Render(RenderContext& rc)
         {
             render_.Draw(rc);
-        }
-
-
-        void Wall::DestroyCollision()
-        {
-            if (!isCollisionActive_)
-                return;
-
-            if (pCollision_)
-            {
-                collision::CollisionManager::GetInstance().UnRegisterObject(pCollision_);
-                DeleteGO(pCollision_);
-                pCollision_ = nullptr;
-            }
-
-            wallPhysics_.Release();
-            isCollisionActive_ = false;
         }
     } // namespace stage
 } // namespace app

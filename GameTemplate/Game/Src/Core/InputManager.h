@@ -9,14 +9,14 @@ namespace app
 {
     namespace core
     {
-        class DimensionManager : public Noncopyable
+        class InputManager : public Noncopyable
         {
         public:
-            static DimensionManager* instance_;
+            static InputManager* instance_;
 
 
         public:
-            inline static DimensionManager* GetInstance()
+            inline static InputManager* GetInstance()
             {
                 return instance_;
             }
@@ -27,7 +27,7 @@ namespace app
 
 
         private:
-            DimensionManager() = default;
+            InputManager() = default;
         };
     }
 }

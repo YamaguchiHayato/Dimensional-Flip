@@ -146,9 +146,6 @@
     <ClCompile Include="Src\Core\SceneManager.cpp">
       <Filter>Src\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Camera\FollowStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
@@ -222,7 +219,8 @@
     <ClCompile Include="Src\Collision\NonCopyable.cpp" />
     <ClCompile Include="Src\Collision\CollisionManager.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
-    <ClCompile Include="DimensionManager.cpp" />
+    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
+    <ClCompile Include="Src\Core\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -326,9 +324,6 @@
     <ClInclude Include="Src\Core\SceneManager.h">
       <Filter>Src\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Camera\Dimensiontrigger.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Camera\FollowStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
@@ -402,7 +397,8 @@
     <ClInclude Include="Src\Collision\NonCopyable.h" />
     <ClInclude Include="Src\Collision\CollisionManager.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
-    <ClInclude Include="DimensionManager.h" />
+    <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
+    <ClInclude Include="Src\Core\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

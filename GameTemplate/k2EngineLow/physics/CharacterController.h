@@ -53,6 +53,11 @@ namespace nsK2EngineLow {
 			m_position = pos;
 		}
 
+		inline void Set2DMode(bool flag)
+		{
+			is2Dmode_ = flag;
+		}
+
 		/*!
 			* @brief	ジャンプ中か判定
 			*/
@@ -86,6 +91,7 @@ namespace nsK2EngineLow {
 		*/
 		void RemoveRigidBoby();
 	private:
+		bool is2Dmode_ = false;
 		bool				m_isInited = false;				//!<初期化済み？
 		Vector3 			m_position;						//!<座標。
 		bool 				m_isJump = false;				//!<ジャンプ中？

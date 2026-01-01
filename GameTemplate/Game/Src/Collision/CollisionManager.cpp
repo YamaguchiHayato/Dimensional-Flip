@@ -8,6 +8,7 @@ namespace app
     namespace collision
     {
         // 静的メンバ変数の初期化。
+        // SingletonInstance。
         CollisionManager* CollisionManager::instance = nullptr;
 
 
@@ -19,8 +20,6 @@ namespace app
 
             // 各プロパティに対応する判定ロジックを配列に。
             // →インデックスがCollisionPropertyと対応する必要が前提。
-
-
             //  3は要素数。
             const std::array<Predicate, 3> TABLE =
             {
@@ -33,16 +32,14 @@ namespace app
 
         void CollisionManager::NotifyObservers()
         {
-            for (auto& entry : pObserver_)
-            {
-                if (entry.pObj)
-                {
-                    // 
-                    ApplyCollisionState(entry);
+            for (auto& entry : pObserver_){
+                ApplyCollisionState(entry);
+            }
 
 
-                    // デバッグログが欲しい場合は記載。
-                }
+            // オブザーバ通知が必要なクラスに通知。
+            for (auto* obs : pDimensionObservers_){
+                obs->IDimensionChanged(currentMode_);
             }
         }
 
@@ -73,15 +70,50 @@ namespace app
 
             // 存在確認。
             if (it != pObserver_.end())
+            {
                 // 既に存在する場合はプロパティだけ更新
                 it->property_ = prop;
+                ApplyCollisionState(*it);
+
+            }
+
+
             else
+            {
                 // 新規登録
                 pObserver_.push_back({prop, obj});
 
+                // 登録直後に状態を適用。
+                ApplyCollisionState(pObserver_.back());
 
-            // 登録直後に状態を適用。
-            ApplyCollisionState(pObserver_.back());
+            }
+        }
+
+
+        void CollisionManager::RegisterObserver(IDimensionObserver* obs)
+        {
+            if (!obs)
+                return;
+
+            auto it = std::find(pDimensionObservers_.begin(), pDimensionObservers_.end(), obs);
+
+
+            if (it != pDimensionObservers_.end())
+                return;
+
+
+            pDimensionObservers_.push_back(obs);
+        }
+
+
+        void CollisionManager::UnRegisterObserver(IDimensionObserver* obs)
+        {
+            pDimensionObservers_.erase(std::remove
+            (
+                pDimensionObservers_.begin(),
+                pDimensionObservers_.end(), obs),
+                pDimensionObservers_.end()
+            );
         }
     } 
 } 

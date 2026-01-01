@@ -23,22 +23,23 @@ namespace app
         {
             std::vector<IEnemy*> spawnedEnemies;
 
-            const float rectW = 25.0f;  // 壁の内側の「横幅」(X方向)  ※壁の厚みや内側幅
-            const float rectD = 25.0f; // 壁の内側の「奥行き」(Z方向)
+            const auto rectW = 25.0f;           // 壁の内側の「横幅」(X方向)  ※壁の厚みや内側幅
+            const auto rectD = 25.0f;           // 壁の内側の「奥行き」(Z方向)
 
-            const float marginX = 20.0f; // 壁から内側へ寄せる量（X）
-            const float marginZ = 20.0f; // 壁から内側へ寄せる量（Z）
+            const auto marginX = 20.0f;         // 壁から内側へ寄せる量（X）
+            const auto marginZ = 20.0f;         // 壁から内側へ寄せる量（Z）
 
-            const float desiredSpacingX =  10.0f; // “狙い”の密度（小さいほど密集）
-            const float desiredSpacingZ =  10.0f;
+            // 密度。
+            const auto desiredSpacingX = 80.0f; // X成分。
+            const auto desiredSpacingZ = 60.0f; // Z成分。
 
             // 使える範囲
-            const float usableW = rectW - marginX * 2.0f;
-            const float usableD = rectD - marginZ * 2.0f;
+            const auto usableW = rectW - marginX * 2.0f;
+            const auto usableD = rectD - marginZ * 2.0f;
 
             // 個数を決める（最低1）
-            int nx = 6;
-            int nz = 6;
+            uint8_t nx = 6;
+            uint8_t nz = 6;
             if (usableW > 0.0f)
                 nx = static_cast<int>(usableW / desiredSpacingX) + 1;
             if (usableD > 0.0f)
@@ -48,20 +49,21 @@ namespace app
             if (nz < 1)
                 nz = 1;
 
-            const float stepX = (nx <= 1) ? 0.0f : (usableW / (nx - 1));
-            const float stepZ = (nz <= 1) ? 0.0f : (usableD / (nz - 1));
+            const auto stepX = (nx <= 1) ? 0.0f : (usableW / (nx - 1));
+            const auto stepZ = (nz <= 1) ? 0.0f : (usableD / (nz - 1));
 
 
-            const float startX = (-rectW * 0.5f) + marginX;
-            const float startZ = (-rectD * 0.5f) + marginZ;
+            const auto startX = (-rectW * 0.5f) + marginX;
+            const auto startZ = (-rectD * 0.5f) + marginZ;
 
-            for (int ix = 0; ix < nx; ++ix)
+            for (uint8_t ix = 0; ix < nx; ++ix)
             {
-                for (int iz = 0; iz < nz; ++iz)
+                for (uint8_t iz = 0; iz < nz; ++iz)
                 {
-                    const float x = startX + ix * stepX;
-                    const float z = startZ + iz * stepZ;
+                    const auto x = startX + ix * stepX;
+                    const auto z = startZ + iz * stepZ;
 
+                    // 地面にめり込まないようにするためy座標を上げる。
                     Vector3 finalPos = pos + Vector3(x, 0.0f, z);
 
                     auto* e = NewGO<app::enemy::NormalEnemy>(0);

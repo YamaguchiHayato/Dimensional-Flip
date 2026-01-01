@@ -51,8 +51,25 @@ private:
     Character2DRender* pRender_ = nullptr;
     app::status::Status status_;
 
+
+private:
+    // ステートマシン用
+    IState* pCurrentState_ = nullptr;
+    IState* pNextState = nullptr;
+    IState* pStateArray_[enState_Num];
+
+
+public:
+    // ステートマシン用のフレンド宣言
+    friend app::state::PlayerIdleState;
+    friend app::state::PlayerRunState;
+    friend app::state::PlayerJumpState;
+    friend app::state::PlayerFallState;
+
+
 public:
     AnimationClip animationClip_[EnAnimationClip::animNum];
+    CharacterController charaCon_;
 
     Vector3 diff_ = Vector3::Zero;
     Vector3 moveSpeed_ = Vector3::Zero;
@@ -66,6 +83,8 @@ public:
     Quaternion offsetRot_ = Quaternion::Identity;
 
     FontRender posFont_;
+
+
 private:
     uint8_t state_;
     // トリガーエリア内フラグ
@@ -82,20 +101,22 @@ private:
     bool respawnFlag_ = false;
 
 
-
 public:
     Player() = default;
     virtual ~Player() = default;
 
+
+public:
     bool Start() override;
     void Update() override;
     void Render(RenderContext& rendercontext) override;
 
+
+public:
     // 全ステート共通で使える移動計算処理。
     bool IsDimensionSwitchAction();
-
     // 敵を踏みつけた際に行うバウンド処理。
-    inline void Bound()
+    void Bound()
     {
         moveSpeed_.y = jumpPower_;
         moveSpeed_.x = 0.0f;
@@ -106,16 +127,26 @@ public:
         // バウンド時は空中での操作を可能にする。
         canAirControl_ = true;
     }
-
     // ジャンプ処理を管轄。
     void UpdateJumpAndGravity();
     // 移動処理を加える。
     void ApplyMovement();
-
+    // 回転処理。
     void Rotation();
-    void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
+    // カメラの状態に応じてOffset回転を取る。
     void CameraOffsetRot();
+    // リスポーン処理。
     void CheckRespawn();
+
+
+// ヘルパー。
+public:
+    // 移動速度を加算する。
+    inline void AddMoveSpeed(const Vector3& addMoveSpeed)
+    {
+        moveSpeed_ += addMoveSpeed;
+    }
+
 
     // セッター。
 public:
@@ -289,39 +320,23 @@ public:
     // キー入力方向の取得。 
     inline Vector3 GetKeyDirection() const { return keyDirection_; }
 
-
-//    inline ModelRender& GetModelRender() { return render_; }
-    CharacterController charaCon_;
-
- private:
-    // アニメーションを取得して再生する関数。
-    const std::string FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName, bool flag);
-    // モデルを取得して再生する関数。
-    const std::string FetchPlayerModel(const std::string& modelName, AnimationClip animationClip,EnAnimationClip enAnimationClip, EnModelUpAxis enModelUpAxis, bool flag);
-    // アニメーションを格納
-    void SetAnimation();
-
-
-public:
-    // ステートマシン用のフレンド宣言
-    friend app::state::PlayerIdleState;
-    friend app::state::PlayerRunState;
-    friend app::state::PlayerJumpState;
-    friend app::state::PlayerFallState;
-
-private:
-    // ステートマシン用
-    IState* pCurrentState_ = nullptr;
-    IState* pNextState = nullptr;
-    IState* pStateArray_[enState_Num];
-
-public:
     // キャラクターコントローラーのゲッター
-    inline CharacterController& GetCharacterController() { return charaCon_; }
-    // 移動速度のゲッター
-    inline Vector3& GetMoveSpeed() { return moveSpeed_; }
+    inline CharacterController& GetCharacterController()
+    {
+        return charaCon_;
+    }
 
-    inline Character2DRender* GetCharacter2DRender() { return pRender_; }
+    // 移動速度のゲッター
+    inline Vector3& GetMoveSpeed()
+    {
+        return moveSpeed_;
+    }
+
+    // キャラクターモデルのゲッター
+    inline Character2DRender* GetCharacter2DRender()
+    {
+        return pRender_;
+    }
 
 public:
     /**

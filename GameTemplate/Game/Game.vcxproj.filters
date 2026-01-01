@@ -122,9 +122,6 @@
     <ClCompile Include="Src\Scene\title\TitleView.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Player.cpp">
-      <Filter>Src\Actor\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Character\Status.cpp">
       <Filter>Src\Actor\Character</Filter>
     </ClCompile>
@@ -213,7 +210,6 @@
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
     <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
     <ClCompile Include="Src\Collision\NonCopyable.cpp" />
@@ -221,6 +217,12 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -299,9 +301,6 @@
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleView.h">
       <Filter>Src\Scene\title</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Player.h">
-      <Filter>Src\Actor\Character</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Status.h">
       <Filter>Src\Actor\Character</Filter>
@@ -391,7 +390,6 @@
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
     <ClInclude Include="Src\Collision\NonCopyable.h" />
@@ -399,6 +397,12 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Player\Player.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

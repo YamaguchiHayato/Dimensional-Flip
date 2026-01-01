@@ -2,7 +2,7 @@
 
 #include "Src/Core/InputManager.h"
 // キャラクタークラス。
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 
 // カメラクラス。
@@ -86,16 +86,6 @@ namespace
     const char* ANIMATION_FILE_EXTENSION = ".tka";     // 拡張子。
 }
 
-
-
-const std::string Player::FetchPlayAnimation(EnAnimationClip enAnimationClip, const std::string& animationName,bool flag)
-{
-    std::string AnimationFilePath = PLAYER_ANIMATION + animationName + ANIMATION_FILE_EXTENSION;
-
-    animationClip_[enAnimationClip].Load(AnimationFilePath.c_str());
-    animationClip_[enAnimationClip].SetLoopFlag(flag);
-    return AnimationFilePath;
-}
 
 
 bool Player::Start()
@@ -256,17 +246,6 @@ void Player::Render(RenderContext& rc)
 
     // 座標表示。    
 //    posFont_.Draw(rc);
-}
-
-
-void Player::SetAnimation()
-{
-    // アイドルアニメーション。
-    FetchPlayAnimation(EnAnimationClip::animIdle, "idle", true);
-    // 走るアニメーション。
-    FetchPlayAnimation(EnAnimationClip::animRun, "run", true);
-    // ジャンプアニメーション。
-    FetchPlayAnimation(EnAnimationClip::animJump, "jump", false);
 }
 
 

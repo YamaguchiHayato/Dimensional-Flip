@@ -6,7 +6,7 @@
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 
 // 具体的な敵クラスのインクルード。
-#include "Src/Actor/Character/Enemy/NormalEnemy.h"
+#include "Src/Actor/Character/Enemy/Normal/NormalEnemy.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 

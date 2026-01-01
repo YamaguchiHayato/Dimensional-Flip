@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Star.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Direction/StageClear.h"
 #include "Src/Direction/CutIn/CutInView.h"
 

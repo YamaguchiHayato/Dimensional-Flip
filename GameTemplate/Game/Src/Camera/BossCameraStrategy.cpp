@@ -2,7 +2,7 @@
 
 // キャラクタークラス。
 #include "Src/Actor/Character/Enemy/Boss.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 
 // 管理クラス。

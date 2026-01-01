@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 #include "Src/Direction/CutIn/CutInView.h"

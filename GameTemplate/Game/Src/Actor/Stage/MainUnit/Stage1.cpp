@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/MainUnit/Stage1.h"
 
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 // 敵。
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Character/Enemy/EnemyFactory.h"
-#include "Src/Actor/Character/Enemy/NormalEnemy.h"
+#include "Src/Actor/Character/Enemy/Normal/NormalEnemy.h"
 
 #include "Src/Core/CameraManager.h"
 

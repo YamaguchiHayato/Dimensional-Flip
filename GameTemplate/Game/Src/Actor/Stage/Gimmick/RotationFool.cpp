@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
 
 namespace

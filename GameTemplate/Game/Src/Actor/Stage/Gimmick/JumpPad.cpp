@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "JumpPad.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace
 {

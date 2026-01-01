@@ -2,7 +2,7 @@
 #include "Src/Actor/Stage/MainUnit/Stage3.h"
 #include "Src/Actor/Character/Enemy/Boss.h"
 #include "Src/Camera/Dimensiontrigger.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/WallActor.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"
 

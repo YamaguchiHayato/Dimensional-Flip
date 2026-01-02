@@ -50,7 +50,6 @@ namespace app
 
                 if (is2DMode_)
                 {
-                    // もしここで「3Dになってしまっていた」なら、薄くする設定をここに書けばOKです
                     // [3D設定 (薄く)]
                     currentScale_ = scale_3D_Normal;
                     nextPos = pos_;         // 位置もそのまま
@@ -60,8 +59,8 @@ namespace app
                 {
                     // [2D設定 (分厚く)]
                     currentScale_ = scale_2D_Wide;
-                    nextPos.z = 0.0f;       // 通せんぼ用にZ=0固定
-                    render_.SetAlpha(1.0f); // くっきり
+                    nextPos.z = 0.0f;      
+                    render_.SetAlpha(1.0f); 
                 }
                 // --- 変更を適用して物理を作り直す ---
 

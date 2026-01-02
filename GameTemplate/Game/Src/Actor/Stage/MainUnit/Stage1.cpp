@@ -194,7 +194,7 @@ bool Stage1::Start()
     CreateNormalEnemy();
 
     // 追従敵の生成。
-    CreateTrackingEnemy();
+//    CreateTrackingEnemy();
 
 	stageRender_.Update();
 

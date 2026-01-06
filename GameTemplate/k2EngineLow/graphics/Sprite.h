@@ -90,6 +90,10 @@ namespace nsK2EngineLow {
 		/// </summary>
 		/// <param name="renderContext">レンダリングコンテキスト</param>
 		void Draw(RenderContext& renderContext);
+
+		// カメラの情報を受け取る用の描画処理。
+		void Draw(RenderContext& renderContext, nsK2EngineLow::Camera* pCamera);
+
 		/// <summary>
 		/// ユーザー定義の拡張定数バッファを取得。
 		/// </summary>

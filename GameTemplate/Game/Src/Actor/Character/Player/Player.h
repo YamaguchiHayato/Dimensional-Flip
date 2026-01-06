@@ -1,6 +1,6 @@
 #pragma once
 #include "Src/Actor/Character/Player/Character2DRender.h"
-
+#include "Src/Actor/Character/Status.h"
 #include "Src/Actor/Character/IState.h"
 #include "Src/Actor/Character/Status.h"
 #include "Src/Actor/Character/Character.h"
@@ -91,6 +91,9 @@ private:
     uint8_t triggerOverlapCount_ = 0; /// いくつのエリアに重なっているかカウント。
     uint8_t currentIndex = 0;
 
+    int score_ = 0;
+
+    float invincibleTime_ = 0.0f;
     float jumpPower_ = 0.0f;
     float walkSpeed_ = 0.0f;
 
@@ -100,6 +103,7 @@ private:
     bool is3DMode_ = false;
     bool respawnFlag_ = false;
 
+    
 
 public:
     Player() = default;
@@ -137,6 +141,8 @@ public:
     void CameraOffsetRot();
     // リスポーン処理。
     void CheckRespawn();
+    // ダメージ処理。
+    void OnDamage(uint8_t damage);
 
 
 // ヘルパー。
@@ -146,7 +152,11 @@ public:
     {
         moveSpeed_ += addMoveSpeed;
     }
-
+    // スコアを加算。
+    inline void AddScore(int amount)
+    {
+        score_ += amount;
+    }
 
     // セッター。
 public:
@@ -246,8 +256,27 @@ public:
         keyDirection_ = direction;
     }
 
+
     // ゲッター。
 public:
+    // スコアを取得。
+    inline int GetScore()
+    {
+        return score_;
+    }
+
+    //HP
+    inline uint8_t GetHP() const
+    {
+        return status_.GetHP();
+    }
+    // 最大値。
+    inline uint8_t GetMaxHP() const
+    {
+        return status_.GetMaxHP();
+    }
+
+
     // ジャンプ力の取得。
     inline const float& GetJumpPower() const
     {
@@ -256,7 +285,7 @@ public:
 
 
     // プレイヤーの座標の取得。
-    inline const Vector3& GetPlayerPos() const
+    inline const Vector3& GetPlayerPos() 
     {
         return pos_;
     }

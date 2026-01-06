@@ -21,8 +21,6 @@ namespace app
     {
         using CreateFn = std::vector<IEnemy*> (*) (const Vector3&);
 
-
-
         class IEnemy;
         class EnemyFactory
         {
@@ -34,6 +32,10 @@ namespace app
 
             // 敵を生成するメソッド。
             static std::vector<IEnemy*>CreateEnemy(EnemyType enemyType, const Vector3& pos);
+
+
+            // 敵をランダムに生成する。
+            static std::vector<IEnemy*> CreateRandom(uint8_t count, Vector3& minPos, const Vector3& maxPos);
         };
     }
 }

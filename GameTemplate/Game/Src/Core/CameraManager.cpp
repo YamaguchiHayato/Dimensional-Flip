@@ -29,7 +29,8 @@ bool CameraManager::Start()
 
 void CameraManager::Update()
 {
-    if (!pCameraStrategy_){return;}
+    if (!pCameraStrategy_)
+        return;
 
     pCameraStrategy_->Update();
 

@@ -279,4 +279,37 @@ namespace nsK2EngineLow {
         //描画
         renderContext.DrawIndexed(m_indexBuffer.GetCount());
     }
+
+
+
+    void Sprite::Draw(RenderContext& rc, nsK2EngineLow::Camera* pCamera)
+    {
+        // カメラのビュー行列を取得。
+        Matrix viewMatrix = const_cast<nsK2EngineLow::Camera*>(pCamera)->GetViewProjectionMatrix();
+
+		// ワールド行列×ビュー行列×プロジェクション行列を計算。
+		m_constantBufferCPU.mvp = m_world * viewMatrix;
+
+        m_constantBufferCPU.mulColor = m_mulColor;
+
+        // シェーダーに必要な画面サイズなどのパラメータも渡す
+        // (3Dカメラの情報を使う)
+        m_constantBufferCPU.screenParam.x = pCamera->GetNear();
+        m_constantBufferCPU.screenParam.y = pCamera->GetFar();
+        m_constantBufferCPU.screenParam.z = (float)g_graphicsEngine->GetFrameBufferWidth();
+        m_constantBufferCPU.screenParam.w = (float)g_graphicsEngine->GetFrameBufferHeight();
+
+        // --- ここから下は既存のDrawと全く同じ ---
+        m_constantBufferGPU.CopyToVRAM(&m_constantBufferCPU);
+        if (m_userExpandConstantBufferCPU != nullptr) {
+            m_userExpandConstantBufferGPU.CopyToVRAM(m_userExpandConstantBufferCPU);
+        }
+        rc.SetRootSignature(m_rootSignature);
+        rc.SetPipelineState(m_pipelineState);
+        rc.SetVertexBuffer(m_vertexBuffer);
+        rc.SetIndexBuffer(m_indexBuffer);
+        rc.SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+        rc.SetDescriptorHeap(m_descriptorHeap);
+        rc.DrawIndexed(m_indexBuffer.GetCount());
+    }
 }

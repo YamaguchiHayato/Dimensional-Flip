@@ -29,7 +29,8 @@ private:
 private:
 	ModelRender m_starRender;
 	Vector3 m_starPosition;
-	Quaternion m_starRotation;
+    Quaternion m_starRotation;
+    bool m_isGoal = false;
 
 };
 

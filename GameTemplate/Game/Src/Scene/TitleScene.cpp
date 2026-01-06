@@ -66,6 +66,7 @@ void TitleScene::Update()
     {
         if (pFade_->IsFadeOutEnd())
         {
+            // インゲームシーンへ遷移
             SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
         }
     }

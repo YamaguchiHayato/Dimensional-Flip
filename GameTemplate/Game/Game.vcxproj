@@ -223,8 +223,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackGroundLayer.cpp" />
     <ClCompile Include="DelayedEffect.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
@@ -283,7 +283,10 @@
     <ClCompile Include="Src\Direction\CutIn\CutInView.cpp" />
     <ClCompile Include="Src\Direction\Fade.cpp" />
     <ClCompile Include="Src\Direction\GameClear.cpp" />
+    <ClCompile Include="Src\Direction\GameOver.cpp" />
     <ClCompile Include="Src\Direction\StageClear.cpp" />
+    <ClCompile Include="Src\Scene\GameClearScene.cpp" />
+    <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
     <ClCompile Include="Src\Scene\LoadingScene.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
@@ -307,8 +310,8 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackGroundLayer.h" />
     <ClInclude Include="DelayedEffect.h" />
-    <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
@@ -367,7 +370,10 @@
     <ClInclude Include="Src\Direction\CutIn\CutInView.h" />
     <ClInclude Include="Src\Direction\Fade.h" />
     <ClInclude Include="Src\Direction\GameClear.h" />
+    <ClInclude Include="Src\Direction\GameOver.h" />
     <ClInclude Include="Src\Direction\StageClear.h" />
+    <ClInclude Include="Src\Scene\GameClearScene.h" />
+    <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />
     <ClInclude Include="Src\Scene\LoadingScene.h" />
     <ClInclude Include="Src\Scene\Scene.h" />

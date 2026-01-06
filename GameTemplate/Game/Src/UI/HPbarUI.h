@@ -5,6 +5,8 @@
 
 #pragma once
 #include "Src/UI/UIBase.h"
+class Player;
+
 class HPbarUI : public UIBase
 {
 public:
@@ -32,6 +34,9 @@ private:
 	void SetScales();
     // HPバーの更新処理。
 	void Updates();
+
+private:
+    Player* pPlayer_ = nullptr;
 
 private:
     // HPバー関連変数。

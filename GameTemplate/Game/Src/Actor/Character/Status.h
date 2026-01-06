@@ -10,6 +10,8 @@ namespace app
             Status() = default;
             virtual ~Status() = default;
 
+
+        public:
             // ステータスの初期化関数。
             // ここでは体力・移動速度・攻撃力を設定する。
             void Initial(uint8_t maxHP, const float speed, const float power);
@@ -18,10 +20,10 @@ namespace app
              // ダメージを受ける処理。
             inline void Damage(uint8_t damage)
             {
-                // HPを減らす。
-                currentHP_ -= damage;
-                if (currentHP_ > maxHP_)
-                    currentHP_ = maxHP_;
+                if (currentHP_ <= damage)
+                    currentHP_ = 0;
+                else
+                    currentHP_ -= damage;
             }
 
 

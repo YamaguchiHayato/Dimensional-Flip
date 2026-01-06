@@ -45,7 +45,11 @@ private:
 
 // ゲッター
 public:
-    CameraMode GetCurrentCameraMode() const { return currentMode_; }
+    CameraMode GetCurrentCameraMode() const
+    {
+        return currentMode_;
+    }
+
 
 private:
     Player* pPlayer_ = nullptr;

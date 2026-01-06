@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
+#include <cstdlib>
 #include <array>
+#include <ctime>
 
 #include "Src/Actor/Character/Enemy/EnemyFactory.h"
 #include "Src/Actor/Character/Enemy/IEnemy.h"
@@ -10,12 +12,56 @@
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 
+
+namespace
+{
+    // NormalEnemyを1体だけ生成するヘルパー。
+    app::enemy::IEnemy* CreateNormalSingle(const Vector3& pos)
+    {
+        auto* e = NewGO<app::enemy::NormalEnemy>(0);
+        // パラメータは適宜調整してください
+        app::enemy::NormalEnemy::SpawnParam param(pos, Vector3(0.25f, 0.25f, 0.25f), 80.0f, true);
+        e->InitParam(param);
+        e->SetStompable(true);
+        return e;
+    }
+
+
+    // TrackingEnemyを1体だけ生成するヘルパー。
+    app::enemy::IEnemy* CreateTrackingSingle(const Vector3& pos)
+    {
+        auto* pTracking = NewGO<app::enemy::TrackingEnemy>(0);
+        pTracking->SetPos(pos);
+        return pTracking;
+    }
+
+
+    // NormalEnemyを行列生成する際の定数をまとめた構造体。
+    struct NormalEnemyCreateStatus
+    {
+        // 内側の量。
+        static constexpr auto RECT_W = 25.0f;   // 壁の内側の「横幅」(X方向)  ※壁の厚みや内側幅
+        static constexpr auto RECT_D = 25.0f;   // 壁の内側の「奥行き」(Z方向)
+
+        // 寄せる量。
+        static constexpr auto MARGIN_X = 20.0f; // 壁から内側へ寄せる量（X）
+        static constexpr auto MARGIN_Z = 20.0f; // 壁から内側へ寄せる量（X）
+
+        // 密度。
+        static constexpr auto DESIRED_SPACING_X = 80.0f; // X成分。
+        static constexpr auto DESIRED_SPACING_Z = 60.0f; // X成分。
+
+    };
+}
+
 namespace app
 {
     namespace enemy
     {
         // 生成関数の型定義（全て vector を返すように統一）。
         using CreateFn = std::vector<IEnemy*> (*)(const Vector3&);
+
+        using Status = NormalEnemyCreateStatus;
 
 
         // --- 通常敵：3x3の隊列パターン ---
@@ -34,8 +80,8 @@ namespace app
             const auto desiredSpacingZ = 60.0f; // Z成分。
 
             // 使える範囲
-            const auto usableW = rectW - marginX * 2.0f;
-            const auto usableD = rectD - marginZ * 2.0f;
+            const auto usableW = Status::RECT_W - Status::MARGIN_X * 2.0f;
+            const auto usableD = Status::RECT_D - Status::MARGIN_Z * 2.0f;
 
             // 個数を決める（最低1）
             uint8_t nx = 6;
@@ -103,15 +149,50 @@ namespace app
             std::vector<IEnemy*> list;
             auto* p = NewGO<Thwomp>(0, "thwomp");
 
-
             p->SetPos(pos);
+
+            // 斜面の方向ベクトル（必要に応じて調整）
+            // 例: 左下へ進む
+            Vector3 slopeDir(0.0f, -0.577f, -1.0f);
+            p->InitMoveDir(slopeDir);
+
             list.push_back(p);
-
-
             return list;
         }
 
 
+        std::vector<IEnemy*> EnemyFactory::CreateRandom(uint8_t count, Vector3& minPos, const Vector3& maxPos)
+        {
+            std::vector<IEnemy*> list;
+
+            for (int i = 0; i < count; ++i)
+            {
+                Vector3 spawnPos;
+
+                float tX = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+                spawnPos.x = minPos.x + tX * (maxPos.x - minPos.x);
+
+                // Y座標（高さ）は最小値を基準にする
+                spawnPos.y = minPos.y;
+
+                // Z座標のランダム計算
+                float tZ = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+                spawnPos.z = minPos.z + tZ * (maxPos.z - minPos.z);
+
+                int type = rand() % 2;
+
+                if (type == 0)
+                    list.push_back(CreateNormalSingle(spawnPos));
+
+
+                else
+                    list.push_back(CreateTrackingSingle(spawnPos));
+            }
+            return list;
+        }
+
+
+        // 敵タイプの数。
         constexpr size_t enemyTypeCount = static_cast<size_t>(EnemyType::type_Num);
 
 

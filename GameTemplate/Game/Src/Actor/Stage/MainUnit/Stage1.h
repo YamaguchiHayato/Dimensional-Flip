@@ -7,6 +7,7 @@
 // ギミック。
 class JumpPad;
 class Star;
+class Thwomp;
 class WallActor;
 class DimensionTrigger;
 class RotationFool;
@@ -37,8 +38,6 @@ public:
 
 
 public:
-    // Playerがカメラアクションをしたかチェックする関数。
-    void CheckCameraAction();
 
     // モデルのファイルパスをセット。
 	inline const std::string InitStage(const std::string& stagename)override
@@ -56,8 +55,10 @@ private:
     inline void WallCreateInstance();    // 壁インスタンス生成。
 
     // 敵生成。
-    void CreateNormalEnemy();
-    void CreateTrackingEnemy();
+    void CreateNormalEnemy();            // 通常敵。
+    void CreateTrackingEnemy();          // 追尾敵。
+    void CreateRandomEnemy();            // 通常敵と追尾敵のランダム生成。
+    //void CreateThwompEnemy();
 
 public:
     inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 20.0f, 0.0f); }

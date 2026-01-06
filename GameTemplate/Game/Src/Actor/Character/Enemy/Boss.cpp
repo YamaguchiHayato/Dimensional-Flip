@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Enemy/Boss.h"
-#include "Src/Actor/Character/Player.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "BossState.h"
 
 // ボス戦時のギミッククラス。

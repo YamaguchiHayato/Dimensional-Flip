@@ -34,6 +34,10 @@ cbuffer SpriteRenderCb : register(b1)
     int linearWipeDrawingMode; //リニアワイプの描画モード
     float drawingRate; //画像加工用イージング割合
     int screenDrawingMode; //画像加工
+
+    // UVScroll用。
+    float2 uvOffset;
+    
 };
 
 Texture2D<float4> colorTexture : register(t0); //カラーテクスチャ
@@ -62,7 +66,9 @@ PSInput VSMain(VSInput In)
 //ピクセルシェーダー
 float4 PSMain(PSInput In) : SV_Target0
 {
-    float4 color = colorTexture.Sample(Sampler, In.uv) * mulColor;
+    float2 scrollUV = In.uv + uvOffset;
+    
+    float4 color = colorTexture.Sample(Sampler, scrollUV) * mulColor;
     
     //リニアワイプの描画モード
     switch (linearWipeDrawingMode)

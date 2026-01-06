@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "NumberUI.h"
-
+#include "Src/Core/SceneManager.h"
 namespace
 {
 	const float UI_WIDTH = 300.0f;
@@ -73,18 +73,23 @@ void NumberUI::InitUINumber()
 void NumberUI::UpdateTimer()
 {
     // タイマー処理。
-	if (timer_ > 0.0f)
-	{
-		timer_ -= g_gameTime->GetFrameDeltaTime();
-	}
-	else
-	{
-		timer_ = 0.0f;
-	}
+    if (timer_ > 0.0f)
+    {
+        timer_ -= g_gameTime->GetFrameDeltaTime();
 
+        if (timer_ <= 0.0f)
+        {
+            timer_ = 0.0f;
+            SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+        }
+    }
+    else
+    {
+        timer_ = 0.0f;
+    }
 
-	uint8_t remainingSeconds = static_cast<uint8_t>(timer_); 
-	tenPlace_ = (remainingSeconds / 10) % 10;   
-	onePlace_ = remainingSeconds % 10;        
+    uint8_t remainingSeconds = static_cast<uint8_t>(timer_);
+    tenPlace_ = (remainingSeconds / 10) % 10;
+    onePlace_ = remainingSeconds % 10;
 }
 

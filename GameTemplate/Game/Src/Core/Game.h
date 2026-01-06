@@ -1,8 +1,8 @@
 #pragma once
 #include "stdint.h"
 #include "GameSoundEngine.h"
-#include "Level3DRender/LevelRender.h"
 #include "Src/Actor/Stage/IStage.h"
+#include "BackGroundLayer.h"
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
 
@@ -43,6 +43,7 @@ namespace app
 
             bool Start();
             void Update();
+            void Render(RenderContext& rc);
 
             // ステージ遷移要求。
             void RequestStageTransition(StageID nextStageID);
@@ -64,6 +65,8 @@ namespace app
             // その他。
             void InitSkyCube(); // スカイキューブの初期化。
 
+            // ステージ背景画像。
+            void InitBackGround();
         private:
             // 遷移時の更新処理。
             void UpdateTransition();
@@ -71,6 +74,8 @@ namespace app
 
         private:
             std::unique_ptr<CameraManager> pCameraManager_;
+
+        private:    
             TimerUI* pTimerUI_ = nullptr;
             NumberUI* pNumberUI_ = nullptr;
             ScoreUI* pScoreUI_ = nullptr;
@@ -81,6 +86,15 @@ namespace app
             Player* pPlayer_ = nullptr;
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
+            // 背景レイヤー。
+            app::stage::BackGroundLayer* pSkyLayer_ = nullptr;      // 空。
+            app::stage::BackGroundLayer* pMountainLayer_ = nullptr; // 山。
+            app::stage::BackGroundLayer* pCityLayer_ = nullptr;     // 街。
+            app::stage::BackGroundLayer* pGroundLayer_ = nullptr;   // 地面。
+            
+
+       // 列挙型クラス。
+        private:
             // 遷移管理用メンバ。
             SceneTransitionState state_ = SceneTransitionState::None;
             StageID nextStageID_ = StageID::sInvalid;
@@ -91,6 +105,7 @@ namespace app
             uint8_t currentStageNum_ = -1;
 
         private:
+
             // フェードが終了しているかどうか
             bool m_isFadeInEnd = false;
             bool m_hasAppliedStageBgm_ = false;

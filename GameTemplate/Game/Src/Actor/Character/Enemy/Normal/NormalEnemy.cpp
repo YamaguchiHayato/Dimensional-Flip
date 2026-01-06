@@ -69,6 +69,20 @@ namespace app
                 }
             }
 
+            if (!isCrushed_ && pPlayer_)
+            {
+                Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+                float distXZSq = diff.x * diff.x + diff.z * diff.z;
+                if (distXZSq < (8.0f * 8.0f))
+                {
+                    if (diff.y < 5.0f && diff.y > -40.0f)
+                    {
+                        pPlayer_->OnDamage(1);
+                    }
+                }
+
+            }
+
             // 現在のステート更新
             if (pCurrentState_)
                 pCurrentState_->Update();
@@ -100,13 +114,16 @@ namespace app
             if (v.y < -0.1f)
             {
                 const float dy = diff.y;
-                const float stompRadius = 3.0f;
+                const float stompRadius = 20.0f;
                 float distXZSq = diff.x * diff.x + diff.z * diff.z;
 
                 if (dy > 0.0f && dy < 30.0f && distXZSq <= stompRadius * stompRadius)
                 {
                     v.y = 60.0f; // プレイヤーをバウンドさせる
                     pPlayer_->Bound();
+
+                    // スコア加算
+                    pPlayer_->AddScore(100); 
                     return true;
                 }
             }
@@ -133,7 +150,6 @@ namespace app
         }
 
 
-        // Press() や InitParam() はそのまま...
         void NormalEnemy::InitParam(const SpawnParam& param)
         {
             pos_ = param.paramPos_;

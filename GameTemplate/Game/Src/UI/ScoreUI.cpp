@@ -73,6 +73,7 @@ void ScoreUI::Render(RenderContext& rc)
 
 }
 
+
 void ScoreUI::InitUIScore()
 {
     // スコアテキストのUI初期化。
@@ -135,8 +136,8 @@ void ScoreUI::InitUIScore()
 
 void ScoreUI::UpdateScore()
 {
-    // ジャンプ成功時にスコアを加算。
-	if (pPlayer_ != nullptr && pPlayer_->DoJumpCheck()) score_ += 100.0f;
+    if (pPlayer_ != nullptr)
+        score_ = static_cast<float>(pPlayer_->GetScore());
 
 	if (score_ > MAX_SCORE) score_ = MAX_SCORE;
 

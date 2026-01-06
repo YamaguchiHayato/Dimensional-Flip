@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Src/UI/UIBase.h"
 #include "Src/UI/HPbarUI.h"
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace
 {
@@ -38,6 +39,7 @@ namespace
 bool HPbarUI::Start()
 { 
 	InitHPbar();
+    pPlayer_ = FindGO<Player>("player");
 	return true;
 }
 
@@ -50,7 +52,11 @@ void HPbarUI::Update()
 
 	Updates();
 
-    
+    for (int i = 0; i < static_cast<int>(enUINumber::enNumber_Num); i++)
+    {
+        life_Left[i].Update();
+        life_light[i].Update();
+    }
 }
 
 
@@ -59,8 +65,26 @@ void HPbarUI::Render(RenderContext& rc)
 	slash_.Draw(rc);
 	flame_.Draw(rc);
 	heart_.Draw(rc);
-    life_Left->Draw(rc);
-    life_light->Draw(rc);
+    if (pPlayer_)
+    {
+        int currentHP = pPlayer_->GetHP();
+
+        // 配列外参照を防ぐクランプ
+        if (currentHP < 0)
+            currentHP = 0;
+        if (currentHP >= static_cast<int>(enUINumber::enNumber_Num))
+            currentHP = static_cast<int>(enUINumber::enNumber_Num) - 1;
+
+        life_Left[currentHP].Draw(rc);
+
+        // 右側：最大HP (Statusから取得するか、定数の9を使う)
+        int maxHP = pPlayer_->GetMaxHP();
+        if (maxHP >= static_cast<int>(enUINumber::enNumber_Num))
+            maxHP = 9;
+
+        // 配列名が life_light となっていますが右側の数字として扱います
+        life_light[maxHP].Draw(rc);
+    }
 }
 
 

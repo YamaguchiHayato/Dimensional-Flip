@@ -1,26 +1,26 @@
 #include "stdafx.h"
-#include "Game.h"
-#include "Src/Direction/Fade.h"
 
+#include "Game.h"
 #include "GameSoundEngine.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Direction/Fade.h"
 #include "Src/Scene/LoadingScene.h"
 // UI。
-#include "Src/UI/UIBase.h"
-#include "Src/UI/TimerUI.h"
+#include "Src/UI/HPbarUI.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
-#include "Src/UI/HPbarUI.h"
+#include "Src/UI/TimerUI.h"
+#include "Src/UI/UIBase.h"
 
 // マネージャー。
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/SceneManager.h"
-#include "Src/Core/StageManager.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Core/StageManager.h"
 
 static GameSoundList StageToBgm(StageID id)
 {
-    
+
     switch (id)
     {
     case StageID::sStage1:
@@ -34,7 +34,6 @@ static GameSoundList StageToBgm(StageID id)
     }
 }
 
-
 namespace app
 {
     namespace core
@@ -42,11 +41,35 @@ namespace app
 
         Game::~Game()
         {
-            ///////////////////////////////////////////
-            // StageManagerはシングルトンのため未破棄。
-            ///////////////////////////////////////////
-
             DeleteGO(pSkyCube_);
+
+            if (pSkyLayer_)
+            {
+                delete pSkyLayer_;
+                pSkyLayer_ = nullptr;
+            }
+
+
+            if (pMountainLayer_)
+            {
+                delete pMountainLayer_;
+                pMountainLayer_ = nullptr;
+            }
+
+
+            if (pCityLayer_)
+            {
+                delete pCityLayer_;
+                pCityLayer_ = nullptr;
+            }
+
+
+            if (pGroundLayer_)
+            {
+                delete pGroundLayer_;
+                pGroundLayer_ = nullptr;
+            }
+
 
             if (pLoadingScene_)
             {
@@ -70,6 +93,24 @@ namespace app
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
 
+        void Game::InitBackGround()
+        {
+            pSkyLayer_ = new app::stage::BackGroundLayer();
+            pSkyLayer_->Init("Assets/stage/BackGround/sky.DDS",1000.0f, 0.0f);
+
+            // 2. 山 (遠景。ゆっくり動く)
+            pMountainLayer_ = new app::stage::BackGroundLayer();
+            pMountainLayer_->Init("Assets/stage/BackGround/mountain.DDS", 600.0f, 0.2f);
+
+            // 3. 街/建物 (中景。普通に動く)
+            pCityLayer_ = new app::stage::BackGroundLayer();
+            pCityLayer_->Init("Assets/stage/BackGround/building.DDS", 300.0f, 0.5f);
+
+            // 4. 地面 (手前。プレイヤーと同じくらい動く？調整枠)
+            pGroundLayer_ = new app::stage::BackGroundLayer();
+            pGroundLayer_->Init("Assets/stage/BackGround/ground.DDS", 100.0f, 1.0f);
+        }
+
 
         bool Game::Start()
         {
@@ -79,7 +120,6 @@ namespace app
 
             app::core::SoundManager::CreateInstence();
             app::core::SoundManager::GetInstance()->Init();
-
 
             // UIの生成。
             UICreateInstance();
@@ -91,7 +131,6 @@ namespace app
             pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
             pPlayer_->InitCameraManager(pCameraManager_.get());
 
-
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
             if (pFade_ == nullptr)
@@ -102,11 +141,13 @@ namespace app
             nextStageID_ = StageID::sInvalid;
             pLoadingScene_ = nullptr;
 
-
             // Playerの初期位置設定。
-//            pPlayer_->SetPlayerPos(Vector3::Zero);
-            pPlayer_->SetPlayerPos(Vector3(780.0f, 0.0f, 0.0f));
-           
+            pPlayer_->SetPlayerPos(Vector3::Zero);
+     //       pPlayer_->SetPlayerPos(Vector3(800.0f, 10.0f, 0.0f));
+
+            // ステージ背景。
+     //       InitBackGround();
+
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
@@ -114,7 +155,6 @@ namespace app
             pFade_ = SceneManager::GetInstance()->GetFade();
             return true;
         }
-
 
         void Game::Update()
         {
@@ -145,9 +185,41 @@ namespace app
             {
                 // ステージマネージャーの更新。
                 StageManager::GetInstance()->Update();
+
+                if (g_camera3D)
+                {
+                    Vector3 camPos = g_camera3D->GetPosition();
+
+                    if (pSkyLayer_)
+                        pSkyLayer_->Update(camPos);
+
+                    if (pMountainLayer_)
+                        pMountainLayer_->Update(camPos);
+
+                    if (pCityLayer_)
+                        pCityLayer_->Update(camPos);
+
+                    if (pGroundLayer_)
+                        pGroundLayer_->Update(camPos);
+                }
             }
         }
 
+
+        void Game::Render(RenderContext& rc)
+        {
+            if (g_camera3D)
+            {
+                if (pSkyLayer_)
+                    pSkyLayer_->Draw(rc, g_camera3D);
+                if (pMountainLayer_)
+                    pMountainLayer_->Draw(rc, g_camera3D);
+                if (pCityLayer_)
+                    pCityLayer_->Draw(rc, g_camera3D);
+                if (pGroundLayer_)
+                    pGroundLayer_->Draw(rc, g_camera3D);
+            }
+        }
 
         void Game::RequestStageTransition(StageID nextStageID)
         {
@@ -166,75 +238,39 @@ namespace app
         {
             switch (state_)
             {
-            /////////////////////////////////////////
-            // A. 通常状態。
-            /////////////////////////////////////////
             case SceneTransitionState::None:
-                // 何もしない。
                 break;
 
-            /////////////////////////////////////////
-            // B. フェードアウト状態。
-            /////////////////////////////////////////
             case SceneTransitionState::FadeOut:
             {
-                // プレイヤーを一時停止状態にする。
                 pPlayer_->SetPaused(true);
-
-                // フェードアウト開始。
                 pFade_->StartFadeOut();
-
-                // ストップウォッチタイマー開始。
                 stageClearTimer_.Start();
-
-                // 次の状態へ。
-                state_ = SceneTransitionState::Load; // Cへ遷移。
+                state_ = SceneTransitionState::Load;
                 break;
             }
 
-            /////////////////////////////////////////
-            // C. ローディング状態。
-            /////////////////////////////////////////
             case SceneTransitionState::Load:
             {
-                // ストップウォッチを停止して、現在までの経過時間を計算。
                 stageClearTimer_.Stop();
-
-                // 1.FadeOutの完了を待つ。
-                //        if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
                 if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
                 {
-                    // 2. Loading画面を表示する。
                     pLoadingScene_ = NewGO<LoadingScene>(0, "LoadingScene");
-
-                    // 3. ロードが終わったらFadeInへ
-                    state_ = SceneTransitionState::Load_Render; // Dへ遷移。
+                    state_ = SceneTransitionState::Load_Render;
                 }
                 break;
             }
 
-            /////////////////////////////////////////
-            // D. ローディング描画。
-            /////////////////////////////////////////
             case SceneTransitionState::Load_Render:
             {
-                state_ = SceneTransitionState::Load_Wait; // Eへ遷移。
+                state_ = SceneTransitionState::Load_Wait;
                 break;
             }
 
-            /////////////////////////////////////////
-            // E. 同期ロード状態。
-            /////////////////////////////////////////
             case SceneTransitionState::Load_Wait:
             {
-                // このフレームでGame->Renderが呼ばれ、ローディング画面を描画。
-                // 次フレームで同期ロードを開始する。。
-
-                // 3. 同期ロードを実行。
                 StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
-
-                // 4. ロード完了後、PlayerとCameraをリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
                 pPlayer_->SetPlayerPos(newStartPos);
 
@@ -243,62 +279,41 @@ namespace app
                     const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
                     const GameSoundList bgm = StageToBgm(stage);
 
-                    app::core::SoundManager::GetInstance()->PlayBGM(bgm); // ←ここで切替
-                    // PlayBGMは前のBGMを止める実装になってるので基本これでOK :contentReference[oaicite:5]{index=5}
+                    app::core::SoundManager::GetInstance()->PlayBGM(bgm);
                     m_hasAppliedStageBgm_ = true;
                     nextStageID_ = StageID::sInvalid;
                     state_ = SceneTransitionState::None;
                 }
-
-                // 5. 物理エンジンを1フレーム更新するためFadeInステートへ。
                 state_ = SceneTransitionState::Load_WaitFinish;
                 break;
             }
 
-            /////////////////////////////////////////
-            // F.ロード完了待ち状態。
-            /////////////////////////////////////////
             case SceneTransitionState::Load_WaitFinish:
             {
-                // なにも処理を行わずに1フレーム待つ。
                 state_ = SceneTransitionState::FadeIn;
                 break;
             }
 
-            /////////////////////////////////////////
-            // G. フェードイン状態。
-            /////////////////////////////////////////
             case SceneTransitionState::FadeIn:
             {
-                // ローディング画面の削除。
                 if (pLoadingScene_ != nullptr)
                 {
                     DeleteGO(pLoadingScene_);
                     pLoadingScene_ = nullptr;
                 }
-                // プレイヤーの一時停止解除。
                 pPlayer_->SetPaused(false);
-
-                // フェードイン開始。
                 pFade_->StartFadeIn();
-
-                // TimerUIをリセットする。
                 pNumberUI_->ResetTimer();
-
-                // フェード完了待ちステートへ移行。
                 state_ = SceneTransitionState::FadeIn_Wait;
                 break;
             }
 
-            /////////////////////////////////////////
-            // H. フェードイン状態。
-            /////////////////////////////////////////
             case SceneTransitionState::FadeIn_Wait:
             {
                 if (pFade_->IsFadeInEnd())
                 {
                     nextStageID_ = StageID::sInvalid;
-                    state_ = SceneTransitionState::None; // ここで初めてゲーム開始！
+                    state_ = SceneTransitionState::None;
                 }
                 break;
             }
@@ -312,11 +327,8 @@ namespace app
         void Game::UICreateInstance()
         {
             TimerCreateInstance();
-
             NumberCreateInstance();
-
             ScoreCreateInstance();
-
             HPbarCreateInstance();
         }
 
@@ -349,5 +361,5 @@ namespace app
         {
             pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
         }
-    }
-}
+    } // namespace core
+} // namespace app

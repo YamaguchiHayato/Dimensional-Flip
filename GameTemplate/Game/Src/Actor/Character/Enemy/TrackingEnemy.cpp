@@ -9,11 +9,10 @@ namespace
     static constexpr uint8_t kCrushWaitFrames = 10;
 
 
-    // Enemyが踏まれるときの値の調整をする構造体。
     struct StompParam
     {
         // 踏まれる判定を司る距離。
-        static constexpr float RADIUS = 30.0f; 
+        static constexpr float RADIUS = 6.0f; 
         // Y座標の最小値。
         static constexpr float MIN_Y = 0.0f;
         // Y座標の最大値。
@@ -29,7 +28,7 @@ namespace app
         {
             SetEnemyAnimation();
             // enNum を使用
-            render_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enNum, enModelUpAxisY, true);
+            render_.Init("Assets/modelData/Skeleton.tkm", animationclip_, enNum, enModelUpAxisZ, true);
             render_.SetScale(scale_);
             charaCon_.Init(2.0f, 1.0f, pos_);
             initPos_ = pos_;
@@ -69,11 +68,13 @@ namespace app
                 // 直径。
                 auto diameter = StompParam::RADIUS * StompParam::RADIUS;
 
-                // 水平方向かつ範囲内の場合。
+
                 if (distXZ <= diameter && dy > StompParam::MIN_Y && dy < StompParam::MAX_Y)
                 {
                     // Playerにバウンド処理をさせる。
                     pPlayer_->Bound();
+
+                    pPlayer_->AddScore(100);
 
                     isCrushed_ = true;
                     crushedFrame_ = 0;
@@ -84,6 +85,22 @@ namespace app
                 }
             }
 
+
+            if (!isCrushed_ && pPlayer_)
+            {
+                Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+                float distXZSq = diff.x * diff.x + diff.z * diff.z;
+
+                // 半径 6.0f (6*6 = 36) 以内
+                if (distXZSq < (6.0f * 6.0f))
+                {
+
+                    if (diff.y < 5.0f && diff.y > -20.0f)
+                    {
+                        pPlayer_->OnDamage(1);
+                    }
+                }
+            }
             render_.SetPosition(pos_);
             render_.SetRotation(rot_); // 計算した回転をセット
             render_.SetScale(scale_);
@@ -123,11 +140,31 @@ namespace app
 
         void TrackingEnemy::Rotation()
         {
-            Quaternion offsetRot_ = Quaternion::Identity;
+            Quaternion correctionRot = Quaternion::Identity;
+            // 2. 進行方向に向く回転（Y軸回転）
+            Quaternion facingRot = Quaternion::Identity;
 
-            rot_ = offsetRot_;
+            // 追跡中（移動中）なら、移動方向の角度を計算
+            if (isChasing_ && (moveSpeed_.x != 0.0f || moveSpeed_.z != 0.0f))
+            {
+                // XとZの速度から角度(ラジアン)を算出
+                float angle = atan2f(moveSpeed_.x, moveSpeed_.z);
+
+                // Y軸周りの回転を作成
+                facingRot.SetRotation(Vector3::AxisY, angle);
+            }
+            else
+            {
+                // 追跡していない時も、初期位置などで特定の方向を向かせたい場合は
+                // ここで facingRot を設定します。現在はそのままでOK。
+            }
+
+            // 3. 回転の合成（補正 × 方向）
+            // 順番が重要です。まずモデルを起こして(correction)、それから回す(facing)
+            rot_ = correctionRot * facingRot;
+
+            // 描画クラスに適用
             render_.SetRotation(rot_);
-
        }
 
         void TrackingEnemy::Press()

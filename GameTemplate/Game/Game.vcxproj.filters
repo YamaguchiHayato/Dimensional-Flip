@@ -198,7 +198,6 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\SoundManager.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
@@ -223,6 +222,10 @@
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
+    <ClCompile Include="BackGroundLayer.cpp" />
+    <ClCompile Include="Src\Scene\GameClearScene.cpp" />
+    <ClCompile Include="Src\Scene\GameOverScene.cpp" />
+    <ClCompile Include="Src\Direction\GameOver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -378,7 +381,6 @@
       <Filter>Src\Actor\Stage\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\SoundManager.h" />
-    <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
@@ -403,6 +405,10 @@
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
+    <ClInclude Include="BackGroundLayer.h" />
+    <ClInclude Include="Src\Scene\GameClearScene.h" />
+    <ClInclude Include="Src\Scene\GameOverScene.h" />
+    <ClInclude Include="Src\Direction\GameOver.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

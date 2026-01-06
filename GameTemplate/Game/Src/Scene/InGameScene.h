@@ -15,7 +15,7 @@ public:
     virtual ~InGameScene();
 
     bool Start() override;
-    void Update() override{};
+    void Update() override;
 
 
 private:

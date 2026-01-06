@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/MainUnit/Stage1.h"
-
+#include "Src/Actor/Character/Enemy/Thwomp.h"
 #include "Src/Actor/Character/Player/Player.h"
 
 // 敵。
@@ -32,7 +32,7 @@ namespace GimmickPos
     // スター。
     namespace StarPosition
     {
-        const Vector3 Pos1(10597.5, -31.7f, 210.0f);
+        const Vector3 Pos1(1140, 0.0f, 0.0f);
     }
 
 
@@ -94,6 +94,11 @@ namespace GimmickPos
     {
         const Vector3 Pos1 = Vector3(800.0f,  0.0f, 0.0);
 
+    }
+
+    namespace Thwomp
+    {
+        const Vector3 pos = Vector3(1014.0f, 25.0f, 0.0f);
     }
 
 
@@ -174,6 +179,9 @@ bool Stage1::Start()
 	stageRender_.SetPosition(stagePos_);
 	initPos_ = stagePos_;
 
+    // ランダムシード値の初期化。
+    srand(static_cast<unsigned int>(time(nullptr)));
+
 
      // スター生成。
 	StarNewGO();
@@ -193,6 +201,12 @@ bool Stage1::Start()
     // ノーマルエネミー生成。
     CreateNormalEnemy();
 
+    // 通常敵と追従敵をランダム生成。
+    CreateRandomEnemy();
+
+    // トゥイーンエネミー生成。
+    //CreateThwompEnemy();
+
     // 追従敵の生成。
 //    CreateTrackingEnemy();
 
@@ -210,29 +224,9 @@ void Stage1::Update()
 	// 当たり判定。
 	stagePhysics_.SetPosition(stagePos_);
 
-    // Playerがカメラアクションをしたかチェックする関数。
-//    CheckCameraAction();
 }
 
 
-//void Stage1::CheckCameraAction()
-//{
-//    Vector3 playerPos = pPlayer_->GetPlayerPos();
-//    // 判定範囲。
-//    auto checkRange = 100.0f * 100.0f;
-//
-//    // 壁インスタンスとの距離を調べる。
-//    for (auto* wall : lWallInstance_)
-//    {
-//        Vector3 diff = wall->GetPos() - playerPos;
-//
-//        // 距離の2乗で比較する。
-//        if (diff.LengthSq() < checkRange)
-//            // コリジョンを削除する。
-//            wall->DestroyCollision();
-//    }
-//}
-//
 
 void Stage1::Render(RenderContext& rc)
 {
@@ -314,6 +308,7 @@ void Stage1::DimensionTriggerNewGO()
 	}
 
 }
+
 
 void Stage1::RotationFoolNewGO()
 {
@@ -429,6 +424,26 @@ void Stage1::CreateTrackingEnemy()
 
     // 生成する敵をリストに追加。
     for (auto* enemy : enemys)
+    {
+        if (enemy)
+            lEnemySpawnList_.push_back(enemy);
+    }
+}
+
+
+void Stage1::CreateRandomEnemy()
+{
+    // 生成を開始する最小座標と最大座標の設定。
+    Vector3 minPos = Vector3(0.0f, 0.0f, 0.0f);
+    Vector3 maxPos = Vector3(1100.0f, 0.0f, 0.0f);
+
+
+    // ランダム生成関数の呼び出し。
+    auto randomEnemys = app::enemy::EnemyFactory::CreateRandom(20, minPos, maxPos);
+
+
+    // 生成する敵をステージの管理リストに追加。
+    for (auto* enemy : randomEnemys)
     {
         if (enemy)
             lEnemySpawnList_.push_back(enemy);

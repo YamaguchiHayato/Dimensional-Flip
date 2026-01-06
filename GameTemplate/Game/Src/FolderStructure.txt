@@ -9,6 +9,14 @@
 
                          [Enemy] … 敵キャラクター関連クラスを格納する場所。
 
+                                    [Normal] … NormalEnemyステートクラスを格納。
+
+                                    [Thwomp] … ThwompEnemyステートクラスを格納。
+
+                                    [Flying] … FlyingEnemyステートクラスを格納。]
+
+                                    [Boss] … ボスキャラクター関連クラスを格納する場所。]
+
 
                          [Player] … プレイヤーステートメントクラスを格納する場所。
 

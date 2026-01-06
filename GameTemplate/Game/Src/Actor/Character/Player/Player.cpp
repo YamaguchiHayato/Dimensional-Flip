@@ -9,7 +9,8 @@
 #include "Src/Core/CameraManager.h"
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
-
+#include "Src/Core/SceneManager.h"
+#include "Src/Direction/Fade.h"
 
 // UIクラス。
 #include "Src/UI/ScoreUI.h"
@@ -29,7 +30,11 @@
 // プレイヤーステータス構造体。
 struct PlayerStatus
 {
-    static const uint8_t MAX_HP = 8;               // 最大体力。
+    // 無敵時間。
+    static constexpr auto INVINCIBLE_TIME = 1.0f; // 無敵時間。
+    // 体力。
+    static const uint8_t MAX_HP = 9; // 初期体力。
+
     static constexpr auto ATTACK_POWER = 1.0f;     // 攻撃力。
 
 
@@ -109,8 +114,12 @@ bool Player::Start()
 
     charaCon_.Init(2.0f, 1.0f, pos_);
     // プレイヤーのステータスを初期化する。
+    
+    // 最大HP、移動速度、攻撃力を設定。   
     status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
 
+    score_ = 0;
+    invincibleTime_ = 0.0f;
 
     // プレイヤーの座標を描画。
     posFont_.SetPosition({-600.0f, 300.0f, 0.0f});
@@ -125,16 +134,21 @@ bool Player::Start()
 
 void Player::Update()
 {
+    // フェード中は何もせずにreturn。
+    Fade* fade = SceneManager::GetInstance()->GetFade();
+    if (fade != nullptr && fade->GetFadeState() == FadeState::Fade_Out)
+        return;
+
     if (isPaused_)
         return;
 
 
     if (IsDimensionSwitchAction())
         app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_,app::collision::CollisionManager::GetInstance());
-    
 
+    if (invincibleTime_ > 0.0f)
+        invincibleTime_ -= g_gameTime->GetFrameDeltaTime();
 
-    ////////// 更新処理。///////////
     _ASSERT(pCurrentState_ != nullptr);
 
     uint8_t request;
@@ -152,7 +166,6 @@ void Player::Update()
         pRender_->SetScale(SCALE);
         pRender_->Update();
     }
-    /////////////////////////////////
 
     didJumpThisFrame_ = false;
 
@@ -262,3 +275,16 @@ void Player::CheckRespawn()
 }
 
 
+void Player::OnDamage(uint8_t damage)
+{
+    if (invincibleTime_ > 0.0f || status_.IsDead())
+        return;
+
+    status_.Damage(static_cast<uint8_t>(damage));
+    invincibleTime_ = PlayerStatus::INVINCIBLE_TIME;
+
+    if (status_.IsDead())
+    {
+        SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+    }
+}

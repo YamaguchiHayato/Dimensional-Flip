@@ -1,14 +1,12 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 
-// 前方宣言
-namespace app
-{
-    namespace enemy
-    {
+
+namespace app{
+    namespace enemy{
         class NormalEnemy;
     }
-} // namespace app
+} 
 
 namespace app
 {
@@ -34,5 +32,5 @@ namespace app
             // 浮遊用パラメータ (Chaseでも浮遊しながら動くため)
             float angle_ = 0.0f;
         };
-    } // namespace enemy
-} // namespace app
+    } 
+} 

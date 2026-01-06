@@ -4,7 +4,8 @@
 #include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Direction/GameClear.h"
-#include "GameClearScene.h"
+#include "Src/Scene/GameClearScene.h"
+#include "Src/Scene/GameOverScene.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
 
@@ -38,9 +39,6 @@ bool SceneManager::Start()
         pCurrentScene_->Start();
         // シーンの初期値を設定する。
         currentID_ = SceneID::sTitle;
-            
-        //// ゲーム開始時にFadeEndを開始する。s
-        //pFade_->FadeTransition(FadeState::FadeEnd);
         return true;
     }
     return false;
@@ -91,7 +89,13 @@ IScene* SceneManager::CreateScene(SceneID id)
              break;
 
         case SceneID::sResult:
-            newScene = new GameClearScene();
+             newScene = new GameClearScene();
+             break
+                 ;
+        case SceneID::sGameOver:
+             newScene = new app::scene::GameOverScene();
+             break;
+
         default:
              break;
     }

@@ -231,6 +231,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
@@ -296,6 +297,7 @@
     <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp" />
     <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp" />
     <ClCompile Include="Src\Scene\title\TitleView.cpp" />
+    <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
     <ClCompile Include="Src\UI\HPbarUI.cpp" />
     <ClCompile Include="Src\UI\NumberUI.cpp" />
     <ClCompile Include="Src\UI\ScoreUI.cpp" />
@@ -318,6 +320,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -383,6 +386,7 @@
     <ClInclude Include="Src\Scene\title\TitleLayerBase.h" />
     <ClInclude Include="Src\Scene\title\TitleLogoLayer.h" />
     <ClInclude Include="Src\Scene\title\TitleView.h" />
+    <ClInclude Include="Src\UI\ButtonActionUI.h" />
     <ClInclude Include="Src\UI\HPbarUI.h" />
     <ClInclude Include="Src\UI\NumberUI.h" />
     <ClInclude Include="Src\UI\ScoreUI.h" />

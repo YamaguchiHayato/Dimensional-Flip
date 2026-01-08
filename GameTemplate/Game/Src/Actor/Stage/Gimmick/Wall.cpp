@@ -10,33 +10,34 @@ namespace app
     {
         Wall::~Wall()
         {
-            // ポインタなので、オブジェクトが削除される時に中身も消す必要があります
             if (pPhysics_ != nullptr)
-            {
                 delete pPhysics_;
-            }
         }
+
 
         bool Wall::Start()
         {
             pPlayer_ = FindGO<Player>("player");
+            pDrawTiming_ = FindGO<app::ui::ButtonActionUI>("actionUI");
+            
 
             // 初期状態設定
             is2DMode_ = false;
             currentScale_ = scale_3D_Normal;
 
-            // --- 見た目 ---
+            // モデルの初期設定。
             render_.Init("Assets/stage/Stage1/Wall.tkm");
             render_.SetScale(currentScale_);
             render_.SetPosition(pos_);
             render_.SetRotation(rot_);
-            render_.Update(); // ★ここで行列を確定
+            render_.Update(); 
 
             // --- 物理 ---
             RefreshPhysics();
 
             return true;
         }
+
 
         void Wall::Update()
         {
@@ -57,22 +58,44 @@ namespace app
                 }
                 else
                 {
-                    // [2D設定 (分厚く)]
                     currentScale_ = scale_2D_Wide;
                     nextPos.z = 0.0f;      
                     render_.SetAlpha(1.0f); 
                 }
-                // --- 変更を適用して物理を作り直す ---
 
-                // 1. 見た目の更新
                 render_.SetScale(currentScale_);
                 render_.SetPosition(nextPos);
-                render_.Update(); // ★重要: ここでモデルの大きさを確定させる
+                render_.Update(); 
 
                 // 2. 物理を作り直す
                 RefreshPhysics();
             }
+
+
+            // 距離判定とUIの描画。
+            if (pPlayer_ && pDrawTiming_)
+            {
+                Vector3 diff = pPlayer_->GetPlayerPos() - this->pos_;
+                float distance = diff.Length();
+                float triggerDistance = 20.0f;
+
+                if (distance < triggerDistance && !is2DMode_)
+                {
+                    Vector3 uiPos = this->pos_;
+                    uiPos.y += 50.0f; // 少し上に表示
+                    pDrawTiming_->ShowAt(pPlayer_->GetPlayerPos());
+
+                }
+
+                else
+                {
+                    pDrawTiming_->Hide();
+                }
+            }
+
+
         }
+
 
         void Wall::RefreshPhysics()
         {
@@ -84,15 +107,14 @@ namespace app
 
             pPhysics_ = new PhysicsStaticObject();
 
-            // 3. 確定したモデルの形に合わせて当たり判定を生成
-            // (render_.Update()された後のモデル情報を使います)
             pPhysics_->CreateFromModel(render_.GetModel(), render_.GetModel().GetWorldMatrix());
            
         }
+
 
         void Wall::Render(RenderContext& rc)
         {
             render_.Draw(rc);
         }
-    } // namespace stage
+    } 
 } // namespace app

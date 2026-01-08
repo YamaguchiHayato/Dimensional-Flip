@@ -18,7 +18,7 @@ namespace StarStatus
     const Vector3 STAR_SCALE(0.03f, 0.03f, 0.03f);
     const Vector3 COLLISION_HEIGHT(0.0f, 25.0f, 0.0f);  // コリジョンの高さ
     const Vector3 COLLISION_SIZE(365.0f, 5.0f, 225.0f); // コリジョンの大きさ
-} // namespace StarStatus
+} 
 
 bool Star::Start()
 {
@@ -34,29 +34,30 @@ bool Star::Start()
 void Star::Update()
 {
     if (m_player == nullptr)
-    {
         return;
-    }
+
+
     if (m_isGoal)
     {
         Rotation();
         m_starRender.Update();
         return;
     }
+
     Vector3 diff = m_player->GetPlayerPos() - m_starPosition;
+
     // 接触判定
     if (diff.Length() <= 10.0f)
     {
-        // Fadeを取得。
+        m_isGoal = true; // 二重判定防止
+
         Fade* fade = SceneManager::GetInstance()->GetFade();
-
-        if (fade->GetFadeState() != FadeState::Fade_Out)
-        {
+        if (fade)
             fade->StartFadeOut();
-            m_isGoal = true;
-        }
 
-        return;
+
+        NewGO<StageClear>(0, "stageClear");
+
     }
 
     Rotation();

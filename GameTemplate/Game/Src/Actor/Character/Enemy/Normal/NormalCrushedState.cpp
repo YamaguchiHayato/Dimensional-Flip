@@ -6,8 +6,8 @@
 namespace
 {
     // アニメーション定数
-    const uint8_t K_CRUSH_FRAMES = 6;
-    const uint8_t K_CRUSH_WAIT_FRAMES = 10;
+    const uint8_t CRUSH_FRAMES = 6;
+    const uint8_t CRUSH_WAIT_FRAMES = 10;
 } // namespace
 
 namespace app
@@ -26,6 +26,7 @@ namespace app
             pNormal_->crushStartPos_ = pNormal_->pos_;     // 現在の位置保存
         }
 
+
         void NormalCrushedState::Update()
         {
             if (!pNormal_)
@@ -34,9 +35,9 @@ namespace app
             // --- 潰れアニメーション実行 ---
             pNormal_->crushedFrame_++;
 
-            if (pNormal_->crushedFrame_ <= K_CRUSH_FRAMES)
+            if (pNormal_->crushedFrame_ <= CRUSH_FRAMES)
             {
-                float t = static_cast<float>(pNormal_->crushedFrame_) / static_cast<float>(K_CRUSH_FRAMES);
+                float t = static_cast<float>(pNormal_->crushedFrame_) / static_cast<float>(CRUSH_FRAMES);
 
                 // Yスケールを縮める
                 float startY = pNormal_->crushStartScale_.y;
@@ -52,21 +53,26 @@ namespace app
                 return;
             }
 
-            // --- 完了後の待機 & 削除 ---
-            // 完全に潰れたら当たり判定などを消す処理があればここに記述
+            // --- 完了後の待機 & 処理 ---
             pNormal_->UpdateRender();
 
-            if (pNormal_->crushedFrame_ >= K_CRUSH_FRAMES + K_CRUSH_WAIT_FRAMES)
+            if (pNormal_->crushedFrame_ >= CRUSH_FRAMES + CRUSH_WAIT_FRAMES)
             {
-                DeleteGO(pNormal_);
+                // 1. 大きさを0にして見えなくする
+                pNormal_->SetScale(Vector3::Zero);
+
+                // 2. 場所をはるか彼方に飛ばして、当たり判定などを無効化する
+                pNormal_->SetPos(Vector3(0.0f, -5000.0f, 0.0f));
+
+                // 3. 変更を反映させる
+                pNormal_->UpdateRender();
             }
         }
-
         void NormalCrushedState::Exit() {}
+
 
         bool NormalCrushedState::RequestID(uint8_t& request)
         {
-            // 死亡したら他の状態には戻らない
             return false;
         }
     } // namespace enemy

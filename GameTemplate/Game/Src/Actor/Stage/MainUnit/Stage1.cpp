@@ -221,11 +221,7 @@ void Stage1::Update()
 {
 	stageRender_.Update();
 
-	// 当たり判定。
-	stagePhysics_.SetPosition(stagePos_);
-
 }
-
 
 
 void Stage1::Render(RenderContext& rc)
@@ -434,7 +430,7 @@ void Stage1::CreateTrackingEnemy()
 void Stage1::CreateRandomEnemy()
 {
     // 生成を開始する最小座標と最大座標の設定。
-    Vector3 minPos = Vector3(0.0f, 0.0f, 0.0f);
+    Vector3 minPos = Vector3(100.0f, 0.0f, 0.0f);
     Vector3 maxPos = Vector3(1100.0f, 0.0f, 0.0f);
 
 

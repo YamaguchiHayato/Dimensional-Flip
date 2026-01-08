@@ -4,6 +4,7 @@
 // 今がどのステージなのかを識別するするための列挙型。
 enum class StageID : uint8_t
 {
+    sTutorialStage,
     sStage1,
     sStage2,
     sStage3,

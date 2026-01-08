@@ -226,6 +226,8 @@
     <ClCompile Include="Src\Scene\GameClearScene.cpp" />
     <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Direction\GameOver.cpp" />
+    <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
+    <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -409,6 +411,8 @@
     <ClInclude Include="Src\Scene\GameClearScene.h" />
     <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Direction\GameOver.h" />
+    <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
+    <ClInclude Include="Src\UI\ButtonActionUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

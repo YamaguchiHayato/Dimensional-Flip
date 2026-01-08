@@ -21,12 +21,27 @@ bool InGameScene::Start()
 }
 
 
+// Src/Scene/InGameScene.cpp
+
 void InGameScene::Update()
 {
     // フェードアウトが完了したらシーン遷移
     Fade* fade = SceneManager::GetInstance()->GetFade();
     if (fade && fade->IsFadeOutEnd())
     {
-        SceneManager::GetInstance()->ChangeScene(SceneID::sResult); 
+        if (pGame_->GetNextStageID() == StageID::sInvalid)
+        {
+            SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
+        }
+        else if (pGame_->IsStageTransitioning())
+        {
+
+        }
+
+        else
+        {
+            // 念のため、その他のケース（通常はここに来ないはず）
+            SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
+        }
     }
 }

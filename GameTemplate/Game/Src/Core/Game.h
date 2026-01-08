@@ -30,6 +30,12 @@ class ScoreUI;
 class TimerUI;
 class HPbarUI;
 
+namespace app{
+    namespace stage{
+        class BackGroundLayer;
+    }
+}
+
 namespace app
 {
     namespace core
@@ -48,6 +54,15 @@ namespace app
             // ステージ遷移要求。
             void RequestStageTransition(StageID nextStageID);
 
+        public:
+            inline bool IsStageTransitioning() const
+            {
+                return state_ != SceneTransitionState::None;
+            }
+            inline StageID GetNextStageID() const
+            {
+                return nextStageID_;
+            }
         private:
             // Player。
             void PlayerCreateInstance();
@@ -72,9 +87,6 @@ namespace app
             void UpdateTransition();
 
 
-        private:
-            std::unique_ptr<CameraManager> pCameraManager_;
-
         private:    
             TimerUI* pTimerUI_ = nullptr;
             NumberUI* pNumberUI_ = nullptr;
@@ -84,6 +96,8 @@ namespace app
             LoadingScene* pLoadingScene_ = nullptr;
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
+            CameraManager* pCameraManager_;
+
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
             // 背景レイヤー。

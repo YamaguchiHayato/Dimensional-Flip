@@ -8,23 +8,17 @@ namespace
 {
     const auto FLOAT_SPEED = 0.05f;
     const auto FLOAT_RANGE = 10.0f;
-} // namespace
+} 
 
 namespace app
 {
     namespace enemy
     {
-        void NormalChaseState::Enter()
-        {
-            // 必要なら初期化
-        }
-
         void NormalChaseState::Update()
         {
             MoveChase();
         }
 
-        void NormalChaseState::Exit() {}
 
         bool NormalChaseState::RequestID(uint8_t& request)
         {
@@ -48,12 +42,12 @@ namespace app
             return false;
         }
 
+
         void NormalChaseState::MoveChase()
         {
             if (!pNormal_)
                 return;
 
-            // --- 1. 上下の浮遊 (Idleと同じ) ---
             angle_ += FLOAT_SPEED;
             float y01 = (sinf(angle_) + 1.0f) * 0.5f;
             float yOffset = y01 * FLOAT_RANGE;
@@ -113,5 +107,5 @@ namespace app
             pNormal_->SetCurrentPos(currentPos);
             pNormal_->UpdateRender();
         }
-    } // namespace enemy
-} // namespace app
+    }
+} 

@@ -14,8 +14,11 @@ public:
     InGameScene() {};
     virtual ~InGameScene();
 
+
+public:
     bool Start() override;
     void Update() override;
+
 
 
 private:

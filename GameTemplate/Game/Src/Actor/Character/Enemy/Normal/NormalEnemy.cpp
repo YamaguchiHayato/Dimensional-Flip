@@ -50,6 +50,7 @@ namespace app
             return true;
         }
 
+
         void NormalEnemy::Update()
         {
             if (!pCurrentState_)
@@ -88,19 +89,20 @@ namespace app
                 pCurrentState_->Update();
         }
 
+
         void NormalEnemy::Render(RenderContext& rc)
         {
             render_.Draw(rc);
         }
 
-        // --- ロジック実装 ---
-
+\
         void NormalEnemy::UpdateRender()
         {
             render_.SetPosition(pos_);
             render_.SetScale(scale_);
             render_.Update();
         }
+
 
         bool NormalEnemy::TryStomp()
         {
@@ -129,6 +131,7 @@ namespace app
             }
             return false;
         }
+
 
         bool NormalEnemy::CheckChaseCondition() const
         {

@@ -13,6 +13,7 @@
 #include "Src/Actor/Stage/MainUnit/Stage2.h"
 #include "Src/Actor/Stage/MainUnit/Stage3.h"
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
+#include "Src/Actor/Stage/MainUnit/TutorialStage.h"
 #include "Src/Core/StageManager.h"
 
 // 演出クラス。
@@ -108,6 +109,12 @@ void StageManager::ChangeStageSync(StageID newStageID)
         DeleteGO(ex);
     }
 
+    if (auto tutorial = FindGO<app::stage::TutorialStage>("tutorialStage"))
+    {
+        OutputDebugStringA("  DeleteGO(tutorialStage)\n");
+        DeleteGO(tutorial);
+    }
+
     // 2. 新しいステージを生成
     IStage* pNextStage = CreateStage(newStageID);
     if (pNextStage == nullptr)
@@ -128,6 +135,10 @@ IStage* StageManager::CreateStage(StageID id)
 {
     switch (id)
     {
+    case StageID::sTutorialStage:
+         pCurrentStage_ = NewGO<app::stage::TutorialStage>(0, "tutorialStage");
+        break;
+
     case StageID::sStage1:
         pCurrentStage_ = NewGO<Stage1>(0, "stage1");
         break;

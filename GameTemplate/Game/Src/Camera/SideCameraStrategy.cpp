@@ -25,7 +25,7 @@ SideCameraStrategy::SideCameraStrategy(Player* pPlayer)
     //ニアクリップとファークリップの設定
     g_camera3D->SetNear(1.0f);
     // スカイキューブの大きさに合わせて調整
-    g_camera3D->SetFar(5000.0f);
+    g_camera3D->SetFar(700.0f);
 }
 
 

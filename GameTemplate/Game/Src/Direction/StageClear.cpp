@@ -14,6 +14,7 @@ bool StageClear::Start()
     if (pGame )
         pGame->RequestStageTransition(nextStageID);
 
+
     DeleteGO(this);
     return true;
 }
@@ -30,8 +31,12 @@ StageID StageClear::DecideStage()
     // 3.現在のステージIDに戻づいて、次の遷移先を決定する。
     switch (currentStageID)
     {
+    case StageID::sTutorialStage:
+         nextStageID = StageID::sStage1;
+         break;
+
     case StageID::sStage1:
-         nextStageID = StageID::sStageEX;
+         nextStageID = StageID::sInvalid;
          break;
 
     //case StageID::sStage2:

@@ -3,9 +3,19 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Direction/Fade.h"
 
+
+GameClearScene::~GameClearScene()
+{
+    if (pGameClear_)
+    {
+        DeleteGO(pGameClear_);
+        pGameClear_ = nullptr;  
+    }
+}
+
 bool GameClearScene::Start()
 {
-    NewGO<GameClear>(0, "gameClear");
+    pGameClear_= NewGO<GameClear>(0, "gameClear");
 
     SceneManager::GetInstance()->GetFade()->StartFadeIn();
     return true;

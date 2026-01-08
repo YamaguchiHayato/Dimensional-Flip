@@ -77,13 +77,17 @@ void HPbarUI::Render(RenderContext& rc)
 
         life_Left[currentHP].Draw(rc);
 
-        // 右側：最大HP (Statusから取得するか、定数の9を使う)
-        int maxHP = pPlayer_->GetMaxHP();
-        if (maxHP >= static_cast<int>(enUINumber::enNumber_Num))
-            maxHP = 9;
+        if (pPlayer_)
+        {
+            // 右側：最大HP (Statusから取得するか、定数の9を使う)
+            int maxHP = pPlayer_->GetMaxHP();
+            if (maxHP >= static_cast<int>(enUINumber::enNumber_Num))
+                maxHP = 9;
 
-        // 配列名が life_light となっていますが右側の数字として扱います
-        life_light[maxHP].Draw(rc);
+            // 配列名が life_light となっていますが右側の数字として扱います
+            life_light[maxHP].Draw(rc);
+
+        }
     }
 }
 

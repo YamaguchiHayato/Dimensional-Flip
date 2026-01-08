@@ -8,7 +8,6 @@ namespace app
 {
     namespace stage
     {
-
         BackGroundLayer::BackGroundLayer()
         {
             pSprite_ = new Sprite();
@@ -17,6 +16,7 @@ namespace app
             cbData_.linearWipeDrawingMode = -1;
             cbData_.screenDrawingMode = -1;
         }
+
 
         BackGroundLayer::~BackGroundLayer()
         {
@@ -27,31 +27,31 @@ namespace app
             }
         }
 
+
         void BackGroundLayer::Init(const char* filePath, float zDepth, float scrollRatio)
         {
             zDepth_ = zDepth;
             scrollRaito_ = scrollRatio;
 
+  
             SpriteInitData initData;
             // 画像をロード
             initData.m_ddsFilePath[0] = filePath;
-
-
+            // 画像のサイズを設定する。
             initData.m_width = 1920;
             initData.m_height = 1080;
+
 
             // 定数バッファ等の設定
             initData.m_expandConstantBuffer = &cbData_;
             initData.m_expandConstantBufferSize = sizeof(cbData_);
             initData.textureAddressMode = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
             initData.m_fxFilePath = "Assets/shader/sprite.fx";
-
             pSprite_->Init(initData);
 
-            // ★修正2：色を強制的に「不透明な白」にする
-            // Spriteクラスの初期値が(0,0,0,0)だと見えないため、念のため追加します
             pSprite_->SetMulColor({1.0f, 1.0f, 1.0f, 1.0f});
         }
+
 
         void BackGroundLayer::Update(const Vector3& cameraPos)
         {
@@ -70,6 +70,7 @@ namespace app
             cbData_.uvOffset.y = 0.0f;
         }
 
+
         void BackGroundLayer::Draw(RenderContext& rc, nsK2EngineLow::Camera* pCamera)
         {
             if (pCamera)
@@ -81,6 +82,5 @@ namespace app
                 // 2Dモード：画面に貼り付けて描く
                 pSprite_->Draw(rc);
         }
-
     } // namespace stage
 } // namespace app

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "Game.h"
+#include "BackGroundLayer.h"
 #include "GameSoundEngine.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Direction/Fade.h"
@@ -77,6 +78,33 @@ namespace app
                 pLoadingScene_ = nullptr;
             }
 
+
+            if (pPlayer_)
+            {
+                DeleteGO(pPlayer_);
+                pPlayer_ = nullptr;
+            }
+
+
+            if (pCameraManager_)
+            {
+                DeleteGO(pCameraManager_);
+                pCameraManager_ = nullptr;
+            }
+
+
+            if (pTimerUI_)
+                DeleteGO(pTimerUI_);
+
+            if (pNumberUI_)
+                DeleteGO(pNumberUI_);
+
+            if (pScoreUI_)
+                DeleteGO(pScoreUI_);
+
+            if (pHpbarUI_)
+                DeleteGO(pHpbarUI_);
+
             StageManager::DeleteInstance();
             SoundManager::DeleteInstence();
         }
@@ -85,28 +113,31 @@ namespace app
         void Game::InitSkyCube()
         {
             DeleteGO(pSkyCube_);
-            SkyCube* m_SkyCube = NewGO<SkyCube>(0, "skycube");
 
-            // 環境光の計算のためのIBLテクスチャをセットする。
-            g_renderingEngine->SetAmbientByIBLTexture(m_SkyCube->GetTextureFilePath(), 1.0f);
-            // 環境日光の影響が分かりやすいように、ディレクションライトはオフに。
+            pSkyCube_ = NewGO<SkyCube>(0, "skycube");
+
+            pSkyCube_->SetScale(Vector3::One * 2000.0f);
+            pSkyCube_->SetScale(700.0f);
+            g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(), 1.0f);
+
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
+
 
         void Game::InitBackGround()
         {
             pSkyLayer_ = new app::stage::BackGroundLayer();
-            pSkyLayer_->Init("Assets/stage/BackGround/sky.DDS",1000.0f, 0.0f);
+            pSkyLayer_->Init("Assets/stage/BackGround/sky.DDS", 1000.0f, 0.0f);
 
-            // 2. 山 (遠景。ゆっくり動く)
+            // 山
             pMountainLayer_ = new app::stage::BackGroundLayer();
             pMountainLayer_->Init("Assets/stage/BackGround/mountain.DDS", 600.0f, 0.2f);
 
-            // 3. 街/建物 (中景。普通に動く)
+            // 街
             pCityLayer_ = new app::stage::BackGroundLayer();
             pCityLayer_->Init("Assets/stage/BackGround/building.DDS", 300.0f, 0.5f);
 
-            // 4. 地面 (手前。プレイヤーと同じくらい動く？調整枠)
+            // 地面
             pGroundLayer_ = new app::stage::BackGroundLayer();
             pGroundLayer_->Init("Assets/stage/BackGround/ground.DDS", 100.0f, 1.0f);
         }
@@ -114,9 +145,9 @@ namespace app
 
         bool Game::Start()
         {
-            // StageManagerの生成。
+            // ステージの生成。
             StageManager::CreateInstance();
-            StageManager::GetInstance()->Start();
+//            StageManager::GetInstance()->Start();
 
             app::core::SoundManager::CreateInstence();
             app::core::SoundManager::GetInstance()->Init();
@@ -128,8 +159,8 @@ namespace app
             PlayerCreateInstance();
 
             // CameraManagerの生成。
-            pCameraManager_ = std::unique_ptr<CameraManager>(NewGO<CameraManager>(0, "cameramanager"));
-            pPlayer_->InitCameraManager(pCameraManager_.get());
+            pCameraManager_ = NewGO<CameraManager>(0, "cameramanager");
+            pPlayer_->InitCameraManager(pCameraManager_);
 
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
@@ -142,19 +173,24 @@ namespace app
             pLoadingScene_ = nullptr;
 
             // Playerの初期位置設定。
-            pPlayer_->SetPlayerPos(Vector3::Zero);
-     //       pPlayer_->SetPlayerPos(Vector3(800.0f, 10.0f, 0.0f));
+     //       pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
+            pPlayer_->SetPlayerPos(Vector3(800.0f, 10.0f, 0.0f));
 
-            // ステージ背景。
+    //////////////////////////////////////////
+    //////////// ステージ背景制作中。 ////////
+    //////////////////////////////////////////
      //       InitBackGround();
-
+     /////////////////////////////////////////
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
             PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
+
+
             return true;
         }
+
 
         void Game::Update()
         {
@@ -186,22 +222,30 @@ namespace app
                 // ステージマネージャーの更新。
                 StageManager::GetInstance()->Update();
 
-                if (g_camera3D)
+
+                if (pPlayer_ && pPlayer_->GetHP() <= 0)
                 {
-                    Vector3 camPos = g_camera3D->GetPosition();
-
-                    if (pSkyLayer_)
-                        pSkyLayer_->Update(camPos);
-
-                    if (pMountainLayer_)
-                        pMountainLayer_->Update(camPos);
-
-                    if (pCityLayer_)
-                        pCityLayer_->Update(camPos);
-
-                    if (pGroundLayer_)
-                        pGroundLayer_->Update(camPos);
+                    SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+                    return;
                 }
+
+                //// ステージ背景の更新。
+                //if (g_camera3D)
+                //{
+                //    Vector3 camPos = g_camera3D->GetPosition();
+
+                //    if (pSkyLayer_)
+                //        pSkyLayer_->Update(camPos);
+
+                //    if (pMountainLayer_)
+                //        pMountainLayer_->Update(camPos);
+
+                //    if (pCityLayer_)
+                //        pCityLayer_->Update(camPos);
+
+                //    if (pGroundLayer_)
+                //        pGroundLayer_->Update(camPos);
+                //}
             }
         }
 
@@ -210,6 +254,7 @@ namespace app
         {
             if (g_camera3D)
             {
+                // ステージ背景の描画。
                 if (pSkyLayer_)
                     pSkyLayer_->Draw(rc, g_camera3D);
                 if (pMountainLayer_)
@@ -220,6 +265,7 @@ namespace app
                     pGroundLayer_->Draw(rc, g_camera3D);
             }
         }
+
 
         void Game::RequestStageTransition(StageID nextStageID)
         {

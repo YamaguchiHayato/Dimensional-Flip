@@ -24,7 +24,8 @@ bool FollowStrategy::Start()
 	////ニアクリップとファークリップの設定
 	g_camera3D->SetNear(10.0f);         
 	// スカイキューブの大きさに合わせて調整
-	g_camera3D->SetFar(700.0f);      
+    // 700 
+	g_camera3D->SetFar(10000.0f);      
 
 	return true;
 }

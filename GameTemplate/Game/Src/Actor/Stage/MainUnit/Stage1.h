@@ -58,7 +58,7 @@ private:
     void CreateNormalEnemy();            // 通常敵。
     void CreateTrackingEnemy();          // 追尾敵。
     void CreateRandomEnemy();            // 通常敵と追尾敵のランダム生成。
-    //void CreateThwompEnemy();
+    void CreateThwompEnemy();
 
 public:
     inline Vector3 GetStageStartPos() const override { return Vector3(0.0f, 20.0f, 0.0f); }
@@ -74,7 +74,6 @@ private:
     WallActor* pWallActor_ = nullptr;
     app::stage::Wall* pWall_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
-    app::enemy::NormalEnemy* pNormalEnemy_ = nullptr;
 
     std::vector<JumpPad*> lJumpPad_;
     std::vector<Star*> lStar_;

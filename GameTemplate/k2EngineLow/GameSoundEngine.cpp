@@ -42,6 +42,17 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_SelectScreen_Decision] = false;
 		m_sound[GameSoundList_SE_SelectScreen_Decision] = nullptr;
 
+		// 落下音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Fall, "Assets/sound/se/fall.wav");
+		m_isPlayingSound[GameSoundList_SE_Fall] = false;
+		m_sound[GameSoundList_SE_Fall] = nullptr;
+
+		// 回転音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Rotation, "Assets/sound/se/rotation.wav");
+		m_isPlayingSound[GameSoundList_SE_Rotation] = false;
+		m_sound[GameSoundList_SE_Rotation] = nullptr;
+
+
 		//1. 決定音(画面遷移用)
 		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_SelectScreen_Decision_ScreenTransition,"Assets/sound/se/decision_gamestart.wav");
 		m_isPlayingSound[GameSoundList_SE_SelectScreen_Decision_ScreenTransition] = false;

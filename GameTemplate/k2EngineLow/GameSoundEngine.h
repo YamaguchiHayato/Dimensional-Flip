@@ -5,12 +5,18 @@
 //ゲームサウンドリスト
 enum GameSoundList
 {
+	// BGM
 	GameSoundList_BGM_Title,									//タイトル画面BGM
 	GameSoundList_BGM_Stage1,									//ステージ1BGM
 	GameSoundList_BGM_Stage2,									//ステージ2BGM
 	GameSoundList_BGM_BOSS,									    //BOSS戦
 	GameSoundList_BGM_Result,									//リザルト画面BGM
+
+
+	// SE
 	GameSoundList_SE_SelectScreen_Decision,						//決定音
+	GameSoundList_SE_Fall,						// 落下音。
+	GameSoundList_SE_Rotation,					// 回転音。
 	GameSoundList_SE_SelectScreen_Decision_ScreenTransition,	//決定音(画面遷移用)
 	GameSoundList_SE_SelectScreen_Select,						//選択音
 	GameSoundList_SE_SelectScreen_Cancel,						//キャンセル音

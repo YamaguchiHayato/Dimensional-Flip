@@ -44,32 +44,6 @@ namespace app
         {
             DeleteGO(pSkyCube_);
 
-            if (pSkyLayer_)
-            {
-                delete pSkyLayer_;
-                pSkyLayer_ = nullptr;
-            }
-
-
-            if (pMountainLayer_)
-            {
-                delete pMountainLayer_;
-                pMountainLayer_ = nullptr;
-            }
-
-
-            if (pCityLayer_)
-            {
-                delete pCityLayer_;
-                pCityLayer_ = nullptr;
-            }
-
-
-            if (pGroundLayer_)
-            {
-                delete pGroundLayer_;
-                pGroundLayer_ = nullptr;
-            }
 
 
             if (pLoadingScene_)
@@ -124,23 +98,6 @@ namespace app
         }
 
 
-        void Game::InitBackGround()
-        {
-            pSkyLayer_ = new app::stage::BackGroundLayer();
-            pSkyLayer_->Init("Assets/stage/BackGround/sky.DDS", 1000.0f, 0.0f);
-
-            // 山
-            pMountainLayer_ = new app::stage::BackGroundLayer();
-            pMountainLayer_->Init("Assets/stage/BackGround/mountain.DDS", 600.0f, 0.2f);
-
-            // 街
-            pCityLayer_ = new app::stage::BackGroundLayer();
-            pCityLayer_->Init("Assets/stage/BackGround/building.DDS", 300.0f, 0.5f);
-
-            // 地面
-            pGroundLayer_ = new app::stage::BackGroundLayer();
-            pGroundLayer_->Init("Assets/stage/BackGround/ground.DDS", 100.0f, 1.0f);
-        }
 
 
         bool Game::Start()
@@ -174,7 +131,7 @@ namespace app
 
             // Playerの初期位置設定。
      //       pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
-            pPlayer_->SetPlayerPos(Vector3(800.0f, 10.0f, 0.0f));
+            pPlayer_->SetPlayerPos(Vector3(900.0f, 10.0f, 0.0f));
 
     //////////////////////////////////////////
     //////////// ステージ背景制作中。 ////////
@@ -229,40 +186,6 @@ namespace app
                     return;
                 }
 
-                //// ステージ背景の更新。
-                //if (g_camera3D)
-                //{
-                //    Vector3 camPos = g_camera3D->GetPosition();
-
-                //    if (pSkyLayer_)
-                //        pSkyLayer_->Update(camPos);
-
-                //    if (pMountainLayer_)
-                //        pMountainLayer_->Update(camPos);
-
-                //    if (pCityLayer_)
-                //        pCityLayer_->Update(camPos);
-
-                //    if (pGroundLayer_)
-                //        pGroundLayer_->Update(camPos);
-                //}
-            }
-        }
-
-
-        void Game::Render(RenderContext& rc)
-        {
-            if (g_camera3D)
-            {
-                // ステージ背景の描画。
-                if (pSkyLayer_)
-                    pSkyLayer_->Draw(rc, g_camera3D);
-                if (pMountainLayer_)
-                    pMountainLayer_->Draw(rc, g_camera3D);
-                if (pCityLayer_)
-                    pCityLayer_->Draw(rc, g_camera3D);
-                if (pGroundLayer_)
-                    pGroundLayer_->Draw(rc, g_camera3D);
             }
         }
 

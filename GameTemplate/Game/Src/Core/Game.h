@@ -49,7 +49,6 @@ namespace app
 
             bool Start();
             void Update();
-            void Render(RenderContext& rc);
 
             // ステージ遷移要求。
             void RequestStageTransition(StageID nextStageID);
@@ -100,12 +99,6 @@ namespace app
 
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
-            // 背景レイヤー。
-            app::stage::BackGroundLayer* pSkyLayer_ = nullptr;      // 空。
-            app::stage::BackGroundLayer* pMountainLayer_ = nullptr; // 山。
-            app::stage::BackGroundLayer* pCityLayer_ = nullptr;     // 街。
-            app::stage::BackGroundLayer* pGroundLayer_ = nullptr;   // 地面。
-            
 
        // 列挙型クラス。
         private:

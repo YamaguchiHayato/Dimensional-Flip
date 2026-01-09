@@ -82,30 +82,44 @@ namespace GimmickPos
 
     }
 
-
     namespace Wall
     {
         const Vector3 pos1 = Vector3(800.0f, 0.0f, -10.0f);
     }
 
 
+}
+
+
+namespace EnemySpawnPos
+{
     // 通常敵の出現位置。
     namespace NormalEnemyPos
     {
-        const Vector3 Pos1 = Vector3(800.0f,  0.0f, 0.0);
+        const Vector3 Pos1 = Vector3(800.0f, 0.0f, 0.0);
 
     }
 
     namespace Thwomp
     {
-        const Vector3 pos = Vector3(1014.0f, 25.0f, 0.0f);
-    }
+        // 生成位置。。
+        // 上空から落ちてくるように高いY座標を指定。
+        const Vector3 spawnPosition = Vector3(1150.0f, 60.0f, 0.0f);
 
+        // トリガー座標。
+        // Playerがこの座標付近に来るとフラグを立てる。
+        const Vector3 triggerPosition = Vector3(1000.0f, 0.0f, 0.0f);
+
+        // 坂道の方向ベクトル。
+        // 斜面にあわせてY座標を調整する。
+        const Vector3 slopeDirection = Vector3(-1.0f, -0.5f, 0.0f);
+    }
 
     namespace TrackingEnemy
     {
         const Vector3 pos = Vector3(280.0f, 0.0f, 0.0f);
     }
+
 }
 
 
@@ -202,10 +216,10 @@ bool Stage1::Start()
     CreateNormalEnemy();
 
     // 通常敵と追従敵をランダム生成。
-    CreateRandomEnemy();
+//  CreateRandomEnemy();
 
     // トゥイーンエネミー生成。
-    //CreateThwompEnemy();
+    CreateThwompEnemy();
 
     // 追従敵の生成。
 //    CreateTrackingEnemy();
@@ -395,7 +409,7 @@ void Stage1::CreateNormalEnemy()
     auto enemys = app::enemy::EnemyFactory::CreateEnemy
     (
         EnemyType::type_Normal,
-        GimmickPos::NormalEnemyPos::Pos1
+        EnemySpawnPos::NormalEnemyPos::Pos1
     );
 
 
@@ -414,7 +428,7 @@ void Stage1::CreateTrackingEnemy()
     auto enemys = app::enemy::EnemyFactory::CreateEnemy
     (
         EnemyType::type_Tracking,
-        GimmickPos::TrackingEnemy::pos
+        EnemySpawnPos::TrackingEnemy::pos
     );
 
 
@@ -440,6 +454,25 @@ void Stage1::CreateRandomEnemy()
 
     // 生成する敵をステージの管理リストに追加。
     for (auto* enemy : randomEnemys)
+    {
+        if (enemy)
+            lEnemySpawnList_.push_back(enemy);
+    }
+}
+
+
+void Stage1::CreateThwompEnemy()
+{
+    // 敵を生成する。
+    auto enemys = app::enemy::EnemyFactory::CreateEnemy
+    (
+        EnemyType::type_Thwomp,
+        EnemySpawnPos::Thwomp::spawnPosition
+    );
+
+
+    // 生成する敵をリストに登録。
+    for (auto* enemy : enemys)
     {
         if (enemy)
             lEnemySpawnList_.push_back(enemy);

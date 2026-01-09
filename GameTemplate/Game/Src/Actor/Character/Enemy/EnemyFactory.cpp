@@ -13,6 +13,26 @@
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
 
 
+namespace ThwompSpawnPosition
+{
+    // 生成位置。。
+    // 上空から落ちてくるように高いY座標を指定。
+    const Vector3 spawnPosition = Vector3(1150.0f, 100.0f, 0.0f);
+
+    // トリガー座標。
+    // Playerがこの座標付近に来るとフラグを立てる。
+    const Vector3 triggerPosition = Vector3(950.0f, 0.0f, 0.0f);
+
+    // 坂道の方向ベクトル。
+    // 斜面にあわせてY座標を調整する。
+    const Vector3 slopeDirection = Vector3(-1.0f, -0.1f, 0.0f);
+}
+
+namespace
+{
+    const auto SLOPE_WIDTH = 18.0;
+}
+
 namespace
 {
     // NormalEnemyを1体だけ生成するヘルパー。
@@ -54,6 +74,7 @@ namespace
     };
 }
 
+
 namespace app
 {
     namespace enemy
@@ -61,6 +82,7 @@ namespace app
         // 生成関数の型定義（全て vector を返すように統一）。
         using CreateFn = std::vector<IEnemy*> (*)(const Vector3&);
 
+        // 
         using Status = NormalEnemyCreateStatus;
 
 
@@ -147,16 +169,39 @@ namespace app
         std::vector<IEnemy*> CreateThwomp(const Vector3& pos)
         {
             std::vector<IEnemy*> list;
-            auto* p = NewGO<Thwomp>(0, "thwomp");
 
-            p->SetPos(pos);
+            // 複数体生成させる。
+            for (uint8_t i = 0; i < 15; ++i)
+            {
+                auto* spawnInstance = NewGO<Thwomp>(0, "thwomp");
 
-            // 斜面の方向ベクトル（必要に応じて調整）
-            // 例: 左下へ進む
-            Vector3 slopeDir(0.0f, -0.577f, -1.0f);
-            p->InitMoveDir(slopeDir);
+                // 生成時にZ座標をランダムに決定する。
+                // 0 〜 1.0の乱数を作成。
+                auto randomSeed = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 
-            list.push_back(p);
+                // Z座標の範囲を計算。
+                auto randomZscore = (randomSeed * SLOPE_WIDTH) - (SLOPE_WIDTH * 0.5f);
+
+                // 座標をセット。
+                Vector3 finalPos = pos;
+                finalPos.z += randomZscore;
+
+                // 生成位置をセット 
+                spawnInstance->SetPos(finalPos);
+
+                // 感知用トリガー座標をセット
+                spawnInstance->SetTriggerPos(ThwompSpawnPosition::triggerPosition);
+
+                // 進行方向をセット
+                spawnInstance->InitMoveDir(ThwompSpawnPosition::slopeDirection);
+
+                // スポーンするクールタイムを設定する。
+                spawnInstance->SetSpawnDelay(static_cast<float>(i) * 1.5f);
+
+                // リストに追加。
+                list.push_back(spawnInstance);
+
+            }
             return list;
         }
 
@@ -197,7 +242,7 @@ namespace app
 
 
         constexpr std::array<CreateFn, enemyTypeCount> create = {
-            &CreateNormal,   // 通常敵（隊列）。
+            &CreateNormal,   // 通常敵（行列）。
             &CreateTracking, // 追跡敵。
             &CreateThwomp,   // 回転敵。
             

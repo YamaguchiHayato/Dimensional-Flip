@@ -2,6 +2,8 @@
 #include "PlayerJumpState.h"
 #include "Src/Actor/Character/Player/Player.h"
 
+#include "Src/Core/SoundManager.h"
+
 struct PlayerStatus
 {
     // 通常の重力。
@@ -42,7 +44,7 @@ namespace app
         }
 
 
-void PlayerJumpState::Update()
+        void PlayerJumpState::Update()
         {
             // 1. スティック入力の取得
             Vector3 stick;
@@ -109,6 +111,7 @@ void PlayerJumpState::Update()
             }
         }
 
+
         void PlayerJumpState::Exit() {}
 
 
@@ -144,12 +147,14 @@ void PlayerJumpState::Update()
                 return;
             }
 
-            // 【修正】deltaTimeを掛けずに、一定の値を引く方式に戻します
             if (speed.y > 0.0f)
             {
                 // 上昇中
                 if (!g_pad[0]->IsPress(enButtonA))
+                {
+                    app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
                     speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
+                }
                 else
                     speed.y -= PlayerStatus::GLAVITY;
             }

@@ -17,6 +17,7 @@
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/TimerUI.h"
 
+#include "BackGround.h"
 
 class CameraManager;
 class Player;
@@ -33,6 +34,7 @@ class HPbarUI;
 namespace app{
     namespace stage{
         class BackGroundLayer;
+        class BackGround;
     }
 }
 
@@ -80,7 +82,7 @@ namespace app
             void InitSkyCube(); // スカイキューブの初期化。
 
             // ステージ背景画像。
-            void InitBackGround();
+            void CreateBackGround();
         private:
             // 遷移時の更新処理。
             void UpdateTransition();
@@ -96,7 +98,7 @@ namespace app
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;
-
+            app::stage::BackGround* pBackGround_ = nullptr;
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
 

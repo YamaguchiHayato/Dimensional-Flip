@@ -32,7 +32,7 @@ namespace GimmickPos
     // スター。
     namespace StarPosition
     {
-        const Vector3 Pos1(1140, 0.0f, 0.0f);
+        const Vector3 Pos1(1260, 8.0f, 0.0f);
     }
 
 
@@ -82,12 +82,11 @@ namespace GimmickPos
 
     }
 
+
     namespace Wall
     {
         const Vector3 pos1 = Vector3(800.0f, 0.0f, -10.0f);
     }
-
-
 }
 
 
@@ -118,6 +117,12 @@ namespace EnemySpawnPos
     namespace TrackingEnemy
     {
         const Vector3 pos = Vector3(280.0f, 0.0f, 0.0f);
+    }
+
+
+    namespace FallEnemy
+    {
+        const Vector3 pos = Vector3(320.0f, 40.0f, -10.0f);
     }
 
 }
@@ -196,6 +201,9 @@ bool Stage1::Start()
     // ランダムシード値の初期化。
     srand(static_cast<unsigned int>(time(nullptr)));
 
+    // Playerクラスを探索。
+    pPlayer_ = FindGO<Player>("player");
+
 
      // スター生成。
 	StarNewGO();
@@ -215,8 +223,8 @@ bool Stage1::Start()
     // ノーマルエネミー生成。
     CreateNormalEnemy();
 
-    // 通常敵と追従敵をランダム生成。
-//  CreateRandomEnemy();
+    // 落下タイプの敵を生成。
+    CreateFallEnenmy();
 
     // トゥイーンエネミー生成。
     CreateThwompEnemy();
@@ -226,7 +234,6 @@ bool Stage1::Start()
 
 	stageRender_.Update();
 
-    pPlayer_ = FindGO<Player>("player");
 	return true;
 }
 
@@ -409,7 +416,8 @@ void Stage1::CreateNormalEnemy()
     auto enemys = app::enemy::EnemyFactory::CreateEnemy
     (
         EnemyType::type_Normal,
-        EnemySpawnPos::NormalEnemyPos::Pos1
+        EnemySpawnPos::NormalEnemyPos::Pos1,
+        pPlayer_
     );
 
 
@@ -428,32 +436,13 @@ void Stage1::CreateTrackingEnemy()
     auto enemys = app::enemy::EnemyFactory::CreateEnemy
     (
         EnemyType::type_Tracking,
-        EnemySpawnPos::TrackingEnemy::pos
+        EnemySpawnPos::TrackingEnemy::pos,
+        pPlayer_
     );
 
 
     // 生成する敵をリストに追加。
     for (auto* enemy : enemys)
-    {
-        if (enemy)
-            lEnemySpawnList_.push_back(enemy);
-    }
-}
-
-
-void Stage1::CreateRandomEnemy()
-{
-    // 生成を開始する最小座標と最大座標の設定。
-    Vector3 minPos = Vector3(100.0f, 0.0f, 0.0f);
-    Vector3 maxPos = Vector3(1100.0f, 0.0f, 0.0f);
-
-
-    // ランダム生成関数の呼び出し。
-    auto randomEnemys = app::enemy::EnemyFactory::CreateRandom(20, minPos, maxPos);
-
-
-    // 生成する敵をステージの管理リストに追加。
-    for (auto* enemy : randomEnemys)
     {
         if (enemy)
             lEnemySpawnList_.push_back(enemy);
@@ -467,7 +456,8 @@ void Stage1::CreateThwompEnemy()
     auto enemys = app::enemy::EnemyFactory::CreateEnemy
     (
         EnemyType::type_Thwomp,
-        EnemySpawnPos::Thwomp::spawnPosition
+        EnemySpawnPos::Thwomp::spawnPosition,
+        pPlayer_
     );
 
 
@@ -477,4 +467,16 @@ void Stage1::CreateThwompEnemy()
         if (enemy)
             lEnemySpawnList_.push_back(enemy);
     }
+}
+
+
+void Stage1::CreateFallEnenmy()
+{
+    // 敵を生成する。
+    auto enemys = app::enemy::EnemyFactory::CreateEnemy
+    (
+        EnemyType::type_Fall,
+        EnemySpawnPos::FallEnemy::pos,
+        pPlayer_
+    );
 }

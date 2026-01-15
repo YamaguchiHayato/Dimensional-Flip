@@ -8,7 +8,6 @@ namespace app
     {
         bool GameOver::Start()
         {
-            // 適切なGameOver画像パスを指定してください
             sprite_.Init("Assets/sprite/GameOver.DDS", 1920.0f, 1080.0f);
             return true;
         }

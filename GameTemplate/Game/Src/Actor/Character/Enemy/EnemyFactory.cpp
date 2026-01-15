@@ -11,6 +11,7 @@
 #include "Src/Actor/Character/Enemy/Normal/NormalEnemy.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 #include "Src/Actor/Character/Enemy/TrackingEnemy.h"
+#include "Src/Actor/Character/Enemy/Fall/FallEnemy.h"
 
 
 namespace ThwompSpawnPosition
@@ -80,14 +81,14 @@ namespace app
     namespace enemy
     {
         // 生成関数の型定義（全て vector を返すように統一）。
-        using CreateFn = std::vector<IEnemy*> (*)(const Vector3&);
+        using CreateFn = std::vector<IEnemy*> (*)(const Vector3&, Player*);
 
         // 
         using Status = NormalEnemyCreateStatus;
 
 
         // --- 通常敵：3x3の隊列パターン ---
-        std::vector<IEnemy*> CreateNormal(const Vector3& pos)
+        std::vector<IEnemy*> CreateNormal(const Vector3& pos, Player* pPlayer)
         {
             std::vector<IEnemy*> spawnedEnemies;
 
@@ -135,6 +136,7 @@ namespace app
                     Vector3 finalPos = pos + Vector3(x, 0.0f, z);
 
                     auto* e = NewGO<app::enemy::NormalEnemy>(0);
+                    
                     app::enemy::NormalEnemy::SpawnParam param(finalPos, Vector3(0.25f, 0.25f, 0.25f), 80.0f, true);
                     e->InitParam(param);
                     e->SetStompable(true);
@@ -144,8 +146,8 @@ namespace app
             return spawnedEnemies;
         }
 
-
-        std::vector<IEnemy*> CreateTracking(const Vector3& pos)
+        // 追跡敵。
+        std::vector<IEnemy*> CreateTracking(const Vector3& pos, Player* pPlayer)
         {   
             std::vector<IEnemy*> spawnList;
             const uint8_t num = 6;
@@ -165,8 +167,8 @@ namespace app
             return spawnList;
         }
 
-
-        std::vector<IEnemy*> CreateThwomp(const Vector3& pos)
+        // 回転敵。
+        std::vector<IEnemy*> CreateThwomp(const Vector3& pos, Player* pPlayer)
         {
             std::vector<IEnemy*> list;
 
@@ -205,35 +207,63 @@ namespace app
             return list;
         }
 
-
-        std::vector<IEnemy*> EnemyFactory::CreateRandom(uint8_t count, Vector3& minPos, const Vector3& maxPos)
+        // 落下敵。
+        std::vector<IEnemy*> CreateFall(const Vector3& pos, Player* pPlayer)
         {
+            // データ格納用リスト。
             std::vector<IEnemy*> list;
 
-            for (int i = 0; i < count; ++i)
+            // 1体目のX座標を起爆ラインとして保存。
+            auto triggerLineX = pos.x;
+
+
+            for (uint8_t i = 0; i < 15.0f; ++i)
             {
-                Vector3 spawnPos;
+                // 生成。
+                auto* fallInstance = NewGO<FallEnemy>(0, "fallEnemy");
 
-                float tX = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-                spawnPos.x = minPos.x + tX * (maxPos.x - minPos.x);
+                // 生成後、PlayerInstanceをセットする。
+                fallInstance->SetPlayer(pPlayer);
 
-                // Y座標（高さ）は最小値を基準にする
-                spawnPos.y = minPos.y;
+                // 座標をコピー代入。
+                Vector3 spawnPos = pos;
+                // X成分にどのくらいずらして生成するか。
+                spawnPos.x += i * 20.0f;
 
-                // Z座標のランダム計算
-                float tZ = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-                spawnPos.z = minPos.z + tZ * (maxPos.z - minPos.z);
+                // 初期位置を設定する。
+                fallInstance->SetPos(spawnPos);
 
-                int type = rand() % 2;
+                // 遅延時間を設定。
+                fallInstance->SetStartUpDelay(i * 0.15f);
 
-                if (type == 0)
-                    list.push_back(CreateNormalSingle(spawnPos));
+                // 踏みつけ不可能に設定。
+                fallInstance->SetStompable(false);
 
+                // ラインを超えたらカウントダウンのラインを設定。
+                fallInstance->SetTriggerX(triggerLineX);
 
-                else
-                    list.push_back(CreateTrackingSingle(spawnPos));
+                // リストに追加。
+                list.push_back(fallInstance);
             }
             return list;
+        }
+
+
+        IEnemy* EnemyFactory::CreateNormalSingle(const Vector3& pos)
+        {
+            // 既存の内部ヘルパー関数を呼び出す、あるいは直接処理を記述します
+            auto* e = NewGO<app::enemy::NormalEnemy>(0);
+
+            // パラメータは CreateNormal で使われているものと合わせるのが一般的です
+            app::enemy::NormalEnemy::SpawnParam param(pos, Vector3(0.25f, 0.25f, 0.25f), // スケール
+                                                      80.0f,                             // 速度など
+                                                      true                               // 有効フラグ
+            );
+
+            e->InitParam(param);
+            e->SetStompable(true); // 踏めるかどうかの設定
+
+            return e;
         }
 
 
@@ -241,11 +271,13 @@ namespace app
         constexpr size_t enemyTypeCount = static_cast<size_t>(EnemyType::type_Num);
 
 
+        // 引数は敵のタイプ、戻り値は生成関数ポインタの配列。
         constexpr std::array<CreateFn, enemyTypeCount> create = {
             &CreateNormal,   // 通常敵（行列）。
             &CreateTracking, // 追跡敵。
-            &CreateThwomp,   // 回転敵。
-            
+            &CreateThwomp,   // 回転敵。(指定した数分)
+            &CreateFall,     // 落下敵。(整列)。
+
             nullptr,         // ボス（未実装）。
         };
 
@@ -254,14 +286,14 @@ namespace app
 
 
         // 工場メソッド本体。
-        std::vector<IEnemy*> EnemyFactory::CreateEnemy(EnemyType type, const Vector3& pos)
+        std::vector<IEnemy*> EnemyFactory::CreateEnemy(EnemyType type, const Vector3& pos, Player* pPlayer)
         {
             const auto index = static_cast<size_t>(type);
 
             if (index >= create.size() || !create[index])
                 return {}; 
 
-            return create[index](pos);
+            return create[index](pos, pPlayer);
         }
 
     }

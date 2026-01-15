@@ -285,7 +285,7 @@ public:
 
 
     // プレイヤーの座標の取得。
-    inline const Vector3& GetPlayerPos() 
+    inline  Vector3& GetPlayerPos() 
     {
         return pos_;
     }

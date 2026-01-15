@@ -1,8 +1,11 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Character/Enemy/IEnemy.h"
+
 
 #include "Src/Actor/Stage/Gimmick/Wall.h"
 #include "Src/Actor/Stage/Gimmick/Star.h"
+#include "Src/Actor/Character/Enemy/EnemyFactory.h"
 
 
 class Star;
@@ -52,7 +55,7 @@ namespace app
             inline void CreateStar()
             {
                 pStar_ = NewGO<Star>(0, "star");
-                pStar_->SetStarPosition(Vector3(262.2f, 15.0f, 0.0f));
+                pStar_->SetStarPosition(Vector3(262.2f, 25.0f, 0.0f));
             }
 
             // カメラの回転範囲。
@@ -67,12 +70,18 @@ namespace app
                 pCreateButtonUI_ = NewGO<app::ui::ButtonActionUI>(0, "actionUI");
             }
 
+            // NormalEnemyの生成。
+            inline void CreateNormalEnemy();
         private:
             Player* pPlayer_ = nullptr;
             Star* pStar_ = nullptr;
             DimensionTrigger* cameraFlipRange_ = nullptr;
             Wall* pWall_ = nullptr;
             app::ui::ButtonActionUI* pCreateButtonUI_ = nullptr;
+
+            // 敵生成リスト。
+            std::vector<app::enemy::IEnemy*> lEnemySpawnList_;
+
         private:
             std::vector<DimensionTrigger*> triggerList;
             std::vector<app::stage::Wall*> wallList;

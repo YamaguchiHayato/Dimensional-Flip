@@ -95,7 +95,7 @@ namespace app
             render_.Draw(rc);
         }
 
-\
+
         void NormalEnemy::UpdateRender()
         {
             render_.SetPosition(pos_);
@@ -145,7 +145,8 @@ namespace app
             if (!pPlayer_)
                 return false;
 
-            Vector3 diff = pPlayer_->GetPlayerPos() - pos_;
+            // 追従距離計算。
+            Vector3 diff = pPlayer_->GetPlayerPos() - initPos_;
             diff.y = 0.0f;
 
             // 索敵範囲内ならtrue
@@ -158,8 +159,13 @@ namespace app
             pos_ = param.paramPos_;
             initPos_ = param.paramPos_;
             scale_ = param.paramScale;
+
             if (param.paramCollision > 0.0f)
+            {
                 collisionRadius_ = param.paramCollision;
+                aggroRadius_ = param.paramCollision;
+            }
+
             isStompable_ = param.paramFlag;
             velocity_ = Vector3::Zero;
             render_.SetPosition(pos_);

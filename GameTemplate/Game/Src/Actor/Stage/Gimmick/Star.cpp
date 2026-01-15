@@ -47,7 +47,7 @@ void Star::Update()
     Vector3 diff = m_player->GetPlayerPos() - m_starPosition;
 
     // 接触判定
-    if (diff.Length() <= 10.0f)
+    if (diff.Length() <= 5.0f)
     {
         m_isGoal = true; // 二重判定防止
 

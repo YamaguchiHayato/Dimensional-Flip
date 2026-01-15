@@ -137,15 +137,15 @@ IStage* StageManager::CreateStage(StageID id)
     {
     case StageID::sTutorialStage:
          pCurrentStage_ = NewGO<app::stage::TutorialStage>(0, "tutorialStage");
-        break;
+         break;
 
     case StageID::sStage1:
-        pCurrentStage_ = NewGO<Stage1>(0, "stage1");
-        break;
+         pCurrentStage_ = NewGO<Stage1>(0, "stage1");
+         break;
 
     case StageID::sStage2:
-        pCurrentStage_ = NewGO<Stage2>(0, "stage2");
-        break;
+         pCurrentStage_ = NewGO<Stage2>(0, "stage2");
+         break;
 
     case StageID::sStage3:
          pCurrentStage_ = NewGO<Stage3>(0, "stage3");

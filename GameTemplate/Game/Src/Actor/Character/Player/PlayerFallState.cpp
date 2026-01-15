@@ -28,12 +28,6 @@ namespace app
 {
     namespace state
     {
-        void PlayerFallState::Enter()
-        {
-            // 落下アニメーションはないので空。
-        }
-
-
         void PlayerFallState::Update()
         {
             // --- 追加：落下中も入力を更新 ---
@@ -53,9 +47,6 @@ namespace app
 
             CheckRespawn();
         }
-
-
-        void PlayerFallState::Exit() {}
 
 
         bool PlayerFallState::RequestID(uint8_t& request)
@@ -112,6 +103,9 @@ namespace app
         {
             if (pPlayer_->GetPlayerPos().y < DEAD_LINE)
             {
+                // ダメージを1受ける。
+                pPlayer_->OnDamage(1);
+
                 // 座標と物理のセット。
                 pPlayer_->SetPlayerPos(pPlayer_->GetRespwanPos());
 
@@ -125,8 +119,6 @@ namespace app
                 pPlayer_->SetRespawnFlag(true);
             }
         }
-
-
     }
 }
 

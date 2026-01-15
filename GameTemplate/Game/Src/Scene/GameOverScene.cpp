@@ -13,9 +13,7 @@ namespace app
         bool GameOverScene::Start()
         {
             //　@TODO:  ゲームオーバー中のBGM停止。
-         //   app::core::SoundManager::GetInstance()->StopBGM();
-
-        //    NewGO<app::direction::GameOver>(0, "gameOver");
+            NewGO<app::direction::GameOver>(0, "gameOver");
 
             SceneManager::GetInstance()->GetFade()->StartFadeIn();
             return true;
@@ -24,12 +22,12 @@ namespace app
 
         void GameOverScene::Update()
         {
-            //// Aボタンでタイトルへ戻る
-            //if (g_pad[0]->IsTrigger(enButtonA))
-            //{
-            //    // シーン遷移
-            //    SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
-            //}
+            // Aボタンでタイトルへ戻る
+            if (g_pad[0]->IsTrigger(enButtonA))
+            {
+                // シーン遷移
+                SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
+            }
         }
     } 
 } 

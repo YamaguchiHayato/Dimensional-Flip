@@ -223,8 +223,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BackGroundLayer.cpp" />
     <ClCompile Include="DelayedEffect.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
@@ -312,8 +318,14 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackGround.h" />
     <ClInclude Include="BackGroundLayer.h" />
     <ClInclude Include="DelayedEffect.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />

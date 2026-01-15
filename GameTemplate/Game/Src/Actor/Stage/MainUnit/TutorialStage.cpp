@@ -3,6 +3,7 @@
 
 // カメラクラス。
 #include "Src/Camera/Dimensiontrigger.h"
+#include "Src/Actor/Character/Enemy/EnemyFactory.h"
 
 #include "Src/Actor/Character/Player/Player.h"
 
@@ -41,9 +42,8 @@ namespace app
             if (pStar_)
                 DeleteGO(pStar_);
 
-             wallList.clear();
+            wallList.clear();
         }
-
 
         bool TutorialStage::Start()
         {
@@ -69,30 +69,29 @@ namespace app
             // ボタンアクションUIの生成。
             CreateButtonActionUI();
 
+            // NormalEnemyの生成。
+            CreateNormalEnemy();
+
             pPlayer_ = FindGO<Player>("player");
             return true;
         }
-
 
         void TutorialStage::Update()
         {
             stageRender_.Update();
 
             // 当たり判定。
-           // stagePhysics_.SetPosition(stagePos_);
+            // stagePhysics_.SetPosition(stagePos_);
         }
-
 
         void TutorialStage::Render(RenderContext& rc)
         {
             stageRender_.Draw(rc);
         }
 
-
         void TutorialStage::CreateCameraFlipRange()
         {
-            std::vector<Vector3> TriggerList =
-            {
+            std::vector<Vector3> TriggerList = {
                 Vector3::Zero,
             };
 
@@ -102,7 +101,6 @@ namespace app
                 cameraFlipRange_->SetTriggerPos(TriggerList[i]);
                 triggerList.push_back(cameraFlipRange_);
             }
-
         }
 
 
@@ -119,5 +117,17 @@ namespace app
                 wallList.push_back(pWall_);
             }
         }
-    }
+
+
+        void TutorialStage::CreateNormalEnemy()
+        {
+            auto enemy = app::enemy::EnemyFactory::CreateNormalSingle
+            (
+                Vector3(50.0f, 0.0f, 0.0f)
+            );
+
+            if (enemy)
+                lEnemySpawnList_.push_back(enemy);
+        }
+    } 
 }

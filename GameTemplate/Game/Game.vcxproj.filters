@@ -228,6 +228,12 @@
     <ClCompile Include="Src\Direction\GameOver.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
+    <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -413,6 +419,12 @@
     <ClInclude Include="Src\Direction\GameOver.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\UI\ButtonActionUI.h" />
+    <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

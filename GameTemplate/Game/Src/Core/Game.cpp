@@ -98,8 +98,6 @@ namespace app
         }
 
 
-
-
         bool Game::Start()
         {
             // ステージの生成。
@@ -119,6 +117,8 @@ namespace app
             pCameraManager_ = NewGO<CameraManager>(0, "cameramanager");
             pPlayer_->InitCameraManager(pCameraManager_);
 
+
+
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
             if (pFade_ == nullptr)
@@ -130,14 +130,12 @@ namespace app
             pLoadingScene_ = nullptr;
 
             // Playerの初期位置設定。
-     //       pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
-            pPlayer_->SetPlayerPos(Vector3(900.0f, 10.0f, 0.0f));
+           pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
+    //       pPlayer_->SetPlayerPos(Vector3(780.0f, 10.0f, 0.0f));
 
-    //////////////////////////////////////////
-    //////////// ステージ背景制作中。 ////////
-    //////////////////////////////////////////
-     //       InitBackGround();
-     /////////////////////////////////////////
+            CreateBackGround();
+
+
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
@@ -158,13 +156,15 @@ namespace app
 
                 m_isFadeInEnd = true;
             }
+
+
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
 
+
             if (!pFade_->IsFadeInEnd())
-            {
                 return;
-            }
+
 
             if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
             {
@@ -173,6 +173,7 @@ namespace app
                 m_hasAppliedStageBgm_ = true;
             }
 
+
             // ケースをNoneの状態でのみ、ゲームのメインロジックを実行。
             if (state_ == SceneTransitionState::None)
             {
@@ -180,12 +181,22 @@ namespace app
                 StageManager::GetInstance()->Update();
 
 
-                if (pPlayer_ && pPlayer_->GetHP() <= 0)
+                // 背景の切り替え更新。
+                if (pCameraManager_ && pSkyCube_)
                 {
-                    SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
-                    return;
-                }
+                    if (pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D)
+                        pSkyCube_->SetScale(0.0f);
 
+                    else
+                        pSkyCube_->SetScale(2000.0f);
+                }
+            }
+
+
+            if (pPlayer_ && pPlayer_->GetHP() <= 0)
+            {
+                SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+                return;
             }
         }
 
@@ -329,6 +340,13 @@ namespace app
         void Game::HPbarCreateInstance()
         {
             pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
+        }
+
+
+        void Game::CreateBackGround()
+        {
+            // 背景画像の生成。
+            pBackGround_ = NewGO<app::stage::BackGround>(0, "background");
         }
     } // namespace core
 } // namespace app

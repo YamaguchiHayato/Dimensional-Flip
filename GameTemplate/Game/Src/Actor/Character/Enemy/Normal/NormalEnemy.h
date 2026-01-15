@@ -130,7 +130,7 @@ namespace app
                 return aggroRadius_;
             }
 
-            // --- ロジック関数 (IdleState等から呼ぶ) ---
+            // --- ロジック関数 
             void UpdateRender();              // 描画更新
             bool TryStomp();                  // 踏みつけ判定
             bool CheckChaseCondition() const; // 追跡判定
@@ -172,7 +172,7 @@ namespace app
             bool isCrushed_ = false;
 
             float moveSpeed_ = 0.25f;
-            float aggroRadius_ = 220.0f;
+            float aggroRadius_ = 50.0f;
             float stopRadius_ = 80.0f;
             float accel_ = 0.08f;
             float collisionRadius_ = 80.0f;

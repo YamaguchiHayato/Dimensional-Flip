@@ -18,9 +18,9 @@ namespace app
 
 
         public:
-            void Enter() override;
+            void Enter() override {};
             void Update() override;
-            void Exit() override;
+            void Exit() override {};
             bool RequestID(uint8_t& request) override;
 
 

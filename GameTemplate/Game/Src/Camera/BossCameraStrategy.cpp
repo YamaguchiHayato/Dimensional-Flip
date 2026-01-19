@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // キャラクタークラス。
-#include "Src/Actor/Character/Enemy/Boss.h"
+#include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
 
 

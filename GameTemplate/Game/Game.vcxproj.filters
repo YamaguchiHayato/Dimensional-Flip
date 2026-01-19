@@ -125,9 +125,6 @@
     <ClCompile Include="Src\Actor\Character\Status.cpp">
       <Filter>Src\Actor\Character</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp">
-      <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Direction\Fade.cpp">
       <Filter>Src\Direction</Filter>
     </ClCompile>
@@ -222,7 +219,6 @@
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
-    <ClCompile Include="BackGroundLayer.cpp" />
     <ClCompile Include="Src\Scene\GameClearScene.cpp" />
     <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Direction\GameOver.cpp" />
@@ -234,6 +230,11 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -315,9 +316,6 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Status.h">
       <Filter>Src\Actor\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss.h">
-      <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\Direction\Fade.h">
       <Filter>Src\Direction</Filter>
@@ -413,7 +411,6 @@
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
-    <ClInclude Include="BackGroundLayer.h" />
     <ClInclude Include="Src\Scene\GameClearScene.h" />
     <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Direction\GameOver.h" />
@@ -425,6 +422,11 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

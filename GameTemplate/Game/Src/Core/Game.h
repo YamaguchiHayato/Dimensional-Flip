@@ -2,7 +2,6 @@
 #include "stdint.h"
 #include "GameSoundEngine.h"
 #include "Src/Actor/Stage/IStage.h"
-#include "BackGroundLayer.h"
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
 
@@ -33,7 +32,6 @@ class HPbarUI;
 
 namespace app{
     namespace stage{
-        class BackGroundLayer;
         class BackGround;
     }
 }

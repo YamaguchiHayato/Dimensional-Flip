@@ -16,7 +16,7 @@ namespace app
         public:
             void Enter() override;
             void Update() override;
-            void Exit() override {} // 今回は特になし
+            void Exit() override {} 
             bool RequestID(uint8_t& request) override;
 
 

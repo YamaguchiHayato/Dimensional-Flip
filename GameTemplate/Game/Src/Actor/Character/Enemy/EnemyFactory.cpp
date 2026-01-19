@@ -217,6 +217,7 @@ namespace app
             auto triggerLineX = pos.x;
 
 
+            // 設定した数値分、生成。
             for (uint8_t i = 0; i < 15.0f; ++i)
             {
                 // 生成。
@@ -245,6 +246,7 @@ namespace app
                 // リストに追加。
                 list.push_back(fallInstance);
             }
+
             return list;
         }
 

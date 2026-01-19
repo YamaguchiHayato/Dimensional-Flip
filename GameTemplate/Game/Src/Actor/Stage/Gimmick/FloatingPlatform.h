@@ -22,6 +22,7 @@ namespace app
 
             // 足場を出現させる。
             void Activate(const Vector3& pos);
+
             // 足場を隠す。(OFF)
             inline void Deactivate()
             {

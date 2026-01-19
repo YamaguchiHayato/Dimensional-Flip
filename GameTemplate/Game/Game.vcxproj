@@ -224,8 +224,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="BackGroundLayer.cpp" />
     <ClCompile Include="DelayedEffect.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
@@ -244,7 +248,6 @@
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\IState.cpp" />
     <ClCompile Include="Src\Actor\Actor.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Thwomp.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp" />
@@ -319,8 +322,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
-    <ClInclude Include="BackGroundLayer.h" />
     <ClInclude Include="DelayedEffect.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />
@@ -339,7 +346,6 @@
     <ClInclude Include="Src\Actor\Character\IState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Actor\Actor.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Thwomp.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h" />

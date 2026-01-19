@@ -36,7 +36,7 @@ StageID StageClear::DecideStage()
          break;
 
     case StageID::sStage1:
-         nextStageID = StageID::sInvalid;
+         nextStageID = StageID::sStageEX;
          break;
 
     //case StageID::sStage2:

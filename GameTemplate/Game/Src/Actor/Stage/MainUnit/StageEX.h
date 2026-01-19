@@ -1,6 +1,6 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
-#include "Src/Actor/Character/Enemy/Boss.h"
+#include "Src/Actor/Character/Enemy/Boss/Boss.h"
 
 
 class Boss;

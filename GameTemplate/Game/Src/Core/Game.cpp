@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "Game.h"
-#include "BackGroundLayer.h"
 #include "GameSoundEngine.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Direction/Fade.h"

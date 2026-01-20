@@ -4,7 +4,7 @@
 #include "Src/Core/Game.h"
 
 // 演出クラス。
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 
 // タイトルレイヤークラス。
 #include "Src/Scene/title/TitleView.h"

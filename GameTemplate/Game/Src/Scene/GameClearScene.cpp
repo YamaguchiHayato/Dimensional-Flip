@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Core/SceneManager.h"
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 
 
 GameClearScene::~GameClearScene()

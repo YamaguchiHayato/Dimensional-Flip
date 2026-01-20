@@ -9,7 +9,7 @@
 #include "Src/Scene/InGameScene.h"
 
 // 演出クラス。
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 
 // コアクラス。
 #include "Src/Core/SceneManager.h"

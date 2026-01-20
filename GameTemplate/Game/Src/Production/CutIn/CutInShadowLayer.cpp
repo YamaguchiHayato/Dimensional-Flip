@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Src/Direction/CutIn/CutInShadowLayer.h"
-#include "Src/Direction/CutIn/CutInSlideLayer.h"
+#include "Src/Production/CutIn/CutInShadowLayer.h"
+#include "Src/Production/CutIn/CutInSlideLayer.h"
 struct layerSize
 {
     static constexpr float WIDTH = 225.0f;

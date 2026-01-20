@@ -1,5 +1,5 @@
 #pragma once
-#include "Src/Direction/GameClear.h"
+#include "Src/Production/GameClear.h"
 #include "Src/Scene/Scene.h"
 
 class GameClearScene : public IScene

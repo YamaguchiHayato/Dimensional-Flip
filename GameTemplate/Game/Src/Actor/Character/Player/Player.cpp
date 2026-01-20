@@ -10,7 +10,7 @@
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
 #include "Src/Core/SceneManager.h"
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 
 // UIクラス。
 #include "Src/UI/ScoreUI.h"

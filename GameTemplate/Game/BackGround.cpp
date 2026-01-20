@@ -1,16 +1,19 @@
 #include "stdafx.h"
 
 #include "BackGround.h"
+
 #include "Src/Core/CameraManager.h"
+#include "Src/Core/StageManager.h"
 
 namespace
 {
-    // 各種設定値
     const float BG_Z_OFFSET = 50.0f;
-//    const float HEIGHT_SKY = 20.0f;
     const float HEIGHT_SKY = 8.0f;
     const float HEIGHT_GROUND = -5.0f;
     const Vector3 SCALE_2D = Vector3(0.15f, 0.15f, 0.15f);
+
+    const float BASE_HEIGHT = 25.0f;
+    const float BASE_SCALE = 0.15f;
 
     // 山の設定
     struct MountainSetting
@@ -44,6 +47,7 @@ namespace app
             return true;
         }
 
+
         void BackGround::Update()
         {
             if (!pPlayer_ || !pCameraManager_)
@@ -58,7 +62,33 @@ namespace app
             // 共通の回転を計算
             rot_.SetRotationDegX(-90.0f);
 
-            SettingSky(playerPos);
+            // ステージによって背景の挙動を変更する。
+            StageID currentStage = StageManager::GetInstance()->GetCurrentStageID();
+
+
+            if (currentStage == StageID::sStageEX)
+            {
+                Vector3 camPos = g_camera3D->GetPosition();
+                float currentCamHeight = g_camera3D->GetHeight();
+
+                // 位置: カメラに合わせる
+                skyModel_.SetPosition({camPos.x, camPos.y, BG_Z_OFFSET});
+
+                // 16:9 の画面比率(約1.78倍)よりも大きくしないと横が見切れてしまいます。
+                // 2.0倍あれば確実に端までカバーできます。
+                float newScale = (currentCamHeight / BASE_HEIGHT) * BASE_SCALE * 2.0f;
+
+                skyModel_.SetScale({newScale, newScale, newScale});
+                skyModel_.SetRotation(rot_);
+                skyModel_.Update();
+            }
+
+            else
+            {
+                Vector3 playerPos = pPlayer_->GetPlayerPos();
+                SettingSky(playerPos);
+            }
+
         //    SettingGround(playerPos);   // 単体として処理
         //    SettingMountain(playerPos); // 配列として処理
         }

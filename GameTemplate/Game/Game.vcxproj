@@ -224,7 +224,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="DelayedEffect.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
@@ -276,7 +275,6 @@
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
-    <ClCompile Include="Src\Camera\StageEXCameraStrategy.cpp" />
     <ClCompile Include="Src\Collision\CollisionManager.cpp" />
     <ClCompile Include="Src\Collision\NonCopyable.cpp" />
     <ClCompile Include="Src\Core\CameraManager.cpp" />
@@ -284,17 +282,18 @@
     <ClCompile Include="Src\Core\SceneManager.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInBase.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInLogoLayer.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInMaskLayer.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInScrollLayer.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInShadowLayer.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInSlideLayer.cpp" />
-    <ClCompile Include="Src\Direction\CutIn\CutInView.cpp" />
-    <ClCompile Include="Src\Direction\Fade.cpp" />
-    <ClCompile Include="Src\Direction\GameClear.cpp" />
-    <ClCompile Include="Src\Direction\GameOver.cpp" />
-    <ClCompile Include="Src\Direction\StageClear.cpp" />
+    <ClCompile Include="Src\Production\AttackMarker.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInBase.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInMaskLayer.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInScrollLayer.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInShadowLayer.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInSlideLayer.cpp" />
+    <ClCompile Include="Src\Production\CutIn\CutInView.cpp" />
+    <ClCompile Include="Src\Production\Fade.cpp" />
+    <ClCompile Include="Src\Production\GameClear.cpp" />
+    <ClCompile Include="Src\Production\GameOver.cpp" />
+    <ClCompile Include="Src\Production\StageClear.cpp" />
     <ClCompile Include="Src\Scene\GameClearScene.cpp" />
     <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
@@ -322,7 +321,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
-    <ClInclude Include="DelayedEffect.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
@@ -374,7 +372,6 @@
     <ClInclude Include="Src\Camera\FollowStrategy.h" />
     <ClInclude Include="Src\Camera\ICameraStrategy.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
-    <ClInclude Include="Src\Camera\StageEXCameraStrategy.h" />
     <ClInclude Include="Src\Collision\CollisionManager.h" />
     <ClInclude Include="Src\Collision\NonCopyable.h" />
     <ClInclude Include="Src\Core\CameraManager.h" />
@@ -382,17 +379,18 @@
     <ClInclude Include="Src\Core\SceneManager.h" />
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInBase.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInLogoLayer.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInMaskLayer.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInScrollLayer.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInShadowLayer.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInSlideLayer.h" />
-    <ClInclude Include="Src\Direction\CutIn\CutInView.h" />
-    <ClInclude Include="Src\Direction\Fade.h" />
-    <ClInclude Include="Src\Direction\GameClear.h" />
-    <ClInclude Include="Src\Direction\GameOver.h" />
-    <ClInclude Include="Src\Direction\StageClear.h" />
+    <ClInclude Include="Src\Production\AttackMarker.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInBase.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInLogoLayer.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInMaskLayer.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInScrollLayer.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInShadowLayer.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInSlideLayer.h" />
+    <ClInclude Include="Src\Production\CutIn\CutInView.h" />
+    <ClInclude Include="Src\Production\Fade.h" />
+    <ClInclude Include="Src\Production\GameClear.h" />
+    <ClInclude Include="Src\Production\GameOver.h" />
+    <ClInclude Include="Src\Production\StageClear.h" />
     <ClInclude Include="Src\Scene\GameClearScene.h" />
     <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />

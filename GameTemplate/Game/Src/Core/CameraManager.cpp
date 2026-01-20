@@ -7,7 +7,6 @@
 #include "Src/Camera/SideCameraStrategy.h"
 #include "Src/Camera/FollowStrategy.h"
 #include "Src/Camera/BossCameraStrategy.h"
-#include "Src/Camera/StageEXCameraStrategy.h" 
 
 
 namespace
@@ -34,8 +33,6 @@ void CameraManager::Update()
 
     pCameraStrategy_->Update();
 
-    // カメラモードの切り替え要求をチェックs
-//    ChangeCamera();
 }
 
 
@@ -57,10 +54,6 @@ void CameraManager::RequestBossMode(float targetAngleDegrees)
 }
 
 
-void CameraManager::RequestStageExMode()
-{
-    RequestCameraMode<app::camera::StageEXCameraStrategy>(0.0f, CameraMode::modeStageEX, nsK2EngineLow::Camera::enUpdateProjMatrixFunc_Perspective);
-}
 
 
 template <typename CameraType>

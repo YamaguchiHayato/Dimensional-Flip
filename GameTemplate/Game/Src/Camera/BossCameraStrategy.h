@@ -1,26 +1,15 @@
 #pragma once
 #include "Src/Camera/ICameraStrategy.h"
 
-class CameraManager;
 namespace app{
     namespace enemy{
         class Boss;
     }
 }
+
+class CameraManager;
 class Player;
 
-enum class BattleViewMode : uint8_t
-{
-    SidwView = 0, // 側面視点
-    DepthView,    // 奥行き視点
-};
-
-// ボス戦カメラの状態
-enum class BossCameraState : uint8_t
-{
-    Appearance = 0, // 登場中（イベントカメラ）
-    Battle,         // 戦闘中（プレイヤー操作可能）
-};
 
 namespace app
 {
@@ -29,35 +18,35 @@ namespace app
         class BossCameraStrategy : public ICameraStrategy
         {
         public:
-            BossCameraStrategy(Player* pPlayer);
+            BossCameraStrategy(Player* pPlayer) : pPlayer_(pPlayer) {};
             virtual ~BossCameraStrategy() = default;
 
+
+        public:
             bool Start() override;
             void Update() override;
 
-        private:
-            // 内部処理関数
-            void BossAppearanceCamera(nsK2EngineLow::Camera* pCamera);
-            void BattleCamera(nsK2EngineLow::Camera* pCamera, const float deltaTime);
-            void BossCameraGetState(nsK2EngineLow::Camera* pCamera, const float deltaTime);
 
         public:
-            // 戦闘中のカメラの視点切替要求（必要に応じて使用）
-            inline void RequestBattleView(BattleViewMode mode)
+            // クライミングカメラのターゲットY座標を設定。
+            void SetClimbingTargetY(float targetY)
             {
-                if (currenState_ == BossCameraState::Battle)
-                    currentViewMode_ = mode;
+                climbingTargetY_ = targetY;
             }
+
+
+        private:
+            // 足場を登り用のカメラワーク。
+            void UpdateClimbingCamera();
+
 
         private:
             app::enemy::Boss* pBoss_ = nullptr;
             Player* pPlayer_ = nullptr;
-            CameraManager* pCameraManager_ = nullptr;
 
-            BossCameraState currenState_ = BossCameraState::Appearance; // 初期状態
-            BattleViewMode currentViewMode_ = BattleViewMode::SidwView; // 初期視点
 
-            float eventTimerLapse_ = 0.0f; // 演出経過時間
+        private:
+            float climbingTargetY_ = 0.0f;
         };
     }
 }

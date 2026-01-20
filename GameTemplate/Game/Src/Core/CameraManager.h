@@ -13,7 +13,6 @@ enum class CameraMode : uint8_t
     mode2D,    // 横スクロール
     mode3D,      // 3D自由視点
     modeBoss,    // ボス戦演出
-    modeStageEX, 
 };
 
 
@@ -34,7 +33,6 @@ public:
     void Request2DMode();
     void Request3DMode();
     void RequestBossMode(float targetAngleDegrees = 0.0f);
-    void RequestStageExMode();
 
 
 private:

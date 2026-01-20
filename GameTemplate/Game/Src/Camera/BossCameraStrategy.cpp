@@ -9,7 +9,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/StageManager.h"
-
+#include "Src/Core/InputManager.h"
 
 // カメラクラス。
 #include "Src/Camera/BossCameraStrategy.h"
@@ -29,23 +29,17 @@ namespace app
 {
     namespace camera
     {
-        BossCameraStrategy::BossCameraStrategy(Player* pPlayer) : pPlayer_(pPlayer) {}
+
 
         bool BossCameraStrategy::Start()
         {
-            // ボスを検索
             pBoss_ = FindGO<app::enemy::Boss>("boss");
             if (!pBoss_)
-                K2_LOG("BossCameraStrategy::Start() Boss not found.\n");
+                return false;
 
-            // プレイヤーの確認
-            if (!pPlayer_)
-                K2_LOG("BossCameraStrategy::Start() Player is null.\n");
+            // 遠くまで見えるように
+            g_camera3D->SetFar(10000.0f);
 
-            // 状態リセット
-            currenState_ = BossCameraState::Appearance;
-            eventTimerLapse_ = 0.0f;
-            currentViewMode_ = BattleViewMode::SidwView;
 
             return true;
         }
@@ -53,106 +47,34 @@ namespace app
 
         void BossCameraStrategy::Update()
         {
-            if (StageManager::GetInstance()->GetCurrentStageID() != StageID::sStageEX)
+            if (!pBoss_ || pPlayer_)
                 return;
 
-            if (!pBoss_)
-                return;
-
-            // 現在の状態に応じて処理を分岐
-            BossCameraGetState(g_camera3D, g_gameTime->GetFrameDeltaTime());
+            // クライミングカメラ。
+            UpdateClimbingCamera();
         }
 
 
-        void BossCameraStrategy::BossAppearanceCamera(nsK2EngineLow::Camera* pCamera)
+        void BossCameraStrategy::UpdateClimbingCamera()
         {
-            if (!pBoss_ || !pCamera)
-                return;
+            // クライミング用カメラ。
 
-            // 時間を進める
-            eventTimerLapse_ += g_gameTime->GetFrameDeltaTime();
-
-            // --- 演出用カメラワーク ---
-            // ボスの斜め上からの視点
-            Vector3 highAngleOffset(0.0f, 500.0f, -300.0f);
-            Vector3 targetPos = pBoss_->GetPos() + highAngleOffset;
-
-            // 現在位置から滑らかに移動
-            Vector3 currentPos = pCamera->GetPosition();
-            float t = 2.0f * g_gameTime->GetFrameDeltaTime();
-            Vector3 newPos = Lerp(t, currentPos, targetPos);
-            pCamera->SetPosition(newPos);
-
-            // ボスを見下ろす
-            Vector3 lookAt = pBoss_->GetPos();
-            lookAt.y += 50.0f;
-            pCamera->SetTarget(lookAt);
-
-            // --- 終了判定と切り替え ---
-            if (eventTimerLapse_ >= ORIGINCAMERA_EVENTTIME)
-            {
-                // 演出終了。戦闘用（俯瞰）カメラへ切り替えリクエスト。
-                if (pPlayer_)
-                {
-                    CameraManager* pCamMgr = pPlayer_->GetCameraManager();
-                    if (pCamMgr)
-                    {
-                        // カメラモードををBOSS戦仕様に。
-                        pCamMgr->RequestStageExMode();
-                    }
-                }
-
-                // ステート更新（切り替えが即座に行われるため、実質ここは通りませんが念のため）
-                eventTimerLapse_ = 0.0f;
-                currenState_ = BossCameraState::Battle;
-            }
-        }
-
-
-        void BossCameraStrategy::BattleCamera(nsK2EngineLow::Camera* pCamera, const float deltaTime)
-        {
-            if (!pBoss_ || !pPlayer_)
-                return;
-
-            Vector3 bossPos = pBoss_->GetPos();
             Vector3 playerPos = pPlayer_->GetPlayerPos();
+            Vector3 currentPos = g_camera3D->GetPosition();
 
-            // 1. bossとPlayerの中間地点を計算し、注視点とする
-            Vector3 middlePos = (bossPos + playerPos) * 0.5f;
+            // PlayerのY座標の高さ + オフセットに追従させる。
+            Vector3 idolPos;
+            idolPos.x = playerPos.x;
+            idolPos.y = playerPos.y + 50.0f;
+            idolPos.z = playerPos.z - 100.0f;
 
-            // 2. 視点モードに応じたオフセットを取得
-            Vector3 targetOffset =
-                (currentViewMode_ == BattleViewMode::SidwView) ? SIDE_VIEW_OFFSET : DEPTH_VIEW_OFFSET;
+            // 線形保管を用いて滑らかに追従。
+            Vector3 newPos = Lerp(5.0f * g_gameTime->GetFrameDeltaTime(), currentPos, idolPos);
+            g_camera3D->SetPosition(newPos);
 
-            // 3. 理想位置 = 中間地点 + オフセット
-            Vector3 idealPos = middlePos + targetOffset;
-
-            // 4. 滑らかに追従する (Lerp引数の順序に注意し、deltaTimeを適用)
-            Vector3 currentPos = pCamera->GetPosition();
-            Vector3 newPos = Lerp(SWITCH_SPEED * deltaTime, currentPos, idealPos);
-            pCamera->SetPosition(newPos);
-
-            // 5. 注視点を中間地点に設定
-            Vector3 target = middlePos;
-            target.y += TARGET_HEIGHT; // 中間点を見下ろす高さ
-            pCamera->SetTarget(target);
+            // Playerを見る。
+            g_camera3D->SetTarget(playerPos);
         }
-
-
-        void BossCameraStrategy::BossCameraGetState(nsK2EngineLow::Camera* pCamera, const float deltaTime)
-        {
-            switch (currenState_)
-            {
-            case BossCameraState::Appearance:
-                BossAppearanceCamera(pCamera);
-                break;
-
-            case BossCameraState::Battle:
-                BattleCamera(pCamera, deltaTime);
-                break;
-            }
-        }
-
     }
 }
 

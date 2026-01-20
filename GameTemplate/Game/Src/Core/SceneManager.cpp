@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
-#include "Src/Direction/GameClear.h"
+#include "Src/Production/GameClear.h"
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Scene/GameOverScene.h"
 

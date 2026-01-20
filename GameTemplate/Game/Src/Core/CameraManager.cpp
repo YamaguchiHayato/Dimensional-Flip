@@ -19,6 +19,10 @@ namespace
 bool CameraManager::Start()
 {
     pPlayer_ = FindGO<Player>("player");
+
+    // 開始時はロックなし状態にする。
+    ResetCameraRange();
+
     // ゲームスタート時は2Dモードに設定
     Request2DMode();
 
@@ -54,13 +58,27 @@ void CameraManager::RequestBossMode(float targetAngleDegrees)
 }
 
 
-
-
 template <typename CameraType>
 void CameraManager::RequestCameraMode(const float angle, CameraMode cameraMode, const nsK2EngineLow::Camera::EnUpdateProjMatrixFunc mode)
 {
+    // 既存のカメラ戦略を停止・破棄
     pCameraStrategy_ = std::make_unique<CameraType>(pPlayer_);
     pCameraStrategy_.get()->SetTargetRotationY(angle);
+
+    // カメラ制限が設定されていれば適用
+    if (isLimitSet_)
+    {
+        if (auto* side = dynamic_cast<SideCameraStrategy*>(pCameraStrategy_.get()))
+        {
+            side->SetCameraLimit(limitMin_, limitMax_);
+        }
+        else if (auto* follow = dynamic_cast<FollowStrategy*>(pCameraStrategy_.get()))
+        {
+            follow->SetCameraLimit(limitMin_, limitMax_);
+        }
+    }
+
+    // カメラ開始
     if (pCameraStrategy_->Start())
     {
         currentMode_ = cameraMode;
@@ -82,5 +100,26 @@ void CameraManager::ChangeCamera()
     {
         Request2DMode();
         return;
+    }
+}
+
+
+void CameraManager::SetCameraRange(const Vector3& min, const Vector3& max)
+{
+    limitMin_ = min;
+    limitMax_ = max;
+    isLimitSet_ = true;
+
+    // 現在稼働中のカメラにも適用
+    if (pCameraStrategy_)
+    {
+        if (auto* side = dynamic_cast<SideCameraStrategy*>(pCameraStrategy_.get()))
+        {
+            side->SetCameraLimit(min, max);
+        }
+        else if (auto* follow = dynamic_cast<FollowStrategy*>(pCameraStrategy_.get()))
+        {
+            follow->SetCameraLimit(min, max);
+        }
     }
 }

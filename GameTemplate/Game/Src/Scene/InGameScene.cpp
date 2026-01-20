@@ -3,7 +3,7 @@
 #include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
-#include "Src/Direction/Fade.h"
+#include "Src/production/Fade.h"
 
 
 InGameScene::~InGameScene()

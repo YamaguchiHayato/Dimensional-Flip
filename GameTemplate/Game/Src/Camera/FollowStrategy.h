@@ -15,7 +15,23 @@ public:
 	void Update() override;
 
 
-    private:
-        //直前の地面に居たときのY座標を保存。
+public:
+    // カメラの制限範囲を設定。
+    inline void SetCameraLimit(const Vector3& rangeMin, const Vector3 rangeMax)
+    {
+        rangeMin_ = rangeMin;
+        rangeMax_ = rangeMax;
+        isScreenRock_ = true;
+    }
+
+    // スクリーンロック。
+    void ApplyScreenRock(Vector3& cameraPos);
+
+private:
+    //直前の地面に居たときのY座標を保存。
     float lastGroundY_ = 0.0f;
+
+    bool isScreenRock_ = false;
+    Vector3 rangeMin_ = Vector3::Zero;
+    Vector3 rangeMax_ = Vector3::Zero;
 };

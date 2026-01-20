@@ -4,13 +4,24 @@
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
 #include "Src/Camera/Dimensiontrigger.h"
-#include "Src/Core/CameraManager.h"
 #include "Src/Production/CutIn/CutInView.h"
+
+
+// カメラ。
+#include "Src/Core/CameraManager.h"
+#include "Src/Camera/SideCameraStrategy.h"
 
 namespace
 {
     const Vector3 SCALE = Vector3::One;
+
+    const Vector3 PLAYER_LIMIT_MIN = {-38.0f, -10.0f, -26.0f};
+    const Vector3 PLAYER_LIMIT_MAX = {38.0f, 500.0f, 26.0f};
+
+     const Vector3 CAMERA_LIMIT_MIN = {-450.0f, -100.0f, -2000.0f};
+     const Vector3 CAMERA_LIMIT_MAX = {450.0f, 500.0f, 500.0f};
 } // namespace
+
 
 namespace app
 {
@@ -38,15 +49,26 @@ namespace app
             pPlayer_ = FindGO<Player>("player");
 
             // ボスの生成
-            BossInstance();
+            CreateBossInstance();
 
+            // カメラマネージャー取得
             if (pPlayer_)
             {
                 pCameraManager_ = pPlayer_->GetCameraManager();
                 if (pCameraManager_)
+                {
+                    // 2Dモードに設定
                     pCameraManager_->Request2DMode();
 
+                    // スクリーンロック設定
+                    pCameraManager_->SetCameraRange(CAMERA_LIMIT_MIN, CAMERA_LIMIT_MAX);
+                }
+
+                // Playerの初期位置を設定。
                 pPlayer_->SetPlayerPos(nsStageEX::nsPlayer::InitPos);
+                // 移動制限。
+                pPlayer_->SetMoveLimit(PLAYER_LIMIT_MIN, PLAYER_LIMIT_MAX);
+
 
                 if (pPlayer_)
                     pPlayer_->SetPaused(true);
@@ -66,7 +88,6 @@ namespace app
 
         void StageEX::Update()
         {
-            // ... (カットイン終了判定などはそのまま) ...
             if (pCutInView_)
             {
                 if (pCutInView_->IsCutInFinished())
@@ -86,11 +107,13 @@ namespace app
             // Startで設定済みですが、念のため毎フレーム更新
             rot_.SetRotationDegY(-90.0f);
             stageRender_.SetRotation(rot_);
-
+            // スケール設定。
             stageRender_.SetScale(SCALE);
-
+            // 更新。
             stageRender_.Update();
         }
+
+
         void StageEX::Render(RenderContext& rc)
         {
             stageRender_.Draw(rc);

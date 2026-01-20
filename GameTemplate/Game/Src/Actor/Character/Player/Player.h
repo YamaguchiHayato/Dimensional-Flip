@@ -77,6 +77,8 @@ public:
     Vector3 respwanPos_ = Vector3::Zero;
     Vector3 forward_ = Vector3::Front;
     Vector3 keyDirection_ = Vector3::Zero;
+    Vector3 moveLimitMin_ = Vector3::Zero;
+    Vector3 moveLimitMax_ = Vector3::Zero;
 
     Quaternion rot_ = Quaternion::Identity;
     Quaternion respwanRot_ = Quaternion::Identity;
@@ -103,7 +105,7 @@ private:
     bool is3DMode_ = false;
     bool respawnFlag_ = false;
 
-    
+    bool isMoveLimited_ = false;
 
 public:
     Player() = default;
@@ -157,7 +159,8 @@ public:
     {
         score_ += amount;
     }
-
+    // 移動制限を与える。
+    void AddMovementRestrictions();
     // セッター。
 public:
     // CameraManagerの初期化。
@@ -256,6 +259,20 @@ public:
         keyDirection_ = direction;
     }
 
+
+    // 制限を設定。
+    inline void SetMoveLimit(const Vector3& min, const Vector3& max)
+    {
+        moveLimitMin_ = min;
+        moveLimitMax_ = max;
+        isMoveLimited_ = true;
+    }
+
+    // 制限を解除。
+    inline void ReleaseMoveLimit()
+    {
+        isMoveLimited_ = false;
+    }
 
     // ゲッター。
 public:

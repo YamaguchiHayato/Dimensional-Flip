@@ -178,6 +178,8 @@ namespace app
 
         private:
             AttackType currentAttackType_ = AttackType::Meteor;
+            AnimationClip animClips_[BossAnimation::bossAnim_Num];
+
             ModelRender render_;
 
             Vector3 pos_ = Vector3::Zero;

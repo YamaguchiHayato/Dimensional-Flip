@@ -33,13 +33,11 @@ namespace
     const uint8_t ATTACK_LIMIT_TO_TIRED = 5;
 
     // 生成範囲。
-    const auto RANGE = 450.0f;
+    const auto RANGE = 20.0f;
 
     // 疲労状態（足場が出ている）の時間
     const auto TIRED_DURATION = 20.0f;
 
-    // アニメーションデータを保持。
-    AnimationClip ANIMCLIP[BossAnimation::bossAnim_Num];
     // 読み込み中かどうかのフラグ。
     bool isLoad = false;
 
@@ -118,11 +116,12 @@ namespace app
 
             // アニメーションをセットする。
             SetAnimation();
+
             // モデルをセットする。
-            render_.Init("Assets/modelData/enemy/boss.tkm", ANIMCLIP, BossAnimation::bossAnim_Num, enModelUpAxisZ);
+            render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
 
-            rot_.AddRotationDegY(270.0f);
+            rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
 
@@ -167,7 +166,7 @@ namespace app
 
             // モデル本体の更新。
             render_.SetRotation(rot_);
-            render_.SetScale(Vector3::One);
+            render_.SetScale(Vector3(0.15f, 0.15f, 0.15f));
             render_.SetPosition(pos_);
             render_.Update();
         }
@@ -203,10 +202,11 @@ namespace app
                 if (type == AttackType::Meteor)
                 {
                     // --- 隕石の生成 ---
-
                     // 隕石特有のランダムパラメータ
-                    auto speed = 20.0f + static_cast<float>(rand() % 30);
-                    auto delay = 0.5f + (static_cast<float>(rand() % 15) / 10.0f);
+                    // 落下速度。
+                    auto speed = 2.5f + static_cast<float>(rand() % 5);
+                    // 落下までの時間。
+                    auto delay = 0.2f + (static_cast<float>(rand() % 15) / 10.0f);
 
                     auto meteo = NewGO<app::gimmick::Meteo>(0);
                     meteo->SetName("meteo");
@@ -231,28 +231,28 @@ namespace app
             if (!isLoad)
             {
                 // デフォルト状態。
-                ANIMCLIP[BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
-                ANIMCLIP[BossAnimation::bossAnim_Idle].SetLoopFlag(true);
+                animClips_[BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
+                animClips_[BossAnimation::bossAnim_Idle].SetLoopFlag(true);
 
                 // 走る状態。
-                ANIMCLIP[BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
-                ANIMCLIP[BossAnimation::bossAnim_Run].SetLoopFlag(true);
+                animClips_[BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
+                animClips_[BossAnimation::bossAnim_Run].SetLoopFlag(true);
 
                 // 攻撃状態。
-                ANIMCLIP[BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
-                ANIMCLIP[BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
+                animClips_[BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
+                animClips_[BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
 
                 // 咆哮攻撃状態。
-                ANIMCLIP[BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
-                ANIMCLIP[BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
+                animClips_[BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
+                animClips_[BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
 
                 // ダメージヒット状態。
-                ANIMCLIP[BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
-                ANIMCLIP[BossAnimation::bossAnim_Hit].SetLoopFlag(true);
+                animClips_[BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
+                animClips_[BossAnimation::bossAnim_Hit].SetLoopFlag(true);
 
                 // 転倒状態。
-                ANIMCLIP[BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
-                ANIMCLIP[BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
+                animClips_[BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
+                animClips_[BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
 
                 // ロード完了フラグを立てる
                 isLoad = true;
@@ -295,7 +295,7 @@ namespace app
             pos.x = cosf(angle) * distance;
             pos.z = sinf(angle) * distance;
 
-            // Y座標は地面の高さ (必要に応じて targetPos_.y などに合わせてください)
+            // Y座標は地面の高さ 
             pos.y = 0.0f;
 
             return pos;

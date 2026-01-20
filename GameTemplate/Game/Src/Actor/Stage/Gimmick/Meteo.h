@@ -1,6 +1,14 @@
 #pragma once
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
 #include "graphics/effect/EffectEmitter.h"
+#include "Src/Production/AttackMarker.h"
+
+
+namespace app{
+    namespace production{
+        class AttackMarker;
+    }
+}
 
 enum class State : uint8_t
 {
@@ -43,6 +51,11 @@ namespace app
         private:
             // 状態を更新する。
             void UpdateState();
+
+
+        private:
+            app::production::AttackMarker* pMarker_ = nullptr;
+
 
         private:
             State state_ = State::Warning;

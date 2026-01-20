@@ -1,5 +1,13 @@
 #pragma once
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
+#include "Src/Production/AttackMarker.h"
+
+namespace app {
+    namespace production{
+        class AttackMarker;
+    }
+}
+
 
 enum class SpearState : uint8_t
 {
@@ -8,6 +16,7 @@ enum class SpearState : uint8_t
     Wait,    // 余韻。
     Retract, // 引っ込む。
 };
+
 namespace app
 {
     namespace gimmick
@@ -37,6 +46,10 @@ namespace app
         private:
             // 状態を更新する。
             void UpdateState();
+
+
+        private:
+            app::production::AttackMarker* pMarker_ = nullptr;
 
 
         private:

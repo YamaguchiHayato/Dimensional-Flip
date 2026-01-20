@@ -1,4 +1,12 @@
 #pragma once
+#include "Src/Production/AttackMarker.h"
+
+namespace app{
+    namespace production{
+        class AttackMarker;
+    }
+}
+
 class Player;
 class CutInView;
 

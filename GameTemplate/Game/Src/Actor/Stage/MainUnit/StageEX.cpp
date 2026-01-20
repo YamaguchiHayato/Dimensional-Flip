@@ -1,14 +1,16 @@
 #include "stdafx.h"
-#include "Src/Actor/Stage/MainUnit/StageEX.h"
+
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/Core/CameraManager.h"
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
-#include "Src/Direction/CutIn/CutInView.h"
+#include "Src/Actor/Stage/MainUnit/StageEX.h"
+#include "Src/Camera/Dimensiontrigger.h"
+#include "Src/Core/CameraManager.h"
+#include "Src/Production/CutIn/CutInView.h"
 
 namespace
 {
-    const Vector3 SCALE(Vector3(10.0f, 10.0f, 10.0f));
-}
+    const Vector3 SCALE = Vector3::One;
+} // namespace
 
 namespace app
 {
@@ -16,48 +18,46 @@ namespace app
     {
         bool StageEX::Start()
         {
-            // ステージ2モデル。
+            // モデル読み込み
             const std::string stagePath = InitStage("StageEX/stageEX");
             stageRender_.Init(stagePath.c_str());
 
-
-            // 座標設定。
+            // 座標設定
             stageRender_.SetPosition(stagePos_);
             initPos_ = stagePos_;
 
+            rot_.SetRotationDegY(-90.0f);
+            stageRender_.SetRotation(rot_);
 
-            // 大きさ設定。
+            // 大きさ設定
             stageRender_.SetScale(SCALE);
             stageRender_.Update();
             stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
 
-
-            // カメラの設定の修正。
+            // プレイヤー検索
             pPlayer_ = FindGO<Player>("player");
 
-
-            // ボスの生成。
+            // ボスの生成
             BossInstance();
-
 
             if (pPlayer_)
             {
-                // プレイヤーのカメラマネージャーを取得。  
                 pCameraManager_ = pPlayer_->GetCameraManager();
                 if (pCameraManager_)
+                    pCameraManager_->Request2DMode();
 
-                    // カメラをボスモードに変更。
-                    pCameraManager_->RequestBossMode(); 
+                pPlayer_->SetPlayerPos(nsStageEX::nsPlayer::InitPos);
+
+                if (pPlayer_)
+                    pPlayer_->SetPaused(true);
             }
 
-            // プレイヤーの一時停止フラグをセット。
-            if (pPlayer_)
-                pPlayer_->SetPaused(true);
+            // トリガー生成
+            auto trigger = NewGO<DimensionTrigger>(0, "trigger");
+            trigger->SetTriggerPos(Vector3::Zero);
 
-            // カットインの生成。
+            // カットイン生成
             pCutInView_ = NewGO<app::cutIn::CutInView>(0, "CutInView");
-
-            // カットインの寿命(n秒)を設定。
             pCutInView_->SetLifeDuration(4.0f);
 
             return true;
@@ -66,36 +66,31 @@ namespace app
 
         void StageEX::Update()
         {
-
-            // 終了判定。
+            // ... (カットイン終了判定などはそのまま) ...
             if (pCutInView_)
             {
-                // 時間切れになったら。
                 if (pCutInView_->IsCutInFinished())
                 {
-                    // CutInViewの破棄。
-                    // レイヤークラスも一緒に破棄される。
-                    // ※レイヤークラス …　CutInViewに所属しているCutInを構成するクラス達。
                     DeleteGO(pCutInView_);
                     pCutInView_ = nullptr;
 
-                    // 一時停止フラグを解除する。
                     if (pPlayer_)
                     {
-                        // プレイヤーを所定の位置に移動させる。
                         pPlayer_->SetPlayerPos(nsStageEX::nsPlayer::InitPos);
-
-                        // 一時停止フラグ解除。
-                        // Bossのカットイン中は行動を制限させたいため。
                         pPlayer_->SetPaused(false);
                     }
                 }
             }
 
+            // ステージ更新
+            // Startで設定済みですが、念のため毎フレーム更新
+            rot_.SetRotationDegY(-90.0f);
+            stageRender_.SetRotation(rot_);
+
+            stageRender_.SetScale(SCALE);
+
             stageRender_.Update();
         }
-
-
         void StageEX::Render(RenderContext& rc)
         {
             stageRender_.Draw(rc);

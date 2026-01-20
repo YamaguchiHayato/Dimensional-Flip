@@ -230,11 +230,12 @@ void Player::ApplyMovement()
     // 移動処理。
     pos_ = charaCon_.Execute(moveSpeed_, ficedTime);
 
+    // 移動制限の適応。
+    AddMovementRestrictions();
 
     if (pCameraManager_ && pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D)
-    {
         pos_.z = 0.0f;
-    }
+
     // 座標のセット。
     charaCon_.SetPosition(pos_);
 
@@ -286,5 +287,33 @@ void Player::OnDamage(uint8_t damage)
     if (status_.IsDead())
     {
         SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+    }
+}
+
+
+void Player::AddMovementRestrictions()
+{
+    // 移動制限の適応。
+    if (isMoveLimited_)
+    {
+        // X軸。
+        if (pos_.x < moveLimitMin_.x)
+            pos_.x = moveLimitMin_.x;
+
+        if (pos_.x > moveLimitMax_.x)
+            pos_.x = moveLimitMax_.x;
+
+
+        // Y軸。
+        if (pos_.y < moveLimitMin_.y)
+            pos_.y = moveLimitMin_.y;
+
+
+        // Z軸。
+        if (pos_.z < moveLimitMin_.z)
+            pos_.z = moveLimitMin_.z;
+
+        if (pos_.z > moveLimitMax_.z)
+            pos_.z = moveLimitMax_.z;
     }
 }

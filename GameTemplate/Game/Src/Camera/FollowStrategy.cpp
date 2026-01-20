@@ -89,6 +89,10 @@ void FollowStrategy::Update()
 
     // Y座標を適用
     newPos.y = nextY;
+
+    // スクリーンロックの適用。
+    ApplyScreenRock(newPos);
+
     g_camera3D->SetPosition(newPos);
 
 
@@ -97,4 +101,23 @@ void FollowStrategy::Update()
     // + する値は要調整。
     lookAtPoint.y =   lastGroundY_ + 7.5f;
     g_camera3D->SetTarget(lookAtPoint);
+}
+
+
+void FollowStrategy::ApplyScreenRock(Vector3& cameraPos)
+{
+    if (!isScreenRock_)
+        return;
+
+    // X軸の制限
+    if (cameraPos.x < rangeMin_.x)
+        cameraPos.x = rangeMin_.x;
+    if (cameraPos.x > rangeMax_.x)
+        cameraPos.x = rangeMax_.x;
+
+    // Z軸の制限
+    if (cameraPos.z < rangeMin_.z)
+        cameraPos.z = rangeMin_.z;
+    if (cameraPos.z > rangeMax_.z)
+        cameraPos.z = rangeMax_.z;
 }

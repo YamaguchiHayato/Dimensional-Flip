@@ -227,36 +227,29 @@ namespace app
 
         void Boss::SetAnimation()
         {
-            // ロードしていなければここでロードする。
-            if (!isLoad)
-            {
-                // デフォルト状態。
-                animClips_[BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
-                animClips_[BossAnimation::bossAnim_Idle].SetLoopFlag(true);
+             // デフォルト状態。
+             animClips_[BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
+             animClips_[BossAnimation::bossAnim_Idle].SetLoopFlag(true);
 
-                // 走る状態。
-                animClips_[BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
-                animClips_[BossAnimation::bossAnim_Run].SetLoopFlag(true);
+             // 走る状態。
+             animClips_[BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
+             animClips_[BossAnimation::bossAnim_Run].SetLoopFlag(true);
 
-                // 攻撃状態。
-                animClips_[BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
-                animClips_[BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
+             // 攻撃状態。
+             animClips_[BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
+             animClips_[BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
 
-                // 咆哮攻撃状態。
-                animClips_[BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
-                animClips_[BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
+             // 咆哮攻撃状態。
+             animClips_[BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
+             animClips_[BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
 
-                // ダメージヒット状態。
-                animClips_[BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
-                animClips_[BossAnimation::bossAnim_Hit].SetLoopFlag(true);
+             // ダメージヒット状態。
+             animClips_[BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
+             animClips_[BossAnimation::bossAnim_Hit].SetLoopFlag(true);
 
-                // 転倒状態。
-                animClips_[BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
-                animClips_[BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
-
-                // ロード完了フラグを立てる
-                isLoad = true;
-            }
+             // 転倒状態。
+             animClips_[BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
+             animClips_[BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
         }
 
 

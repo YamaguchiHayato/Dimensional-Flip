@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 // カットインレイヤークラス。
-#include "Src/Direction/CutIn/CutInBase.h"
-#include "Src/Direction/CutIn/CutInMaskLayer.h"
+#include "Src/production/CutIn/CutInBase.h"
+#include "Src/production/CutIn/CutInMaskLayer.h"
 
 struct layerStatus
 {

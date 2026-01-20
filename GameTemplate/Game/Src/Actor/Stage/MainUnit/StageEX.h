@@ -55,7 +55,7 @@ namespace app
             }
 
         private:
-            inline void BossInstance()
+            inline void CreateBossInstance()
             {
                 pBoss_ = NewGO<app::enemy::Boss>(0, "boss");
                 pBoss_->SetPos(nsStageEX::nsBoss::InitPos);   

@@ -5,12 +5,12 @@
 
 
 #include "Src/Core/SceneManager.h"
-#include "Src/Direction/Fade.h"
+#include "Src/Production/Fade.h"
 #include "Src/Actor/Character/Player/Player.h"
 
-#include "Src/Direction/CutIn/CutInView.h"
-#include "Src/Direction/GameClear.h"
-#include "Src/Direction/StageClear.h"
+#include "Src/Production/CutIn/CutInView.h"
+#include "Src/Production/GameClear.h"
+#include "Src/Production/StageClear.h"
 
 namespace StarStatus
 {

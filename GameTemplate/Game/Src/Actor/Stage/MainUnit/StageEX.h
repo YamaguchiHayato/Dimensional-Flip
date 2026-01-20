@@ -27,12 +27,12 @@ namespace app
     {
         namespace nsBoss
         {
-            const Vector3 InitPos = Vector3(0.0f, 100.0f, 200.0f);
+            const Vector3 InitPos = Vector3(10.0f, 5.0f, 0.0f);
         }
 
         namespace nsPlayer
         {
-            const Vector3 InitPos =  Vector3(0.0f, 100.0f, -300.0f);
+            const Vector3 InitPos =  Vector3(0.0f, 20.0f, 0.0f);
         }
     } 
 
@@ -68,9 +68,13 @@ namespace app
             Player* pPlayer_ = nullptr;
             app::cutIn::CutInView* pCutInView_ = nullptr;
             app::gimmick::FloatingPlatform* pFloatingPlatform_ = nullptr;
-        private:
 
+
+        private:
             bool isCutInPlayed_ = false;
+
+
+            Quaternion rot_ = Quaternion::Identity;
         };
 
     }

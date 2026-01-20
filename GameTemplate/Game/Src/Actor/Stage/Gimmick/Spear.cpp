@@ -3,8 +3,8 @@
 
 namespace
 {
-    const auto WARNING_TIME = 1.5f;   // 予兆時間
-    const auto RISE_SPEED = 40.0f;    // 突き上げ速度
+    const auto WARNING_TIME = 2.5f;   // 予兆時間
+    const auto RISE_SPEED = 7.0f;    // 突き上げ速度
     const auto RETRACT_SPEED = 20.0f; // 戻る速度
     const auto WAIT_TIME = 0.5f;      // 突き上げ後の静止時間
     const auto SPAWN_DEPTH = -300.0f; // 地中の深さ
@@ -20,7 +20,7 @@ namespace app
             render_.Init(path.c_str());
 
             // サイズ補正。
-            render_.SetScale(Vector3(3.0f, 3.0f, 3.0f));
+            render_.SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
             // 初期座標をセットする。
             currentPos_ = targetPos_;
@@ -28,6 +28,11 @@ namespace app
             currentPos_.y += SPAWN_DEPTH;
 
             render_.SetPosition(currentPos_);
+
+            // マーカーの生成。
+            pMarker_ = NewGO<app::production::AttackMarker>(0);
+            pMarker_->SetTransform(targetPos_, Vector3(0.5f, 0.5f, 0.5f));
+            pMarker_->SetDuration(WARNING_TIME);
 
             return true;
         }
@@ -60,6 +65,13 @@ namespace app
                 {
                     state_ = SpearState::Rising;
                     timer_ = 0.0f;
+
+                    // 槍が突き上げるとマーカーを削除。
+                    if (pMarker_)
+                    {
+                        DeleteGO(pMarker_);
+                        pMarker_ = nullptr;
+                    }
                 }
                 break;
 
@@ -67,7 +79,7 @@ namespace app
             case SpearState::Rising:
             {
                 // 上昇
-                currentPos_.y += 40.0f;
+                currentPos_.y += RISE_SPEED;
 
                 float reachHeight = targetPos_.y + 300.0f;
 

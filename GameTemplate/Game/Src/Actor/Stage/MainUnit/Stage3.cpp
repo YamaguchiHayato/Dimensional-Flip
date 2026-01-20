@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Src/Actor/Stage/MainUnit/Stage3.h"
-#include "Src/Actor/Character/Enemy/Boss.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/WallActor.h"
@@ -129,19 +128,6 @@ void Stage3::Update()
   
         stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
   
-         // Bossも一緒に回転させる。
-        if (pBoss_)
-        {
-            Vector3 bossPos = pBoss_->GetPos();
-            Vector3 relBoss = bossPos - rotPivot_;
-            rotStep.Apply(relBoss);
-            pBoss_->SetPos(rotPivot_ + relBoss);
-
-            // ボスの向きも回転させる。
-            Quaternion bossRot = pBoss_->GetRot();
-            bossRot.Multiply(rotStep);
-            pBoss_->SetRot(bossRot);
-        }
     }
 
     stageRender_.SetScale(Vector3::One);

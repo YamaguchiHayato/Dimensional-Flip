@@ -9,7 +9,7 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
 
         void FallEnemyRiseState::Enter()
@@ -47,6 +47,7 @@ namespace app
             pFallEnemy_->SetPos(pos);
         }
 
+
         void FallEnemyRiseState::Exit()
         {
             // 念のため位置を確実に合わせる
@@ -60,7 +61,7 @@ namespace app
         {
             if (isArrived_)
             {
-                request = static_cast<uint8_t>(FallEnemyState::state_Idle);
+                request = static_cast<uint8_t>(app::enemy::FallEnemyState::state_Idle);
                 return true;
             }
             return false;

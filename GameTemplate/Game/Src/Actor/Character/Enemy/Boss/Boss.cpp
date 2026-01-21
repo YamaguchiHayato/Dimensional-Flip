@@ -2,11 +2,8 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
 
-// ボス戦時のギミッククラス。
-#include "Src/Actor/Stage/Gimmick/Meteo.h"
-#include "Src/Actor/Stage/Gimmick/Spear.h"
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
-
+// データクラス。
+#include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
 // ステートクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossIdleState.h"
@@ -91,7 +88,7 @@ namespace app
         Boss::~Boss()
         {
             // メモリ解放。
-            for (uint8_t i = 0; i < BossState::state_Num; ++i)
+            for (uint8_t i = 0; i < app::enemyStatus::BossState::state_Num; ++i)
             {
                 if (pStateList_[i])
                 {
@@ -106,19 +103,19 @@ namespace app
         {
             // ステートの登録。
             // 待機ステート。
-            RegisterState<BossIdleState>(state_Idle);
+            RegisterState<app::enemyState::BossIdleState>(app::enemyStatus::state_Idle);
             // 攻撃ステート。
-            RegisterState<BossAttackState>(state_Attack);
+            RegisterState<app::enemyState::BossAttackState>(app::enemyStatus::state_Attack);
             // 疲労ステート。
-            RegisterState<BossTumbleState>(state_Tumble);
+            RegisterState<app::enemyState::BossTumbleState>(app::enemyStatus::state_Tumble);
             // ダメージステート。
-            RegisterState<BossDamageState>(state_Hit);
+            RegisterState<app::enemyState::BossDamageState>(app::enemyStatus::state_Hit);
 
             // アニメーションをセットする。
             SetAnimation();
 
             // モデルをセットする。
-            render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, BossAnimation::bossAnim_Num, enModelUpAxisZ);
+            render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
 
             rot_.AddRotationDegY(-90.0f);
@@ -133,7 +130,7 @@ namespace app
 
 
             // 初期ステートの登録。
-            pCurrentState_ = pStateList_[state_Idle];
+            pCurrentState_ = pStateList_[app::enemyStatus::state_Idle];
             if (pCurrentState_)
                 pCurrentState_->Enter();
 
@@ -190,84 +187,39 @@ namespace app
         }
 
 
-        void Boss::SpawnGimmicks(AttackType type)
-        {
-            // 共通のループ回数
-            for (uint8_t i = 0; i < METEO_SPAWN_NUM; i++)
-            {
-                // 共通の座標計算
-                Vector3 spawnPos = RandomStagePos();
-
-                // タイプごとの生成分岐
-                if (type == AttackType::Meteor)
-                {
-                    // --- 隕石の生成 ---
-                    // 隕石特有のランダムパラメータ
-                    // 落下速度。
-                    auto speed = 2.5f + static_cast<float>(rand() % 5);
-                    // 落下までの時間。
-                    auto delay = 0.2f + (static_cast<float>(rand() % 15) / 10.0f);
-
-                    auto meteo = NewGO<app::gimmick::Meteo>(0);
-                    meteo->SetName("meteo");
-                    meteo->SetTargetPos(spawnPos); // 共通座標をセット
-                    meteo->SetParams(speed, delay);
-                }
-
-                else if (type == AttackType::Spear)
-                {
-                    // --- 槍の生成 ---
-                    auto spear = NewGO<app::gimmick::Spear>(0);
-                    spear->SetName("spear");
-                    spear->SetTargetPos(spawnPos); // 共通座標をセット
-                }
-            }
-        }
-
-
         void Boss::SetAnimation()
         {
              // デフォルト状態。
-             animClips_[BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
-             animClips_[BossAnimation::bossAnim_Idle].SetLoopFlag(true);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Idle].Load("Assets/animData/boss/idle.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Idle].SetLoopFlag(true);
 
              // 走る状態。
-             animClips_[BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
-             animClips_[BossAnimation::bossAnim_Run].SetLoopFlag(true);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Run].Load("Assets/animData/boss/run.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Run].SetLoopFlag(true);
 
              // 攻撃状態。
-             animClips_[BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
-             animClips_[BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
 
              // 咆哮攻撃状態。
-             animClips_[BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
-             animClips_[BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
 
              // ダメージヒット状態。
-             animClips_[BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
-             animClips_[BossAnimation::bossAnim_Hit].SetLoopFlag(true);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].SetLoopFlag(true);
 
              // 転倒状態。
-             animClips_[BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
-             animClips_[BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
-        }
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Tumble].SetLoopFlag(true);
 
+             // 着地
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Land].Load("Assets/animData/boss/lamd.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Land].SetLoopFlag(false);
 
-        void Boss::SpawnPlatforms()
-        {
-            // 足場の生成パターンをランダムに設定する。
-            uint8_t patternIndex = rand() % ScaffoldingPosList::SCAFFOLDING_PATTERNS.size();
-
-            // 選ばれた座標リストへの参照を取得。
-            const std::vector<Vector3>& currenPattern = ScaffoldingPosList::SCAFFOLDING_PATTERNS[patternIndex];
-
-            // 配列のサイズ分だけループ
-            size_t count = min(pFloatingPlatform_.size(), currenPattern.size());
-            for (size_t i = 0; i < count; i++)
-            {
-                if (pFloatingPlatform_[i])
-                    pFloatingPlatform_[i]->Activate(currenPattern[i]);
-            }
+             // ジャンプ
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Jump].Load("Assets/animData/boss/jump.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Jump].SetLoopFlag(false);
         }
 
 
@@ -291,6 +243,18 @@ namespace app
             // Y座標は地面の高さ 
             pos.y = 0.0f;
 
+            return pos;
+        }
+
+
+        Vector3 Boss::GetRandomAttackPos()
+        {
+            float angle = static_cast<float>(rand() % 360) * (3.14159265f / 180.0f);
+            float distance = static_cast<float>(rand() % static_cast<int>(RANGE));
+            Vector3 pos = Vector3::Zero;
+            pos.x = cosf(angle) * distance;
+            pos.z = sinf(angle) * distance;
+            pos.y = 0.0f;
             return pos;
         }
     }

@@ -5,12 +5,12 @@
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class FallEnemyIdleState : public IEnemyState
         {
         public:
-            FallEnemyIdleState(FallEnemy* pFallEnemy) : pFallEnemy_(pFallEnemy) {};
+            FallEnemyIdleState(app::enemy::FallEnemy* pFallEnemy) : pFallEnemy_(pFallEnemy) {};
             virtual ~FallEnemyIdleState() = default;
 
 
@@ -33,7 +33,7 @@ namespace app
 
 
         private:
-            FallEnemy* pFallEnemy_ = nullptr;
+            app::enemy::FallEnemy* pFallEnemy_ = nullptr;
 
 
         private:

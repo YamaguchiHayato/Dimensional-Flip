@@ -224,11 +224,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
@@ -321,11 +327,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />

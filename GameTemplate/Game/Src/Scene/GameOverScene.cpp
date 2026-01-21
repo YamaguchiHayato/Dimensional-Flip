@@ -3,8 +3,8 @@
 #include "GameOverScene.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
-#include "Src/Direction/GameOver.h"
-#include "Src/Direction/Fade.h"
+#include "Src/Production/GameOver.h"
+#include "Src/Production/Fade.h"
 
 namespace app
 {

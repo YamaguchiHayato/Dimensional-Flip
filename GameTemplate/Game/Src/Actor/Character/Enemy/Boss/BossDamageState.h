@@ -6,12 +6,12 @@
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class BossDamageState : public IEnemyState
         {
         public:
-            BossDamageState(Boss* pBoss) : pBoss_(pBoss) {};
+            BossDamageState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
             virtual ~BossDamageState() = default;
 
 
@@ -23,7 +23,7 @@ namespace app
 
 
         private:
-            Boss* pBoss_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr;
 
         };
 

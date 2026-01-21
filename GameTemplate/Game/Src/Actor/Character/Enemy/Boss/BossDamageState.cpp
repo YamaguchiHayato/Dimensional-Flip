@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "BossDamageState.h"
-
+#include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void BossDamageState::Enter()
         {
             // ダメージアニメーションを再生する。
-            pBoss_->LoadAnimation(BossAnimation::bossAnim_Hit, false, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Hit, false, 0.1f);
         }
 
 
@@ -25,7 +25,7 @@ namespace app
 
                 // 生きているなら待機状態へ戻る。
                 pBoss_->SettNextInterval(3.0f);
-                request = BossState::state_Idle;
+                request = app::enemyStatus::BossState::state_Idle;
                 return true;
             }
             return false;

@@ -9,7 +9,7 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void FallEnemyLandState::Enter()
         {
@@ -32,7 +32,7 @@ namespace app
             if (isTimeOver_)
             {
                 // 上昇ステートへ遷移
-                request = static_cast<uint8_t>(FallEnemyState::state_Rise);
+                request = static_cast<uint8_t>(app::enemy::FallEnemyState::state_Rise);
                 return true;
             }
             return false;

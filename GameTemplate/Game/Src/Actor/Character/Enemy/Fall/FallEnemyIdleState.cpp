@@ -10,7 +10,7 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void FallEnemyIdleState::Enter()
         {
@@ -79,7 +79,7 @@ namespace app
             if (isTimeOver_)
             {
                 // 次の遷移へ要求する。
-                request = static_cast<uint8_t>(FallEnemyState::state_Fall);
+                request = static_cast<uint8_t>(app::enemy::FallEnemyState::state_Fall);
                 return true;
             }
             return false;

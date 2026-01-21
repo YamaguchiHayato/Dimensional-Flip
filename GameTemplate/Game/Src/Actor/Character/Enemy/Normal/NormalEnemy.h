@@ -4,7 +4,8 @@
 
 // フレンドクラス（各ステートの前方宣言）
 namespace app{
-    namespace enemy{
+    namespace enemyState
+    {
         class NormalIdleState;
         class NormalChaseState;
         class NormalCrushedState;
@@ -136,13 +137,13 @@ namespace app
             bool CheckChaseCondition() const; // 追跡判定
 
             // ステートクラスからのアクセス許可
-            friend class NormalIdleState;
-            friend class NormalChaseState;
-            friend class NormalCrushedState;
+            friend class app::enemyState::NormalIdleState;
+            friend class app::enemyState::NormalChaseState;
+            friend class app::enemyState::NormalCrushedState;
 
         private:
-            IEnemyState* pCurrentState_ = nullptr;
-            IEnemyState* pStateList_[static_cast<int>(NormalEnemyState::state_Num)] = {nullptr};
+            app::enemyState::IEnemyState* pCurrentState_ = nullptr;
+            app::enemyState::IEnemyState* pStateList_[static_cast<int>(NormalEnemyState::state_Num)] = {nullptr};
 
             template <typename T> void RegisterState(NormalEnemyState state)
             {

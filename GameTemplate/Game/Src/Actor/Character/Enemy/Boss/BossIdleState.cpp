@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "BossIdleState.h"
-
+#include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void BossIdleState::Enter()
         {
             // 待機アニメーションを再生。
-            pBoss_->LoadAnimation(BossAnimation::bossAnim_Idle, true, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Idle, true, 0.1f);
             timer_ = 0.0f;
         }
 
@@ -25,11 +25,8 @@ namespace app
             // インターバル時間を超えると攻撃開始。
             if (timer_ >= pBoss_->GetNextInterval())
             {
-                // 攻撃の種類をランダムに決定する。
-                uint8_t randomAttack = rand() % static_cast<int>(AttackType::Num);
-                pBoss_->SetAttackType(static_cast<AttackType>(randomAttack));
-
-                request = BossState::state_Attack;
+                // 攻撃ステートへ遷移。
+                request = app::enemyStatus::BossState::state_Attack;
                 return true;
             }
 

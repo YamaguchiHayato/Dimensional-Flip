@@ -230,6 +230,12 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -417,6 +423,12 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
     <ClInclude Include="Src\Production\AttackMarker.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

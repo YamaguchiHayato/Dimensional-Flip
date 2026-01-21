@@ -4,12 +4,12 @@
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class NormalIdleState : public  IEnemyState
         {
         public:
-            NormalIdleState(NormalEnemy* pNormal) : pNormal_(pNormal) {}
+            NormalIdleState(app::enemy::NormalEnemy* pNormal) : pNormal_(pNormal) {}
             virtual ~NormalIdleState() = default;
 
 
@@ -26,7 +26,7 @@ namespace app
 
 
         private:
-            NormalEnemy* pNormal_ = nullptr;
+            app::enemy::NormalEnemy* pNormal_ = nullptr;
 
 
         private:

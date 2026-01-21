@@ -2,14 +2,15 @@
 #include "Src/Actor/Character/Enemy/Fall/FallEnemy.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 
+
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class FallEnemyRiseState : public IEnemyState
         {
         public:
-            FallEnemyRiseState(FallEnemy* pFallEnemy) : pFallEnemy_(pFallEnemy) {}
+            FallEnemyRiseState(app::enemy::FallEnemy* pFallEnemy) : pFallEnemy_(pFallEnemy) {}
             virtual ~FallEnemyRiseState() = default;
 
             void Enter() override;
@@ -18,7 +19,7 @@ namespace app
             bool RequestID(uint8_t& request) override;
 
         private:
-            FallEnemy* pFallEnemy_ = nullptr;
+            app::enemy::FallEnemy* pFallEnemy_ = nullptr;
 
 
         private:

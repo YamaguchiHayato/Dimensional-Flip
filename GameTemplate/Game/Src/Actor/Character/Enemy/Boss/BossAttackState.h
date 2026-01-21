@@ -1,36 +1,39 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
+#include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
 
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class BossAttackState : public IEnemyState
         {
         public:
-            BossAttackState(Boss* pBoss) : pBoss_(pBoss) {};
+            BossAttackState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
             virtual ~BossAttackState() = default;
 
 
         public:
             void Enter() override;
             void Update() override;
-            void Exit() override {};
+            void Exit() override;
             bool RequestID(uint8_t& request) override;
 
 
         private:
-            Boss* pBoss_ = nullptr;
+            // どの攻撃を実行するか決める関数。
+            // 3D視点版。
+            void DecideStrategy3D();
 
+            // 2D視点版。
+            void DecideStrategy2D();
 
         private:
-            float timer_ = 0.0f; // 攻撃時間を計測。
+            app::enemy::Boss* pBoss_ = nullptr;
 
-            bool isAttackSpawned_ = false; // 攻撃オブジェクトが生成済みかチェック。
-
-            AttackType currentAttackType_;
+            std::unique_ptr<app::enemyState::IBossStrategy> currentState_ = nullptr; // 現在の攻撃ステート。 
         };
 
     }

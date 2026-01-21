@@ -44,13 +44,13 @@ namespace app
         {
             // ステートの登録。
             // 待機ステート。
-            RegisterState<app::enemy::FallEnemyIdleState>(FallEnemyState::state_Idle);
+            RegisterState<app::enemyState::FallEnemyIdleState>(FallEnemyState::state_Idle);
             // 落下ステート。
-            RegisterState<app::enemy::FallEnemyFallState>(FallEnemyState::state_Fall);
+            RegisterState<app::enemyState::FallEnemyFallState>(FallEnemyState::state_Fall);
             // 着地ステート。
-            RegisterState<app::enemy::FallEnemyLandState>(FallEnemyState::state_Land);
+            RegisterState<app::enemyState::FallEnemyLandState>(FallEnemyState::state_Land);
             // 浮上ステート。
-            RegisterState<app::enemy::FallEnemyRiseState>(FallEnemyState::state_Rise);
+            RegisterState<app::enemyState::FallEnemyRiseState>(FallEnemyState::state_Rise);
 
 
             // モデルを初期化。

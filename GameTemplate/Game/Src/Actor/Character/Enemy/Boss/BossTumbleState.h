@@ -2,14 +2,20 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 
+namespace app{
+    namespace enemy{
+        class Boss;
+    }
+}
+
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class BossTumbleState : public IEnemyState
         {
         public:
-            BossTumbleState(Boss* pBoss) : pBoss_(pBoss) {};
+            BossTumbleState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
             virtual ~BossTumbleState() = default;
 
 
@@ -26,7 +32,7 @@ namespace app
 
 
         private:
-            Boss* pBoss_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr;
 
 
         private:

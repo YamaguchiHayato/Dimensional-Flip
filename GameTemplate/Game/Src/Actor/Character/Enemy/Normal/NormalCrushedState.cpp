@@ -12,7 +12,7 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void NormalCrushedState::Enter()
         {

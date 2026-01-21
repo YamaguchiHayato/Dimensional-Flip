@@ -8,7 +8,7 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
 
         void FallEnemyFallState::Enter()
@@ -57,7 +57,7 @@ namespace app
             if (isGround_)
             {
                 // 着地待機へ遷移
-                request = static_cast<uint8_t>(FallEnemyState::state_Land);
+                request = static_cast<uint8_t>(app::enemy::FallEnemyState::state_Land);
                 return true;
             }
             return false;

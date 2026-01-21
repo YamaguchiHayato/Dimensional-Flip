@@ -10,12 +10,12 @@ namespace app{
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class NormalChaseState : public IEnemyState
         {
         public:
-            NormalChaseState(NormalEnemy* pNormal) : pNormal_(pNormal) {}
+            NormalChaseState(app::enemy::NormalEnemy* pNormal) : pNormal_(pNormal) {}
             virtual ~NormalChaseState() = default;
 
             void Enter() override {};
@@ -27,7 +27,7 @@ namespace app
             void MoveChase();
 
         private:
-            NormalEnemy* pNormal_ = nullptr;
+            app::enemy::NormalEnemy* pNormal_ = nullptr;
 
             // 浮遊用パラメータ (Chaseでも浮遊しながら動くため)
             float angle_ = 0.0f;

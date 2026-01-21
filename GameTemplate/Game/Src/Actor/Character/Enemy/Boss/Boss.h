@@ -4,52 +4,27 @@
 #include <vector>
 #include <memory>
 
-
-
-enum BossAnimation : uint8_t
-{
-    bossAnim_Idle = 0,      // 待機。
-    bossAnim_AttackCast,    // 攻撃。
-    bossAnim_AttackRoar,    // 咆哮。
-    bossAnim_Tumble,        // 転倒。
-    bossAnim_Run,           // 走る。
-    bossAnim_Hit,           // ダメージ時。
-    bossAnim_Num,           // アニメーションの総数。
-};
-
-// 攻撃タイプを管理する列挙型。
-enum class AttackType : uint8_t
-{
-    Meteor, // 隕石
-    Spear,  // 槍
-    Roar,   // 咆哮
-    Num
-};
+#include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
 namespace app
 {
-    namespace gimmick
+    namespace enemyState
     {
-        class FloatingPlatform;
-    }
+        class BossIdleState;
+        class BossAttackState;
+        class BossDamageState;
+        class BossTumbleState;
+    } 
 }
+
+
 class Player;
+
 
 namespace app
 {
     namespace enemy
     {
-        // ステート管理用の列挙型。
-        enum BossState : uint8_t
-        {
-            state_Idle = 0, // 待機。
-            state_Attack,   // 攻撃。
-            state_Hit,      // ダメージ。
-            state_Tumble,   // 疲労。
-            state_Num       // ステートの総数。
-        };
-
-
         class Boss : public IEnemy
         {
         public:
@@ -69,13 +44,11 @@ namespace app
 
         public:
             // どのアニメーションを再生するか設定する。
-            inline void LoadAnimation(BossAnimation animation, bool isLoop, float interPolate)
+            inline void LoadAnimation(app::enemyStatus::BossAnimation animation, bool isLoop, float interPolate)
             {
                 render_.PlayAnimation(animation, interPolate);
             }
 
-            // 攻撃ギミックを生成する。
-            void SpawnGimmicks(AttackType type);
 
         // セッター。
         public:
@@ -92,7 +65,7 @@ namespace app
             inline void SetStompable(bool enable) {}
 
             // ボスの攻撃タイプをセットする。
-            inline void SetAttackType(AttackType type)
+            inline void SetAttackType(app::enemyStatus::AttackType type)
             {
                 currentAttackType_ = type;
             }
@@ -137,7 +110,7 @@ namespace app
             }
 
             // 攻撃タイプ。
-            inline AttackType GetAttackType() const
+            inline app::enemyStatus::AttackType GetAttackType() const
             {
                 return currentAttackType_;
             }
@@ -147,6 +120,9 @@ namespace app
             {
                 return attackCount_ >= 6;
             }
+
+            // 攻撃クラスの座標計算を取得。
+            Vector3 GetRandomAttackPos();
 
         public:
             // 攻撃回数を加算数する。
@@ -165,20 +141,16 @@ namespace app
             void SetAnimation();
             void Rotaition();
 
-            // 足場を生成するヘルパー。
-            void SpawnPlatforms();
-
             // 座標をランダムに計算するヘルパー関数。
             Vector3 RandomStagePos();
 
         private:
             Player* pPlayer_ = nullptr;
-            std::vector<app::gimmick::FloatingPlatform*> pFloatingPlatform_;
             CollisionObject* pWeeekPoint_ = nullptr;
 
         private:
-            AttackType currentAttackType_ = AttackType::Meteor;
-            AnimationClip animClips_[BossAnimation::bossAnim_Num];
+            app::enemyStatus::AttackType currentAttackType_ = app::enemyStatus::AttackType::Meteor;
+            AnimationClip animClips_[app::enemyStatus::BossAnimation::bossAnim_Num];
 
             ModelRender render_;
 
@@ -186,7 +158,7 @@ namespace app
             Vector3 moveSpeed_ = Vector3::Zero;
             Quaternion rot_ = Quaternion::Identity;
 
-            uint8_t state_ = bossAnim_Idle;
+            uint8_t state_ = app::enemyStatus::bossAnim_Idle;
             uint8_t attackCount_ = 0;
             uint8_t hp = 3;
 
@@ -199,10 +171,10 @@ namespace app
         // ステート用変数群。
         // フレンドクラス。
         private:
-            friend class BossIdleState;
-            friend class BossAttackState;
-            friend class BossDamageState;
-            friend class BossTumbleState;
+            friend class app::enemyState::BossIdleState;
+            friend class app::enemyState::BossAttackState;
+            friend class app::enemyState::BossDamageState;
+            friend class app::enemyState::BossTumbleState;
 
 
         // ステート管理用関数群。
@@ -210,7 +182,7 @@ namespace app
             template <typename T> void RegisterState(uint8_t request)
             {
                 int index = static_cast<int>(request);
-                if (index < static_cast<int>(BossState::state_Num))
+                if (index < static_cast<int>(app::enemyStatus::BossState::state_Num))
                 {
                     // 古いステートは削除。
                     if (pStateList_[index])
@@ -224,8 +196,8 @@ namespace app
 
         // ステート管理用変数。
         private:
-            IEnemyState* pCurrentState_ = nullptr;
-            IEnemyState* pStateList_[static_cast<int>(BossState::state_Num)] ={ nullptr };
+            app::enemyState::IEnemyState* pCurrentState_ = nullptr;
+            app::enemyState::IEnemyState* pStateList_[static_cast<int>(app::enemyStatus::BossState::state_Num)] = { nullptr};
         };
     }
 }

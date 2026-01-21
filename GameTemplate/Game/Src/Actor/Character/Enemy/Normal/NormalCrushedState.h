@@ -11,12 +11,12 @@ namespace app
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class NormalCrushedState : public IEnemyState
         {
         public:
-            NormalCrushedState(NormalEnemy* pNormal) : pNormal_(pNormal) {}
+            NormalCrushedState(app::enemy::NormalEnemy* pNormal) : pNormal_(pNormal) {}
             virtual ~NormalCrushedState() = default;
 
             void Enter() override;
@@ -25,7 +25,7 @@ namespace app
             bool RequestID(uint8_t& request) override;
 
         private:
-            NormalEnemy* pNormal_ = nullptr;
+            app::enemy::NormalEnemy* pNormal_ = nullptr;
         };
     } // namespace enemy
 } // namespace app

@@ -12,6 +12,16 @@ namespace
     auto WAIT_BOTTOM_TIME = 0.5f;
 }
 
+namespace app{
+    namespace enemyState
+    {
+        class FallEnemyIdleState;
+        class FallEnemyFallState;
+        class FallEnemyLandState;
+        class FallEnemyRiseState;
+    } // namespace enemyState
+}
+
 class Player;
 
 // 落下する敵クラス。
@@ -195,18 +205,18 @@ namespace app
         // ステート用変数群。
         // フレンドクラス。
         private:
-            friend class FallEnemyIdleState;
-            friend class FallEnemyFallState;
-            friend class FallEnemyLandState;
-            friend class FallEnemyRiseState;
+            friend class app::enemyState::FallEnemyIdleState;
+            friend class app::enemyState::FallEnemyFallState;
+            friend class app::enemyState::FallEnemyLandState;
+            friend class app::enemyState::FallEnemyRiseState;
 
 
         // ステート登録用テンプレート関数。
         private:
-            template <typename T> void RegisterState(FallEnemyState state)
+            template <typename T> void RegisterState(app::enemy::FallEnemyState state)
             {
                 int index = static_cast<int>(state);
-                if (index < static_cast<int>(FallEnemyState::state_Num))
+                if (index < static_cast<int>(app::enemy::FallEnemyState::state_Num))
                 {
                     // 古いステートは削除。
                     if (pStateList_[index])
@@ -221,8 +231,8 @@ namespace app
 
         // ステート変数群。
         private:
-            IEnemyState* pCurrentState_ = nullptr;
-            IEnemyState* pStateList_[static_cast<int>(FallEnemyState::state_Num)] = {nullptr};
+            app::enemyState::IEnemyState* pCurrentState_ = nullptr;
+            app::enemyState::IEnemyState* pStateList_[static_cast<int>(app::enemy::FallEnemyState::state_Num)] = {nullptr};
 
         };
 

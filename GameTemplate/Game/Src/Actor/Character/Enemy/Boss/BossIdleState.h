@@ -5,12 +5,12 @@
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         class BossIdleState : public IEnemyState
         {
         public:
-            BossIdleState(Boss* pBoss) : pBoss_(pBoss) {};
+            BossIdleState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
             virtual ~BossIdleState() = default;
 
 
@@ -22,7 +22,7 @@ namespace app
 
 
         private:
-            Boss* pBoss_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr;
 
 
         private:

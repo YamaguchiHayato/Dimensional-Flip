@@ -38,9 +38,9 @@ namespace app
             pPlayer_ = FindGO<Player>("player");
 
             // --- ステート登録 ---
-            RegisterState<NormalIdleState>(NormalEnemyState::state_Idle);
-            RegisterState<NormalChaseState>(NormalEnemyState::state_Chase);
-            RegisterState<NormalCrushedState>(NormalEnemyState::state_Crushed);
+            RegisterState<app::enemyState::NormalIdleState>(NormalEnemyState::state_Idle);
+            RegisterState<app::enemyState::NormalChaseState>(NormalEnemyState::state_Chase);
+            RegisterState<app::enemyState::NormalCrushedState>(NormalEnemyState::state_Crushed);
 
             // 初期ステート開始
             pCurrentState_ = pStateList_[static_cast<int>(NormalEnemyState::state_Idle)];

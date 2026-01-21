@@ -4,7 +4,8 @@
 #include "Src/Actor/Character/Player/Player.h"
 
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
-    
+#include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
+
 namespace
 {
     // 疲労状態の継続時間
@@ -14,12 +15,12 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void BossTumbleState::Enter()
         {
             // 疲労アニメーションを再生させる。
-            pBoss_->LoadAnimation(BossAnimation::bossAnim_Tumble, false, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Tumble, false, 0.1f);
 
             // タイマーをリセット。
             timer_ = 0.0f;
@@ -41,13 +42,6 @@ namespace app
 
         void BossTumbleState::Exit()
         {
-            // 足場を削除する。
-            for (auto p : pBoss_->pFloatingPlatform_)
-            {
-                if (p)
-                    p->Deactivate();
-            }
-
             // 弱点を無効化。
             canBeAttacked_ = false;
 
@@ -58,7 +52,7 @@ namespace app
             // 弱点攻撃判定。
             if (canBeAttacked_ && CheckWeakPointHit())
             {
-                request = BossState::state_Hit;
+                request = app::enemyStatus::BossState::state_Hit;
                 return true;
             }
 
@@ -67,7 +61,7 @@ namespace app
             {
                 // 待機状態へ戻る。
                 pBoss_->SettNextInterval(3.0f);
-                request = BossState::state_Idle;
+                request = app::enemyStatus::BossState::state_Idle;
                 return true;
             }
 

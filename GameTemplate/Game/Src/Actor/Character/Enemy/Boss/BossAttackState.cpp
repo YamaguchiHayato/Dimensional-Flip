@@ -1,7 +1,23 @@
 #include "stdafx.h"
-#include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "BossAttackState.h"
 
+
+// プレイヤーの情報を取得。
+#include "Src/Actor/Character/Player/Player.h"
+#include "Src/Core/CameraManager.h"
+
+#include "Src/Actor/Character/Enemy/Boss/BossType.h"
+#include "Src/Actor/Character/Enemy/Boss/Boss.h"
+
+
+// 攻撃の種類。
+// 3D。
+#include "Src/Actor/Character/Enemy/Boss/3D/BossAttackMeteoState.h"
+#include "Src/Actor/Character/Enemy/Boss/3D/BossAttackSpearState.h"
+#include "Src/Actor/Character/Enemy/Boss/3D/BossAttackRoar3DState.h"
+
+// 2D。
+#include "Src/Actor/Character/Enemy/Boss/2D/BossAttackJumpState.h"
 
 namespace
 {
@@ -28,88 +44,111 @@ namespace
 
 namespace app
 {
-    namespace enemy
+    namespace enemyState
     {
         void BossAttackState::Enter()
         {
-            // 変数を初期化。
-            timer_ = 0.0f;
-            isAttackSpawned_ = false;
+            CameraMode mode = CameraMode::mode3D;
 
-            // 攻撃タイプにあわせてアニメーションを再生させる。
-            if (pBoss_->GetAttackType() == AttackType::Roar)
-                // 咆哮アニメーション。
-                pBoss_->LoadAnimation(BossAnimation::bossAnim_AttackRoar, false, 0.1f);
+            // Player -> CameraManager -> GetCurrentCameraMode() の順にたどって取得
+            if (auto* pPlayer = pBoss_->GetPlayer())
+            {
+                if (auto* pCamMan = pPlayer->GetCameraManager())
+                    mode = pCamMan->GetCurrentCameraMode();
+            }
+
+            // 2. モードに応じた戦略の抽選
+            if (mode == CameraMode::mode3D)
+                DecideStrategy3D();
 
             else
-                // 隕石・槍攻撃のアニメーション。
-                pBoss_->LoadAnimation(BossAnimation::bossAnim_AttackCast, false, 0.1f);
+                DecideStrategy2D();
+
+            if (currentState_)
+                currentState_->Enter(pBoss_);
         }
 
 
         void BossAttackState::Update()
         {
-            // 時間計測。
-            timer_ += g_gameTime->GetFrameDeltaTime();
-            // 現在の攻撃タイプを取得。
-            currentAttackType_ = pBoss_->GetAttackType();
+            if (currentState_)            
+                currentState_->Update();
+        }
 
-            // アニメーションの再生をチェックする。
-            if (currentAttackType_ != AttackType::Roar)
+
+        void BossAttackState::Exit()
+        {
+            // 終了処理
+            if (currentState_)
             {
-                // 設定秒数で攻撃オブジェクトを生成する。
-                if (timer_ >= ATTACK_SPAWN_TIME && !isAttackSpawned_)
-                {
-                    // フラグで生成済みかチェックする。
-                    isAttackSpawned_ = true;
-                    // 攻撃オブジェクトを生成する。
-                    pBoss_->SpawnGimmicks(currentAttackType_);
-                }
+                currentState_->Exit();
+                currentState_.reset(); // メモリ解放
             }
-
         }
 
 
         bool BossAttackState::RequestID(uint8_t& request)
         {
-            // 攻撃アニメーションが再生し終われば遷移判定を行う。
-            if (!pBoss_->IsPlayingAnimation())
+            if (currentState_ && currentState_->IsFinished())
             {
-                // 咆哮。
-                if (currentAttackType_ == AttackType::Roar)
-                {
-                    // 次の攻撃へのインターバルを設定。
-                    pBoss_->SettNextInterval(ATTACK_INTERVAL_ROAR);
-                    // 待機状態へ移行。
-                    request = BossState::state_Idle;
-                    
-                    return true;
-                }
+                // 終わっていれば後始末 (ここでインターバル設定などが実行される)
+                currentState_->Exit();
 
-                // 隕石・槍攻撃の場合。
-                // 攻撃回数をカウントする。
+                // 攻撃回数カウントなどの共通処理
                 pBoss_->AddAttackCount();
 
-                // 疲労状態かどうかをチェックする。
+
+                // 疲労判定
                 if (pBoss_->IsTired())
                 {
-                    // 攻撃カウントをリセットして疲労ステートへ。
                     pBoss_->ResetAttackCount();
-                    request = BossState::state_Tumble;
+                    request = app::enemyStatus::BossState::state_Tumble;
                     return true;
                 }
-
                 else
                 {
-                    // カウントの回数へ達していないなら通常状態へ戻る。
-                    pBoss_->SettNextInterval(GetRandomCastInterval());
-                    request = BossState::state_Idle;
+                    // 待機へ戻る
+                    request = app::enemyStatus::BossState::state_Idle;
                     return true;
                 }
             }
-
-
             return false;
+        }
+
+
+        void BossAttackState::DecideStrategy3D()
+        {
+            // 攻撃は3種類の中からランダムで抽選。
+            int rand3DNum = rand() % static_cast<int>(app::enemyStatus::Attack3DType::type_Num);
+
+            // キャスト処理。
+            auto attackType = static_cast<app::enemyStatus::Attack3DType>(rand3DNum);
+
+            switch (attackType)
+            {
+            case app::enemyStatus::Attack3DType::type_Meteor:
+                currentState_ = std::make_unique<BossAttackMeteoState>();
+                break;
+
+            case app::enemyStatus::Attack3DType::type_Spear:
+                // 槍攻撃ステートをセット。
+                currentState_ = std::make_unique<BossAttackSpearState>();
+                break;
+
+            case app::enemyStatus::Attack3DType::type_Roar:
+                // 咆哮攻撃ステートをセット。
+                currentState_ = std::make_unique<BossAttackRoar3DState>();
+                break;
+
+            default:
+                break;
+            }
+        }
+
+
+        void BossAttackState::DecideStrategy2D()
+        {
+            currentState_ = std::make_unique<BossAttackJumpState>();
         }
     }
 }

@@ -33,7 +33,12 @@ namespace app
         private:
             app::enemy::Boss* pBoss_ = nullptr;
 
-            std::unique_ptr<app::enemyState::IBossStrategy> currentState_ = nullptr; // 現在の攻撃ステート。 
+            std::unique_ptr<app::enemyState::IBossStrategy> currentState_ = nullptr; // 現在の攻撃ステート。
+
+
+        private:
+            uint8_t lastAttackType_ = -1; // 最後に実行した攻撃タイプを保存する変数。
+
         };
 
     }

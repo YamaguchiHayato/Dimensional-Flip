@@ -26,11 +26,10 @@ namespace app
             pBoss_->SettNextInterval(interval);
         }
 
+
         bool BossAttackRoar3DState::IsFinished() const
         {
             return !pBoss_->IsPlayingAnimation();
         }
-
-
     } 
 } 

@@ -33,9 +33,9 @@ namespace app
             void UpdateJumping();
             void UpdateLanding();
 
+
         private:
             app::enemy::Boss* pBoss_ = nullptr;
-
             app::enemyStatus::JumpStep step_ = app::enemyStatus::JumpStep::Prepare;
 
 

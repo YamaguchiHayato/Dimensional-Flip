@@ -41,7 +41,7 @@ namespace app
         {
             type_Meteor, // 隕石
             type_Spear,  // 槍
-            type_Roar,   // 咆哮
+            type_3DRoar,   // 咆哮
             type_Num
         };
 
@@ -51,7 +51,7 @@ namespace app
         {
             type_FireBall, // 火の玉
             type_Jump,     // ジャンプ攻撃
-            type_Roar,     // 咆哮
+            type_2DRoar,     // 咆哮
             type_Num
         };
 
@@ -76,5 +76,24 @@ namespace app
             Finish,
             Num
         };
+
+
+        // エフェクトをID管理。
+        enum EffectID : uint8_t
+        {
+            effect_FireBall = 0, // 火の玉
+            effect_Hit,          // ヒットエフェクト
+        };
+
+
+        // ボス戦の進行フェーズを管理。
+        enum class BossPhase : uint8_t
+        {
+            phase_One = 0, // フェーズ1
+            phase_Two,     // フェーズ2
+            phase_Three,   // フェーズ3
+            phase_Num
+        };
+
     }
 }

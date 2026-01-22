@@ -224,7 +224,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp" />
@@ -246,7 +248,9 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\FireBall.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
+    <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
@@ -327,7 +331,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h" />
@@ -349,7 +355,9 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\FireBall.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
+    <ClInclude Include="Src\Core\BattlePhaseManager.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />

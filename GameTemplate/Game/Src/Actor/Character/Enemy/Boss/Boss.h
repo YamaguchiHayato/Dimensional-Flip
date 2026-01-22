@@ -76,6 +76,12 @@ namespace app
                 nextInterval_ = interVal;
             } 
 
+            // 移動速度をセット。
+            inline void SetMoveSpeed(const Vector3& moveSpeed)
+            {
+                moveSpeed_ = moveSpeed;
+            }
+
 
         // ゲッター。
         public:

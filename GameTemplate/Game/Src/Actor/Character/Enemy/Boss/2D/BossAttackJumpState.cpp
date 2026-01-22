@@ -9,6 +9,8 @@ namespace
     const auto GRAVITY = 0.8f;        // 重力。
     const auto JUMP_POWER = 25.0f;    // ジャンプ力。
     const auto PREPARE_TIME = 1.0f;   // 準備時間。
+
+    const auto CAMERA_EDGE_OFFSET = 25.0f; // カメラ端からのオフセット。
 }
 
 namespace app
@@ -92,28 +94,30 @@ namespace app
             currentRot.Slerp(rate, startRot_, targetRot_);
             pBoss_->SetRot(currentRot);
 
+
             // --- 2. ジャンプ開始判定 ---
             if (timer_ >= PREPARE_TIME)
             {
                 step_ = app::enemyStatus::JumpStep::Jumping;
 
-                // スタート地点とゴール地点（プレイヤー座標）
+                // スタート地点とゴール地点
                 startPos_ = pBoss_->GetPos();
 
                 Vector3 playerPos = startPos_;
                 if (auto* pPlayer = pBoss_->GetPlayer())
-                {
                     playerPos = pPlayer->GetPlayerPos();
-                }
+
 
                 // 目標座標 (Xはプレイヤー、Zはそのまま=2D軸移動)
                 targetPos_ = startPos_;
-                targetPos_.x = playerPos.x;
 
-                // --- 3. 放物線計算 (重要) ---
-                // Y軸の運動方程式: y = v0*t - 0.5*g*t^2
-                // 着地(y=0)するまでの滞空時間(flightTime)を計算
-                // 上昇分と下降分で時間は同じなので、 time = 2 * (InitialVel / Gravity)
+                if (startPos_.x < playerPos.x)
+                    targetPos_.x = playerPos.x - CAMERA_EDGE_OFFSET;
+
+                else
+                    targetPos_.x = playerPos.x - CAMERA_EDGE_OFFSET;
+
+
                 float flightTimeFrame = (2.0f * JUMP_POWER) / GRAVITY;
 
                 // X軸の速度: 距離 / 時間

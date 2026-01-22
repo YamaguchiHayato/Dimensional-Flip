@@ -236,6 +236,10 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\FireBall.cpp" />
+    <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -429,6 +433,10 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\FireBall.h" />
+    <ClInclude Include="Src\Core\BattlePhaseManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

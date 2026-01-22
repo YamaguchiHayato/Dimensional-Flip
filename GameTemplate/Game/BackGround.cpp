@@ -74,8 +74,6 @@ namespace app
                 // 位置: カメラに合わせる
                 skyModel_.SetPosition({camPos.x, camPos.y, BG_Z_OFFSET});
 
-                // 16:9 の画面比率(約1.78倍)よりも大きくしないと横が見切れてしまいます。
-                // 2.0倍あれば確実に端までカバーできます。
                 float newScale = (currentCamHeight / BASE_HEIGHT) * BASE_SCALE * 2.0f;
 
                 skyModel_.SetScale({newScale, newScale, newScale});

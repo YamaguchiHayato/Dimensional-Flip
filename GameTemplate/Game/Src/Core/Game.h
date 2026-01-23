@@ -47,9 +47,13 @@ namespace app
             Game() = default;
             virtual ~Game();
 
+
+        public:
             bool Start();
             void Update();
 
+
+        public:
             // ステージ遷移要求。
             void RequestStageTransition(StageID nextStageID);
 
@@ -62,6 +66,10 @@ namespace app
             {
                 return nextStageID_;
             }
+            // カメラのモードを切り替える共通関数。
+            void ChangeDimension(CameraMode mode);
+
+
         private:
             // Player。
             void PlayerCreateInstance();
@@ -81,10 +89,13 @@ namespace app
 
             // ステージ背景画像。
             void CreateBackGround();
+
+
         private:
             // 遷移時の更新処理。
             void UpdateTransition();
 
+            
 
         private:    
             TimerUI* pTimerUI_ = nullptr;

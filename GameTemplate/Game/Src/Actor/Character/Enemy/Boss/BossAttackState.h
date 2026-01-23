@@ -1,8 +1,12 @@
 #pragma once
+
+
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 #include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
 
+
+#include "Src/Collision/CollisionManager.h"
 
 namespace app
 {
@@ -32,9 +36,13 @@ namespace app
 
         private:
             app::enemy::Boss* pBoss_ = nullptr;
+            app::collision::CollisionManager* pCollisionManager_ = nullptr;
 
             std::unique_ptr<app::enemyState::IBossStrategy> currentState_ = nullptr; // 現在の攻撃ステート。
 
+
+        private:
+            bool isPhase2D;
 
         private:
             uint8_t lastAttackType_ = -1; // 最後に実行した攻撃タイプを保存する変数。

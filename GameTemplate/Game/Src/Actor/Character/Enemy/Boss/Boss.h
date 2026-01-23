@@ -14,6 +14,13 @@ namespace app
         class BossAttackState;
         class BossDamageState;
         class BossTumbleState;
+    }
+
+    namespace core
+    {
+        class Game;
+        class InputManager;
+        class BattlePhaseManager;
     } 
 }
 
@@ -130,6 +137,12 @@ namespace app
             // 攻撃クラスの座標計算を取得。
             Vector3 GetRandomAttackPos();
 
+            // ゲームクラスを取得。
+            inline app::core::Game* GetGameInstance() const
+            {
+                return pGame_;
+            }
+
         public:
             // 攻撃回数を加算数する。
             inline void AddAttackCount()
@@ -150,9 +163,13 @@ namespace app
             // 座標をランダムに計算するヘルパー関数。
             Vector3 RandomStagePos();
 
+
         private:
             Player* pPlayer_ = nullptr;
             CollisionObject* pWeeekPoint_ = nullptr;
+            app::core::InputManager* pInputManager_ = nullptr;
+            app::core::Game* pGame_ = nullptr;
+
 
         private:
             app::enemyStatus::AttackType currentAttackType_ = app::enemyStatus::AttackType::Meteor;
@@ -173,6 +190,7 @@ namespace app
 
             float stateTimer_ = 0.0f;
             float nextInterval_ = 3.0f;
+
 
         // ステート用変数群。
         // フレンドクラス。

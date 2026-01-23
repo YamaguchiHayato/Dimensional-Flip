@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "BossTumbleState.h"
+
+#include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
+
+
+// キャラクター。
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
 
+// コア。
+#include "Src/Core/BattlePhaseManager.h"
+
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
-#include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
 
 namespace
 {
@@ -29,8 +36,11 @@ namespace app
             if (pBoss_->pWeeekPoint_)
                 pBoss_->pWeeekPoint_->SetIsEnable(true);
 
-            //  
             canBeAttacked_ = true;
+
+
+            // 足場を生成する。
+            app::core::BattlePhaseManager::GetInstance()->ActivateScaffolding();
         }
 
 
@@ -45,6 +55,8 @@ namespace app
             // 弱点を無効化。
             canBeAttacked_ = false;
 
+            // 復帰時に足場を消す。
+            app::core::BattlePhaseManager::GetInstance()->DeactivateScaffolding();
         }
 
         bool BossTumbleState::RequestID(uint8_t& request)

@@ -4,8 +4,10 @@
 #include "Src/Actor/Character/Player/Player.h"
 
 
-// カメラクラス。
+// コアクラス。
 #include "Src/Core/CameraManager.h"
+#include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
 
 
 // ステージ。
@@ -14,17 +16,18 @@
 #include "Src/Actor/Stage/MainUnit/Stage3.h"
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
 #include "Src/Actor/Stage/MainUnit/TutorialStage.h"
-#include "Src/Core/StageManager.h"
+
 
 // 演出クラス。
 #include "Src/Production/Fade.h"
+
 
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
 #include "Src/Actor/Stage/Gimmick/RotationFool.h"
 
+
 // ゲームシーン。  
-#include "Src/Core/SceneManager.h"
 #include "Src/Scene/LoadingScene.h"
 
 

@@ -1,6 +1,12 @@
 #include "stdafx.h"
+
+// キャラクター。
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
+
+// コア。
+#include "Src/Core/BattlePhaseManager.h"
+#include "Src/Core/InputManager.h"
 
 // データクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
@@ -96,6 +102,11 @@ namespace app
                     pStateList_[i] = nullptr;
                 }
             }
+
+            // InputManagerの次元反転フラグを元に戻す。
+            pInputManager_ = app::core::InputManager::GetInstance();
+            if (pInputManager_)
+                pInputManager_->SetDimensionFlipFlag(true);
         }
 
 
@@ -134,6 +145,13 @@ namespace app
             if (pCurrentState_)
                 pCurrentState_->Enter();
 
+            // フェーズマネージャの初期化。
+            app::core::BattlePhaseManager::GetInstance()->Init();
+
+            // InputManagerの次元反転フラグを無効化。
+            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(false);
+
+
             return true;
         }
 
@@ -153,6 +171,8 @@ namespace app
             }
             pCurrentState_->Update();
 
+            // PhaseManagerの更新。
+            app::core::BattlePhaseManager::GetInstance()->Update();
 
             // 回転。
             Rotaition();

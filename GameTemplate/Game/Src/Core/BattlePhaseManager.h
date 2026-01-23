@@ -1,5 +1,10 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
+#include "Src/Collision/CollisionManager.h"
+#include "Src/Core/CameraManager.h"
+#include "Src/Core/Game.h"
+
+
 
 namespace app
 {
@@ -69,6 +74,7 @@ namespace app
             // 現在のフェーズを取得。
             app::enemyStatus::BossPhase* GetCurrentPhase() { return &currentPhase_; };
 
+
             // ヘルパー。
         public:
             // 生成する足場の配列。
@@ -81,10 +87,17 @@ namespace app
             // 足場を生成する。
             void CreatePlatform();
 
+            // フェーズに応じた必要なクラスを探索・取得。
+            void ApplyPhaseSettings();
+
         private:
             app::enemyStatus::BossPhase currentPhase_ = app::enemyStatus::BossPhase::phase_One; // 現在のフェーズ。
 
-            std::vector<app::gimmick::FloatingPlatform*> platformsList_; // 浮遊プラットフォーム群。
+
+        private:
+            app::collision::CollisionManager* environmentCollison_ = nullptr;                   // 環境設定用コリジョンマネージャー。
+            CameraManager* environmentCamera_ = nullptr;                                        // 環境設定用カメラマネージャー。
+            std::vector<app::gimmick::FloatingPlatform*> platformsList_;                        // 浮遊プラットフォーム群。
         };
 
     } // namespace core

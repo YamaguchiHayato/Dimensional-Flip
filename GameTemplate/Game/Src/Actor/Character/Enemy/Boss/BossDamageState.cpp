@@ -2,6 +2,8 @@
 #include "BossDamageState.h"
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
+#include "Src/Core/BattlePhaseManager.h"
+
 namespace app
 {
     namespace enemyState
@@ -21,6 +23,9 @@ namespace app
                 // HPが0になれば死亡。
                 if (pBoss_->hp <= 0)
                     return false;
+
+                // ダメージを受けるとフェーズを進行させる。
+                app::core::BattlePhaseManager::GetInstance()->ActivateScaffolding();
 
 
                 // 生きているなら待機状態へ戻る。

@@ -8,6 +8,8 @@ namespace
 
     const Vector3 GIMMICKCOLLISION(0.0f, 0.0f, 0.0f); // コリジョンの高さ
 
+    // 足場の初期値。
+    const Vector3 SAFE_INIT_POS = Vector3(0.0f, -1000.0f, 0.0f);
 } 
 
 namespace app
@@ -20,8 +22,8 @@ namespace app
             render_.Init(path.c_str());
 
             isActive_ = false;
-            currentPos_ = Vector3::Zero;
-            targetPos_ = Vector3::Zero;
+            currentPos_ = SAFE_INIT_POS;
+            targetPos_ = SAFE_INIT_POS;
 
             render_.SetScale(Vector3::One);
             render_.SetPosition(currentPos_);
@@ -37,6 +39,10 @@ namespace app
 
             // コリジョンを破棄しない設定。
             pGimmickCollision_->SetIsEnableAutoDelete(false);
+
+            // コリジョンは無効状態で初期化。
+            pGimmickCollision_->SetIsEnable(false);
+
             return true;
         }
 

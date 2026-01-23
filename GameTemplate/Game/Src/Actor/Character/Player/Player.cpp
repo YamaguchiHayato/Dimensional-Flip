@@ -144,7 +144,7 @@ void Player::Update()
 
 
     if (IsDimensionSwitchAction())
-        app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_,app::collision::CollisionManager::GetInstance());
+        app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);
 
     if (invincibleTime_ > 0.0f)
         invincibleTime_ -= g_gameTime->GetFrameDeltaTime();

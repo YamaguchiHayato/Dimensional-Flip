@@ -37,18 +37,20 @@ public:
 
 // セッター。
 public:
+    // カメラの移動範囲を設定。
     void SetCameraRange(const Vector3& min, const Vector3& max);
 
-    void ResetCameraRange()
+
+    // ボタンアクションの有効/無効設定。
+    inline void SetButtonActionControl(bool buttonAction)
     {
-        isLimitSet_ = false;
+        isButtonControlFlag = buttonAction;
     }
 
 private:
     template <typename CameraType>
     void RequestCameraMode(const float angle, CameraMode cameraMode, const nsK2EngineLow::Camera::EnUpdateProjMatrixFunc mode);
 
-    void ChangeCamera();
 
 // ゲッター
 public:
@@ -71,8 +73,13 @@ private:
 
 
 private:
+    // カメラ移動範囲。
     bool isLimitSet_ = false;
     Vector3 limitMin_ = Vector3::Zero;
     Vector3 limitMax_ = Vector3::Zero;
+
+
+    // ボタンアクションの許可フラグ。
+    bool isButtonControlFlag = true;
 };
 

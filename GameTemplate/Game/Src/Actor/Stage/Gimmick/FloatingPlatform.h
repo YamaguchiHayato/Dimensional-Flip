@@ -12,6 +12,7 @@ namespace app
             virtual ~FloatingPlatform() = default;
 
 
+        public:
             bool Start()override;
             void Update() override;
             void Render(RenderContext& rc) override;
@@ -20,6 +21,8 @@ namespace app
                 return IGimmic::InitGimmick(gimmickname);
             };
 
+
+        public:
             // 足場を出現させる。
             void Activate(const Vector3& pos);
 
@@ -27,6 +30,10 @@ namespace app
             inline void Deactivate()
             {
                 isActive_ = false;
+
+                // コリジョンも無効化。
+                if (pGimmickCollision_)
+                    pGimmickCollision_->SetIsEnable(false);
             }
 
 

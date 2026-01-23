@@ -33,10 +33,6 @@ void InGameScene::Update()
         {
             SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
         }
-        else if (pGame_->IsStageTransitioning())
-        {
-
-        }
 
         else
         {

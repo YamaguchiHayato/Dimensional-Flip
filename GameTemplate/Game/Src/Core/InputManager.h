@@ -3,7 +3,6 @@
 #include "Src/Collision/NonCopyable.h"
 
 #include "Src/Core/CameraManager.h"
-#include "Src/Collision/CollisionManager.h"
 
 namespace app
 {
@@ -16,18 +15,43 @@ namespace app
 
 
         public:
+            // Instanceの取得。
             inline static InputManager* GetInstance()
             {
+                if (instance_ == nullptr)
+                    instance_ = new InputManager();
                 return instance_;
             }
-            
+
+            // Instanceの破棄。
+            inline static void DeleteInstance()
+            {
+                if (instance_)
+                {
+                    delete instance_;
+                    instance_ = nullptr;
+                }
+            }
+
+
+        // セッター。
+        public:
+            inline void SetDimensionFlipFlag(bool flag)
+            {
+                isDimensionFlip_ = flag;
+            }
+
 
         public:
-            void FlipDimension(CameraManager* pCamera, app::collision::CollisionManager& collision);
+            void FlipDimension(CameraManager* pCamera);
 
 
         private:
             InputManager() = default;
+
+
+        private:
+            bool isDimensionFlip_ = true;
         };
     }
 }

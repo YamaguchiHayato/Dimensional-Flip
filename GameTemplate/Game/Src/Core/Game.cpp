@@ -213,6 +213,31 @@ namespace app
         }
 
 
+        void Game::ChangeDimension(CameraMode mode)
+        {
+            // カメラの切り替え。
+            if (pCameraManager_)
+            {
+                if (mode == CameraMode::mode2D)
+                    pCameraManager_->Request2DMode();
+
+                else
+                    pCameraManager_->Request3DMode();
+            }
+
+
+            // コリジョンの切り替え。
+            auto& collision = app::collision::CollisionManager::GetInstance();
+            if (mode == CameraMode::mode2D)
+                // 2Dへ。
+                collision.SetDimension(collision::DimensionMode::dim2D);
+
+            else
+                // 3Dへ。
+                collision.SetDimension(collision::DimensionMode::dim3D);
+        }
+
+
         void Game::UpdateTransition()
         {
             switch (state_)

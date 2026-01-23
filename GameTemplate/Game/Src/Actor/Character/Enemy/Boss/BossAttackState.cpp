@@ -2,13 +2,19 @@
 #include "BossAttackState.h"
 
 
+
 // プレイヤーの情報を取得。
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
 
+// ボス。
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 
+// コア。
+#include "Src/Core/BattlePhaseManager.h"
+#include "Src/Collision/CollisionManager.h"
+#include "Src/Core/Game.h"
 
 // 攻撃の種類。
 // 3D。
@@ -51,6 +57,9 @@ namespace app
     {
         void BossAttackState::Enter()
         {
+            // フェーズを取得。
+            auto* pPhase = app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
+            
             // カメラモードを取得。
             CameraMode mode = CameraMode::mode3D;
             if (auto* pPlayer = pBoss_->GetPlayer())
@@ -58,6 +67,19 @@ namespace app
                 if (auto* pCamMan = pPlayer->GetCameraManager())
                     mode = pCamMan->GetCurrentCameraMode();
             }
+
+            // コリジョンマネージャーの取得。
+            auto* pGame = pBoss_->GetGameInstance();
+            if (pGame)
+            {
+
+            }
+
+
+            // フェーズによる切り替え。
+            isPhase2D = (*pPhase == app::enemyStatus::BossPhase::phase_One);
+
+            // 
 
             // モードに応じた戦略の抽選
             if (mode == CameraMode::mode3D)
@@ -120,6 +142,7 @@ namespace app
             return false;
         }
 
+
         void BossAttackState::DecideStrategy3D()
         {
             // 攻撃は3種類の中からランダムで抽選。
@@ -150,6 +173,7 @@ namespace app
                 break;
             }
         }
+
 
         void BossAttackState::DecideStrategy2D()
         {

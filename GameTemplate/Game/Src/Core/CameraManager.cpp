@@ -18,10 +18,8 @@ namespace
 
 bool CameraManager::Start()
 {
+    // プレイヤーの取得。
     pPlayer_ = FindGO<Player>("player");
-
-    // 開始時はロックなし状態にする。
-    ResetCameraRange();
 
     // ゲームスタート時は2Dモードに設定
     Request2DMode();
@@ -35,8 +33,8 @@ void CameraManager::Update()
     if (!pCameraStrategy_)
         return;
 
+    // カメラ戦略の更新
     pCameraStrategy_->Update();
-
 }
 
 
@@ -87,21 +85,6 @@ void CameraManager::RequestCameraMode(const float angle, CameraMode cameraMode, 
 }
 
 
-void CameraManager::ChangeCamera()
-{
-    // Bボタンが押されたらカメラモードを切り替え
-    // 2Dモードなら3Dモードへ、3Dモードなら2Dモードへ
-    if (g_pad[0]->IsTrigger(enButtonB) && currentMode_ == CameraMode::mode2D)
-    {
-        Request3DMode();
-        return;
-    }
-    else if (g_pad[0]->IsTrigger(enButtonB) && currentMode_ == CameraMode::mode3D)
-    {
-        Request2DMode();
-        return;
-    }
-}
 
 
 void CameraManager::SetCameraRange(const Vector3& min, const Vector3& max)

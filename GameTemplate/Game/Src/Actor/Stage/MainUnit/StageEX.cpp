@@ -1,15 +1,24 @@
 #include "stdafx.h"
-
-#include "Src/Actor/Character/Player/Player.h"
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
-#include "Src/Camera/Dimensiontrigger.h"
+
+// プレイヤー。
+#include "Src/Actor/Character/Player/Player.h"
+
+// ステージギミック。
+#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
+
+
+// カットイン。
 #include "Src/Production/CutIn/CutInView.h"
+
+// コア。
+#include "Src/Core/CameraManager.h"
 
 
 // カメラ。
-#include "Src/Core/CameraManager.h"
 #include "Src/Camera/SideCameraStrategy.h"
+#include "Src/Camera/Dimensiontrigger.h"
+
 
 namespace
 {
@@ -103,6 +112,9 @@ namespace app
                 }
             }
 
+            // マネージャーの更新。
+            app::nsUI::BossUIManager::GetInstance().Update();
+
             // ステージ更新
             // Startで設定済みですが、念のため毎フレーム更新
             rot_.SetRotationDegY(-90.0f);
@@ -117,6 +129,9 @@ namespace app
         void StageEX::Render(RenderContext& rc)
         {
             stageRender_.Draw(rc);
+
+            // マネージャーの描画。
+            app::nsUI::BossUIManager::GetInstance().Draw(rc);
         }
     }
 }

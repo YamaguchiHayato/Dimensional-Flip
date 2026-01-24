@@ -252,6 +252,7 @@
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
+    <ClCompile Include="Src\Core\BossUIManager.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
@@ -315,6 +316,8 @@
     <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp" />
     <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp" />
     <ClCompile Include="Src\Scene\title\TitleView.cpp" />
+    <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp" />
+    <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp" />
     <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
     <ClCompile Include="Src\UI\HPbarUI.cpp" />
     <ClCompile Include="Src\UI\NumberUI.cpp" />
@@ -359,6 +362,7 @@
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />
+    <ClInclude Include="Src\Core\BossUIManager.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -422,6 +426,8 @@
     <ClInclude Include="Src\Scene\title\TitleLayerBase.h" />
     <ClInclude Include="Src\Scene\title\TitleLogoLayer.h" />
     <ClInclude Include="Src\Scene\title\TitleView.h" />
+    <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h" />
+    <ClInclude Include="Src\UI\BossUI\BossUIBase.h" />
     <ClInclude Include="Src\UI\ButtonActionUI.h" />
     <ClInclude Include="Src\UI\HPbarUI.h" />
     <ClInclude Include="Src\UI\NumberUI.h" />

@@ -48,18 +48,89 @@ namespace nsK2EngineLow {
 			m_rigidBody.Release();
 		}
 
+		// 箱型のコライダーを作成する処理。
+		void CreateBox(const Vector3& pos, const Quaternion rotation, const Vector3& size)
+		{
+			// 【修正】念のため、既存の剛体があれば解放する（これでゾンビ化を防ぐ）
+			Release();
+
+			// 箱型のメッシュコライダーを作成。
+			m_boxCollider.Create(size);
+
+			// 剛体の作成。
+			RigidBodyInitData rbInfo;
+			rbInfo.collider = &m_boxCollider;
+			rbInfo.mass = 0.0f;
+			m_rigidBody.Init(rbInfo);
+
+			// 座標と回転をセット。
+			SetPosition(pos);
+			m_rigidBody.SetPositionAndRotation(pos, rotation);
+		}
+
 
 		void SetPosition(const Vector3& pos)
 		{
+			// ライトボディの取得。
+			btCollisionObject* body = m_rigidBody.GetBody();
+			if (!body)
+				return;
+
+			// 位置設定。
 			auto& btTrans = m_rigidBody.GetBody()->getWorldTransform();
 			btVector3 btPos;
 			btPos = btVector3(pos.x, pos.y, pos.z);
 			btTrans.setOrigin(btPos);
+
+			// Active化して乗っている判定を付ける。
+			body->activate(true);
 		}
 
 
+		// 動く設定を有効にする処理。
+		void SetKinematic(bool isKinematic)
+		{
+			btCollisionObject* body = m_rigidBody.GetBody();
+
+			if (!isKinematic)
+				return;
+
+			// フラグを追加して動く物として設定する。
+			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+
+            // 自動スリープを無効化する
+			// → 動いている最中に勝手に判定が消えるのを防ぐ。
+			body->setActivationState(DISABLE_DEACTIVATION);
+		}	
+
+		// 物理判定のオンオフ。
+		void SetIsEnable(bool isEnable)
+		{
+			btCollisionObject* body = m_rigidBody.GetBody();
+			if(!body)
+				return;
+
+			// ターゲットの設定。
+			int target = body->getCollisionFlags();
+
+			// 
+			if (isEnable)
+			{
+				// 有効化。
+				target &= ~btCollisionObject::CF_NO_CONTACT_RESPONSE;
+				body->activate(true);
+			}
+
+			else
+			{
+				target |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
+			}
+
+			body->setCollisionFlags(target);
+		}
 
 	private:
+		BoxCollider m_boxCollider;
 		MeshCollider m_meshCollider;		//メッシュコライダー。
 		RigidBody m_rigidBody;				//剛体。
 	};

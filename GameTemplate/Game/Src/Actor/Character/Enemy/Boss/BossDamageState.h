@@ -17,13 +17,18 @@ namespace app
 
         public:
             void Enter() override;
-            void Update() override {};
+            void Update() override;
             void Exit() override {};
             bool RequestID(uint8_t& request) override;
 
 
         private:
             app::enemy::Boss* pBoss_ = nullptr;
+
+
+        private:
+            bool istiredPlaying_ = false;
+            float timer_ = 0.0f;
 
         };
 

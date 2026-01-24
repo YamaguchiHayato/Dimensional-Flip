@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "NumberUI.h"
+
+
 #include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
+
 namespace
 {
 	const float UI_WIDTH = 300.0f;
@@ -34,10 +38,19 @@ void NumberUI::Update()
 
 void NumberUI::Render(RenderContext& rc)
 {
+    auto* pStageManager = app::core::StageManager::GetInstance();
+    if (pStageManager)
+    {
+        if (pStageManager->GetCurrentStageID() == StageID::sStageEX)
+        {
+            // ボス戦なら描画しない
+            return;
+        }
+    }
     // 10の桁の描画。
     UINUmber_TensDigit[tenPlace_].Draw(rc);
     // 1の桁の描画。
-	UINUmber_OnesDigit[onePlace_].Draw(rc);
+    UINUmber_OnesDigit[onePlace_].Draw(rc);
 }
 
 void NumberUI::InitUINumber()
@@ -70,8 +83,19 @@ void NumberUI::InitUINumber()
 
 }
 
+
 void NumberUI::UpdateTimer()
 {
+    auto* pStageManager = app::core::StageManager::GetInstance();
+    if (pStageManager)
+    {
+        if (pStageManager->GetCurrentStageID() == StageID::sStageEX)
+        {
+            // ボス戦ならタイマーを減らさない
+            return;
+        }
+    }
+
     // タイマー処理。
     if (timer_ > 0.0f)
     {

@@ -41,11 +41,15 @@ namespace
     // 疲労状態（足場が出ている）の時間
     const auto TIRED_DURATION = 20.0f;
 
-    // 読み込み中かどうかのフラグ。
-    bool isLoad = false;
-
     // コリジョンの半径。
-    const float WEEKE_POINT_RADIUS = 200.0f;
+    const float WEEKE_POINT_RADIUS = 5.0f;
+
+    const auto WEAK_POINT_HEIGHT = 22.0f;
+
+    // 攻撃可能なコリジョン。
+    const Vector3 CAN_ATTACK_COLLISION_POSITION = Vector3(0.0f, WEAK_POINT_HEIGHT, 0.0f);
+
+    const float STAGE_LIMIT_X = 35.0f;
 }
 
 
@@ -129,6 +133,9 @@ namespace app
             render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
 
+            // ボーンIDを取得。
+            weakPointBoneID_ = render_.FindBoneID(L"Head");
+
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
@@ -174,12 +181,15 @@ namespace app
             // PhaseManagerの更新。
             app::core::BattlePhaseManager::GetInstance()->Update();
 
+            // カメラのClamp制限。
+            AddClamp();
+
             // 回転。
             Rotaition();
 
-            // 攻撃可能をコリジョンの位置。   
+            // 攻撃可能をコリジョンの位置。
             if (pWeeekPoint_)
-                pWeeekPoint_->SetPosition(pos_ + Vector3(0.0f, 200.0f, 0.0f));
+                pWeeekPoint_->SetPosition(GetWeakPoint());
 
             // モデル本体の更新。
             render_.SetRotation(rot_);
@@ -207,6 +217,26 @@ namespace app
         }
 
 
+        void Boss::AddClamp()
+        {
+            // 2Dフェーズ時の移動制限。
+            auto* pPhase = app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
+            if (*pPhase == app::enemyStatus::BossPhase::phase_One)
+            {
+                // 座標を固定。
+                pos_.z = 0.0f;
+                moveSpeed_.z = 0.0f;
+
+                // カメラ範囲を超えないように制限。
+                if (pos_.x < -STAGE_LIMIT_X)
+                    pos_.x = -STAGE_LIMIT_X;
+
+                if (pos_.x > STAGE_LIMIT_X)
+                    pos_.x = STAGE_LIMIT_X;
+            }
+        }
+
+
         void Boss::SetAnimation()
         {
              // デフォルト状態。
@@ -227,7 +257,7 @@ namespace app
 
              // ダメージヒット状態。
              animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
-             animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].SetLoopFlag(true);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].SetLoopFlag(false);
 
              // 転倒状態。
              animClips_[app::enemyStatus::BossAnimation::bossAnim_Tumble].Load("Assets/animData/boss/week.tka");

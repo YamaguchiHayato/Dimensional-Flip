@@ -7,7 +7,7 @@
 
 namespace
 {
-    const float BG_Z_OFFSET = 50.0f;
+    const float BG_Z_OFFSET = 2000.0f;
     const float HEIGHT_SKY = 8.0f;
     const float HEIGHT_GROUND = -5.0f;
     const Vector3 SCALE_2D = Vector3(0.15f, 0.15f, 0.15f);
@@ -62,9 +62,13 @@ namespace app
             // 共通の回転を計算
             rot_.SetRotationDegX(-90.0f);
 
-            // ステージによって背景の挙動を変更する。
-            StageID currentStage = StageManager::GetInstance()->GetCurrentStageID();
+            // StageManagerを取得。
+            auto* getStageManagerIns = app::core::StageManager::GetInstance();
+            if (!getStageManagerIns)
+                return;
 
+            // ステージによって背景の挙動を変更する。
+            StageID currentStage = app::core::StageManager::GetInstance()->GetCurrentStageID();
 
             if (currentStage == StageID::sStageEX)
             {
@@ -74,7 +78,7 @@ namespace app
                 // 位置: カメラに合わせる
                 skyModel_.SetPosition({camPos.x, camPos.y, BG_Z_OFFSET});
 
-                float newScale = (currentCamHeight / BASE_HEIGHT) * BASE_SCALE * 2.0f;
+               float newScale = (currentCamHeight / BASE_HEIGHT) * BASE_SCALE * 2.0f;
 
                 skyModel_.SetScale({newScale, newScale, newScale});
                 skyModel_.SetRotation(rot_);

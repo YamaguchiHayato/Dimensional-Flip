@@ -59,12 +59,33 @@ namespace app
         }
 
 
-        void FireBall::SetParameter(const Vector3& startPos, const Vector3& dir, float speed)
+        void FireBall::SetParameter(const Vector3& startPos, Player* target, float speed)
         {
+            // 座標と速度をセット。
             position_ = startPos;
-            direction_ = dir;
-            direction_.Normalize();
             speed_ = speed;
+
+            // 方向の決定。
+            if (target)
+            {
+                // Playerがいるなら狙う。
+                targetPos_ = target->GetPlayerPos();
+                targetPos_.y += 20.0f;
+
+                direction_ = targetPos_ - startPos;
+
+                // 正規化。
+                if (direction_.LengthSq() > 0.001f)
+                    direction_.Normalize();
+
+                else
+                    // 重なった場合は左を向く。
+                    direction_ = Vector3::Left;
+            }
+
+            else
+                direction_ = Vector3::Left;
+
         }
 
 

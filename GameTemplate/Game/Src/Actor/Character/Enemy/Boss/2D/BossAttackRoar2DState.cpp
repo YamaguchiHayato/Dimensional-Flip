@@ -53,31 +53,22 @@ namespace app
             // 初期のボスモデルの向きを設定する。(2DなのでX軸をあわせる。)
             auto* pPlayer = pBoss_->GetPlayer();
 
-            if (pPlayer)
-            {
-                // BossとPlayerの距離を図る。
-                Vector3 diff = pPlayer->GetPlayerPos() - pBoss_->GetPos();
-                // diffのY,Z成分は無視。
-                diff.y = 0.0f;
-                diff.z = 0.0f;
+            if (!pPlayer)
+                return;
 
-                if (diff.LengthSq() > 0.01f)
-                {
-                    // ターゲット(今回Platerクラス)への回転。
-                    rot_.SetRotationYFromDirectionXZ(diff);
-                    pBoss_->SetRot(rot_);
+            // X座標の差分を計算。
+            auto diffX = pPlayer->GetPlayerPos().x - pBoss_->GetPos().x;
 
-                    // モデルの初期のズレを補正。
-                    offSetRot_.SetRotationDegY(-90.0f);
+            Quaternion targetRot;
 
-                    // 作成した2つの回転を乗算合成。
-                    Quaternion finalRot = rot_ * offSetRot_;
+            if (diffX > 0.0f)
+                targetRot.SetRotationDegY(-90.0f);
 
-                    // 回転を合成して適応。
-                    pBoss_->SetRot(finalRot);
-                }
-            }
+            else
+                targetRot.SetRotationDegY(90.0f);
 
+            // 回転を合成して適応。
+            pBoss_->SetRot(targetRot);
         }
     }
 }

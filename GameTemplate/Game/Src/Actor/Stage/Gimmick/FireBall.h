@@ -23,7 +23,7 @@ namespace app
 
         public:
             // パラメータ設定。
-            void SetParameter(const Vector3& startPos, const Vector3& dir, float speed);
+            void SetParameter(const Vector3& startPos, Player* target, float speed);
 
 
         private:
@@ -36,9 +36,11 @@ namespace app
             // エフェクトを生成・初期化。
             void CreateEffect();
 
+
         private:
             Player* pPlayer_ = nullptr;
             EffectEmitter* pEffectEmitter_ = nullptr;
+
 
         private:
             // エフェクト本体を管理する変数。
@@ -48,6 +50,7 @@ namespace app
             // 移動用変数。
             Vector3 position_ = Vector3::Zero;
             Vector3 direction_ = Vector3::Zero;
+            Vector3 targetPos_ = Vector3::Zero;
             float speed_ = 0.0f;
 
 

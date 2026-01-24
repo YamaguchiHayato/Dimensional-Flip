@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Src/UI/TimerUI.h"
+#include "Src/Core/StageManager.h"
 
 namespace
 {
@@ -23,6 +24,16 @@ bool TimerUI::Start()
 
 void TimerUI::Update()
 {
+    auto* pStageManager = app::core::StageManager::GetInstance();
+    if (pStageManager)
+    {
+        if (pStageManager->GetCurrentStageID() == StageID::sStageEX)
+        {
+            // ボス戦なら描画しない
+            return;
+        }
+    }
+
 	UISprite_.SetPosition(UI_POS);
 	UISprite_.SetScale(Vector3(0.25f, 0.25f, 0.25f));
 	UISprite_.Update();
@@ -30,6 +41,12 @@ void TimerUI::Update()
 
 void TimerUI::Render(RenderContext& rc)
 {
+    // ボス戦時は描画しない。
+    auto* pStageManager = app::core::StageManager::GetInstance();
+
+    if (pStageManager && pStageManager->GetCurrentStageID() == StageID::sStageEX)
+        return;
+
 	UISprite_.Draw(rc);
 }
 

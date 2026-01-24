@@ -23,7 +23,7 @@ bool StageClear::Start()
 StageID StageClear::DecideStage()
 {
     // 1. StageManagerから「現在の」ステージIDを取得する。
-    StageID currentStageID = StageManager::GetInstance()->GetCurrentStageID();
+    StageID currentStageID = app::core::StageManager::GetInstance()->GetCurrentStageID();
 
     // 2. 次のステージIDを決定するための変数。
     StageID nextStageID = currentStageID;
@@ -38,10 +38,6 @@ StageID StageClear::DecideStage()
     case StageID::sStage1:
          nextStageID = StageID::sStageEX;
          break;
-
-    //case StageID::sStage2:
-    //     nextStageID = StageID::sStage3;
-    //     break;
 
     case StageID::sStageEX:
          nextStageID = StageID::sStageEX;

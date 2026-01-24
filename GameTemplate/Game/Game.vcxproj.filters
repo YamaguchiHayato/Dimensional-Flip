@@ -146,9 +146,6 @@
     <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera\SideCameraStrategy.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Production\CutIn\CutInBase.cpp">
       <Filter>Src\Direction\CutIn</Filter>
     </ClCompile>
@@ -240,6 +237,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\FireBall.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
+    <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -343,9 +341,6 @@
     <ClInclude Include="Src\Camera\ICameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Camera\SideCameraStrategy.h">
-      <Filter>Src\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Production\CutIn\CutInBase.h">
       <Filter>Src\Direction\CutIn</Filter>
     </ClInclude>
@@ -437,6 +432,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\FireBall.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />
+    <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

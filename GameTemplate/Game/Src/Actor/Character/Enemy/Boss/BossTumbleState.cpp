@@ -17,6 +17,9 @@ namespace
 {
     // 疲労状態の継続時間
     const float TIRED_DURATION = 20.0f;
+
+    // 無敵時間。
+    const float INVINCIBLE_TIME = 1.0f;
 }
 
 
@@ -27,16 +30,18 @@ namespace app
         void BossTumbleState::Enter()
         {
             // 疲労アニメーションを再生させる。
-            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Tumble, false, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Tumble, true, 0.1f);
 
             // タイマーをリセット。
             timer_ = 0.0f;
+            delayTimer_ = 0.0f;
+
+            canBeAttacked_ = false;
 
             // 弱点を有効化。
             if (pBoss_->pWeeekPoint_)
                 pBoss_->pWeeekPoint_->SetIsEnable(true);
 
-            canBeAttacked_ = true;
 
 
             // 足場を生成する。
@@ -46,7 +51,18 @@ namespace app
 
         void BossTumbleState::Update()
         {
-            timer_ += g_gameTime->GetFrameDeltaTime();
+            float deltaTime = g_gameTime->GetFrameDeltaTime();
+            timer_ += deltaTime;
+
+            // 倒れこみ処理を待つ処理。
+            if (!canBeAttacked_)
+            {
+                delayTimer_ += deltaTime;
+
+
+                if (delayTimer_ >= INVINCIBLE_TIME)
+                    canBeAttacked_ = true;
+            }
         }
 
 
@@ -59,13 +75,17 @@ namespace app
             app::core::BattlePhaseManager::GetInstance()->DeactivateScaffolding();
         }
 
+
         bool BossTumbleState::RequestID(uint8_t& request)
         {
             // 弱点攻撃判定。
-            if (canBeAttacked_ && CheckWeakPointHit())
+            if (canBeAttacked_ )
             {
-                request = app::enemyStatus::BossState::state_Hit;
-                return true;
+                if (CheckWeakPointHit())
+                {
+                    request = app::enemyStatus::BossState::state_Hit;
+                    return true;
+                }
             }
 
             // 時間切れ判定。
@@ -85,19 +105,28 @@ namespace app
         {
             // Playerを取得する。
             Player* pPlayer = pBoss_->GetPlayer();
+            if (!pPlayer)
+                return false;
 
             // ボスへの攻撃判定ベクトルの作成。
-            Vector3 headPos = pBoss_->GetPos() + Vector3(0.0f, 150.0f, 0.0f);
-            Vector3 playerPos = pPlayer->GetPlayerPos();
+            headPos_ = pBoss_->GetPos() + Vector3(0.0f, 22.0f, 0.0f);
+            playerPos_ = pPlayer->GetPlayerPos();
+
 
             // 距離判定用ベクトルの作成。
-            Vector3 diff = playerPos - headPos;
-            auto distXZ = sqrtf(diff.x * diff.x + diff.z * diff.z);
-            bool isAbove = (diff.y >-50.0f);
+            diff_ = playerPos_ - headPos_;
+            auto distXZ = sqrtf(diff_.x * diff_.x + diff_.z * diff_.z);
+
+
+            // 高さを指定する。
+            isAbove_ = (diff_.y > 0.0f && diff_.y < 30.0f);
 
             // 範囲内かつ、ボスの頭上付近にいればヒット判定とする。
-            if (distXZ < 200.0f && isAbove)
+            if (distXZ < 5.0f && isAbove_)
+            {
+                // @TODO:  ヒット時の効果音の再生を行う。
                 return true;
+            }
 
             return false;
 

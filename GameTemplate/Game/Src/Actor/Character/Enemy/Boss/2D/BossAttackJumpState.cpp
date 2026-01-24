@@ -8,10 +8,12 @@ namespace
 {
     const auto GRAVITY = 0.8f;        // 重力。
     const auto JUMP_POWER = 25.0f;    // ジャンプ力。
+
     const auto PREPARE_TIME = 1.0f;   // 準備時間。
 
-    const auto CAMERA_EDGE_OFFSET = 25.0f; // カメラ端からのオフセット。
-}
+    const auto CAMERA_EDGE_OFFSET = 20.0f; // カメラ端からのオフセット。
+    const int MAX_JUMP_COUNT = 3;
+} 
 
 namespace app
 {
@@ -22,26 +24,14 @@ namespace app
             pBoss_ = pBoss;
             step_ = app::enemyStatus::JumpStep::Prepare;
             timer_ = 0.0f;
+            jumopCount_ = 0;
 
             // アニメーションの再生。
             pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Jump, false, 0.2f);
 
-            // 回転の準備。
-            startRot_ = pBoss_->GetRot();
-            targetRot_ = startRot_;
-
-            // プレイヤーの方向を向くようにする。
-            if (auto* pPlayer = pBoss_->GetPlayer())
-            {
-                Vector3 diff = pPlayer->GetPlayerPos() - pBoss_->GetPos();
-                diff.y = 0.0f;
-
-                // 距離が近すぎない場合のみ回転計算。
-                if (diff.LengthSq() > 0.1f)
-                {
-                    targetRot_.SetRotationYFromDirectionXZ(diff);
-                }
-            }
+            // 正面を向くようにする。
+            faceAngle_.SetRotationDegY(180.0f);
+            pBoss_->SetRot(faceAngle_);
 
         }
 
@@ -84,18 +74,8 @@ namespace app
         {
             timer_ += g_gameTime->GetFrameDeltaTime();
 
-            // --- 1. 滑らかに回転 (Slerp) ---
-            float rate = timer_ / PREPARE_TIME;
-            if (rate > 1.0f)
-                rate = 1.0f;
 
-            // 現在の向きからターゲットの向きへ補間
-            Quaternion currentRot;
-            currentRot.Slerp(rate, startRot_, targetRot_);
-            pBoss_->SetRot(currentRot);
-
-
-            // --- 2. ジャンプ開始判定 ---
+            // --- ジャンプ開始判定 ---
             if (timer_ >= PREPARE_TIME)
             {
                 step_ = app::enemyStatus::JumpStep::Jumping;
@@ -115,7 +95,7 @@ namespace app
                     targetPos_.x = playerPos.x - CAMERA_EDGE_OFFSET;
 
                 else
-                    targetPos_.x = playerPos.x - CAMERA_EDGE_OFFSET;
+                    targetPos_.x = playerPos.x + CAMERA_EDGE_OFFSET;
 
 
                 float flightTimeFrame = (2.0f * JUMP_POWER) / GRAVITY;
@@ -130,6 +110,9 @@ namespace app
 
                 // Z軸は移動しない
                 velocity_.z = 0.0f;
+
+                // ジャンプアニメーション再生
+                pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Jump, false, 0.1f);
             }
         }
 
@@ -165,7 +148,21 @@ namespace app
             // 着地アニメーションが終わるのを待つ
             if (!pBoss_->IsPlayingAnimation())
             {
-                step_ = app::enemyStatus::JumpStep::Finish;
+                // ジャンプの回数をカウント。
+                AddJumpCount();
+
+                // 最大ジャンプ回数に達していなければ、再度ジャンプへ。
+                if (jumopCount_ < MAX_JUMP_COUNT)
+                {
+                    step_ = app::enemyStatus::JumpStep::Prepare;
+                    timer_ = 0.0f;
+                }
+
+                else
+                {
+                    step_ = app::enemyStatus::JumpStep::Finish;
+                }
+
             }
         }
 

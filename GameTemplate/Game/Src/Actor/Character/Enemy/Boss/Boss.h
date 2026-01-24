@@ -53,6 +53,9 @@ namespace app
             // どのアニメーションを再生するか設定する。
             inline void LoadAnimation(app::enemyStatus::BossAnimation animation, bool isLoop, float interPolate)
             {
+                // セットしたアニメーションのLoop設定をAnimationClipに適応させる
+                animClips_[animation].SetLoopFlag(isLoop);
+
                 render_.PlayAnimation(animation, interPolate);
             }
 
@@ -131,11 +134,29 @@ namespace app
             // 疲労状態に入るか。
             inline bool IsTired() const
             {
-                return attackCount_ >= 6;
+                return attackCount_ >= 3;
             }
 
             // 攻撃クラスの座標計算を取得。
             Vector3 GetRandomAttackPos();
+
+            // 弱点ベクトルのワールド座標を取得する。
+            Vector3 GetWeakPoint() const
+            {
+                // ボーンが見つかっていない場合は固定位置を返す。
+                if (weakPointBoneID_ == -1)
+                    return pos_ + Vector3(0.0f, 22.0f, 0.0f);
+
+                // ボーンのワールド行列を取得。
+                const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
+
+                // 位置を取得。
+                Vector3 pos;
+                // ID。
+                pos.Set(mat.v[3]); // Skeleton.cppの実装に準拠
+                return pos;
+            }
+
 
             // ゲームクラスを取得。
             inline app::core::Game* GetGameInstance() const
@@ -143,6 +164,8 @@ namespace app
                 return pGame_;
             }
 
+
+        // ヘルパー。
         public:
             // 攻撃回数を加算数する。
             inline void AddAttackCount()
@@ -156,7 +179,12 @@ namespace app
                 attackCount_ = 0;
             }
 
+            // カメラの範囲外にボスモデルが行かないようにクランプ。
+            inline void AddClamp();
+
+
         private:
+
             void SetAnimation();
             void Rotaition();
 
@@ -191,6 +219,8 @@ namespace app
             float stateTimer_ = 0.0f;
             float nextInterval_ = 3.0f;
 
+            // @ uint8_tだと負数が扱えないためint型で定義。
+            int weakPointBoneID_ = -1;
 
         // ステート用変数群。
         // フレンドクラス。

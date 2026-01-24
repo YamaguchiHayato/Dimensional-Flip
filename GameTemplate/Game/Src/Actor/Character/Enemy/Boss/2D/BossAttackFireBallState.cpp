@@ -78,7 +78,7 @@ namespace app
             CalculateFireBallDirection();
 
             // パラメータ設定 (位置、方向、速度)
-            pFireBall_->SetParameter(spawnPos_, targetDir, FIREBALL_SPEED);
+            pFireBall_->SetParameter(spawnPos_, pPlayer, FIREBALL_SPEED);
         }
 
 

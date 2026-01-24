@@ -99,9 +99,10 @@ namespace app
 
         bool Game::Start()
         {
+            srand(static_cast<unsigned int>(time(nullptr)));
+
             // ステージの生成。
             StageManager::CreateInstance();
-//            StageManager::GetInstance()->Start();
 
             app::core::SoundManager::CreateInstence();
             app::core::SoundManager::GetInstance()->Init();
@@ -132,9 +133,10 @@ namespace app
            pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
     //       pPlayer_->SetPlayerPos(Vector3(780.0f, 10.0f, 0.0f));
 
+           // ステージ背景の生成。
             CreateBackGround();
 
-
+            // SkyCubeの初期化。
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。

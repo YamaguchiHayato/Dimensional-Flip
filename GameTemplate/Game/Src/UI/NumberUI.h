@@ -3,6 +3,12 @@
 #include "stdint.h"
 #include <string>
 
+namespace app{
+    namespace core{
+        class StageManager;
+    }
+}
+
 class NumberUI : public UIBase
 {
 public:

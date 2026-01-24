@@ -4,6 +4,7 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Stage/Gimmick/FireBall.h"
 
+#include "Src/Actor/Character/Player/Player.h"
 
 namespace app
 {
@@ -40,6 +41,7 @@ namespace app
             app::enemy::Boss* pBoss_ = nullptr;
             app::gimmick::FireBall* pFireBall_ = nullptr;
 
+            Player* pPlayer = nullptr;
 
         private:
             float timer_ = 0;

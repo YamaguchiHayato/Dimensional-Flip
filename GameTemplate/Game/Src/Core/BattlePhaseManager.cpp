@@ -11,10 +11,10 @@ namespace ScaffoldingPosList
     // 2D用パターン: ボスの正面(X軸)に向かって階段状に配置
     const std::vector<Vector3> PATTERN_2D =
     {
-        Vector3(100.0f, 50.0f, 0.0f),
-        Vector3(180.0f, 100.0f, 0.0f),
-        Vector3(100.0f, 150.0f, 0.0f),
-        Vector3(0.0f, 200.0f, 0.0f) // ボスの頭上付近
+        Vector3(-25.0f, 8.0f, 0.0f),  // 1段目 (左端)
+        Vector3(-10.0f, 16.0f, 0.0f),   // 2段目 (中央)
+        Vector3(0.0f, 24.0f, 0.0f),  // 3段目 (右端)
+        Vector3(10.0f, 32.0f, 0.0f)    // 4段目 (中央)
     };
 
     // 3D用パターン: ボスを中心に螺旋やジグザグに配置
@@ -23,7 +23,7 @@ namespace ScaffoldingPosList
         Vector3(0.0f, 50.0f, 150.0f),
         Vector3(120.0f, 100.0f, 80.0f),
         Vector3(0.0f, 150.0f, 0.0f),
-        Vector3(-100.0f, 200.0f, 0.0f) // ボスの頭上付近
+        Vector3(-100.0f, 200.0f, 0.0f)
     };
 } 
 namespace app

@@ -35,6 +35,13 @@ namespace app
 
 
         private:
+            inline void AddJumpCount()
+            {
+                jumopCount_++;
+            }
+
+
+        private:
             app::enemy::Boss* pBoss_ = nullptr;
             app::enemyStatus::JumpStep step_ = app::enemyStatus::JumpStep::Prepare;
 
@@ -45,9 +52,11 @@ namespace app
             Vector3 velocity_ = Vector3::Zero;
 
 
-            Quaternion startRot_ = Quaternion::Identity;
-            Quaternion targetRot_ = Quaternion::Identity;
+            Quaternion faceAngle_ = Quaternion::Identity;
+
+
             float timer_ = 0.0f;
+            int jumopCount_ = 3;
         };
 
     }

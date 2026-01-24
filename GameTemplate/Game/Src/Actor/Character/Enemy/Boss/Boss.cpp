@@ -6,10 +6,12 @@
 
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
-#include "Src/Core/InputManager.h"
+#include "Src/Core/BossUIManager.h"
+#include  "Src/Core/InputManager.h"
 
 // データクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
+
 
 // ステートクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossIdleState.h"
@@ -195,6 +197,10 @@ namespace app
             render_.SetRotation(rot_);
             render_.SetScale(Vector3(0.15f, 0.15f, 0.15f));
             render_.SetPosition(pos_);
+
+            // UIにHPの情報を通知。
+            app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(hp), 3.0f);
+
             render_.Update();
         }
 

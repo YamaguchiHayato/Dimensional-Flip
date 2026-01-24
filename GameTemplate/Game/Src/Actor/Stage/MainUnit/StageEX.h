@@ -1,6 +1,7 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
+#include "Src/Core/BossUIManager.h"
 
 
 class Boss;
@@ -58,7 +59,10 @@ namespace app
             inline void CreateBossInstance()
             {
                 pBoss_ = NewGO<app::enemy::Boss>(0, "boss");
-                pBoss_->SetPos(nsStageEX::nsBoss::InitPos);   
+                pBoss_->SetPos(nsStageEX::nsBoss::InitPos);
+
+                // Initialize BossUIManager
+                app::nsUI::BossUIManager::GetInstance().Initialize();
             }
 
 

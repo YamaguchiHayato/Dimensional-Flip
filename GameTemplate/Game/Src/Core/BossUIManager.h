@@ -1,6 +1,8 @@
 #pragma once
 #include "Src/UI/BossUI/BossUIBase.h"
-#include <Src/UI/BossUI/BossHPbarUI.h>
+
+#include "Src/UI/BossUI/BossAttackIndicatorUI.h"
+#include "Src/UI/BossUI/BossHPbarUI.h"
 
 namespace app
 {
@@ -19,10 +21,23 @@ namespace app
             // 管理するUIクラスを宣言。
             void MakeHPbarUI();
 
+            // 攻撃予告UIの生成。
+            void MakeAttackIndicatorUI();
+
+
+        public:
+            // 攻撃状態の切り替え通知を受け取る関数。
+            inline void OnNotifyAttack(BossAttackKind kind)
+            {
+                if (pBossAttackIndicatorUI_)
+                    pBossAttackIndicatorUI_->SetAttackKind(kind);
+            }
+
 
         private:
             std::vector<BossUIBase*> bossUIParts_;
-
+            BossAttackIndicatorUI* pBossAttackIndicatorUI_ = nullptr;
+            
             // 各UI。
             BossHPbarUI* pBossHPbarUI_ = nullptr; // HPバーUI。
 

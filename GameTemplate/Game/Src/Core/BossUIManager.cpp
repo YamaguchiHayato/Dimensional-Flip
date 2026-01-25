@@ -15,6 +15,9 @@ namespace app
             // BPbarUIの生成。
             MakeHPbarUI();
 
+            // 攻撃予告UIの生成。
+            MakeAttackIndicatorUI();
+
 
             // 初期位置を設定。
             transform_.localPosition_ = Vector3(650, -400.0f, 0.0f);
@@ -76,6 +79,23 @@ namespace app
             pBossHPbarUI_ = hpBar;
             // リストに追加。
             bossUIParts_.push_back(hpBar);
+        }
+
+
+        void BossUIManager::MakeAttackIndicatorUI()
+        {
+            // 攻撃予告UIの生成。
+            pBossAttackIndicatorUI_ = new BossAttackIndicatorUI();
+
+            // 管理配列に追加。
+            pBossAttackIndicatorUI_->Initialize();
+
+            // 親に設定。
+            pBossAttackIndicatorUI_->SetParent(this);
+
+            // リストに追加。
+            bossUIParts_.push_back(pBossAttackIndicatorUI_);
+
         }
     }
 }

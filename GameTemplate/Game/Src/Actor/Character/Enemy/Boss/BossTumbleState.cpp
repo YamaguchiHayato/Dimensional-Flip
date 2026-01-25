@@ -10,7 +10,13 @@
 
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
+#include "Src/Core/BossUIManager.h"
 
+
+// UI。
+#include "Src/UI/ButtonActionUI.h"
+
+// gimmick。
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 
 namespace
@@ -42,6 +48,8 @@ namespace app
             if (pBoss_->pWeeekPoint_)
                 pBoss_->pWeeekPoint_->SetIsEnable(true);
 
+            // アイコンを描画するように通知。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Tumbler);
 
 
             // 足場を生成する。
@@ -73,6 +81,9 @@ namespace app
 
             // 復帰時に足場を消す。
             app::core::BattlePhaseManager::GetInstance()->DeactivateScaffolding();
+
+            // アイコンを消すように通知。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::None);
         }
 
 

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
+#include "Src/Production/CutIn/CutInView.h"
 
 namespace app
 {
@@ -92,6 +93,12 @@ namespace app
                 moveSpeed_ = moveSpeed;
             }
 
+            // HPをセット。
+            inline void SetHP(const float hp)
+            {
+                bossHP_ = hp;
+            }
+
 
         // ゲッター。
         public:
@@ -164,6 +171,12 @@ namespace app
                 return pGame_;
             }
 
+            // HPを取得。
+            inline uint8_t GetHP() const
+            {
+                return bossHP_;
+            }
+
 
         // ヘルパー。
         public:
@@ -184,8 +197,10 @@ namespace app
 
 
         private:
-
+            // アニメーションをセット。
             void SetAnimation();
+
+            // 回転処理。
             void Rotaition();
 
             // 座標をランダムに計算するヘルパー関数。
@@ -197,6 +212,8 @@ namespace app
             CollisionObject* pWeeekPoint_ = nullptr;
             app::core::InputManager* pInputManager_ = nullptr;
             app::core::Game* pGame_ = nullptr;
+
+            app::cutIn::CutInView* pCutInView_ = nullptr;
 
 
         private:
@@ -211,9 +228,12 @@ namespace app
 
             uint8_t state_ = app::enemyStatus::bossAnim_Idle;
             uint8_t attackCount_ = 0;
-            uint8_t hp = 3;
+            uint8_t bossHP_ = 0;
+
 
             bool isAttackSpawned_ = false; // 攻撃オブジェクトが生成済みかチェック。
+            bool isCutInActive;
+            bool isPhasePlaying;
             bool canBeAttacked_ = true;    // ダメージを受け付けるかどうか。
 
             float stateTimer_ = 0.0f;
@@ -221,7 +241,7 @@ namespace app
 
             // @ uint8_tだと負数が扱えないためint型で定義。
             int weakPointBoneID_ = -1;
-
+            
         // ステート用変数群。
         // フレンドクラス。
         private:

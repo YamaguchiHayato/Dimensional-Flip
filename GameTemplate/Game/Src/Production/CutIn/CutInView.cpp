@@ -6,6 +6,8 @@
 #include "Src/production/CutIn/CutInShadowLayer.h"
 #include "Src/production/CutIn/CutInSlideLayer.h"
 
+#include "Src/Core/BattlePhaseManager.h"
+#include "Src/Core/BossUIManager.h"
 
 namespace app
 {
@@ -48,12 +50,31 @@ namespace app
             pShadowLayer_ = NewGO<app::cutIn::CutInShadowLayer>(0, "ShadowLayer");
             // ボスのエンブレムレイヤー。
             pLogoLayer_ = NewGO<app::cutIn::CutInLogoLayer>(2, "LogoLayer");
+
+            // カットインの表示時間。
+            SetLifeDuration(5.0);
             return true;
         }
 
 
         void CutInView::Update()
         {
+            timer_ += g_gameTime->GetFrameDeltaTime();
+
+            // カットインが終われば。
+            if (IsCutInFinished())
+            {
+                // 現在のバトルフェーズを取得。
+                auto currentPhase = (uint8_t) *app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
+
+                // フェーズ切り替え通知を送る。
+                app::nsUI::BossUIManager::GetInstance().OnChangePhase(currentPhase);
+
+                // 自身を破棄。
+                DeleteGO(this);
+
+            }
+
             // 時間制限が設定されている場合、カウントアップ。
             if (lifeDuration_ > 0.0f)
             {

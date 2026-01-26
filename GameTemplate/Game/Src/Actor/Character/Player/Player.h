@@ -104,7 +104,7 @@ private:
     bool isPaused_ = false;
     bool is3DMode_ = false;
     bool respawnFlag_ = false;
-
+    bool isCutInActive;
     bool isMoveLimited_ = false;
 
 public:

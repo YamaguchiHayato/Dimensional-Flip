@@ -19,6 +19,7 @@
 #include "Src/Actor/Character/Enemy/Boss/BossDamageState.h"
 #include "Src/Actor/Character/Enemy/Boss/BossTumbleState.h"    
 
+
 namespace
 {
     // 攻撃インターバル時間。
@@ -52,6 +53,11 @@ namespace
     const Vector3 CAN_ATTACK_COLLISION_POSITION = Vector3(0.0f, WEAK_POINT_HEIGHT, 0.0f);
 
     const float STAGE_LIMIT_X = 35.0f;
+
+    // 最大HP
+    const auto MAX_HP = 3.0f;
+
+    const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
 }
 
 
@@ -134,6 +140,7 @@ namespace app
             // モデルをセットする。
             render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
+            render_.SetScale(SCALE);
 
             // ボーンIDを取得。
             weakPointBoneID_ = render_.FindBoneID(L"Head");
@@ -141,6 +148,8 @@ namespace app
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
+            pCutInView_ = FindGO<app::cutIn::CutInView>("CutInView");
+
 
             pWeeekPoint_ = NewGO<CollisionObject>(0);
 
@@ -160,6 +169,9 @@ namespace app
             // InputManagerの次元反転フラグを無効化。
             app::core::InputManager::GetInstance()->SetDimensionFlipFlag(false);
 
+            // HPを初期化。
+            SetHP(MAX_HP);
+
 
             return true;
         }
@@ -167,6 +179,14 @@ namespace app
 
         void Boss::Update()
         {
+
+            if (app::nsUI::BossUIManager::GetInstance().IsPhasePlaying())
+            {
+                render_.Update();
+                return;
+            }
+
+
             // ステートが存在することを確認。
             _ASSERT(pCurrentState_ != nullptr);
 
@@ -195,11 +215,11 @@ namespace app
 
             // モデル本体の更新。
             render_.SetRotation(rot_);
-            render_.SetScale(Vector3(0.15f, 0.15f, 0.15f));
+            render_.SetScale(SCALE);
             render_.SetPosition(pos_);
 
             // UIにHPの情報を通知。
-            app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(hp), 3.0f);
+            app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(GetHP()), MAX_HP);
 
             render_.Update();
         }

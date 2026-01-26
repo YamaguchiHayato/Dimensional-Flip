@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "BattlePhaseManager.h"
+#include "Src/Core/BossUIManager.h"
 
 #include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
 
@@ -68,6 +69,9 @@ namespace app
             {
                 // フェーズを進める
                 currentPhase_ = static_cast<app::enemyStatus::BossPhase>(next);
+
+                // UIにフェーズ変更を通知。
+                app::nsUI::BossUIManager::GetInstance().OnChangePhase((uint8_t) currentPhase_);
 
                 // フェーズが進行すると環境を構築する。
                 ApplyPhaseSettings();

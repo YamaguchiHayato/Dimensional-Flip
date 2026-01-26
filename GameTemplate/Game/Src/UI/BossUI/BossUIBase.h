@@ -49,6 +49,7 @@ namespace app
             // 行列更新処理。
             virtual void UpdateMatrix();
 
+            // 更新処理。
             virtual void Update() {};
 
             // 描画処理。

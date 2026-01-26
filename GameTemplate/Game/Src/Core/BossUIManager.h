@@ -2,6 +2,7 @@
 #include "Src/UI/BossUI/BossUIBase.h"
 
 #include "Src/UI/BossUI/BossAttackIndicatorUI.h"
+#include "Src/UI/BossUI/BossPhaseUI.h"
 #include "Src/UI/BossUI/BossHPbarUI.h"
 
 namespace app
@@ -24,6 +25,9 @@ namespace app
             // 攻撃予告UIの生成。
             void MakeAttackIndicatorUI();
 
+            // 現在のフェーズUIを取得。
+            void MakePhaseUI();
+
 
         public:
             // 攻撃状態の切り替え通知を受け取る関数。
@@ -34,6 +38,27 @@ namespace app
             }
 
 
+            // フェーズ演出が再生中かどうかを取得する関数。
+            inline bool IsPhasePlaying() const
+            {
+                return pBossPhaseUI_ && pBossPhaseUI_->IsPhasePlaying();
+            }
+
+
+            // 
+            inline bool ShouldStopActors() const
+            {
+                return pBossPhaseUI_ && pBossPhaseUI_->IsPhasePlaying();
+            }
+
+
+            // フェーズ切り替え通知を受け取る関数。
+            inline void OnChangePhase(uint8_t stateID)
+            {
+                if (pBossPhaseUI_)
+                    pBossPhaseUI_->StartPhaseAninm((BossPhaseKind) stateID);
+            }
+
         private:
             std::vector<BossUIBase*> bossUIParts_;
             BossAttackIndicatorUI* pBossAttackIndicatorUI_ = nullptr;
@@ -41,7 +66,7 @@ namespace app
             // 各UI。
             BossHPbarUI* pBossHPbarUI_ = nullptr; // HPバーUI。
 
-
+            BossPhaseUI* pBossPhaseUI_ = nullptr;
 
 
         public:
@@ -73,8 +98,6 @@ namespace app
             // HPの更新。
             void OnUpdateHP(float currentHP, float maxHP);
 
-            // Phase, 攻撃状態の切り替え。
-            void OnChangePhase(uint8_t stateID);
 
 
         };

@@ -14,7 +14,7 @@
 
 // UIクラス。
 #include "Src/UI/ScoreUI.h"
-
+#include "Src/Production/CutIn/CutInView.h"
 
 // 内部ステータスクラス。
 #include "Src/Actor/Character/Status.h"
@@ -26,6 +26,8 @@
 #include "Src/Actor/Character/Player/PlayerRunState.h"
 #include "Src/Actor/Character/Player/PlayerJumpState.h"
 #include "Src/Actor/Character/Player/PlayerFallState.h"
+
+#include "Src/Core/BossUIManager.h"
 
 // プレイヤーステータス構造体。
 struct PlayerStatus
@@ -149,6 +151,8 @@ void Player::Update()
     if (invincibleTime_ > 0.0f)
         invincibleTime_ -= g_gameTime->GetFrameDeltaTime();
 
+
+
     _ASSERT(pCurrentState_ != nullptr);
 
     uint8_t request;
@@ -259,7 +263,7 @@ void Player::Render(RenderContext& rc)
     pRender_->Render(rc);
 
     // 座標表示。    
-    posFont_.Draw(rc);
+//    posFont_.Draw(rc);
 }
 
 

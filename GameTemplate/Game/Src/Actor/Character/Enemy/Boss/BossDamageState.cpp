@@ -7,6 +7,10 @@
 namespace
 {
     const auto RECOVERY_TIME = 1.5f; // ダメージ後の回復時間。
+
+    const auto MAX_HP = 3.0f; // ボスの最大HP。
+
+    const auto INTERVAL = 3.0f; // 攻撃インターバル時間。
 }
 
 namespace app
@@ -18,9 +22,11 @@ namespace app
             // ダメージアニメーションを再生する。
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Hit, false, 0.1f);
 
+            auto currentHP = pBoss_->GetHP();
+
             // ボスのHPを減らす。
-            if (pBoss_->hp > 0)
-                pBoss_->hp--;
+            if (currentHP > 0)
+                pBoss_->SetHP(currentHP - 1.0f);
 
             // 初期化。
             istiredPlaying_ = false;
@@ -41,10 +47,12 @@ namespace app
             // 1. まだ疲労モードに入っておらず、かつダメージアニメーションが終わった場合
             if (!istiredPlaying_ && !pBoss_->IsPlayingAnimation())
             {
+                // 現在HPを取得。
+                uint8_t currentHP = pBoss_->GetHP();
+
                 // HPが残っている場合
-                if (pBoss_->hp > 0)
+                if (currentHP > 0)
                 {
-                    // ★修正ポイント: すぐにIdleに戻らず、一度「疲労アニメーション」に切り替える
                     pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Tumble, true, 0.2f);
 
                     // フラグを立てて、Updateでのタイマー計測を開始させる
@@ -56,16 +64,16 @@ namespace app
                 }
 
                 // HPが0ならば、フェーズを進行させて終了。
-                else if (pBoss_->hp == 0)
+                else if (currentHP == 0)
                 {
                     // ボス戦フェーズを進行させる。
                     app::core::BattlePhaseManager::GetInstance()->AdvancePhase();
 
                     // フェーズが進行するとHPを回復させる。
-                    pBoss_->hp = 3;
+                    pBoss_->SetHP(MAX_HP);
 
                     // 死亡させずに3DモードでのIdle状態へ移る。
-                    pBoss_->SettNextInterval(3.0f);
+                    pBoss_->SettNextInterval(INTERVAL);
                     request = app::enemyStatus::BossState::state_Idle;
                     return true;
                 }
@@ -76,7 +84,7 @@ namespace app
             {
                 if (timer_ >= RECOVERY_TIME)
                 {
-                    pBoss_->SettNextInterval(3.0f);
+                    pBoss_->SettNextInterval(INTERVAL);
                     request = app::enemyStatus::BossState::state_Idle;
 
                     return true;

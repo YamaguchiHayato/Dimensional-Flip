@@ -7,26 +7,33 @@
 
 #include "Src/Actor/Character/Player/Player.h"
 
-namespace ScaffoldingPosList
+namespace ScaffoldingStatus
 {
+    const Vector3 SCALE_2D = Vector3(0.1f, 0.1f, 0.1f);
+    const Vector3 SCALE_3D = Vector3(0.5f, 0.1f, 0.5f);
+
     // 2D用パターン: ボスの正面(X軸)に向かって階段状に配置
-    const std::vector<Vector3> PATTERN_2D =
-    {
+    const std::vector<Vector3> PATTERN_2D = {
         Vector3(-25.0f, 8.0f, 0.0f),  // 1段目 (左端)
-        Vector3(-10.0f, 16.0f, 0.0f),   // 2段目 (中央)
-        Vector3(0.0f, 24.0f, 0.0f),  // 3段目 (右端)
-        Vector3(10.0f, 32.0f, 0.0f)    // 4段目 (中央)
+        Vector3(-10.0f, 16.0f, 0.0f), // 2段目 (中央)
+        Vector3(0.0f, 24.0f, 0.0f),   // 3段目 (右端)
+        Vector3(10.0f, 32.0f, 0.0f)   // 4段目 (中央)
     };
 
+
     // 3D用パターン: ボスを中心に螺旋やジグザグに配置
-    const std::vector<Vector3> PATTERN_3D =
-    {
-        Vector3(0.0f, 50.0f, 150.0f),
-        Vector3(120.0f, 100.0f, 80.0f),
-        Vector3(0.0f, 150.0f, 0.0f),
-        Vector3(-100.0f, 200.0f, 0.0f)
+    const std::vector<Vector3> PATTERN_3D = {
+         Vector3(-20.0f, 8.0f, 15.0f),   // 1段目: 左手前
+         Vector3(-5.0f, 16.0f, 20.0f),   // 2段目: 正面付近
+         Vector3(10.0f, 24.0f, 15.0f),   // 3段目: 右手前
+         Vector3(20.0f, 32.0f, 0.0f),    // 4段目: ボス右横
+         Vector3(15.0f, 40.0f, -15.0f),  // 5段目: 右奥
+         Vector3(0.0f, 48.0f, -20.0f),   // 6段目: 真裏
+         Vector3(-15.0f, 56.0f, -15.0f), // 7段目: 左奥
+         Vector3(-20.0f, 64.0f, 0.0f)    // 8段目: 左横
     };
-} 
+}
+
 namespace app
 {
     namespace core
@@ -42,7 +49,7 @@ namespace app
 
 
             // 足場をプール生成
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 CreatePlatform();
             }
@@ -50,8 +57,6 @@ namespace app
 
             // フェーズを初期化
             currentPhase_ = app::enemyStatus::BossPhase::phase_One;
-
-            
         }
 
 
@@ -83,19 +88,32 @@ namespace app
         {
             // フェーズに応じてパターンを選択
             const std::vector<Vector3>* currentPattern = nullptr;
+            Vector3 currentScale = ScaffoldingStatus::SCALE_2D;
+
 
             if (currentPhase_ == app::enemyStatus::BossPhase::phase_One)
-                currentPattern = &ScaffoldingPosList::PATTERN_2D;
+            {
+                // 足場生成リスト。
+                currentPattern = &ScaffoldingStatus::PATTERN_2D;
+                // 2D用の大きさ。
+                currentScale = ScaffoldingStatus::SCALE_2D;
+            }
 
             else
-                currentPattern = &ScaffoldingPosList::PATTERN_3D;
+            {
+                // 足場生成リスト。
+                currentPattern = &ScaffoldingStatus::PATTERN_3D;
+
+                // 3D用の大きさ。
+                currentScale = ScaffoldingStatus::SCALE_3D;
+            }
 
             // パターンが存在しないなら処理は中断。
-            if (!currentPattern)
-                return;
+            if (currentPattern)
+                // 足場を出現させる。
+                SpawnPattern(*currentPattern, currentScale);
 
-            // 足場を出現させる。
-            SpawnPattern(*currentPattern);
+
 
         }
 
@@ -128,14 +146,14 @@ namespace app
         }
 
 
-        void BattlePhaseManager::SpawnPattern(const std::vector<Vector3>& pattern)
+        void BattlePhaseManager::SpawnPattern(const std::vector<Vector3>& pattern, const Vector3& scale)
         {
             // パターンの座標数分だけ足場を有効化
             for (size_t i = 0; i < pattern.size(); ++i)
             {
                 // プールしている足場の数を超えない範囲で使用
                 if (i < platformsList_.size())
-                    platformsList_[i]->Activate(pattern[i]);
+                    platformsList_[i]->Activate(pattern[i], scale);
             }
         }
 

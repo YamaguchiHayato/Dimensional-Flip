@@ -62,21 +62,18 @@ namespace app
             {
                 currentPos_.y += 2.0f; // 上昇速度
                 if (currentPos_.y > targetPos_.y)
-                {
                     currentPos_.y = targetPos_.y;
-                }
+
                 isMoving = true;
             }
 
             // モデル座標更新
-            render_.SetScale(SCALE);
+            render_.SetScale(currentScale_);
             render_.SetPosition(currentPos_);
             render_.Update();
 
             if (isMoving || pPhysics_ == nullptr)
-            {
                 RefreshPhysics();
-            }
         }
 
 
@@ -104,10 +101,11 @@ namespace app
         }
 
 
-        void FloatingPlatform::Activate(const Vector3& pos)
+        void FloatingPlatform::Activate(const Vector3& pos, const Vector3& scale)
         {
             isActive_ = true;
             targetPos_ = pos;
+            currentScale_ = scale;
 
             // 出現位置（地中）
             currentPos_ = pos;

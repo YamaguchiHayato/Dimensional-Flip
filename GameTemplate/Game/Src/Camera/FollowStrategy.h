@@ -1,6 +1,12 @@
 #pragma once
 #include "Src/camera/ICameraStrategy.h"
 
+namespace app{
+    namespace enemy{
+        class Boss;
+    }
+}
+
 class Player;
 class FollowStrategy : public ICameraStrategy
 {
@@ -27,9 +33,26 @@ public:
     // スクリーンロック。
     void ApplyScreenRock(Vector3& cameraPos);
 
+
+private:
+    // ステージ用カメラワーク。
+    void StageCamera();
+
+    // ボス戦用のカメラワーク。
+    void BossCamera();
+
+
+
+private:
+    app::enemy::Boss* pBoss_ = nullptr; 
+
+
 private:
     //直前の地面に居たときのY座標を保存。
     float lastGroundY_ = 0.0f;
+
+    float orbitAngleY_ = 0.0f;
+    float orbitAngleX_ = 0.0f;
 
     bool isScreenRock_ = false;
     Vector3 rangeMin_ = Vector3::Zero;

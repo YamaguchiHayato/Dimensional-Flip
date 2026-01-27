@@ -69,16 +69,20 @@ namespace app
             // 足場を非表示に。
             void DeactivateScaffolding();
 
+
             // ゲッター。
         public:
             // 現在のフェーズを取得。
-            app::enemyStatus::BossPhase* GetCurrentPhase() { return &currentPhase_; };
+            app::enemyStatus::BossPhase* GetCurrentPhase()
+            {
+                return &currentPhase_;
+            };
 
 
             // ヘルパー。
         public:
             // 生成する足場の配列。
-            void SpawnPattern(const std::vector<Vector3>& pattern);
+            void SpawnPattern(const std::vector<Vector3>& pattern, const Vector3& scale);
 
             // 保持している足場を全て削除。
             void ClearAllPlatforms();

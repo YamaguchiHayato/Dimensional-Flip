@@ -94,9 +94,7 @@ void SideCameraStrategy::StageCamera()
 
     offsetViewPos.y = targetPos.y + FOOT_TO_CENTER_OFFSET;
     if (targetPos.y <= FOLLOW_START_POSITION - FOOT_TO_CENTER_OFFSET)
-    {
         offsetViewPos.y = FOLLOW_START_POSITION;
-    }
 
     ApplyScreenRock(offsetViewPos);
 

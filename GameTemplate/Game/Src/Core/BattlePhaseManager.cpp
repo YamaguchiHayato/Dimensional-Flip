@@ -23,14 +23,14 @@ namespace ScaffoldingStatus
 
     // 3D用パターン: ボスを中心に螺旋やジグザグに配置
     const std::vector<Vector3> PATTERN_3D = {
-         Vector3(-20.0f, 8.0f, 15.0f),   // 1段目: 左手前
-         Vector3(-5.0f, 16.0f, 20.0f),   // 2段目: 正面付近
-         Vector3(10.0f, 24.0f, 15.0f),   // 3段目: 右手前
-         Vector3(20.0f, 32.0f, 0.0f),    // 4段目: ボス右横
-         Vector3(15.0f, 40.0f, -15.0f),  // 5段目: 右奥
-         Vector3(0.0f, 48.0f, -20.0f),   // 6段目: 真裏
-         Vector3(-15.0f, 56.0f, -15.0f), // 7段目: 左奥
-         Vector3(-20.0f, 64.0f, 0.0f)    // 8段目: 左横
+            Vector3(-25.0f, 8.0f, 20.0f),   // 1: 左手前（スタート）
+            Vector3(0.0f, 16.0f, 30.0f),    // 2: 正面奥（Z軸を離して重なり防止）
+            Vector3(25.0f, 24.0f, 20.0f),   // 3: 右手前
+            Vector3(35.0f, 32.0f, -5.0f),   // 4: 右横（ボスの真横）
+            Vector3(25.0f, 40.0f, -30.0f),  // 5: 右奥
+            Vector3(-5.0f, 48.0f, -35.0f),  // 6: 真裏
+            Vector3(-30.0f, 56.0f, -20.0f), // 7: 左奥
+            Vector3(-35.0f, 64.0f, 5.0f)    // 8: 左横（ここから弱点へ！）
     };
 }
 
@@ -63,6 +63,7 @@ namespace app
         void BattlePhaseManager::Update()
         {
             // フェーズ3の自動切り替え処理などが必要になればここに記述
+            // @ TODO フェーズ3の次はStaffRollSceneに移動予定。 
         }
 
 
@@ -112,9 +113,6 @@ namespace app
             if (currentPattern)
                 // 足場を出現させる。
                 SpawnPattern(*currentPattern, currentScale);
-
-
-
         }
 
 

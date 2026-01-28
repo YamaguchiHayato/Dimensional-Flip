@@ -287,6 +287,7 @@ public:
     {
         return status_.GetHP();
     }
+
     // 最大値。
     inline uint8_t GetMaxHP() const
     {
@@ -383,6 +384,15 @@ public:
     {
         return pRender_;
     }
+
+    // Playerの向きを取得。
+    inline Quaternion GetPlayerRotation() const
+    {
+        pRender_->GetRotation();
+        return rot_;
+
+    }
+
 
 public:
     /**

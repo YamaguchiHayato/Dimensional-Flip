@@ -164,7 +164,6 @@ namespace app
                 return pos;
             }
 
-
             // ゲームクラスを取得。
             inline app::core::Game* GetGameInstance() const
             {
@@ -177,6 +176,17 @@ namespace app
                 return bossHP_;
             }
 
+            // ボスの現在のステートを取得。
+            inline app::enemyState::IEnemyState* GetCurrentState() const
+            {
+                return pCurrentState_;
+            }
+
+            // 現在のボスステートリストを取得。
+            inline app::enemyState::IEnemyState** GetStateList()
+            {
+                return pStateList_;
+            }
 
         // ヘルパー。
         public:

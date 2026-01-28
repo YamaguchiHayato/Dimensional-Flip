@@ -40,7 +40,9 @@ private:
 
     // ボス戦用のカメラワーク。
     void BossCamera();
-
+ 
+    // 足場を登る際の視点を作る。
+    void MakeClimbingPerspective();
 
 
 private:
@@ -59,8 +61,14 @@ private:
 
     Vector3 rangeMin_ = Vector3::Zero;
     Vector3 rangeMax_ = Vector3::Zero;
+
+    // 足場を登る際のオフセット。
     Vector3 backOffset_ = Vector3::Zero;
     Vector3 frontOffset_ = Vector3::Zero;
+    Vector3 finalOffset_ = Vector3::Zero;
 
+    Vector3 idealPos_ = Vector3::Zero; // 理想的な位置
+    Vector3 lookAtPoint_ = Vector3::Zero;
+    Vector3 targetPos_ = Vector3::Zero;
     Quaternion currentPlayerRot_ = Quaternion::Identity;
 };

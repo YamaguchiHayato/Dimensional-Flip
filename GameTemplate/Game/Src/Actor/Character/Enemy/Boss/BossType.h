@@ -15,6 +15,7 @@ namespace app
             bossAnim_Hit,        // ダメージ
             bossAnim_Jump,       // ジャンプ
             bossAnim_Land,       // 着地
+            bossAnim_Dead,       // 死亡
             bossAnim_Num,        // 総数
         };
 
@@ -63,6 +64,7 @@ namespace app
             state_Attack,   // 攻撃
             state_Hit,      // ダメージ
             state_Tumble,   // 疲労
+            state_Dead,     // 死亡
             state_Num       // 総数
         };
 

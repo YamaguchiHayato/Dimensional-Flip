@@ -15,6 +15,7 @@ namespace app
         class BossAttackState;
         class BossDamageState;
         class BossTumbleState;
+        class BossDeadState;
     }
 
     namespace core
@@ -259,6 +260,7 @@ namespace app
             friend class app::enemyState::BossAttackState;
             friend class app::enemyState::BossDamageState;
             friend class app::enemyState::BossTumbleState;
+            friend class app::enemyState::BossDeadState;
 
 
         // ステート管理用関数群。

@@ -16,7 +16,7 @@
 
                                     [Thwomp] … ThwompEnemyステートクラスを格納。
 
-                                    [Flying] … FlyingEnemyステートクラスを格納。]
+                                    [Flying] … FlyingEnemyステートクラスを格納。
 
                                     [Boss] … ボスキャラクターステートクラスを格納する場所。
                                              

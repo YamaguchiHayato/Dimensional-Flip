@@ -191,7 +191,8 @@ void FollowStrategy::MakeClimbingPerspective()
 {
     // Playerの移動ベクトルを取得。
     auto moveVec = pPlayer_->GetMoveSpeed();
-    if (moveVec.LengthSq() > 0.001f)
+
+    if (moveVec.Length() > 0.001f || targetPos_.y > THRESHOLD_Y_BOSS)
     {
         // プレイヤーの回転を取得。
         // 足場を登る際のみ、Playerの真後ろあたりのベクトルを設定。

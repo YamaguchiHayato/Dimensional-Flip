@@ -55,6 +55,12 @@ private:
     float orbitAngleX_ = 0.0f;
 
     bool isScreenRock_ = false;
+    bool isBossTumbler_ = false; // ボスが疲労ステートに入ったかどうか。
+
     Vector3 rangeMin_ = Vector3::Zero;
     Vector3 rangeMax_ = Vector3::Zero;
+    Vector3 backOffset_ = Vector3::Zero;
+    Vector3 frontOffset_ = Vector3::Zero;
+
+    Quaternion currentPlayerRot_ = Quaternion::Identity;
 };

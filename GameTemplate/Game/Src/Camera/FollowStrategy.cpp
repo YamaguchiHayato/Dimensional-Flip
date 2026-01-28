@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "FollowStrategy.h"
+
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 
 #include "Src/Core/BossUIManager.h"
 
+
+
 namespace
 {
-
     // 追従ライン（これ以下ならカメラ位置の基準は下がらない）
     // 通常ステージ。
     const auto THRESHOLD_Y_STAGE = 100.0f;
@@ -151,43 +153,55 @@ void FollowStrategy::StageCamera()
 
 void FollowStrategy::BossCamera()
 {
-    // 取得。
-    // 座標。
+    // 座標を取得する。
+    // Player。
     const Vector3 targetPos = pPlayer_->GetPlayerPos();
+    // カメラ。
     const Vector3 currentCamPos = g_camera3D->GetPosition();
+    // デルタタイム。
     const auto deltaTime = g_gameTime->GetFrameDeltaTime();
 
+    // 目標位置。
+    Vector3 idealPos = BOSS_FIXED_POSS;
+    Vector3 lookAtPoint = BOSS_FIXED_LOOKAT;
 
-    if (pPlayer_->GetCharacterController().IsOnGround())
-        lastGroundY_ = targetPos.y;
-    // ズレ防止用に初期化。
-    if (lastGroundY_ == 0.0f && targetPos.y > 0.0f)
-        lastGroundY_ = targetPos.y;
-
-    // Y軸の追従ラインの設定。
-    Vector3 idealOffset = BOSS_FIXED_POSS;
-
-    // Playerが追従ラインを超えると、カメラの位置をあげる。
-    if (targetPos.y > THRESHOLD_Y_BOSS)
+    // ボスが疲労ステートに入ったかどうか確認。
+    isBossTumbler_ = (pBoss_->GetCurrentState() == pBoss_->GetStateList()[app::enemyStatus::state_Tumble]);
+    if (isBossTumbler_ && targetPos.y > THRESHOLD_Y_BOSS)
     {
-        auto diffY = targetPos.y - THRESHOLD_Y_BOSS;
-        idealOffset.y += diffY;
+        // プレイヤーの回転を取得。
+        currentPlayerRot_ = pPlayer_->GetPlayerRotation();
+
+        backOffset_ = Vector3::Front * OFFSET_CLIMB.z;
+        currentPlayerRot_.Apply(backOffset_);
+
+        // XZ軸の同期。
+        idealPos.x = targetPos.x + OFFSET_CLIMB.x;
+        idealPos.z = targetPos.z + OFFSET_CLIMB.z;
+
+        // Y座標のみ高さを補正する。
+        idealPos.y = BOSS_FIXED_POSS.y + OFFSET_CLIMB.y;
+
+        frontOffset_ = Vector3::Front * 10.0f; // nf先を見る。
+        currentPlayerRot_.Apply(frontOffset_);
+
+
+        // 注視点の追従。
+        lookAtPoint = targetPos;
+        lookAtPoint.y += 5.0f;
     }
 
-    // 座標の補完と適応。
-    const auto followSpeed = 5.0f * deltaTime;
-    Vector3 newPos = Lerp(followSpeed, currentCamPos, idealOffset);
+    // 注視点もPlayerに合わせて動かす。
+    // @ TODO: 要調整。
+    auto followSpeed = isBossTumbler_ ? 10.0f : 5.0f;
+    Vector3 nextPos = Lerp(followSpeed * deltaTime , currentCamPos, idealPos);
 
-    // スクリーンロックの適用。
-    ApplyScreenRock(newPos);
-    g_camera3D->SetPosition(newPos);
+    // スクリーンロックの適応。
+    ApplyScreenRock(nextPos);
+    g_camera3D->SetPosition(nextPos);
 
 
-    // 注視点 (プレイヤーの少し上を見る)
-    Vector3 lookAtPoint = BOSS_FIXED_LOOKAT;
-    if (targetPos.y > THRESHOLD_Y_BOSS)
-        lookAtPoint.y += (targetPos.y - THRESHOLD_Y_BOSS);
-
+    // 注視店の設定。
     g_camera3D->SetTarget(lookAtPoint);
 }
 

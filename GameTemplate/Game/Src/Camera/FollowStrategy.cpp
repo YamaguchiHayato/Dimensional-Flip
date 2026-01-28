@@ -15,7 +15,7 @@ namespace
     const auto THRESHOLD_Y_STAGE = 100.0f;
 
     // ボス戦ステージ。。
-    const auto THRESHOLD_Y_BOSS = 20.0f;
+    const auto THRESHOLD_Y_BOSS = 15.0f;
 
     // 回転速度。
     const auto ROT_SPEED = 2.0f;
@@ -155,46 +155,27 @@ void FollowStrategy::BossCamera()
 {
     // 座標を取得する。
     // Player。
-    const Vector3 targetPos = pPlayer_->GetPlayerPos();
+    targetPos_ = pPlayer_->GetPlayerPos();
     // カメラ。
     const Vector3 currentCamPos = g_camera3D->GetPosition();
     // デルタタイム。
     const auto deltaTime = g_gameTime->GetFrameDeltaTime();
 
     // 目標位置。
-    Vector3 idealPos = BOSS_FIXED_POSS;
-    Vector3 lookAtPoint = BOSS_FIXED_LOOKAT;
+    idealPos_ = BOSS_FIXED_POSS;
+    lookAtPoint_ = BOSS_FIXED_LOOKAT;
 
     // ボスが疲労ステートに入ったかどうか確認。
     isBossTumbler_ = (pBoss_->GetCurrentState() == pBoss_->GetStateList()[app::enemyStatus::state_Tumble]);
-    if (isBossTumbler_ && targetPos.y > THRESHOLD_Y_BOSS)
-    {
-        // プレイヤーの回転を取得。
-        currentPlayerRot_ = pPlayer_->GetPlayerRotation();
+    if (isBossTumbler_ && targetPos_.y > THRESHOLD_Y_BOSS)
+        // 足場を登る際の視点を作成。
+        MakeClimbingPerspective();
 
-        backOffset_ = Vector3::Front * OFFSET_CLIMB.z;
-        currentPlayerRot_.Apply(backOffset_);
-
-        // XZ軸の同期。
-        idealPos.x = targetPos.x + OFFSET_CLIMB.x;
-        idealPos.z = targetPos.z + OFFSET_CLIMB.z;
-
-        // Y座標のみ高さを補正する。
-        idealPos.y = BOSS_FIXED_POSS.y + OFFSET_CLIMB.y;
-
-        frontOffset_ = Vector3::Front * 10.0f; // nf先を見る。
-        currentPlayerRot_.Apply(frontOffset_);
-
-
-        // 注視点の追従。
-        lookAtPoint = targetPos;
-        lookAtPoint.y += 5.0f;
-    }
 
     // 注視点もPlayerに合わせて動かす。
     // @ TODO: 要調整。
     auto followSpeed = isBossTumbler_ ? 10.0f : 5.0f;
-    Vector3 nextPos = Lerp(followSpeed * deltaTime , currentCamPos, idealPos);
+    Vector3 nextPos = Lerp(followSpeed * deltaTime , currentCamPos, idealPos_);
 
     // スクリーンロックの適応。
     ApplyScreenRock(nextPos);
@@ -202,7 +183,41 @@ void FollowStrategy::BossCamera()
 
 
     // 注視店の設定。
-    g_camera3D->SetTarget(lookAtPoint);
+    g_camera3D->SetTarget(lookAtPoint_);
+}
+
+
+void FollowStrategy::MakeClimbingPerspective()
+{
+    // Playerの移動ベクトルを取得。
+    auto moveVec = pPlayer_->GetMoveSpeed();
+    if (moveVec.LengthSq() > 0.001f)
+    {
+        // プレイヤーの回転を取得。
+        // 足場を登る際のみ、Playerの真後ろあたりのベクトルを設定。
+        currentPlayerRot_ = pPlayer_->GetPlayerRotation();
+    }
+
+    backOffset_ = Vector3::Front;
+    currentPlayerRot_.Apply(backOffset_);
+
+    // 最終的なオフセットを計算。
+    auto climbDist = OFFSET_CLIMB.z - 10.0f;
+    finalOffset_ = backOffset_ * climbDist;
+
+    // XZ軸の同期。
+    idealPos_.x = targetPos_.x + finalOffset_.x;
+    idealPos_.z = targetPos_.z + finalOffset_.z;
+
+    // Y軸の同期。
+    auto followY = targetPos_.y + OFFSET_CLIMB.y;
+    idealPos_.y = (followY > BOSS_FIXED_POSS.y) ? followY : BOSS_FIXED_POSS.y + 10.0f;
+
+    // 注視点の追従。
+    frontOffset_ = Vector3::Front;
+    currentPlayerRot_.Apply(frontOffset_);
+    lookAtPoint_ = targetPos_ + (frontOffset_ * 20.0f);
+    lookAtPoint_.y += 2.0f;
 }
 
 

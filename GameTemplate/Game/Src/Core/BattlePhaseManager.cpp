@@ -10,7 +10,7 @@
 namespace ScaffoldingStatus
 {
     const Vector3 SCALE_2D = Vector3(0.1f, 0.1f, 0.1f);
-    const Vector3 SCALE_3D = Vector3(0.5f, 0.1f, 0.5f);
+    const Vector3 SCALE_3D = Vector3(0.35f, 0.1f, 0.35f);
 
     // 2D用パターン: ボスの正面(X軸)に向かって階段状に配置
     const std::vector<Vector3> PATTERN_2D = {
@@ -23,14 +23,14 @@ namespace ScaffoldingStatus
 
     // 3D用パターン: ボスを中心に螺旋やジグザグに配置
     const std::vector<Vector3> PATTERN_3D = {
-            Vector3(-25.0f, 8.0f, 20.0f),   // 1: 左手前（スタート）
-            Vector3(0.0f, 16.0f, 30.0f),    // 2: 正面奥（Z軸を離して重なり防止）
-            Vector3(25.0f, 24.0f, 20.0f),   // 3: 右手前
-            Vector3(35.0f, 32.0f, -5.0f),   // 4: 右横（ボスの真横）
-            Vector3(25.0f, 40.0f, -30.0f),  // 5: 右奥
-            Vector3(-5.0f, 48.0f, -35.0f),  // 6: 真裏
-            Vector3(-30.0f, 56.0f, -20.0f), // 7: 左奥
-            Vector3(-35.0f, 64.0f, 5.0f)    // 8: 左横（ここから弱点へ！）
+        Vector3(0.0f, 5.0f, 20.0f),     // 1: 正面手前
+        Vector3(14.0f, 10.0f, 14.0f),   // 2: 右手前
+        Vector3(20.0f, 15.0f, 0.0f),    // 3: 右真横
+        Vector3(14.0f, 20.0f, -14.0f),  // 4: 右奥
+        Vector3(0.0f, 25.0f, -20.0f),   // 5: 真裏
+        Vector3(-14.0f, 30.0f, -14.0f), // 6: 左奥
+        Vector3(-20.0f, 35.0f, 0.0f),   // 7: 左真横
+        Vector3(-14.0f, 40.0f, 14.0f)   // 8: 左手前
     };
 }
 
@@ -91,11 +91,12 @@ namespace app
             const std::vector<Vector3>* currentPattern = nullptr;
             Vector3 currentScale = ScaffoldingStatus::SCALE_2D;
 
-
+            // Phase1なら2D用、Phase2以降なら3D用を選択
             if (currentPhase_ == app::enemyStatus::BossPhase::phase_One)
             {
                 // 足場生成リスト。
                 currentPattern = &ScaffoldingStatus::PATTERN_2D;
+
                 // 2D用の大きさ。
                 currentScale = ScaffoldingStatus::SCALE_2D;
             }
@@ -108,6 +109,7 @@ namespace app
                 // 3D用の大きさ。
                 currentScale = ScaffoldingStatus::SCALE_3D;
             }
+
 
             // パターンが存在しないなら処理は中断。
             if (currentPattern)
@@ -149,7 +151,6 @@ namespace app
             // パターンの座標数分だけ足場を有効化
             for (size_t i = 0; i < pattern.size(); ++i)
             {
-                // プールしている足場の数を超えない範囲で使用
                 if (i < platformsList_.size())
                     platformsList_[i]->Activate(pattern[i], scale);
             }

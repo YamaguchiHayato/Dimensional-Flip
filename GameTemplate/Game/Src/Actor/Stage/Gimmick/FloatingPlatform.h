@@ -68,7 +68,7 @@ namespace app
         private:
             Vector3 targetPos_ = Vector3::Zero;  // 最終的な固定位置
             Vector3 currentPos_ = Vector3::Zero; // 現在の位置
-            Vector3 currentScale_ = Vector3(0.1f, 0.1f, 0.1f); // 現在のスケール
+            Vector3 currentScale_ = Vector3(0.1f, 0.1f, 0.05f); // 現在のスケール
 
 
             bool isActive_ = false; // 足場がアクティブかどうか

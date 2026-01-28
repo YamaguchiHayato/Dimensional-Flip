@@ -70,7 +70,28 @@ namespace app
             void DeactivateScaffolding();
 
 
-            // ゲッター。
+        // セッター。
+        public:
+            // 何秒で切り替わるのかを設定。
+            inline void SetChangeInterval(float interval)
+            {
+                changeInterval_ = interval;
+            }
+
+            // 視点を切り替える時間を設定。
+            inline void SetDimensionTimer(float timer)
+            {
+                dimensionTimer_ = timer;
+            }  
+
+            // フェーズをセット。
+            inline void SetPhase(app::enemyStatus::BossPhase phase)
+            {
+                currentPhase_ = phase;
+            }
+
+
+        // ゲッター。
         public:
             // 現在のフェーズを取得。
             app::enemyStatus::BossPhase* GetCurrentPhase()
@@ -87,12 +108,17 @@ namespace app
             // 保持している足場を全て削除。
             void ClearAllPlatforms();
 
+
         private:
             // 足場を生成する。
             void CreatePlatform();
 
             // フェーズに応じた必要なクラスを探索・取得。
             void ApplyPhaseSettings();
+
+            // 時間差で視点を切り替える。
+            void ToggleDimension();
+
 
         private:
             app::enemyStatus::BossPhase currentPhase_ = app::enemyStatus::BossPhase::phase_One; // 現在のフェーズ。
@@ -102,6 +128,16 @@ namespace app
             app::collision::CollisionManager* environmentCollison_ = nullptr;                   // 環境設定用コリジョンマネージャー。
             CameraManager* environmentCamera_ = nullptr;                                        // 環境設定用カメラマネージャー。
             std::vector<app::gimmick::FloatingPlatform*> platformsList_;                        // 浮遊プラットフォーム群。
+
+            Player* pPlayer_ = nullptr; // プレイヤー。
+
+        private:
+            float dimensionTimer_ = 0.0f;
+            float changeInterval_ = 15.0f;
+
+
+            CameraMode currentCamMode_; // 現在のカメラモード。
+            CameraMode nextCamMode_;    // 次のカメラモード。
         };
 
     } // namespace core

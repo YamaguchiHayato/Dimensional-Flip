@@ -62,10 +62,14 @@ namespace app
             {
                 return state_ != SceneTransitionState::None;
             }
+
+
             inline StageID GetNextStageID() const
             {
                 return nextStageID_;
             }
+
+
             // カメラのモードを切り替える共通関数。
             void ChangeDimension(CameraMode mode);
 

@@ -18,6 +18,7 @@
 #include "Src/Actor/Character/Enemy/Boss/BossAttackState.h"
 #include "Src/Actor/Character/Enemy/Boss/BossDamageState.h"
 #include "Src/Actor/Character/Enemy/Boss/BossTumbleState.h"    
+#include "Src/Actor/Character/Enemy/Boss/BossDeadState.h"
 
 
 namespace
@@ -133,6 +134,9 @@ namespace app
             RegisterState<app::enemyState::BossTumbleState>(app::enemyStatus::state_Tumble);
             // ダメージステート。
             RegisterState<app::enemyState::BossDamageState>(app::enemyStatus::state_Hit);
+            // 死亡ステート。
+            RegisterState<app::enemyState::BossDeadState>(app::enemyStatus::state_Dead);
+
 
             // アニメーションをセットする。
             SetAnimation();
@@ -296,6 +300,10 @@ namespace app
              // ジャンプ
              animClips_[app::enemyStatus::BossAnimation::bossAnim_Jump].Load("Assets/animData/boss/jump.tka");
              animClips_[app::enemyStatus::BossAnimation::bossAnim_Jump].SetLoopFlag(false);
+
+             // 死亡ステート。
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Dead].Load("Assets/animData/boss/dead.tka");
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_Dead].SetLoopFlag(false);
         }
 
 

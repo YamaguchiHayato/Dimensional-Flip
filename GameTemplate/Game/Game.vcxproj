@@ -233,6 +233,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDeadState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h" />

@@ -84,6 +84,10 @@ namespace app
         enum EffectID : uint8_t
         {
             effect_FireBall = 0, // 火の玉
+            effect_Brest,        // ブレス
+            effect_Spear,        // 槍エフェクト
+            effect_Meteor,       // 隕石エフェクト
+            effect_Roar,         // 咆哮エフェクト
             effect_Hit,          // ヒットエフェクト
         };
 

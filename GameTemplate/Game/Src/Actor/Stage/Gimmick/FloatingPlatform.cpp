@@ -55,7 +55,7 @@ namespace app
             if (!isActive_)
                 return;
 
-            bool isMoving = false;
+            bool wasMoving = (currentPos_.y < targetPos_.y);
 
             // 移動処理
             if (currentPos_.y < targetPos_.y)
@@ -63,16 +63,17 @@ namespace app
                 currentPos_.y += 2.0f; // 上昇速度
                 if (currentPos_.y > targetPos_.y)
                     currentPos_.y = targetPos_.y;
-
-                isMoving = true;
             }
+
+            // 移動後の状態のチェック
+            bool isMoving = (currentPos_.y < targetPos_.y);
 
             // モデル座標更新
             render_.SetScale(currentScale_);
             render_.SetPosition(currentPos_);
             render_.Update();
 
-            if (isMoving || pPhysics_ == nullptr)
+            if (!isMoving || pPhysics_ == nullptr)
                 RefreshPhysics();
         }
 
@@ -116,7 +117,13 @@ namespace app
             render_.Update();
 
             // 出現したので物理判定を作成
-            RefreshPhysics();
+           // RefreshPhysics();
+
+            if (pPhysics_ != nullptr)
+            {
+                delete pPhysics_;
+                pPhysics_ = nullptr;
+            }
         }
 
 

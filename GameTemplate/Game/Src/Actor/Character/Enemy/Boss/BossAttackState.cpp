@@ -2,7 +2,6 @@
 #include "BossAttackState.h"
 
 
-
 // プレイヤーの情報を取得。
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
@@ -73,7 +72,6 @@ namespace app
             // フェーズによる切り替え。
             isPhase2D = (*pPhase == app::enemyStatus::BossPhase::phase_One);
 
-            // 
 
             // モードに応じた戦略の抽選
             if (mode == CameraMode::mode3D)
@@ -89,12 +87,14 @@ namespace app
                 currentState_->Enter(pBoss_);
         }
 
+
         void BossAttackState::Update()
         {
             // 攻撃ステートの更新。
             if (currentState_)
                 currentState_->Update();
         }
+
 
         void BossAttackState::Exit()
         {
@@ -109,13 +109,11 @@ namespace app
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::None);
         }
 
+
         bool BossAttackState::RequestID(uint8_t& request)
         {
             if (currentState_ && currentState_->IsFinished())
             {
-                // 終わっていれば後始末 (ここでインターバル設定などが実行される)
-                currentState_->Exit();
-
                 // 攻撃回数カウントなどの共通処理
                 pBoss_->AddAttackCount();
 

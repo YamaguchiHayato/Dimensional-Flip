@@ -59,6 +59,19 @@ namespace
     const auto MAX_HP = 3.0f;
 
     const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
+
+    // エフェクトｗセットするための構造体。
+    struct EffectResource
+    {
+        app::enemyStatus::EffectID effectID;
+        const char16_t* path;
+    };
+
+    // エフェクトリスト。
+    const EffectResource resources[] =
+    {
+        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"},
+    };
 }
 
 
@@ -140,6 +153,13 @@ namespace app
 
             // アニメーションをセットする。
             SetAnimation();
+
+            //
+            for (const auto& res : resources)
+            {
+                EffectEngine::GetInstance()->ResistEffect(res.effectID, res.path);
+            }
+
 
             // モデルをセットする。
             render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
@@ -312,11 +332,9 @@ namespace app
             RANGE; // 生成範囲。
 
             // 1. ランダムな角度 (0 ～ 360度)
-            // rand() % 360 で 0~359 の整数を作り、それをラジアンに変換します
             float angle = static_cast<float>(rand() % 360) * (3.14159265f / 180.0f);
 
             // 2. ランダムな距離 (0 ～ 半径)
-            // 中心からどれくらい離れるかをランダムに決めます
             float distance = static_cast<float>(rand() % static_cast<int>(RANGE));
 
             // 3. 角度と距離から座標を計算 (円の中に配置)

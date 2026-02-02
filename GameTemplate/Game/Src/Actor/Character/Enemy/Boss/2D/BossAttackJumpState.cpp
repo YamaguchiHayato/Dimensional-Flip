@@ -97,13 +97,16 @@ namespace app
                 targetPos_.y = 0.0f; // 地面に着地
                 targetPos_.z = 0.0f;
 
-                // ステージ外に行かないように制限。
-                if (targetPos_.x > STAGE_LIMIT_X)
-                    targetPos_.x = STAGE_LIMIT_X;
-                if (targetPos_.x < -STAGE_LIMIT_X)
-                    targetPos_.x = -STAGE_LIMIT_X;
+                // 目標座標 (Xはプレイヤー、Zはそのまま=2D軸移動)
+                targetPos_ = startPos_;
 
-                // 滞空時間の計算 
+                if (startPos_.x < playerPos.x)
+                    targetPos_.x = playerPos.x - CAMERA_EDGE_OFFSET;
+
+                else
+                    targetPos_.x = playerPos.x + CAMERA_EDGE_OFFSET;
+
+
                 float flightTimeFrame = (2.0f * JUMP_POWER) / GRAVITY;
 
                 // 必要な水平距離の計算
@@ -177,6 +180,16 @@ namespace app
                 }
 
             }
+        }
+
+
+        void BossAttackJumpState::InitEffect()
+        {
+            auto* pShockWaveEffect = NewGO<EffectEmitter>(0);
+            pShockWaveEffect->Init(app::enemyStatus::EffectID::effect_ShockWave);
+            pShockWaveEffect->SetPosition(pBoss_->GetPos());
+            pShockWaveEffect->SetScale(Vector3::One);
+            pShockWaveEffect->Play();
         }
 
 

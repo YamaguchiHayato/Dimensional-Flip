@@ -89,6 +89,7 @@ namespace app
             effect_Meteor,       // 隕石エフェクト
             effect_Roar,         // 咆哮エフェクト
             effect_ShockWave,    // 衝撃波エフェクト
+            effect_thunder,      // 雷エフェクト
             effect_Hit,          // ヒットエフェクト
         };
 

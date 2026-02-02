@@ -73,6 +73,7 @@ namespace
     {
         { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"}, // FireBall
         { app::enemyStatus::effect_ShockWave, u"Assets/effect/shockWave.efk"},// ShockWave
+        { app::enemyStatus::effect_thunder, u"Assets/effect/thunder.efk"}, // thunder
     };
 }
 
@@ -159,6 +160,7 @@ namespace app
             // リストに登録したエフェクトをまとめてセットする。
             for (const auto& res : resources)
             {
+                // IDとパスをセット。
                 EffectEngine::GetInstance()->ResistEffect(res.effectID, res.path);
             }
 

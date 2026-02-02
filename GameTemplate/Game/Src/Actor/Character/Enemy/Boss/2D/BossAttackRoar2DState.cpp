@@ -3,8 +3,22 @@
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Thunder.h"
+
+namespace
+{
+    const auto RANDOM_STRIKE_DURATION = 3.0f; // ランダム落雷の時間
+    const auto TOTAL_ATTACK_DURATION = 6.0f;  // 咆哮攻撃全体の時間
+
+    const uint8_t MAX_WAVES = 3;              // 左右スィープを繰り返す回数
+    const uint8_t STRIKES_PER_WAVE = 7;       // 1画面に並べる雷の数
+    const auto STRIKE_INTERVAL = 0.15f;       // 雷が左から右へ流れる速度（間隔）
+    const auto WAVE_DELAY = 1.0f;             // セットごとの待機時間
+
+    const auto STAGE_RANGE_X = 35.0f;         // ステージ端の座標。
 
 
+}
 
 namespace app
 {
@@ -30,6 +44,14 @@ namespace app
 
         void BossAttackRoar2DState::Update()
         {
+            // 経過時間を取得。
+            auto deltaTime = g_gameTime->GetFrameDeltaTime();
+            timer_ += deltaTime;
+            spawnTimer_ += deltaTime;
+
+            // 雷エフェクトの挙動。
+            ThunderEffectMovement();
+
             // 咆哮中もPlayerの方向を向いてほしいので、補正。
             LookAtPlayerDirection();
         }
@@ -44,7 +66,7 @@ namespace app
 
         bool BossAttackRoar2DState::IsFinished() const
         {
-            return !pBoss_->IsPlayingAnimation();
+            return isMovingAttackStarted_ && !pBoss_->IsPlayingAnimation();
         }
 
 
@@ -69,6 +91,72 @@ namespace app
 
             // 回転を合成して適応。
             pBoss_->SetRot(targetRot);
+        }
+
+
+        void BossAttackRoar2DState::ThunderEffectMovement()
+        {
+            // フェーズ1
+            // 左から順番に落としていく。
+            if (waveCount_ < MAX_WAVES)
+            {
+                if (spawnTimer_ >= STRIKE_INTERVAL)
+                {
+                    // 生成時間を設定。
+                    SetSpawnTimer(0.0f);
+
+                    // エフェクトの位置を設定。
+                    SettingThunderEffect();
+                }
+            }
+
+
+            // フェーズ2
+            // 画面奥から画面手前に移動させる。
+            else if (!isMovingAttackStarted_)
+            {
+                // 画面奥から手前に向かって、横一列に生成。
+                for (uint8_t i = 0; i < STRIKES_PER_WAVE; i++)
+                {
+                    float startX = -STAGE_RANGE_X;
+                    float stepX = (STAGE_RANGE_X * 2.0f) / (STRIKES_PER_WAVE - 1);
+
+                    auto* t = NewGO<app::gimmick::Thunder>(0);
+                    Vector3 thunderPos = Vector3(startX + (stepX * i), 0.0f, 200.0f);
+                    t->SetParam(thunderPos, app::gimmick::ThunderMode::Moving, 2.0f);
+                }
+
+                // 生成を1回行い終了。
+                isMovingAttackStarted_ = true;
+            }
+        }
+
+
+        void BossAttackRoar2DState::SettingThunderEffect()
+        {
+            // ステージ端(-35 ～　35)。
+            // エフェクトの位置を均等に分割。
+            auto startPos = -STAGE_RANGE_X;
+            auto endPos = STAGE_RANGE_X;
+            auto stepX = (endPos - startPos) / (STRIKES_PER_WAVE - 1);
+
+            auto spawnX = startPos + (stepX * strikeIndex);
+
+
+            // エフェクトの生成。
+            auto* t = NewGO<app::gimmick::Thunder>(0);
+            t->SetParam(Vector3(spawnX, 0.0f, 0.0f), app::gimmick::ThunderMode::Stationary, 5.0f);
+
+            // 次の位置に移動する。
+            strikeIndex++;
+
+            // 1画面分を出し切ったら次のフェーズへ。
+            if (strikeIndex >= STRIKES_PER_WAVE)
+            {
+                strikeIndex = 0;
+                waveCount_++;
+                spawnTimer_ = -WAVE_DELAY;
+            }
         }
     }
 }

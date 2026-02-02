@@ -17,7 +17,7 @@ namespace
 
     const int MAX_JUMP_COUNT = 3;
 
-    const auto LEG_HIT_RADIUS = 5.0f; // 足元の当たり判定の半径。
+    const auto LEG_HIT_RADIUS = 20.0f; // 足元の当たり判定の半径。
 } 
 
 namespace app
@@ -158,6 +158,9 @@ namespace app
 
         void BossAttackJumpState::UpdateLanding()
         {
+            // 着地中もPlayerの当たり判定を行う。
+            CheckPlayerCollision();
+
             // 着地アニメーションが終わるのを待つ
             if (!pBoss_->IsPlayingAnimation())
             {

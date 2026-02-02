@@ -12,7 +12,7 @@ namespace
 
     const uint8_t MAX_WAVES = 3;              // 左右スィープを繰り返す回数
     const uint8_t STRIKES_PER_WAVE = 7;       // 1画面に並べる雷の数
-    const auto STRIKE_INTERVAL = 0.15f;       // 雷が左から右へ流れる速度（間隔）
+    const auto STRIKE_INTERVAL = 0.4f;        // 雷が左から右へ流れる速度（間隔）
     const auto WAVE_DELAY = 1.0f;             // セットごとの待機時間
 
     const auto STAGE_RANGE_X = 35.0f;         // ステージ端の座標。

@@ -48,6 +48,7 @@ namespace
     // コリジョンの半径。
     const float WEEKE_POINT_RADIUS = 5.0f;
 
+
     const auto WEAK_POINT_HEIGHT = 22.0f;
 
     // 攻撃可能なコリジョン。
@@ -70,7 +71,8 @@ namespace
     // エフェクトリスト。
     const EffectResource resources[] =
     {
-        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"},
+        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"}, // FireBall
+        { app::enemyStatus::effect_ShockWave, u"Assets/effect/shockWave.efk"},// ShockWave
     };
 }
 
@@ -154,7 +156,7 @@ namespace app
             // アニメーションをセットする。
             SetAnimation();
 
-            //
+            // リストに登録したエフェクトをまとめてセットする。
             for (const auto& res : resources)
             {
                 EffectEngine::GetInstance()->ResistEffect(res.effectID, res.path);

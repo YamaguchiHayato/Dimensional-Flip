@@ -27,11 +27,22 @@ namespace app
             bool IsFinished() const override;
 
 
+        // ジャンプ処理を状態ごとに更新する。
         private:
+            // ステート全体を更新。
             void UpdateState();
+
+            // Prepare状態。
             void UpdatePrepare();
+
+            // Jumping状態。
             void UpdateJumping();
+
+            // Landing状態。
             void UpdateLanding();
+
+            // エフェクトをセットする。
+            void InitEffect();
 
 
         private:

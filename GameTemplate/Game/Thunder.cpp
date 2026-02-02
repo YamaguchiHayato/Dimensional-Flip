@@ -5,9 +5,9 @@
 
 namespace
 {
-    const auto WARNING_TIME = 1.0f;    // 警告UIの描画時間。
-    const auto FALLING_SPEED = 5.0f; // 雷エフェクトの落下速度。
-    const auto HIT_RADIUS = 0.5f;     // 当たり判定。
+    const auto WARNING_TIME = 1.5f;    // 警告UIの描画時間。
+    const auto FALLING_SPEED = 50.0f;   // 雷エフェクトの落下速度。
+    const auto HIT_RADIUS = 0.5f;      // 当たり判定。
 
     const auto WARNING_UI_WIDHT = 128.0f;
     const auto WARNING_UI_HEIGHT = 128.0f;
@@ -124,7 +124,7 @@ namespace app
                 CheckCollision();
 
             // エフェクトを終了、画面外に移動すると削除するように指定。
-            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.z > 100.0f)
+            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.z > -100.0f)
                 DeleteGO(this);
         }
 
@@ -139,8 +139,7 @@ namespace app
 
             // 水平距離のみで距離判定を取る。
             Vector3 diff = playerPos - pos_;
-            diff.y = 0.0f;
-
+\
             // 攻撃半径の計算。
             auto radius = HIT_RADIUS * baseScale_;
             if (diff.LengthSq() <= radius * radius)

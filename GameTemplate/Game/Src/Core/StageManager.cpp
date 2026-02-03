@@ -24,7 +24,6 @@
 
 // ギミック。
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
-#include "Src/Actor/Stage/Gimmick/RotationFool.h"
 
 
 // ゲームシーン。  

@@ -2,7 +2,7 @@
 
 #include "BossAttackSpearState.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
-#include "Src/Actor/Stage/Gimmick/Spear.h" // 槍クラス
+#include "Src/Actor/Stage/Gimmick/BossGimmick/Spear.h" // 槍クラス
 
 namespace
 {

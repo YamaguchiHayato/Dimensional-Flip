@@ -5,7 +5,7 @@
 #include "Src/Actor/Character/Player/Player.h"
 
 // ステージギミック。
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
 
 
 // カットイン。

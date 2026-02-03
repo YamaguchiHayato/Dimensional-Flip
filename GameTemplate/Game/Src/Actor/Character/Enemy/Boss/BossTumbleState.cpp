@@ -17,7 +17,7 @@
 #include "Src/UI/ButtonActionUI.h"
 
 // gimmick。
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
 
 namespace
 {

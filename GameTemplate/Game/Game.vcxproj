@@ -249,8 +249,15 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\FireBall.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Lift.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
@@ -271,14 +278,7 @@
     <ClCompile Include="Src\Actor\Character\Player\PlayerJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\PlayerRunState.cpp" />
     <ClCompile Include="Src\Actor\Character\Status.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\IGimmic.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\JumpPad.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Meteo.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\RotationFool.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Spear.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Star.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\IStage.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
@@ -335,7 +335,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
-    <ClCompile Include="Thunder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -364,8 +363,15 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\FireBall.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Lift.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />
@@ -386,14 +392,7 @@
     <ClInclude Include="Src\Actor\Character\Player\PlayerJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Player\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Status.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\IGimmic.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\JumpPad.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Meteo.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\RotationFool.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Spear.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Star.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\IStage.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
@@ -446,7 +445,6 @@
     <ClInclude Include="Src\WallActor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
-    <ClInclude Include="Thunder.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

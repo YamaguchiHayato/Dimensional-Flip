@@ -5,7 +5,7 @@
 
 #include "Src/Actor/Character/Enemy/Boss/BossAttackState.h"
 
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Core/Game.h"

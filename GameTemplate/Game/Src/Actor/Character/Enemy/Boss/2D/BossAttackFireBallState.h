@@ -2,7 +2,7 @@
 #include "Src/Actor/Character/Enemy/Boss/IBossStrategy.h"
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
-#include "Src/Actor/Stage/Gimmick/FireBall.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/FireBall.h"
 
 #include "Src/Actor/Character/Player/Player.h"
 

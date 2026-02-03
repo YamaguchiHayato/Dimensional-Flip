@@ -8,8 +8,8 @@
 #include "Src/Actor/Character/Player/Player.h"
 
 // ギミッククラス。
-#include "Src/Actor/Stage/Gimmick/Star.h"
-#include "Src/Actor/Stage/Gimmick/Wall.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
 
 // 敵クラス。
 

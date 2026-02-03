@@ -3,7 +3,7 @@
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/WallActor.h"
-#include "Src/Actor/Stage/Gimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 
 namespace nsStage3
 {

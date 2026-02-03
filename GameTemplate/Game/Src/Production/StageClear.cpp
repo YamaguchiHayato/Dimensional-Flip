@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Fade.h"
 #include "StageClear.h"
-#include "Src/Actor/Stage/Gimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Core/StageManager.h"
 #include "Src/Core/SceneManager.h"
 

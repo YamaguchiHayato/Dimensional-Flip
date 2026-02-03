@@ -3,8 +3,8 @@
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 
 
-#include "Src/Actor/Stage/Gimmick/Wall.h"
-#include "Src/Actor/Stage/Gimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Actor/Character/Enemy/EnemyFactory.h"
 
 

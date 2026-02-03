@@ -11,8 +11,8 @@
 // データ統合クラス。
 #include "Src/Core/Game.h"
 // ギミック。
-#include "Src/Actor/Stage/Gimmick/Star.h"
-#include "Src/Actor/Stage/Gimmick/RotationFool.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 
 namespace

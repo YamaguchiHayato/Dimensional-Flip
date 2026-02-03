@@ -2,7 +2,7 @@
 #include "BossAttackMeteoState.h"
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
-#include "Src/Actor/Stage/Gimmick/Meteo.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/Meteo.h"
 
 
 namespace

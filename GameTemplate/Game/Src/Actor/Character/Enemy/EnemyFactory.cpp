@@ -173,7 +173,7 @@ namespace app
             std::vector<IEnemy*> list;
 
             // 複数体生成させる。
-            for (uint8_t i = 0; i < 15; ++i)
+            for (uint8_t i = 0; i < 5; ++i)
             {
                 auto* spawnInstance = NewGO<Thwomp>(0, "thwomp");
 
@@ -218,7 +218,7 @@ namespace app
 
 
             // 設定した数値分、生成。
-            for (uint8_t i = 0; i < 15.0f; ++i)
+            for (uint8_t i = 0; i < 5.0f; ++i)
             {
                 // 生成。
                 auto* fallInstance = NewGO<FallEnemy>(0, "fallEnemy");

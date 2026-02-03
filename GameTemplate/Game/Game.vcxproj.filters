@@ -245,6 +245,7 @@
     <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp" />
     <ClCompile Include="Thunder.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Lift.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -447,6 +448,7 @@
     <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDeadState.h" />
     <ClInclude Include="Thunder.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Lift.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

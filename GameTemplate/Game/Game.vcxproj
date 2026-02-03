@@ -250,6 +250,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\FireBall.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\Lift.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\FireBall.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\Lift.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />

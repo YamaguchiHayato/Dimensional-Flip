@@ -17,7 +17,7 @@ namespace
 
     const int MAX_JUMP_COUNT = 3;
 
-    const auto LEG_HIT_RADIUS = 20.0f; // 足元の当たり判定の半径。
+    const auto LEG_HIT_RADIUS = 10.0f; // 足元の当たり判定の半径。
 } 
 
 namespace app
@@ -129,9 +129,6 @@ namespace app
 
             velocity_.y -= GRAVITY; // 重力落下
             pos += velocity_;
-
-            // 空中での足元の当たり判定。
-            CheckPlayerCollision();
 
             // 着地判定 (Y <= 0)
             if (pos.y <= 0.0f)

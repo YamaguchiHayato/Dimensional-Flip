@@ -98,7 +98,7 @@ namespace app
             auto* fireBall = NewGO<app::gimmick::FireBall>(0);
 
             // 以前の要望通りサイズを大きく
-            fireBall->SetScale(Vector3::One * 4.0);
+            fireBall->SetScale(Vector3::One * 1.25);
 
             // 進行方向に対してエフェクトを倒す設定
             Quaternion tilt;

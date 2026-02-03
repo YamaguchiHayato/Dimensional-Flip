@@ -124,7 +124,7 @@ namespace app
                 CheckCollision();
 
             // エフェクトを終了、画面外に移動すると削除するように指定。
-            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.z > -100.0f)
+            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.z < -100.0f)
                 DeleteGO(this);
         }
 
@@ -139,7 +139,8 @@ namespace app
 
             // 水平距離のみで距離判定を取る。
             Vector3 diff = playerPos - pos_;
-\
+            diff.y = 0.0f;
+
             // 攻撃半径の計算。
             auto radius = HIT_RADIUS * baseScale_;
             if (diff.LengthSq() <= radius * radius)

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Src/Actor/Stage/Gimmick/Meteo.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/Meteo.h"
 
 namespace
 {

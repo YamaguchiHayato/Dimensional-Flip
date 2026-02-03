@@ -85,14 +85,15 @@ namespace app
 
         void Game::InitSkyCube()
         {
-            DeleteGO(pSkyCube_);
-
             pSkyCube_ = NewGO<SkyCube>(0, "skycube");
 
-            pSkyCube_->SetScale(Vector3::One * 2000.0f);
-            pSkyCube_->SetScale(700.0f);
+            pSkyCube_->SetScale(Vector3::One * 100.0f);
+
+            // IBLテクスチャを設定。
             g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(), 1.0f);
 
+            // SkyCubeのタイプを設定。
+            pSkyCube_->SetType(EnSkyCubeType::enSkyCubeType_Day);
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
 

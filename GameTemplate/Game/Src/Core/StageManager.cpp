@@ -35,6 +35,7 @@ namespace app
     {
         StageManager* StageManager::pStageManger_ = nullptr;
 
+
         StageManager::~StageManager()
         {
             // このポインタをシングルトンで削除。
@@ -43,6 +44,7 @@ namespace app
 
             DeleteGO(pCurrentStage_);
         }
+
 
         bool StageManager::Start()
         {
@@ -57,6 +59,7 @@ namespace app
             return false;
         }
 
+
         void StageManager::Update()
         {
             if (stageRequestID_ != StageID::sInvalid)
@@ -68,6 +71,7 @@ namespace app
             if (pCurrentStage_ != nullptr)
                 pCurrentStage_->Update();
         }
+
 
         void StageManager::ChangeStageSync(StageID newStageID)
         {
@@ -130,6 +134,7 @@ namespace app
             OutputDebugStringA("ChangeStageSync: end.\n");
         }
 
+
         IStage* StageManager::CreateStage(StageID id)
         {
             switch (id)
@@ -160,6 +165,7 @@ namespace app
 
             return pCurrentStage_;
         }
+
 
         void StageManager::Render(RenderContext& rc)
         {

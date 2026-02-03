@@ -23,37 +23,16 @@
 
 namespace
 {
-    // 攻撃インターバル時間。
-    const auto INTERVAL = 4.0f;
-
-    // 次の攻撃までのインターバルを管理する変数。
-    const auto NEXT_INTERVAL = 4.0f;
-
-    // アニメーション再生後から何秒後に生成するか。
-    // モーションに合わせて調整する。
-    const auto ATTACK_TARGET_TIME = 0.8f;
-
-    // 隕石を生成する個数。
-    const uint8_t METEO_SPAWN_NUM = 6;
-
-    // 何回攻撃したら疲れるか 
-    const uint8_t ATTACK_LIMIT_TO_TIRED = 5;
-
     // 生成範囲。
     const auto RANGE = 20.0f;
 
-    // 疲労状態（足場が出ている）の時間
-    const auto TIRED_DURATION = 20.0f;
-
     // コリジョンの半径。
-    const float WEEKE_POINT_RADIUS = 5.0f;
+    const float WEEKE_POINT_RADIUS = 2.5f;
 
-
+    // コリジョンの高さ。
     const auto WEAK_POINT_HEIGHT = 22.0f;
 
-    // 攻撃可能なコリジョン。
-    const Vector3 CAN_ATTACK_COLLISION_POSITION = Vector3(0.0f, WEAK_POINT_HEIGHT, 0.0f);
-
+    // ステージのX方向の制限。
     const float STAGE_LIMIT_X = 35.0f;
 
     // 最大HP

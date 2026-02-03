@@ -31,6 +31,11 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_BGM_BOSS] = false;
 		m_sound[GameSoundList_BGM_BOSS] = nullptr;
 
+		// ボスにダメージを与える音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_BossHit, "Assets/sound/se/bossHit.wav");
+		m_isPlayingSound[GameSoundList_SE_BossHit] = false;
+		m_sound[GameSoundList_SE_BossHit] = nullptr;
+
 		//3. リザルト画面BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Result, "Assets/sound/bgm/result.wav");
 		m_isPlayingSound[GameSoundList_BGM_Result] = false;

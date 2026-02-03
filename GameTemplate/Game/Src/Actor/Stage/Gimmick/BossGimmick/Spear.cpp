@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Src/Actor/Stage/Gimmick/Spear.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/Spear.h"
 
 namespace
 {

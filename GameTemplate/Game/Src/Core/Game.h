@@ -16,7 +16,7 @@
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/TimerUI.h"
 
-#include "BackGround.h"
+#include "Src/Actor/Stage/BackGround.h"
 
 class CameraManager;
 class Player;

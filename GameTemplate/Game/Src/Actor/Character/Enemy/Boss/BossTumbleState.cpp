@@ -11,7 +11,7 @@
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
 #include "Src/Core/BossUIManager.h"
-
+#include "Src/Core/SoundManager.h"
 
 // UI。
 #include "Src/UI/ButtonActionUI.h"
@@ -94,6 +94,13 @@ namespace app
             {
                 if (CheckWeakPointHit())
                 {
+                    // Playerのバウンド処理。
+                    if (auto* pPlayer = pBoss_->GetPlayer())
+                        pPlayer->Bound();
+
+                    // ヒットSEを鳴らす。
+                    app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_BossHit);
+
                     request = app::enemyStatus::BossState::state_Hit;
                     return true;
                 }
@@ -120,7 +127,7 @@ namespace app
                 return false;
 
             // ボスへの攻撃判定ベクトルの作成。
-            headPos_ = pBoss_->GetPos() + Vector3(0.0f, 22.0f, 0.0f);
+            headPos_ = pBoss_->GetWeakPoint();
             playerPos_ = pPlayer->GetPlayerPos();
 
 
@@ -128,16 +135,19 @@ namespace app
             diff_ = playerPos_ - headPos_;
             auto distXZ = sqrtf(diff_.x * diff_.x + diff_.z * diff_.z);
 
+            // 水平方向。
+            bool isNearXZ_ = (distXZ < 2.0f);
 
-            // 高さを指定する。
-            isAbove_ = (diff_.y > 0.0f && diff_.y < 30.0f);
+            // 高さ判定。
+            bool isAboveY = (diff_.y > 0.0f && diff_.y < 5.0f);
+
+            //
+            bool isFalling = (pPlayer->GetMoveSpeed().y <= 0.0f);
+
 
             // 範囲内かつ、ボスの頭上付近にいればヒット判定とする。
-            if (distXZ < 5.0f && isAbove_)
-            {
-                // @TODO:  ヒット時の効果音の再生を行う。
+            if (isNearXZ_ && isAboveY && isFalling)
                 return true;
-            }
 
             return false;
 

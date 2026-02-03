@@ -3,7 +3,7 @@
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Thunder.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/Thunder.h"
 
 namespace
 {

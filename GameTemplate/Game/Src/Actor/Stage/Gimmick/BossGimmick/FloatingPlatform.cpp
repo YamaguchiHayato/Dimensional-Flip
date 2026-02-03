@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "Src/Actor/Stage/Gimmick/FloatingPlatform.h"
+#include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
 
 namespace
 {

@@ -114,9 +114,10 @@ bool Player::Start()
     pRender_ = new Character2DRender();
     pRender_->Init(std::vector<std::string>(PARH_LIST, PARH_LIST + MAX_NUM));
 
+    // 当たり判定。
     charaCon_.Init(2.0f, 1.0f, pos_);
+
     // プレイヤーのステータスを初期化する。
-    
     // 最大HP、移動速度、攻撃力を設定。   
     status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
 
@@ -130,6 +131,10 @@ bool Player::Start()
 
 
     SetRespwanPos(pos_);
+
+    // 踏みつけた際の跳ね返り値を設定。
+    SetJumpPower(100.0f);
+
     return true;
 }
 

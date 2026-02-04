@@ -11,12 +11,12 @@
 #include "Src/Core/CameraManager.h"
 
 // ギミック。
-#include "Src/Actor/Stage/Gimmick/JumpPad.h"
-#include "Src/Actor/Stage/Gimmick/Star.h"
-#include "Src/Actor/Stage/Gimmick/RotationFool.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/JumpPad.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/RotationFool.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/WallActor.h"
-#include "Src/Actor/Stage/Gimmick/Wall.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
 
 
 namespace
@@ -99,11 +99,12 @@ namespace EnemySpawnPos
 
     }
 
+    // 回転敵。
     namespace Thwomp
     {
         // 生成位置。。
         // 上空から落ちてくるように高いY座標を指定。
-        const Vector3 spawnPosition = Vector3(1150.0f, 60.0f, 0.0f);
+        const Vector3 spawnPosition = Vector3(1150.0f, 400.0f, 0.0f);
 
         // トリガー座標。
         // Playerがこの座標付近に来るとフラグを立てる。
@@ -122,7 +123,7 @@ namespace EnemySpawnPos
 
     namespace FallEnemy
     {
-        const Vector3 pos = Vector3(320.0f, 40.0f, -10.0f);
+        const Vector3 pos = Vector3(320.0f, 150.0f, -10.0f);
     }
 
 }
@@ -229,8 +230,6 @@ bool Stage1::Start()
     // トゥイーンエネミー生成。
     CreateThwompEnemy();
 
-    // 追従敵の生成。
-//    CreateTrackingEnemy();
 
 	stageRender_.Update();
 

@@ -104,6 +104,8 @@ namespace nsK2Engine {
 			m_animation.Play(animNo, interpolateTime);
 		}
 
+		int GetNumBones() const { return m_skeleton.GetNumBones(); }
+
 		/// <summary>
 		/// アニメーションの再生中？
 		/// </summary>

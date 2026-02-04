@@ -149,9 +149,6 @@ namespace app
             render_.SetPosition(pos_);
             render_.SetScale(SCALE);
 
-            // ボーンIDを取得。
-            weakPointBoneID_ = render_.FindBoneID(L"Head");
-
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
@@ -159,11 +156,13 @@ namespace app
 
 
             pWeeekPoint_ = NewGO<CollisionObject>(0);
-
             pWeeekPoint_->CreateSphere(pos_ + Vector3(0.0f, 300.0f, 50.0f), Quaternion::Identity, WEEKE_POINT_RADIUS);
             pWeeekPoint_->SetIsEnableAutoDelete(false);
             pWeeekPoint_->SetIsEnable(false);
 
+            weakPointBoneID_ = render_.FindBoneID(L"mixamorig:Head");
+            // デフォルト値を使用。
+            SetWeakPointHeight(22.0f, false);
 
             // 初期ステートの登録。
             pCurrentState_ = pStateList_[app::enemyStatus::state_Idle];
@@ -178,6 +177,17 @@ namespace app
 
             // HPを初期化。
             SetHP(MAX_HP);
+            for (int i = 0; i < render_.GetNumBones(); ++i)
+            {
+                // i番目のボーンを取得
+                auto* bone = render_.GetBone(i);
+                if (bone)
+                {
+                    // 名前を出力
+                    OutputDebugStringW(bone->GetName());
+                    OutputDebugStringW(L"\n");
+                }
+            }
 
 
             return true;
@@ -216,19 +226,19 @@ namespace app
             // 回転。
             Rotaition();
 
-            // 攻撃可能をコリジョンの位置。
-            if (pWeeekPoint_)
-                pWeeekPoint_->SetPosition(GetWeakPoint());
-
             // モデル本体の更新。
             render_.SetRotation(rot_);
             render_.SetScale(SCALE);
             render_.SetPosition(pos_);
+            render_.Update();
+
+            // ボーン位置にコリジョンを合わせる。
+            if (pWeeekPoint_)
+                pWeeekPoint_->SetPosition(GetWeakPoint());
 
             // UIにHPの情報を通知。
             app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(GetHP()), MAX_HP);
 
-            render_.Update();
         }
 
 

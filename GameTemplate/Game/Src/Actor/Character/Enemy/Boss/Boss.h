@@ -100,6 +100,14 @@ namespace app
                 bossHP_ = hp;
             }
 
+            // ステートから弱点コリジョンの高さを上書き。
+            inline void SetWeakPointHeight(float height, bool overrideBone)
+            {
+                manualWeakHeight_ = height;
+                isManualOverride_ = overrideBone;
+            }
+
+
 
         // ゲッター。
         public:
@@ -142,7 +150,8 @@ namespace app
             // 疲労状態に入るか。
             inline bool IsTired() const
             {
-                return attackCount_ >= 3;
+//                return attackCount_ >= 3;
+                return attackCount_ >= 1;
             }
 
             // 攻撃クラスの座標計算を取得。
@@ -151,20 +160,20 @@ namespace app
             // 弱点ベクトルのワールド座標を取得する。
             Vector3 GetWeakPoint() const
             {
-                // ボーンが見つかっていない場合は固定位置を返す。
-                if (weakPointBoneID_ == -1)
-                    return pos_ + Vector3(0.0f, 22.0f, 0.0f);
+                // ステートで false に設定された場合、ボーンがあればここが実行される
+                if (!isManualOverride_ && weakPointBoneID_ != -1)
+                {
+                    const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
+                    Vector3 boneWorldPos;
+                    boneWorldPos.Set(mat.v[3]);
 
-                // ボーンのワールド行列を取得。
-                const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
+                    // ボスの移動とアニメーションの両方が反映された座標をそのまま返す
+                    return boneWorldPos;
+                }
 
-                // 位置を取得。
-                Vector3 pos;
-                // ID。
-                pos.Set(mat.v[3]); // Skeleton.cppの実装に準拠
-                return pos;
+                // ボーンがない、または手動フラグが true の時の予備（足元 + 高さ）
+                return pos_ + Vector3(0.0f, manualWeakHeight_, 0.0f);
             }
-
             // ゲームクラスを取得。
             inline app::core::Game* GetGameInstance() const
             {
@@ -246,10 +255,11 @@ namespace app
             bool isCutInActive;
             bool isPhasePlaying;
             bool canBeAttacked_ = true;    // ダメージを受け付けるかどうか。
+            bool isManualOverride_ = false;
 
             float stateTimer_ = 0.0f;
             float nextInterval_ = 3.0f;
-
+            float manualWeakHeight_ = 22.0f;
             // @ uint8_tだと負数が扱えないためint型で定義。
             int weakPointBoneID_ = -1;
             

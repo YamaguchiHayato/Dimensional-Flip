@@ -19,7 +19,7 @@ namespace ScaffoldingStatus
     const std::vector<Vector3> PATTERN_2D = {
         Vector3(-25.0f, 8.0f, 0.0f),  // 1段目 (左端)
         Vector3(-10.0f, 16.0f, 0.0f), // 2段目 (中央)
-        Vector3(0.0f, 24.0f, 0.0f),   // 3段目 (右端)
+        Vector3(10.0f, 24.0f, 0.0f),   // 3段目 (右端)
         Vector3(20.0f, 32.0f, 0.0f)   // 4段目 (中央)
     };
 

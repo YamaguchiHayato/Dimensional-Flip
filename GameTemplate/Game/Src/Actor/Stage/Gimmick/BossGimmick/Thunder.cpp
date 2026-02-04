@@ -11,6 +11,7 @@ namespace
 
     const auto WARNING_UI_WIDHT = 128.0f;
     const auto WARNING_UI_HEIGHT = 128.0f;
+    const auto UI_OFFSET_Y = 350.0f;
 
 }
 
@@ -46,8 +47,10 @@ namespace app
         void Thunder::Render(RenderContext& rc)
         {
             // 攻撃フェーズ時のみ描画する。
-            if (isWarningVisible_)
+            if (isWarningVisible_ || currentStep_ == ThunderStep::Falling)
+            {
                 warnigUIRender_.Draw(rc);
+            }
         }
 
 
@@ -77,31 +80,30 @@ namespace app
         {
             timer_ += deltaTime;
 
-            // カウントダウン演出。
-            auto scaleProgress = 1.0f - (timer_ / WARNING_TIME);
-            float currentScale = baseScale_ * scaleProgress;
-            warnigUIRender_.SetScale(Vector3::One * currentScale);
+            // 左から右へ移動（X軸）
+            if (currentMode_ == ThunderMode::Moving)
+            {
+                pos_.x += FALLING_SPEED * deltaTime;
+            }
 
-
-            // UIをエフェクトを生成する位置にあわせて表示する。
-            Vector2 screenPos;
+            // --- ここで座標変換を行う ---
+            Vector2 screenPos; // 変換後の座標を受け取る変数
+            // 3Dカメラ(g_camera3D)を使ってワールド座標(pos_)をスクリーン座標に変換
             g_camera3D->CalcScreenPositionFromWorldPosition(screenPos, pos_);
 
+            // UIの位置をスクリーン座標に更新 (Vector2をVector3としてセット)
+            warnigUIRender_.SetPosition({screenPos.x, screenPos.y + UI_OFFSET_Y, 0.0f});
 
-            warnigUIRender_.SetPos(screenPos);
+            // スケール計算（warningDuration_を使用）
+            auto progress = timer_ / warningDuration_;
+            float currentScale = baseScale_ * (1.0f - (progress * 0.5f));
+
+            warnigUIRender_.SetScale(Vector3::One * currentScale);
             warnigUIRender_.Update();
 
-
-            // 描画設定時間だけ描画を行う(UI)。
-            if (timer_ >= WARNING_TIME)
+            if (timer_ >= warningDuration_)
             {
-                // 警告エフェクトの描画を終了する。
-                isWarningVisible_ = false;
-
-                // 雷エフェクトを描画。
                 CreateThunderEffect();
-
-                // ステートを更新。
                 currentStep_ = ThunderStep::Falling;
                 timer_ = 0.0f;
             }
@@ -110,22 +112,30 @@ namespace app
 
         void Thunder::UpdateStrike(float deltaTime)
         {
-            // 移動処理。
-            // 移動ステートの時。
             if (currentMode_ == ThunderMode::Moving)
             {
-                pos_.z -= FALLING_SPEED * deltaTime;
+                // 攻撃中も右へ移動し続ける
+                pos_.x += FALLING_SPEED * deltaTime;
+
+                // 雷エフェクトを追従させる
                 if (pThunderEffect_)
                     pThunderEffect_->SetPosition(pos_);
+
+                Vector2 screenPos;
+                g_camera3D->CalcScreenPositionFromWorldPosition(screenPos, pos_);
+                warnigUIRender_.SetPosition({screenPos.x, screenPos.y + UI_OFFSET_Y, 0.0f});
+                warnigUIRender_.Update();
             }
 
-            // 当たり判定(必要な時だけ計算を行う。)
             if (!hasDamaged_)
                 CheckCollision();
 
-            // エフェクトを終了、画面外に移動すると削除するように指定。
-            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.z < -100.0f)
+            // 画面外（右端）に行き過ぎた場合などの終了判定をX軸に変更
+            if (!pThunderEffect_ || !pThunderEffect_->IsPlay() || pos_.x > 100.0f)
+            {
+                isWarningVisible_ = false;
                 DeleteGO(this);
+            }
         }
 
 

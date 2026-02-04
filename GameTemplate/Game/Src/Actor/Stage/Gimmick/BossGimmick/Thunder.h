@@ -36,13 +36,21 @@ namespace app
 
         public:
             // 初期パラメータを設定。
-            inline void SetParam(const Vector3& pos, ThunderMode mode, float scale)
+            inline void SetParam(const Vector3& pos, ThunderMode mode, float scale, float duration)
             {
                 pos_ = pos;
                 currentMode_ = mode;
                 baseScale_ = scale;
+                scale_ = Vector3::One * scale;
+                warningDuration_ = duration;
             }
 
+
+        public:
+            const Vector3& GettTargetWorldPos() const
+            {
+                return targetPos_;
+            }
 
         private:
             // ステート全体を更新。
@@ -74,12 +82,15 @@ namespace app
 
             Vector3 pos_ = Vector3::Zero;
             Vector3 scale_ = Vector3::One;
+            Vector3 targetPos_ = Vector3::Zero;
             Quaternion rot_ = Quaternion::Identity;
 
             SpriteRender warnigUIRender_;
          
             float timer_ = 0.0f;
             float baseScale_ = 1.0f;
+            float warningDuration_ = 1.5f;
+
             bool hasDamaged_ = false; // ダメージを2重に与えないように。
             bool isWarningVisible_ = false; // 描画フラグ。
         };

@@ -110,23 +110,8 @@ namespace app
                 }
             }
 
-
-            // フェーズ2
-            // 画面奥から画面手前に移動させる。
-            else if (!isMovingAttackStarted_)
+            else
             {
-                // 画面奥から手前に向かって、横一列に生成。
-                for (uint8_t i = 0; i < STRIKES_PER_WAVE; i++)
-                {
-                    float startX = -STAGE_RANGE_X;
-                    float stepX = (STAGE_RANGE_X * 2.0f) / (STRIKES_PER_WAVE - 1);
-
-                    auto* t = NewGO<app::gimmick::Thunder>(0);
-                    Vector3 thunderPos = Vector3(startX + (stepX * i), 0.0f, 200.0f);
-                    t->SetParam(thunderPos, app::gimmick::ThunderMode::Moving, 2.0f);
-                }
-
-                // 生成を1回行い終了。
                 isMovingAttackStarted_ = true;
             }
         }
@@ -145,7 +130,7 @@ namespace app
 
             // エフェクトの生成。
             auto* t = NewGO<app::gimmick::Thunder>(0);
-            t->SetParam(Vector3(spawnX, 0.0f, 0.0f), app::gimmick::ThunderMode::Stationary, 5.0f);
+            t->SetParam(Vector3(spawnX, 0.0f, 0.0f), app::gimmick::ThunderMode::Stationary, 5.0f, 0.4);
 
             // 次の位置に移動する。
             strikeIndex++;

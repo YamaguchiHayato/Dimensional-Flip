@@ -47,6 +47,11 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_SelectScreen_Decision] = false;
 		m_sound[GameSoundList_SE_SelectScreen_Decision] = nullptr;
 
+
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_StarRotation, "Assets/sound/se/getStar.wav");
+		m_isPlayingSound[GameSoundList_SE_StarRotation] = false;
+		m_sound[GameSoundList_SE_StarRotation] = nullptr;
+
 		// 落下音。
 		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Fall, "Assets/sound/se/fall.wav");
 		m_isPlayingSound[GameSoundList_SE_Fall] = false;

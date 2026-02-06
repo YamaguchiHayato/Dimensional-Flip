@@ -33,8 +33,10 @@ void CameraManager::Update()
     if (!pCameraStrategy_)
         return;
 
-    // カメラ戦略の更新
-    pCameraStrategy_->Update();
+    // 追従フラグがtrueの場合、カメラの更新を行う。
+    if (isTracking_)
+        // カメラ戦略の更新
+        pCameraStrategy_->Update();
 }
 
 

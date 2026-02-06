@@ -189,7 +189,7 @@ Stage1::~Stage1()
 bool Stage1::Start()
 {
 
-	const std::string stagePath = InitStage("Stage1/stage");
+	const std::string stagePath = InitStage("Stage1/Stage1");
 	stageRender_.Init(stagePath.c_str());
 
 	stagePhysics_.CreateFromModel(stageRender_.GetModel(), stageRender_.GetModel().GetWorldMatrix());
@@ -240,7 +240,6 @@ bool Stage1::Start()
 void Stage1::Update()
 {
 	stageRender_.Update();
-
 }
 
 

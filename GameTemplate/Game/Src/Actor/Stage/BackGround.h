@@ -3,6 +3,13 @@
 
 class CameraManager;
 
+namespace
+{
+    static constexpr int BG_COUNT = 10;
+    static constexpr auto BG_WIDTH = 150.0f;
+    static constexpr int SCROLL_NUM = 4;
+}
+
 namespace app
 {
     namespace stage
@@ -13,37 +20,57 @@ namespace app
             BackGround() = default;
             virtual ~BackGround() = default;
 
+
         public:
             bool Start() override;
             void Update() override;
             void Render(RenderContext& rc) override;
 
+
         public:
-            inline void SetPosition(const Vector3& position) { position_ = position; }
+            // 座標のオーバーライド設定。
+            inline void SetOverrideTrackingPos(const Vector3& pos)
+            {
+                isOverrideTracking_ = true;
+                overridePos_ = pos;
+            }
+
+            // オーバーライド設定をクリア。
+            inline void ClearOverride()
+            {
+                isOverrideTracking_ = false;
+            }
+
+
+        public:
+            // 座標をセットする。
+            inline void SetPosition(const Vector3& position)
+            {
+                position_ = position;
+            }
+
 
         private:
-            void InitModel();
+            // ステージ背景モデル(空)の設定項目。
+            void SettingSky();
 
-            void SettingSky(const Vector3& playerPos);
-            void SettingMountain(const Vector3& playerPos);
-            void SettingGround(const Vector3& playerPos);
 
         private:
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_ = nullptr;
 
-        private:
-            static constexpr int SCROLL_NUM = 4;
 
-            ModelRender skyModel_;                  // 空
-            ModelRender groundModel_;               // 地面
-            ModelRender mountainModel_[SCROLL_NUM]; // 山
+        private:
+            ModelRender skyModel_[BG_COUNT];        // 空
+
 
             Vector3 position_;
+            Vector3 overridePos_ = Vector3::Zero;
+            Vector3 lastTrackingPos_ = Vector3::Zero;
+
             Quaternion rot_ = Quaternion::Identity;
 
-            // 二重初期化防止フラグ
-            bool isInitialized_ = false;
+            bool isOverrideTracking_ = false;
         };
-    } // namespace stage
-} // namespace app
+    } 
+} 

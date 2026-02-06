@@ -161,7 +161,9 @@ public:
     }
     // 移動制限を与える。
     void AddMovementRestrictions();
-    // セッター。
+
+
+// セッター。
 public:
     // CameraManagerの初期化。
     inline void InitCameraManager(CameraManager* pCameraManager) { pCameraManager_ = pCameraManager; }
@@ -268,13 +270,15 @@ public:
         isMoveLimited_ = true;
     }
 
+
     // 制限を解除。
     inline void ReleaseMoveLimit()
     {
         isMoveLimited_ = false;
     }
 
-    // ゲッター。
+
+// ゲッター。
 public:
     // スコアを取得。
     inline int GetScore()
@@ -393,6 +397,11 @@ public:
 
     }
 
+    // 一時停止中かどうかを取得。
+    inline bool IsPaused() const
+    {
+        return isPaused_;
+    }
 
 public:
     /**

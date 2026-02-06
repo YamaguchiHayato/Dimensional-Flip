@@ -9,6 +9,8 @@
 
 #include "Src/Production/Fade.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Production/StarGetProduction.h"
+
 
 #include "Src/Production/CutIn/CutInView.h"
 #include "Src/Production/GameClear.h"
@@ -47,8 +49,6 @@ void Star::Update()
 
     if (m_isGoal)
     {
-        UpdateMovement(1.0f / 60.0f);
-
         return;
     }
 
@@ -64,6 +64,9 @@ void Star::Update()
     m_isGoal = true;
     disPlayTimer_ = 0.0f;
     displayDuration_ = 0.8f; // 演出の長さ（秒）
+
+    auto* pProduction = NewGO<app::production::StarGetProduction>(0);
+    pProduction->StartSequence(m_player, this);
 }
 
 void Star::Rotation()
@@ -89,7 +92,6 @@ void Star::UpdateMovement(float deltaTime)
     // ガード節: 演出終了判定
     if (progress > 1.0f)
     {
-        OnEffectFinished();
         app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_StarRotation);
         return;
     }

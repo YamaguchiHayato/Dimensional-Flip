@@ -10,7 +10,7 @@ class Boss;
 // カメラモード列挙型
 enum class CameraMode : uint8_t
 {
-    mode2D,    // 横スクロール
+    mode2D,      // 横スクロール
     mode3D,      // 3D自由視点
     modeBoss,    // ボス戦演出
 };
@@ -40,6 +40,11 @@ public:
     // カメラの移動範囲を設定。
     void SetCameraRange(const Vector3& min, const Vector3& max);
 
+    // 追従フラグを管理。
+    inline void SetTracking(bool tracking)
+    {
+        isTracking_ = tracking;
+    }
 
     // ボタンアクションの有効/無効設定。
     inline void SetButtonActionControl(bool buttonAction)
@@ -81,5 +86,8 @@ private:
 
     // ボタンアクションの許可フラグ。
     bool isButtonControlFlag = true;
+
+    // 追従フラグ。
+    bool isTracking_ = true;
 };
 

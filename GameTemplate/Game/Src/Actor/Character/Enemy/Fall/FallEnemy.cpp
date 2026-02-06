@@ -76,6 +76,13 @@ namespace app
 
         void FallEnemy::Update()
         {
+            if (!pPlayer_)
+            {
+                pPlayer_ = FindGO<Player>("player"); // 再検索を試みる
+                if (!pPlayer_)
+                    return;
+            }
+
             // Playerから遠い場合、処理はしない。
             if (IsPlayerNear())
             {

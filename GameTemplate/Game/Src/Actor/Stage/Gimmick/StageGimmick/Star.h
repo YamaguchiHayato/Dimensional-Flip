@@ -22,16 +22,16 @@ public:
 	void Update()override;
 	void Render(RenderContext& rc)override;
 
+        // 移動処理全体を更新。
+    void UpdateMovement(float deltaTime);
+
+    // 演出終了時の処理。
+    void OnEffectFinished();
 
 private:
     // 回転処理。
 	void Rotation();
 
-    // 移動処理全体を更新。
-    void UpdateMovement(float deltaTime);
-
-    // 演出終了時の処理。
-    void OnEffectFinished();
 
 
 // セッター。

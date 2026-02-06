@@ -132,7 +132,7 @@ namespace app
 
             // Playerの初期位置設定。
             // 初期地点
-    //       pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
+     //      pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // 壁付近。
     //      pPlayer_->SetPlayerPos(Vector3(780.0f, 10.0f, 0.0f));

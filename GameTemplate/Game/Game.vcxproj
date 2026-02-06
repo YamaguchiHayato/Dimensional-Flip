@@ -307,6 +307,7 @@
     <ClCompile Include="Src\Production\GameClear.cpp" />
     <ClCompile Include="Src\Production\GameOver.cpp" />
     <ClCompile Include="Src\Production\StageClear.cpp" />
+    <ClCompile Include="Src\Production\StarGetProduction.cpp" />
     <ClCompile Include="Src\Scene\GameClearScene.cpp" />
     <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
@@ -421,6 +422,7 @@
     <ClInclude Include="Src\Production\GameClear.h" />
     <ClInclude Include="Src\Production\GameOver.h" />
     <ClInclude Include="Src\Production\StageClear.h" />
+    <ClInclude Include="Src\Production\StarGetProduction.h" />
     <ClInclude Include="Src\Scene\GameClearScene.h" />
     <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />

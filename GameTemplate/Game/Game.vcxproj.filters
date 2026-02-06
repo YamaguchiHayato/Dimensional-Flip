@@ -233,6 +233,7 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\BackGround.cpp" />
+    <ClCompile Include="Src\Production\StarGetProduction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -423,6 +424,7 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\BackGround.h" />
+    <ClInclude Include="Src\Production\StarGetProduction.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

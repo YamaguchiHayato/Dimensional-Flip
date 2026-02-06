@@ -48,6 +48,7 @@ bool SideCameraStrategy::Start()
     return true;
 }
 
+
 void SideCameraStrategy::Update()
 {
     if (!pPlayer_)

@@ -34,6 +34,8 @@ private:
 	void SetScales();
     // HPバーの更新処理。
 	void Updates();
+    // HPの色を更新。
+    void UpdateHPColor();
 
 private:
     Player* pPlayer_ = nullptr;

@@ -7,16 +7,35 @@
 
 bool StageClear::Start()
 {
-    StageID nextStageID = DecideStage();
-
-    // Gameクラスを探索。
-    app::core::Game* pGame = FindGO<app::core::Game>("game");
-    if (pGame )
-        pGame->RequestStageTransition(nextStageID);
+    stageClearSprite_.Init("Assets/sprite/stageClear.DDS", 324, 214);
+    stageClearSprite_.SetScale(Vector3::One);
 
 
-    DeleteGO(this);
     return true;
+}
+
+
+void StageClear::Update()
+{
+    if (timer_ >= 2.0f)
+    {
+        StageID nextStageID = DecideStage();
+        // Gameクラスを探索。
+        app::core::Game* pGame = FindGO<app::core::Game>("game");
+        if (pGame)
+            pGame->RequestStageTransition(nextStageID);
+        DeleteGO(this);
+    }
+
+
+    stageClearSprite_.SetScale(Vector3::One);
+    stageClearSprite_.Update();
+}
+
+
+void StageClear::Render(RenderContext& rc)
+{
+    stageClearSprite_.Draw(rc);
 }
 
 

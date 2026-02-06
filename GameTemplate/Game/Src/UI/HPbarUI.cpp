@@ -46,12 +46,19 @@ bool HPbarUI::Start()
 
 void HPbarUI::Update()
 {
+    // それぞれの座標を更新する。
 	SetPositions();
 
+    // それぞれのスケール値を更新する。
 	SetScales();
 
+    // それぞれの更新処理をまとめる関数。
 	Updates();
 
+    // HP色の更新処理。
+    UpdateHPColor();
+
+    // 左右で分かれているライフの更新処理。
     for (int i = 0; i < static_cast<int>(enUINumber::enNumber_Num); i++)
     {
         life_Left[i].Update();
@@ -190,4 +197,37 @@ void HPbarUI::Updates()
 	heart_.Update();
     life_Left->Update();
     life_light->Update();
+}
+
+
+void HPbarUI::UpdateHPColor()
+{
+    // デフォルトの色を指定。
+    Vector4 color = Vector4::White;
+
+    // HPの割合に応じて色を変更。
+    if (!pPlayer_)
+        return;
+
+    if (pPlayer_->GetHP() <= 3)
+        // 赤
+        color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+
+    // ハートの色を変更する。
+    heart_.SetMulColor(color);
+
+    // 現在値のHPのみを赤く更新する。
+    for (uint8_t i = 0; i < static_cast<int>(enUINumber::enNumber_Num); i++)
+    {
+        // 左側（現在HP）のみ、状況に応じた色（赤または白）を適用
+        life_Left[i].SetMulColor(color);
+
+        // 右側（最大HP）は常に白
+        life_light[i].SetMulColor(Vector4::White);
+
+        // 色を反映させるためにUpdateを呼ぶ
+        life_Left[i].Update();
+        life_light[i].Update();
+        life_light[i].Update();
+    }
 }

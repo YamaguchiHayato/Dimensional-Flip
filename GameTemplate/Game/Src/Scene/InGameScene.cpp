@@ -29,14 +29,12 @@ void InGameScene::Update()
     Fade* fade = SceneManager::GetInstance()->GetFade();
     if (fade && fade->IsFadeOutEnd())
     {
-        if (pGame_->GetNextStageID() == StageID::sInvalid)
-        {
-            SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
-        }
+        // 現在のステージIDを確認
+        StageID current = app::core::StageManager::GetInstance()->GetCurrentStageID();
 
-        else
+        // 全ステージ（StageEX）をクリアした時だけリザルトへ
+        if (current == StageID::sStageEX && pGame_->GetNextStageID() == StageID::sInvalid)
         {
-            // 念のため、その他のケース（通常はここに来ないはず）
             SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
         }
     }

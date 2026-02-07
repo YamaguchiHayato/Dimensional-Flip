@@ -59,7 +59,7 @@ StageID StageClear::DecideStage()
          break;
 
     case StageID::sStageEX:
-         nextStageID = StageID::sStageEX;
+         nextStageID = StageID::sInvalid;
          break;
 
     default:

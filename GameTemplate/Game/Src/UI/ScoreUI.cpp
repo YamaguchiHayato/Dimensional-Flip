@@ -41,6 +41,9 @@ bool ScoreUI::Start()
 
 void ScoreUI::Update()
 {
+    // スコアのドラムロール式計算の更新処理。
+    UpdateScoreScroll();
+
     // スコアの更新処理。
 	UpdateScore();
 
@@ -134,11 +137,9 @@ void ScoreUI::InitUIScore()
 
 }
 
+
 void ScoreUI::UpdateScore()
 {
-    if (pPlayer_ != nullptr)
-        score_ = static_cast<float>(pPlayer_->GetScore());
-
 	if (score_ > MAX_SCORE) score_ = MAX_SCORE;
 
     // 各桁のスコアを計算。
@@ -149,6 +150,47 @@ void ScoreUI::UpdateScore()
 	hundredPlace_ = (currentScore / 100) % 10;
 	tenPlace_ = (currentScore / 10) % 10;
 	onePlace_ = currentScore % 10;
+}
+
+
+void ScoreUI::UpdateScoreScroll()
+{
+    if (!pPlayer_)
+        return;
+
+    // 目標値を取得。
+    auto targetScore = static_cast<float>(pPlayer_->GetScore());
+
+    // スコアの上限をチェック。
+    if (targetScore > MAX_SCORE)
+        targetScore = MAX_SCORE;
+
+    // 目標値に届いていないなら加算する。
+    if (score_ < targetScore)
+    {
+        // スクロール差分を加算。
+        auto diff = targetScore - score_;
+
+        // 20%ずつ加算する。
+        auto addScore = diff * 0.2f;
+
+        // 最低値の加算値を作成。
+        if (addScore < 1.0f)
+            addScore = 1.0f;
+
+        // スコアの加算処理。
+        score_ += addScore;
+
+        // 行き過ぎを防止する。
+        if (score_ > targetScore)
+            score_ = targetScore;
+    }
+
+
+    else if (score_ > targetScore)
+    {
+        score_ = targetScore;
+    }
 }
 
 

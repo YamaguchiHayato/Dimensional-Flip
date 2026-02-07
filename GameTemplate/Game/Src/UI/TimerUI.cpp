@@ -50,3 +50,10 @@ void TimerUI::Render(RenderContext& rc)
 	UISprite_.Draw(rc);
 }
 
+
+void TimerUI::Reset()
+{
+    UISprite_.SetPosition(UI_POS);
+    UISprite_.SetScale(UI_SCALE);
+    UISprite_.Update();
+}

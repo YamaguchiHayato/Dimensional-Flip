@@ -53,6 +53,7 @@ void NumberUI::Render(RenderContext& rc)
     UINUmber_OnesDigit[onePlace_].Draw(rc);
 }
 
+
 void NumberUI::InitUINumber()
 {
 	for (int i = 0; i <static_cast<int>( enUINumber::enNumber_Num); i++)
@@ -104,7 +105,7 @@ void NumberUI::UpdateTimer()
         if (timer_ <= 0.0f)
         {
             timer_ = 0.0f;
-            SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+    //        SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
         }
     }
     else

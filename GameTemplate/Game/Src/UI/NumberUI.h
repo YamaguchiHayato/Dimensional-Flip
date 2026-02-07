@@ -34,9 +34,14 @@ public:
 
     // タイマーリセット処理。
     // 各ステージ開始時に呼ぶ。
-    inline void ResetTimer()
+    void ResetTimer()
     {
-        timer_ = 180.0f;
+        timer_ = 90.0f;
+
+        // リセットした瞬間表示用の各桁も更新し直す。
+        uint8_t remainingSeconds = static_cast<uint8_t>(timer_);
+        tenPlace_ = (remainingSeconds / 10) % 10;
+        onePlace_ = remainingSeconds % 10;
     }
 private:
 

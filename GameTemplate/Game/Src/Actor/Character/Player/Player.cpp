@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "Src/Core/InputManager.h"
+#include "Src/Core/Game.h"
+
 // キャラクタークラス。
 #include "Src/Actor/Character/Player/Player.h"
 
@@ -262,19 +264,28 @@ void Player::Rotation()
 }
 
 
+
+
+    const auto line = -100.0f;
 void Player::Render(RenderContext& rc)
 {
     // キャラモデル。
     pRender_->Render(rc);
 
     // 座標表示。    
-    posFont_.Draw(rc);
+//    posFont_.Draw(rc);
 }
 
 
 void Player::CheckRespawn()
 {
-    const auto line = -100.0f;
+    // ステージ遷移中はダメージ処理を行わない。
+    auto* pGame = FindGO<app::core::Game>("game");
+    if (pGame && pGame->IsStageTransitioning())
+        return;
+
+    if (invincibleTime_ > 0.0f || status_.IsDead())
+        return;
 
     if (pos_.y < line)
     {

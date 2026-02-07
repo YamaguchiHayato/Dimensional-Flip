@@ -17,6 +17,7 @@
 #include "Src/Actor/Stage/MainUnit/StageEX.h"
 #include "Src/Actor/Stage/MainUnit/TutorialStage.h"
 
+#include "Src/UI/NumberUI.h"
 
 // 演出クラス。
 #include "Src/Production/Fade.h"
@@ -132,6 +133,20 @@ namespace app
             stageCurrentID_ = newStageID;
 
             OutputDebugStringA("ChangeStageSync: end.\n");
+
+            auto* pPlayer = FindGO<Player>("player");
+            if (pPlayer)
+            {
+                Vector3 startPos = pCurrentStage_->GetStageStartPos();
+                pPlayer->SetPlayerPos(startPos);
+                pPlayer->SetRespwanPos(startPos);
+            }
+
+            auto* pTimer = FindGO<NumberUI>("numberui");
+            if (pTimer)
+            {
+                pTimer->ResetTimer();
+            }
         }
 
 
@@ -175,8 +190,6 @@ namespace app
             {
             }
         }
-
-
     }
 }
 

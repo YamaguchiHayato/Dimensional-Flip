@@ -8,15 +8,24 @@
 class TimerUI : public UIBase
 {
 public:
-	TimerUI() {};
-	virtual ~TimerUI() {};
+	TimerUI() = default;
+	virtual ~TimerUI() = default;
 
+
+public:
 	bool Start() override;
 	void Update() override;
 	void Render(RenderContext& rc)override;
+
+
+public:
 	inline const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
+
+
+public:
+    void Reset();
 
 };
 

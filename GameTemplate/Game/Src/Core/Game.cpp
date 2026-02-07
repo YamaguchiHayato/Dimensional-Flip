@@ -132,13 +132,13 @@ namespace app
 
             // Playerの初期位置設定。
             // 初期地点
-     //      pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
+           pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // 壁付近。
     //      pPlayer_->SetPlayerPos(Vector3(780.0f, 10.0f, 0.0f));
 
             // スター付近の座標
-            pPlayer_->SetPlayerPos(Vector3(1240.0f, 10.0f, 0.0f));
+    //        pPlayer_->SetPlayerPos(Vector3(1240.0f, 10.0f, 0.0f));
 
            // ステージ背景の生成。
             CreateBackGround();
@@ -169,6 +169,8 @@ namespace app
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
 
+            if (state_ != SceneTransitionState::None)
+                return;
 
             if (!pFade_->IsFadeInEnd())
                 return;
@@ -216,6 +218,10 @@ namespace app
             {
                 nextStageID_ = nextStageID;
                 m_hasAppliedStageBgm_ = false;
+
+                if (pNumberUI_)
+                    pNumberUI_->ResetTimer();
+
                 // フェードアウト開始。
                 state_ = SceneTransitionState::FadeOut;
             }

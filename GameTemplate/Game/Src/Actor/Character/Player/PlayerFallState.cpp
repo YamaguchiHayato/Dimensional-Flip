@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Player/PlayerFallState.h"
-
+#include "Src/Core/Game.h"
 
 namespace
 {
@@ -101,6 +101,10 @@ namespace app
 
         void PlayerFallState::Respawn()
         {
+            auto* pGame = FindGO<app::core::Game>("game");
+            if (pGame && pGame->IsStageTransitioning())
+                return;
+
             if (pPlayer_->GetPlayerPos().y < DEAD_LINE)
             {
                 // ダメージを1受ける。

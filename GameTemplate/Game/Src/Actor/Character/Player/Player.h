@@ -11,6 +11,7 @@
 #include "Src/Actor/Character/Player/PlayerRunState.h"
 #include "Src/Actor/Character/Player/PlayerJumpState.h"
 #include "Src/Actor/Character/Player/PlayerFallState.h"
+#include "Src/Actor/Character/Player/PlayerTutorialPauseStage.h"
 
 
 enum PlayerState : uint8_t
@@ -28,6 +29,7 @@ enum EnPlayerState : uint8_t
     enState_Run,
     enState_Jump,
     enState_Fall,
+    enState_TutorialPause, // チュートリアル用一時停止ステート。
     enState_Num,
 };
 
@@ -65,7 +67,7 @@ public:
     friend app::state::PlayerRunState;
     friend app::state::PlayerJumpState;
     friend app::state::PlayerFallState;
-
+    friend app::state::PlayerTutorialPauseStage;
 
 public:
     AnimationClip animationClip_[EnAnimationClip::animNum];
@@ -106,6 +108,8 @@ private:
     bool respawnFlag_ = false;
     bool isCutInActive;
     bool isMoveLimited_ = false;
+    bool isTutorialDone_ = false;
+    bool requestTutorialPause_ = false;
 
 public:
     Player() = default;
@@ -145,7 +149,8 @@ public:
     void CheckRespawn();
     // ダメージ処理。
     void OnDamage(uint8_t damage);
-
+    // 視点切替の試行。
+    bool TryFlipDimension(bool area);
 
 // ヘルパー。
 public:
@@ -161,21 +166,19 @@ public:
     }
     // 移動制限を与える。
     void AddMovementRestrictions();
-
+    // カメラの向きに合わせて移動ベクトルの計算を行う。
+    void CalculateMovement(const Vector3& stickInput);
 
 // セッター。
 public:
     // CameraManagerの初期化。
     inline void InitCameraManager(CameraManager* pCameraManager) { pCameraManager_ = pCameraManager; }
 
-
     // ジャンプ力の設定。
     inline void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
 
-
     // トリガーエリア内で呼ばれる処理。
     inline void EnterTriggerArea() { triggerOverlapCount_++; }
-
 
     // トリガーエリア外で呼ばれる処理。
     inline void ExitTriggerArea()
@@ -186,7 +189,6 @@ public:
         if (triggerOverlapCount_ < 0)
             triggerOverlapCount_ = 0;
     }
-
 
     // 座標。
     inline void SetPlayerPos(const Vector3& pos)
@@ -204,13 +206,11 @@ public:
         }
     }
 
-
     // 一時停止フラグ。
     inline void SetPaused(bool isPaused)
     {
         isPaused_ = isPaused;
     }
-
 
     // リスポーン座標の設定。
     inline void SetRespwanPos(const Vector3& pos)
@@ -218,20 +218,17 @@ public:
         respwanPos_ = pos;
     }
 
-
     // 空中での操作が可能かどうかの設定。
     inline void SetCanAirControl(bool flag)
     {
         canAirControl_ = flag;
     }
 
-
     // 今フレームでジャンプしたかどうかの設定。
     inline void SetJumpedThisFrame(bool flag)
     {
         didJumpThisFrame_ = flag;
     }
-
 
     // 回転軸。
     inline void SetRotation(const Quaternion& rot)
@@ -240,13 +237,11 @@ public:
         pRender_->SetRotation(rot_);
     }
 
-
     // リスポーンフラグのセット。
     inline void SetRespawnFlag(bool flag)
     {
         respawnFlag_ = flag;
     }
-
 
     // 現在のモデルインデックスをセット。
     inline void SetCurrentIndex(uint8_t index)
@@ -254,13 +249,11 @@ public:
         currentIndex = index;
     }
 
-
     // キー入力保持のため設定
     inline void SetKeyDirection(const Vector3& direction)
     {
         keyDirection_ = direction;
     }
-
 
     // 制限を設定。
     inline void SetMoveLimit(const Vector3& min, const Vector3& max)
@@ -270,11 +263,28 @@ public:
         isMoveLimited_ = true;
     }
 
-
     // 制限を解除。
     inline void ReleaseMoveLimit()
     {
         isMoveLimited_ = false;
+    }
+
+    // チュートリアル完了フラグの設定。
+    inline void SetTutorialFlag(bool isDone) 
+    {
+        isTutorialDone_ = isDone;
+    }
+
+    // チュートリアル一時停止要求。
+    void RequestTutorialPause()
+    {
+        requestTutorialPause_ = true;
+    }
+
+    // チュートリアル完了をセットする。
+    inline void SetTutorialDone(bool isDone)
+    {
+        isTutorialDone_ = isDone;
     }
 
 
@@ -298,13 +308,11 @@ public:
         return status_.GetMaxHP();
     }
 
-
     // ジャンプ力の取得。
     inline const float& GetJumpPower() const
     {
         return jumpPower_;
     }
-
 
     // プレイヤーの座標の取得。
     inline  Vector3& GetPlayerPos() 
@@ -312,13 +320,11 @@ public:
         return pos_;
     }
 
-
     // プレイヤーの前方向ベクトル取得。
     inline const Vector3 GetForward() const
     {
         return forward_;
     }
-
 
     // トリガーエリア内かどうかの取得。
     inline bool GetInTriggerArea() const
@@ -326,13 +332,11 @@ public:
         return triggerOverlapCount_ > 0;
     }
 
-
     // カメラモードを取得。
     inline CameraManager* GetCameraManager()
     {
         return pCameraManager_;
     }
-
 
     // リスポーンしたか。
     inline bool IsRespawn()
@@ -340,13 +344,11 @@ public:
         return respawnFlag_;
     }
 
-
     // walkSpeedの取得。
     inline const float GetWalkSpeed() const
     {
         return walkSpeed_;
     }
-
 
     // 今フレームでジャンプしたかどうか。
     inline bool DoJumpCheck() const
@@ -354,13 +356,11 @@ public:
         return didJumpThisFrame_;
     };
 
-
     // リスポーン座標の取得。
     inline const Vector3& GetRespwanPos() const
     {
         return respwanPos_;
     }
-
 
     // リスポーン時の回転軸の取得。
     inline const Quaternion& GetRespwanRot() const
@@ -402,6 +402,18 @@ public:
     {
         return isPaused_;
     }
+
+    // チュートリアルを完了したか。
+    inline bool IsTutorialComplete() const
+    {
+        return isTutorialDone_;
+    }
+
+    // チュートリアルが終わったかどうか。
+    inline bool IsTutorialDone() const
+    {
+        return isTutorialDone_;
+    }  
 
 public:
     /**

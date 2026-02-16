@@ -24,10 +24,13 @@
 
 #include "Src/Actor/Character/Player/Character2DRender.h"
 
+// ステートクラス。
 #include "Src/Actor/Character/Player/PlayerIdleState.h"
 #include "Src/Actor/Character/Player/PlayerRunState.h"
 #include "Src/Actor/Character/Player/PlayerJumpState.h"
 #include "Src/Actor/Character/Player/PlayerFallState.h"
+#include "Src/Actor/Character/Player/PlayerTutorialPauseStage.h"
+
 
 #include "Src/Core/BossUIManager.h"
 
@@ -96,7 +99,6 @@ namespace
 }
 
 
-
 bool Player::Start()
 {
     // ステートの登録。
@@ -104,6 +106,8 @@ bool Player::Start()
     RegisterState<app::state::PlayerRunState>(enState_Run);
     RegisterState<app::state::PlayerJumpState >(enState_Jump);
     RegisterState<app::state::PlayerFallState >(enState_Fall);
+    RegisterState<app::state::PlayerTutorialPauseStage>(enState_TutorialPause);
+
 
     // 初期ステートの設定。
     pCurrentState_ = pStateArray_[enState_Idle];
@@ -131,11 +135,18 @@ bool Player::Start()
     posFont_.SetScale(1.0f);                     // 文字の大きさ
     posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // 白文字
 
+    // 壁クラスからチュートリアル遷移要求があるかチェック。
+    if (requestTutorialPause_ && !isTutorialDone_)
+    {
+        isTutorialDone_ = true;
+
+        
+    }
 
     SetRespwanPos(pos_);
 
     // 踏みつけた際の跳ね返り値を設定。
-    SetJumpPower(100.0f);
+    SetJumpPower(150.0f);
 
     return true;
 }
@@ -148,21 +159,42 @@ void Player::Update()
     if (fade != nullptr && fade->GetFadeState() == FadeState::Fade_Out)
         return;
 
-    if (isPaused_)
-        return;
 
+    if (pCurrentState_ != pStateArray_[enState_TutorialPause])
+    {
+        if (IsDimensionSwitchAction())
+            app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);
+    }
 
-    if (IsDimensionSwitchAction())
-        app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);
-
+    // 無敵時間をカウント。
     if (invincibleTime_ > 0.0f)
         invincibleTime_ -= g_gameTime->GetFrameDeltaTime();
 
-
+    // チュートリアルポーズ中は更新しない。
+    if (isPaused_)
+    {
+        if (pCurrentState_ != pStateArray_[enState_TutorialPause])
+           return;
+    }
 
     _ASSERT(pCurrentState_ != nullptr);
 
     uint8_t request;
+
+    // 壁クラスからチュートリアル遷移要求があるか確認。
+    if (requestTutorialPause_ && !isTutorialDone_)
+    {
+        requestTutorialPause_ = false;
+        request = enState_TutorialPause;
+
+        // 遷移処理を実行。
+        pCurrentState_->Exit();
+        pCurrentState_ = pStateArray_[request];
+        pCurrentState_->Enter();
+        return;
+    }
+
+
     if (pCurrentState_->RequestID(request))
     {
         pCurrentState_->Exit();
@@ -264,16 +296,14 @@ void Player::Rotation()
 }
 
 
-
-
-    const auto line = -100.0f;
+const auto line = -100.0f;
 void Player::Render(RenderContext& rc)
 {
     // キャラモデル。
     pRender_->Render(rc);
 
     // 座標表示。    
-//    posFont_.Draw(rc);
+    posFont_.Draw(rc);
 }
 
 
@@ -311,6 +341,27 @@ void Player::OnDamage(uint8_t damage)
 }
 
 
+bool Player::TryFlipDimension(bool area)
+{
+    // カメラがない、Bボタンが押されていないなら何もしない
+    if (!pCameraManager_ || !g_pad[0]->IsTrigger(enButtonB))
+        return false;
+
+    //
+    if (area || GetInTriggerArea())
+    {
+        auto currentMode = pCameraManager_->GetCurrentCameraMode();
+        if (currentMode == CameraMode::mode2D || currentMode == CameraMode::mode3D)
+        {
+            app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 void Player::AddMovementRestrictions()
 {
     // 移動制限の適応。
@@ -336,4 +387,54 @@ void Player::AddMovementRestrictions()
         if (pos_.z > moveLimitMax_.z)
             pos_.z = moveLimitMax_.z;
     }
+}
+
+
+void Player::CalculateMovement(const Vector3& stickInput)
+{
+    if (!pCameraManager_)
+        return;
+
+    // カメラの向きを取得する。
+    Vector3 camRight = g_camera3D->GetRight();
+    Vector3 camForward = g_camera3D->GetForward();
+
+    // Y軸の影響を受けないようにする。
+    camRight.y = 0.0f;
+    camForward.y = 0.0f;
+
+    // ベクトルを正規化する。
+    camRight.Normalize();
+    camForward.Normalize();
+
+    // 視点による軸の補正（ここを修正）
+    // 前方向ベクトルの Z成分 と X成分 の大きさを比べて、どちらがメインの軸か判定します
+    if (fabsf(camForward.z) > fabsf(camForward.x))
+    {
+        // --- Z軸がメインの場合（通常の2Dモードや、正面奥に進む3D視点） ---
+
+        // ForwardはZ軸のみにする（Xを消す）
+        camForward.x = 0.0f;
+        camForward.z = (camForward.z > 0.0f) ? 1.0f : -1.0f;
+
+        // RightはX軸のみにする（Zを消す）
+        camRight.z = 0.0f;
+        camRight.x = (camRight.x > 0.0f) ? 1.0f : -1.0f;
+    }
+    else
+    {
+        // --- X軸がメインの場合（横から見る視点など） ---
+
+        // ForwardはX軸のみにする（Zを消す）
+        camForward.z = 0.0f;
+        camForward.x = (camForward.x > 0.0f) ? 1.0f : -1.0f;
+
+        // RightはZ軸のみにする（Xを消す）
+        camRight.x = 0.0f;
+        camRight.z = (camRight.z > 0.0f) ? 1.0f : -1.0f;
+    }
+
+    // 移動速度の計算
+    moveSpeed_.x = (camRight.x * stickInput.x + camForward.x * stickInput.z) * walkSpeed_;
+    moveSpeed_.z = (camRight.z * stickInput.x + camForward.z * stickInput.z) * walkSpeed_;
 }

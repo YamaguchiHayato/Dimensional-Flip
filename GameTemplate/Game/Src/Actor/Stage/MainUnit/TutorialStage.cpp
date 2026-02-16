@@ -45,6 +45,7 @@ namespace app
             wallList.clear();
         }
 
+
         bool TutorialStage::Start()
         {
             const std::string stagePath = InitStage("tutorialStage");
@@ -69,8 +70,11 @@ namespace app
             // ボタンアクションUIの生成。
             CreateButtonActionUI();
 
+            // チュートリアルメッセージUIの生成。
+            CreateTutorialMessageUI();
+
             // NormalEnemyの生成。
-            CreateNormalEnemy();
+    //        CreateNormalEnemy();
 
             pPlayer_ = FindGO<Player>("player");
             return true;
@@ -129,5 +133,12 @@ namespace app
             if (enemy)
                 lEnemySpawnList_.push_back(enemy);
         }
+
+
+        void TutorialStage::CreateTutorialMessageUI()
+        {
+            pTutorialMessageUI_ = NewGO<app::nsUI::TutorialMessageUI>(0, "TutorialMessageUI");
+        }
+
     } 
 }

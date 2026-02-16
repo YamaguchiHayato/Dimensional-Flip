@@ -21,8 +21,26 @@ namespace app
 
 
         public:
-            inline void SetPos(const Vector3& pos) { pos_ = pos; }
-            inline const Vector3 GetPos() const { return pos_; }
+            // 物理を変化させる。
+            void SwitchMode();
+
+
+        // セッター。
+        public:
+            // 座標を設定。
+            inline void SetPos(const Vector3& pos)
+            {
+                pos_ = pos;
+            }
+
+
+        // ゲッター。
+        public:
+            // 座標を取得。
+            inline const Vector3 GetPos() const
+            {
+                return pos_;
+            }
 
 
         private:

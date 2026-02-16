@@ -41,59 +41,21 @@ namespace app
 
         void Wall::Update()
         {
-            // ボタンでモード切替
-            if (g_pad[0]->IsTrigger(enButtonB))
-            {
-                // フラグを反転
-                is2DMode_ = !is2DMode_;
-
-                Vector3 nextPos = pos_;
-
-                if (is2DMode_)
-                {
-                    // [3D設定 (薄く)]
-                    currentScale_ = scale_3D_Normal;
-                    nextPos = pos_;         // 位置もそのまま
-                    render_.SetAlpha(0.5f); // 半透明
-                }
-                else
-                {
-                    currentScale_ = scale_2D_Wide;
-                    nextPos.z = 0.0f;      
-                    render_.SetAlpha(1.0f); 
-                }
-
-                render_.SetScale(currentScale_);
-                render_.SetPosition(nextPos);
-                render_.Update(); 
-
-                // 2. 物理を作り直す
-                RefreshPhysics();
-            }
-
-
-            // 距離判定とUIの描画。
+            // UIの表示判定
             if (pPlayer_ && pDrawTiming_)
             {
                 Vector3 diff = pPlayer_->GetPlayerPos() - this->pos_;
                 float distance = diff.Length();
                 float triggerDistance = 20.0f;
 
+
+                // 距離が近くなったらBボタンUIを描画。
                 if (distance < triggerDistance && !is2DMode_)
-                {
-                    Vector3 uiPos = this->pos_;
-                    uiPos.y += 50.0f; // 少し上に表示
                     pDrawTiming_->ShowAt(pPlayer_->GetPlayerPos());
 
-                }
-
                 else
-                {
                     pDrawTiming_->Hide();
-                }
             }
-
-
         }
 
 
@@ -115,6 +77,38 @@ namespace app
         void Wall::Render(RenderContext& rc)
         {
             render_.Draw(rc);
+        }
+
+
+        void Wall::SwitchMode()
+        {
+            // フラグを反転
+            is2DMode_ = !is2DMode_;
+
+            Vector3 nextPos = pos_;
+
+            // 元のコードのロジックをそのまま移植
+            if (is2DMode_)
+            {
+                // [3D設定 (薄く)]
+                currentScale_ = scale_3D_Normal;
+                nextPos = pos_;
+                render_.SetAlpha(1.0f); // 半透明
+            }
+            else
+            {
+                // [2D設定 (広く)]
+                currentScale_ = scale_2D_Wide;
+                nextPos.z = 0.0f;
+                render_.SetAlpha(0.5f);
+            }
+
+            render_.SetScale(currentScale_);
+            render_.SetPosition(nextPos);
+            render_.Update();
+
+            // 物理を作り直す
+            RefreshPhysics();
         }
     } 
 } // namespace app

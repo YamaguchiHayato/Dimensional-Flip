@@ -6,7 +6,7 @@
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Actor/Character/Enemy/EnemyFactory.h"
-
+#include "Src/UI/Tutorial/TutorialMessageUI.h"
 
 class Star;
 class Player;
@@ -20,6 +20,10 @@ namespace app{
 
     namespace ui{
         class ButtonActionUI;
+    }
+
+    namespace nsUI{
+        class TutorialMessageUI;
     }
 }
 namespace app
@@ -55,7 +59,7 @@ namespace app
             inline void CreateStar()
             {
                 pStar_ = NewGO<Star>(0, "star");
-                pStar_->SetStarPosition(Vector3(262.2f, 25.0f, 0.0f));
+                pStar_->SetStarPosition(Vector3(300.0f, 15.0f, -2.0f));
             }
 
             // カメラの回転範囲。
@@ -72,12 +76,19 @@ namespace app
 
             // NormalEnemyの生成。
             inline void CreateNormalEnemy();
+
+            // 生成用メソッドの宣言
+            void CreateTutorialMessageUI();
+
+
+
         private:
             Player* pPlayer_ = nullptr;
             Star* pStar_ = nullptr;
             DimensionTrigger* cameraFlipRange_ = nullptr;
             Wall* pWall_ = nullptr;
             app::ui::ButtonActionUI* pCreateButtonUI_ = nullptr;
+            app::nsUI::TutorialMessageUI* pTutorialMessageUI_ = nullptr;
 
             // 敵生成リスト。
             std::vector<app::enemy::IEnemy*> lEnemySpawnList_;

@@ -18,8 +18,6 @@ namespace app
 
         void PlayerIdleState::Update()
         {
-
-
             if (pPlayer_->GetKeyDirection().x < 0.0f)
                 pPlayer_->SetCurrentIndex(0);
 
@@ -37,9 +35,6 @@ namespace app
             pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
             pPlayer_->pRender_->Update();
         }
-
-
-        void PlayerIdleState::Exit() {}
 
 
         bool PlayerIdleState::RequestID(uint8_t& request)
@@ -74,16 +69,6 @@ namespace app
             }
             return false;
         }
-
-
-////        void PlayerIdleState::ApplyMovement()
-//        {
-//            // 移動処理。
-//            const Vector3 pos = pPlayer_->GetCharacterController().Execute(pPlayer_->GetMoveSpeed(), 1.0f / 150.0f);
-//            // 座標のセット。
-//            pPlayer_->GetCharacterController()->SetPosition(pPlayer_->GetPlayerPos());
-//            pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
-//        }
     }
 }
 

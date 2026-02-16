@@ -4,10 +4,10 @@
 
 namespace
 {
-	const auto WIDTH = 441.0f;
-	const auto HEIGHT = 428.0f;
+	const auto WIDTH = 1210.0f;
+	const auto HEIGHT = 720.0f;
 
-	const Vector3 UI_POS{-880.0f, 370.0f,0.0f};
+	const Vector3 UI_POS{-870.0f, 360.0f,0.0f};
 	const Vector3 UI_SCALE(Vector3(0.125f, 0.125f, 0.125f));
 }
 

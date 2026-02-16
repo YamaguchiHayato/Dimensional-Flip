@@ -24,7 +24,6 @@ public:
 private:
 	void InitHPbar();
 	void InitHPbar_Heart();
-	void InitHPbar_Slash();
 	void InitHPbar_Frame();
     void InitHPbar_Life();
 
@@ -44,11 +43,11 @@ private:
     // HPバー関連変数。
     SpriteRender heart_;  // HPバーのハート(装飾)部分。
     SpriteRender life_;   // HPバーのライフ。
-    SpriteRender slash_;  
     SpriteRender flame_;  // HPバーのGhost部分。
 
-	SpriteRender life_Left[static_cast<uint8_t>(enUINumber::enNumber_Num)];
-    SpriteRender life_light[static_cast<uint8_t>(enUINumber::enNumber_Num)];
-    
+
+
+    FontRender hpFont_[5];
+    wchar_t hpText_[64];
 };
 

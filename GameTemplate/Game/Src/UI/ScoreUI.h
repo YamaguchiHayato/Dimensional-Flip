@@ -15,14 +15,6 @@ public:
 
 
 public:
-    // UI用の画像パス初期化関数のオーバーライド。
-	const std::string InitUI(const std::string& UIname) override
-	{
-		return UIBase::InitUI(UIname);
-	}
-
-
-public:
     // スコアの更新処理。
 	void UpdateScore();
 
@@ -46,33 +38,16 @@ private:
 
 
 private:
-    // スコア表示用スプライト。
-	SpriteRender UIScoreText_;
-    // スコア数字列挙型。
-    // 各桁の数字を管理するための列挙型。
-	SpriteRender UIScore_HundredThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	SpriteRender UIScore_TenThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	SpriteRender UIScore_ThousandDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	SpriteRender UIScore_HundredDigit[static_cast<int>(enUINumber::enNumber_Num)];		
-	SpriteRender UIScore_TensDigit[static_cast<int>(enUINumber::enNumber_Num)];
-	SpriteRender UIScore_OnesDigit[static_cast<int>(enUINumber::enNumber_Num)];
+    FontRender scoreFont_;
+    FontRender scoreFontUIRender_;
 
 
 private:
     // スコア関連変数。
 	float score_ = 0.0f;
-    // 100000の位。
-	uint8_t hundredThousandPlace_ = 0;
-    // 10000の位。
-	uint8_t tenThousandPlace_ = 0;
-    // 1000の位。
-	uint8_t thousandPlace_ = 0;
-    // 100の位。
-	uint8_t hundredPlace_ = 0;
-    // 10の位。
-	uint8_t tenPlace_ = 0;
-    // 1の位。
-	uint8_t onePlace_ = 0;
+
+    // 文字を表示する用。
+    wchar_t scoreText_[64];
 
 };
 

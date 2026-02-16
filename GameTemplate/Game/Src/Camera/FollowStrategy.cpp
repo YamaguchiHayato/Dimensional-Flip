@@ -63,7 +63,15 @@ void FollowStrategy::Update()
         // ボスが居ないなら探す。
         pBoss_ = FindGO<app::enemy::Boss>("boss");
 
+    bool isBossBattleRange = false;
     if (pBoss_)
+    {
+        // プレイヤーの座標チェック（ボス固定位置 X=0 から離れすぎていないか）
+        if (pPlayer_->GetPlayerPos().x < 100.0f)
+            isBossBattleRange = true;
+    }
+
+    if (pBoss_ && isBossBattleRange)
         BossCamera();
 
     else

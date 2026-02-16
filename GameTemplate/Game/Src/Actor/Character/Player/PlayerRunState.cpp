@@ -3,7 +3,7 @@
 #include "PlayerRunState.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
-
+#include "Src/Actor/Character/Player/PlayerTutorialPauseStage.h"
 
 namespace
 {
@@ -45,6 +45,16 @@ namespace app
 
             pPlayer_->pRender_->SetPosition(pPlayer_->GetPlayerPos());
             pPlayer_->pRender_->Update();
+
+
+            // 特定の座標に行くと
+            if (pPlayer_->GetPlayerPos().x > 30.0f && !pPlayer_->IsTutorialDone())
+            {
+                // チュートリアル状態へ切り替える。
+                pPlayer_->RequestTutorialPause();
+
+                return;
+            }
         }
 
 

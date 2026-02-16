@@ -9,6 +9,7 @@ namespace nsK2Engine {
 	class FontRender : public IRenderer
 	{
 	public:
+		// Å‘å•¶š”B
 		static const int MAX_TEXT_SIZE = 256;
 		~FontRender()
 		{

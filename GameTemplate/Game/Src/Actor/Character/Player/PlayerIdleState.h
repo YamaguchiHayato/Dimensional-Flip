@@ -17,13 +17,13 @@ namespace app
 
         public:
             PlayerIdleState(Player* player) : pPlayer_(player) {};
-            virtual ~PlayerIdleState() {};
+            virtual ~PlayerIdleState() = default;
 
 
         public:
             void Enter() override;
             void Update() override;
-            void Exit() override;
+            void Exit() override {};
             bool RequestID(uint8_t& request) override;
 
 

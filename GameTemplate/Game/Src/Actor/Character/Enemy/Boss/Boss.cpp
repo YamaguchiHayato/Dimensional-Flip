@@ -36,7 +36,7 @@ namespace
     const float STAGE_LIMIT_X = 35.0f;
 
     // 最大HP
-    const auto MAX_HP = 3.0f;
+    const auto MAX_HP = 9.0f;
 
     const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
 
@@ -50,9 +50,9 @@ namespace
     // エフェクトリスト。
     const EffectResource resources[] =
     {
-        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"}, // FireBall
+        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"},      // FireBall
         { app::enemyStatus::effect_ShockWave, u"Assets/effect/shockWave.efk"},// ShockWave
-        { app::enemyStatus::effect_thunder, u"Assets/effect/thunder.efk"}, // thunder
+        { app::enemyStatus::effect_thunder, u"Assets/effect/thunder.efk"},    // thunder
     };
 }
 

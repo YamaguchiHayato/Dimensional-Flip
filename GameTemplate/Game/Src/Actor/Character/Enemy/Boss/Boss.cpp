@@ -143,7 +143,6 @@ namespace app
                 EffectEngine::GetInstance()->ResistEffect(res.effectID, res.path);
             }
 
-
             // モデルをセットする。
             render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
@@ -178,6 +177,8 @@ namespace app
 
             // HPを初期化。
             SetHP(MAX_HP);
+
+            // ボーンの名前をデバッグ出力。
             for (int i = 0; i < render_.GetNumBones(); ++i)
             {
                 // i番目のボーンを取得
@@ -190,21 +191,12 @@ namespace app
                 }
             }
 
-
             return true;
         }
 
 
         void Boss::Update()
         {
-
-            if (app::nsUI::BossUIManager::GetInstance().IsPhasePlaying())
-            {
-                render_.Update();
-                return;
-            }
-
-
             // ステートが存在することを確認。
             _ASSERT(pCurrentState_ != nullptr);
 
@@ -217,9 +209,6 @@ namespace app
                 pCurrentState_->Enter();
             }
             pCurrentState_->Update();
-
-            // PhaseManagerの更新。
-            app::core::BattlePhaseManager::GetInstance()->Update();
 
             // カメラのClamp制限。
             AddClamp();
@@ -239,7 +228,6 @@ namespace app
 
             // UIにHPの情報を通知。
             app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(GetHP()), MAX_HP);
-
         }
 
 
@@ -263,9 +251,13 @@ namespace app
 
         void Boss::AddClamp()
         {
-            // 2Dフェーズ時の移動制限。
-            auto* pPhase = app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
-            if (*pPhase == app::enemyStatus::BossPhase::phase_One)
+            if (!pPlayer_ || !pPlayer_->GetCameraManager())
+                return;
+
+            auto currentMode = pPlayer_->GetCameraManager()->GetCurrentCameraMode();
+
+            // 2DモードのときだけZ軸を固定し、X軸を制限する
+            if (currentMode == CameraMode::mode2D)
             {
                 // 座標を固定。
                 pos_.z = 0.0f;

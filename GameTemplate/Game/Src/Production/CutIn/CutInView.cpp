@@ -64,15 +64,8 @@ namespace app
             // カットインが終われば。
             if (IsCutInFinished())
             {
-                // 現在のバトルフェーズを取得。
-                auto currentPhase = (uint8_t) *app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
-
-                // フェーズ切り替え通知を送る。
-                app::nsUI::BossUIManager::GetInstance().OnChangePhase(currentPhase);
-
                 // 自身を破棄。
                 DeleteGO(this);
-
             }
 
             // 時間制限が設定されている場合、カウントアップ。

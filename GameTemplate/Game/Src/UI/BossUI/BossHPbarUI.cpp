@@ -30,7 +30,6 @@ namespace app
     {
         void BossHPbarUI::Initialize()
         {
-
             // 各スプライトの初期化。
             // ボスアイコン。
             bossIconRender_.Init(FetchUIName("bossIcon").c_str(), ICON_WIDHT, ICON_HEIGHT);

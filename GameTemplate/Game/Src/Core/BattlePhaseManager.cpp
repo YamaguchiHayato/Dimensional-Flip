@@ -55,55 +55,9 @@ namespace app
                 CreatePlatform();
             }
 
-
-            // フェーズを初期化
-            currentPhase_ = app::enemyStatus::BossPhase::phase_One;
         }
 
 
-        void BattlePhaseManager::Update()
-        {
-            // フェーズ3の自動切り替え処理などが必要になればここに記述
-            // @ TODO フェーズ3の次はStaffRollSceneに移動予定。
-            if (currentPhase_ == app::enemyStatus::BossPhase::phase_Three)
-            {
-                // 経過時間を加算する。
-                dimensionTimer_ += g_gameTime->GetFrameDeltaTime();
-
-                // 
-                if (dimensionTimer_ >= changeInterval_)
-                {
-                    dimensionTimer_ = 0.0f;
-
-                    // 視点を切り替える。
-                    ToggleDimension();
-
-                    // 切り替わった視点にあわせて足場を再構築。
-                    auto* pBoss = FindGO<app::enemy::Boss>("boss");
-                    if (pBoss && pBoss->IsTired())
-                        ActivateScaffolding();
-                }
-            }
-
-        }
-
-
-        void BattlePhaseManager::AdvancePhase()
-        {
-            int next = static_cast<int>(currentPhase_) + 1;
-
-            if (next < static_cast<int>(app::enemyStatus::BossPhase::phase_Num))
-            {
-                // フェーズを進める
-                currentPhase_ = static_cast<app::enemyStatus::BossPhase>(next);
-
-                // UIにフェーズ変更を通知。
-                app::nsUI::BossUIManager::GetInstance().OnChangePhase((uint8_t) currentPhase_);
-
-                // フェーズが進行すると環境を構築する。
-                ApplyPhaseSettings();
-            }
-        }
 
 
         void BattlePhaseManager::ActivateScaffolding()
@@ -148,23 +102,6 @@ namespace app
         }
 
 
-        void BattlePhaseManager::ApplyPhaseSettings()
-        {
-            auto* pGame = FindGO<app::core::Game>("game");
-            if (!pGame)
-                return;
-
-
-            if (currentPhase_ == app::enemyStatus::BossPhase::phase_One)
-                // フェーズ1は強制的に2Dへ
-                pGame->ChangeDimension(CameraMode::mode2D);
-
-            else
-                // それ以外は強制的に3Dへ
-                pGame->ChangeDimension(CameraMode::mode3D);
-        }
-
-
         void BattlePhaseManager::DeactivateScaffolding()
         {
             // 全ての足場を非表示にする
@@ -203,38 +140,6 @@ namespace app
             auto* platform = NewGO<app::gimmick::FloatingPlatform>(0);
             platform->Deactivate(); // 初期状態は非表示
             platformsList_.push_back(platform);
-        }
-
-
-        void BattlePhaseManager::ToggleDimension() 
-        {
-            // 処理に必要なクラスを探索。
-            // ゲームクラスを探索。
-            auto* pGame = FindGO<app::core::Game>("game");
-            // Playerクラスを探索。
-            auto* pPlayer = FindGO<Player>("player");
-            // Bossクラスを探索。
-            auto* pBoss = FindGO<app::enemy::Boss>("boss");
-
-            if (!pGame)
-                return;
-
-            // 現在のかめあもーどを取得して反転する。
-            currentCamMode_ = pPlayer->GetCameraManager()->GetCurrentCameraMode();
-            nextCamMode_ = (currentCamMode_ == CameraMode::mode2D) ? CameraMode::mode3D : CameraMode::mode2D;
-            pGame->ChangeDimension(nextCamMode_);
-
-
-            if (pBoss)
-            {
-                auto* attackState = dynamic_cast<app::enemyState::BossAttackState*>(pBoss->GetCurrentState());
-                if (attackState != nullptr)
-                    attackState->Enter();
-
-                // 足場の再構築。
-                if (pBoss->GetCurrentState() == pBoss->GetStateList()[app::enemyStatus::state_Tumble])
-                    ActivateScaffolding();
-            }
         }
     } 
 } 

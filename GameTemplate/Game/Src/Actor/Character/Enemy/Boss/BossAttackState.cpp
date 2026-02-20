@@ -59,8 +59,6 @@ namespace app
     {
         void BossAttackState::Enter()
         {
-            // フェーズを取得。
-            auto* pPhase = app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
             
             // カメラモードを取得。
             CameraMode mode = CameraMode::mode3D;
@@ -69,9 +67,6 @@ namespace app
                 if (auto* pCamMan = pPlayer->GetCameraManager())
                     mode = pCamMan->GetCurrentCameraMode();
             }
-
-            // フェーズによる切り替え。
-            isPhase2D = (*pPhase == app::enemyStatus::BossPhase::phase_One);
 
 
             // モードに応じた戦略の抽選

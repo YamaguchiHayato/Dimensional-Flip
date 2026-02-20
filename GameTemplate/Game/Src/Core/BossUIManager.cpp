@@ -18,9 +18,6 @@ namespace app
             // 攻撃予告UIの生成。
             MakeAttackIndicatorUI();
 
-            // フェーズUIの生成。
-            MakePhaseUI();
-
             // 初期位置を設定。
             transform_.localPosition_ = Vector3(650, -400.0f, 0.0f);
         }
@@ -94,20 +91,5 @@ namespace app
 
         }
 
-
-        void BossUIManager::MakePhaseUI()
-        {
-            // フェーズUIの生成。
-            pBossPhaseUI_ = new BossPhaseUI();
-
-            // 親に設定。
-            pBossPhaseUI_->SetParent(this);
-
-            // 管理配列に追加。
-            pBossPhaseUI_->Initialize();
-
-            // リストに追加。
-            bossUIParts_.push_back(pBossPhaseUI_);
-        }
     }
 }

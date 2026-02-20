@@ -27,6 +27,7 @@
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackJumpState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackFireBallState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackRoar2DState.h"
+#include "Src/Actor/Character/Enemy/Boss/2D/BossAttackMeteo2DState.h"
 
 namespace
 {
@@ -211,6 +212,12 @@ namespace app
 
             case app::enemyStatus::Attack2DType::type_2DRoar:
                 currentState_ = std::make_unique<BossAttackRoar2DState>();
+                SetUpAttackIcon(app::nsUI::BossAttackKind::Roar);
+                break;
+
+
+            case app::enemyStatus::Attack2DType::type_2DMeteor:
+                currentState_ = std::make_unique<BossAttackMeteo2DState>();
                 SetUpAttackIcon(app::nsUI::BossAttackKind::Roar);
                 break;
             }

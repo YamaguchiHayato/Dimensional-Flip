@@ -52,7 +52,8 @@ namespace app
         {
             type_FireBall, // 火の玉
             type_Jump,     // ジャンプ攻撃
-            type_2DRoar,     // 咆哮
+            type_2DRoar,   // 咆哮
+            type_2DMeteor, // 隕石
             type_Num
         };
 

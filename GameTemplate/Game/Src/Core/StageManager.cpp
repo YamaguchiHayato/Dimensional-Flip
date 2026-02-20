@@ -50,11 +50,11 @@ namespace app
         bool StageManager::Start()
         {
             // 最初のシーンを生成する。
-            pCurrentStage_ = CreateStage(StageID::sStage1);
+            pCurrentStage_ = CreateStage(StageID::sStageEX);
             if (pCurrentStage_)
             {
                 // ステージの初期値を設定する。
-                stageCurrentID_ = StageID::sStage1;
+                stageCurrentID_ = StageID::sStageEX;
                 return true;
             }
             return false;

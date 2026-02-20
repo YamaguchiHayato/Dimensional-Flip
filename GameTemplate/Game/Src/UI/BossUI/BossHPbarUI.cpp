@@ -14,8 +14,8 @@ namespace
 
 
     // HPバーCurrentのサイズ。
-    const auto BAR_WIDTH = 600.0f;
-    const auto BAR_HEIGHT = 600.0f;
+    const auto BAR_WIDTH = 520.0f;
+    const auto BAR_HEIGHT = 95.0f;
 
 
     // HPバーDamageのサイズ。

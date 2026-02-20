@@ -149,6 +149,7 @@ namespace app
             render_.SetPosition(pos_);
             render_.SetScale(SCALE);
 
+
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
@@ -173,7 +174,7 @@ namespace app
             app::core::BattlePhaseManager::GetInstance()->Init();
 
             // InputManagerの次元反転フラグを無効化。
-            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(false);
+            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(true);
 
             // HPを初期化。
             SetHP(MAX_HP);

@@ -18,12 +18,10 @@ namespace app
             // カメラの現在のモードを取得。
             auto currentCamMode = pCamera->GetCurrentCameraMode();
 
-
             auto* findGameClass = FindGO<app::core::Game>("game");
 
             if (!findGameClass)
                 return;
-
 
             // 2D⇔3Dの切り替え。
             // 現在のカメラモードに応じて切り替えを行う。
@@ -32,7 +30,6 @@ namespace app
             {
                 // 3Dへ。
                 findGameClass->ChangeDimension(CameraMode::mode3D);
-
             }
 
             else if (currentCamMode == CameraMode::mode3D)

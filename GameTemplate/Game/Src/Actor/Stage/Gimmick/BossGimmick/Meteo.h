@@ -48,6 +48,13 @@ namespace app
                 fallSpeed_ = fallSpeed;
                 warningTime_ = delayTime;
             }
+
+            // 座標を設定する。
+            inline void SetPosition(const Vector3& position)
+            {
+                currentPos_ = position;
+            }
+
         private:
             // 状態を更新する。
             void UpdateState();

@@ -4,8 +4,6 @@
 namespace
 {
     const auto WARNING_TIME = 2.0f;
-
-    const auto SPAWN_HEIGHT = 1200; // 出現する高さ
 }
 
 
@@ -18,8 +16,7 @@ namespace app
             const std::string meteoPath = InitGimmick("StageEX/FallingRocks");
             render_.Init(meteoPath.c_str());
 
-            currentPos_ = targetPos_;
-            currentPos_.y += SPAWN_HEIGHT;
+
 
             // 初期位置をセット。
             render_.SetPosition(currentPos_);

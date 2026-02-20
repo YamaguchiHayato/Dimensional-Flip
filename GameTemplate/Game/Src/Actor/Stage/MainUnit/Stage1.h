@@ -21,6 +21,14 @@ namespace app{
     namespace enemy{
         class NormalEnemy;
     }
+
+    namespace gimmick
+    {
+        class Switch;
+        class TargetWall;
+        class Block;
+        class Coin;
+    }
 }
 
 // メインクラス。
@@ -53,6 +61,7 @@ private:
     inline void DimensionTriggerNewGO(); // カメラトリガー。
     inline void RotationFoolNewGO();     // 回転トリック。
     inline void WallCreateInstance();    // 壁インスタンス生成。
+    void CreateSwitchGimmick();          // スイッチギミック生成。
 
     // 敵生成。
     void CreateNormalEnemy();            // 通常敵。
@@ -74,6 +83,14 @@ private:
     WallActor* pWallActor_ = nullptr;
     app::stage::Wall* pWall_ = nullptr;
     DimensionTrigger* pDimensionTrigger_ = nullptr;
+
+
+    app::gimmick::Switch* pSwitch_ = nullptr;             // スイッチ
+    app::gimmick::TargetWall* pTargetWall_ = nullptr;     // ゴールの壁
+    app::gimmick::Block* pBlock_ = nullptr;               // 足場ブロック
+    std::vector<app::gimmick::Coin*> lAppearCoins_; // コインリスト
+    int collectedCoinCount_ = 0;                          // 集めた枚数
+    std::vector<app::gimmick::Block*> lBlocks_;
 
     std::vector<JumpPad*> lJumpPad_;
     std::vector<Star*> lStar_;

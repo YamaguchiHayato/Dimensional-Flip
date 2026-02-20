@@ -77,14 +77,11 @@ void NumberUI::UpdateTimer()
         timer_ -= g_gameTime->GetFrameDeltaTime();
 
         if (timer_ <= 0.0f)
-        {
             timer_ = 0.0f;
-        }
     }
+
     else
-    {
         timer_ = 0.0f;
-    }
 
 }
 

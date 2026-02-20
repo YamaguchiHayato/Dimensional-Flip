@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
@@ -255,9 +256,13 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Coin.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
@@ -344,6 +349,7 @@
   <ItemGroup>
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
@@ -374,9 +380,13 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\coin.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />

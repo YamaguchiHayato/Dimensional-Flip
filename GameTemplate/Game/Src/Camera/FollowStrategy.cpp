@@ -161,39 +161,71 @@ void FollowStrategy::StageCamera()
 
 void FollowStrategy::BossCamera()
 {
-    // 座標を取得する。
-    // Player。
     targetPos_ = pPlayer_->GetPlayerPos();
-    // カメラ。
-    const Vector3 currentCamPos = g_camera3D->GetPosition();
-    // デルタタイム。
-    const auto deltaTime = g_gameTime->GetFrameDeltaTime();
 
-    // 目標位置。
-    idealPos_ = BOSS_FIXED_POSS;
-    lookAtPoint_ = BOSS_FIXED_LOOKAT;
+    // スティック入力
+    float stickX = g_pad[0]->GetRStickXF();
+    float stickY = g_pad[0]->GetRStickYF() * -1.0f;
 
-    // ボスが疲労ステートに入ったかどうか確認。
+    // 回転速度
+    float rotSpeed = 100.0f * g_gameTime->GetFrameDeltaTime();
+
+    // 角度を加算（蓄積）
+    orbitAngleY_ += stickX * rotSpeed;
+    orbitAngleX_ += stickY * rotSpeed;
+
+    // 上下の角度制限（-80度～80度くらいが一般的ですが、地面潜り防止で調整）
+    if (orbitAngleX_ > 60.0f)
+        orbitAngleX_ = 60.0f;
+    if (orbitAngleX_ < -20.0f)
+        orbitAngleX_ = -20.0f;
+
+    float distance = 25.0f;
+
+    // ① 基準となるベクトル（真後ろ）
+    Vector3 orbitOffset = Vector3(0.0f, 0.0f, -distance);
+
+    Quaternion qPitch;
+    qPitch.SetRotationDeg(Vector3::AxisX, 20.0f + orbitAngleX_);
+    qPitch.Apply(orbitOffset);
+
+    // ③ Y軸回転（左右・Yaw）
+    Quaternion qYaw;
+    qYaw.SetRotationDeg(Vector3::AxisY, orbitAngleY_);
+    qYaw.Apply(orbitOffset);
+
+    // ④ 次元反転などの外部回転があれば適用
+    targetRotation_.Apply(orbitOffset);
+
+
+    // 注視点（プレイヤーの少し上）
+    lookAtPoint_ = targetPos_;
+    lookAtPoint_.y += 7.5f;
+
+    // 理想座標 = 注視点 + 計算したオフセット
+    idealPos_ = lookAtPoint_ + orbitOffset;
+
+    // ---------------------------------------------------------
+    // 4. ボスダウン（疲労）時の特殊カメラ上書き
+    // ---------------------------------------------------------
     isBossTumbler_ = (pBoss_->GetCurrentState() == pBoss_->GetStateList()[app::enemyStatus::state_Tumble]);
     if (isBossTumbler_ && targetPos_.y > THRESHOLD_Y_BOSS)
-        // 足場を登る際の視点を作成。
+    {
         MakeClimbingPerspective();
+    }
 
+    const Vector3 currentCamPos = g_camera3D->GetPosition();
+    const auto deltaTime = g_gameTime->GetFrameDeltaTime();
 
-    // 注視点もPlayerに合わせて動かす。
-    // @ TODO: 要調整。
-    auto followSpeed = isBossTumbler_ ? 10.0f : 5.0f;
-    Vector3 nextPos = Lerp(followSpeed * deltaTime , currentCamPos, idealPos_);
+    // ボスダウン時は追従を速く、通常時は少し滑らかに
+    auto followSpeed = isBossTumbler_ ? 10.0f : 15.0f;
 
-    // スクリーンロックの適応。
+    Vector3 nextPos = Lerp(followSpeed * deltaTime, currentCamPos, idealPos_);
+
     ApplyScreenRock(nextPos);
     g_camera3D->SetPosition(nextPos);
-
-
-    // 注視店の設定。
     g_camera3D->SetTarget(lookAtPoint_);
 }
-
 
 void FollowStrategy::MakeClimbingPerspective()
 {

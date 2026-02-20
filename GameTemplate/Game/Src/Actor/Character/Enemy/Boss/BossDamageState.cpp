@@ -44,39 +44,30 @@ namespace app
 
         bool BossDamageState::RequestID(uint8_t& request)
         {
-            uint8_t currentHP = pBoss_->GetHP();
-            auto* pPhase = app::core::BattlePhaseManager::GetInstance()->GetCurrentPhase();
-
+            // ダメージアニメーションが終わったら判定を行う
             if (!istiredPlaying_ && !pBoss_->IsPlayingAnimation())
             {
-                // 1. まず「フェーズ3」での死亡を最優先でチェック
-                if (*pPhase == app::enemyStatus::BossPhase::phase_Three && currentHP == 0)
+                // 現在のHPを取得
+                uint8_t currentHP = pBoss_->GetHP();
+
+                // HPが0なら死亡ステートへ
+                if (currentHP <= 0)
                 {
                     request = app::enemyStatus::BossState::state_Dead;
                     return true;
                 }
 
-                // 2. まだHPがあるなら転倒（ダウン）へ
-                if (currentHP > 0)
+                // HPが残っているなら転倒状態へ
+                else
                 {
                     pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Tumble, true, 0.2f);
                     istiredPlaying_ = true;
                     timer_ = 0.0f;
                     return false;
                 }
-
-                // 3. HPが0で、かつフェーズ3以外なら、フェーズを進めて回復（次のフェーズのIdleへ）
-                else
-                {
-                    app::core::BattlePhaseManager::GetInstance()->AdvancePhase();
-                    pBoss_->SetHP(MAX_HP);
-                    pBoss_->SettNextInterval(INTERVAL);
-                    request = app::enemyStatus::BossState::state_Idle;
-                    return true;
-                }
             }
 
-            // 疲労アニメーション中の復帰タイマー処理
+            // 転倒（疲労）アニメーション中の復帰処理
             if (istiredPlaying_)
             {
                 if (timer_ >= RECOVERY_TIME)
@@ -89,5 +80,5 @@ namespace app
 
             return false;
         }
-    } 
+    }
 }

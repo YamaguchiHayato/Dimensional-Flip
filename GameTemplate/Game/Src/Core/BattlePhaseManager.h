@@ -60,9 +60,6 @@ namespace app
             // 更新。
             void Update();
 
-            // フェーズを進める。
-            void AdvancePhase();
-
             // 足場を出現させる。
             void ActivateScaffolding();
 
@@ -84,21 +81,6 @@ namespace app
                 dimensionTimer_ = timer;
             }  
 
-            // フェーズをセット。
-            inline void SetPhase(app::enemyStatus::BossPhase phase)
-            {
-                currentPhase_ = phase;
-            }
-
-
-        // ゲッター。
-        public:
-            // 現在のフェーズを取得。
-            app::enemyStatus::BossPhase* GetCurrentPhase()
-            {
-                return &currentPhase_;
-            };
-
 
             // ヘルパー。
         public:
@@ -112,16 +94,6 @@ namespace app
         private:
             // 足場を生成する。
             void CreatePlatform();
-
-            // フェーズに応じた必要なクラスを探索・取得。
-            void ApplyPhaseSettings();
-
-            // 時間差で視点を切り替える。
-            void ToggleDimension();
-
-
-        private:
-            app::enemyStatus::BossPhase currentPhase_ = app::enemyStatus::BossPhase::phase_One; // 現在のフェーズ。
 
 
         private:

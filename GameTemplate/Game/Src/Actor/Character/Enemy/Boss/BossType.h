@@ -93,16 +93,5 @@ namespace app
             effect_thunder,      // 雷エフェクト
             effect_Hit,          // ヒットエフェクト
         };
-
-
-        // ボス戦の進行フェーズを管理。
-        enum class BossPhase : uint8_t
-        {
-            phase_One = 0, // フェーズ1
-            phase_Two,     // フェーズ2
-            phase_Three,   // フェーズ3
-            phase_Num
-        };
-
     }
 }

@@ -238,6 +238,11 @@
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Coin.cpp" />
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -433,6 +438,11 @@
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\coin.h" />
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

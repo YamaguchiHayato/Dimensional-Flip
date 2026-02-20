@@ -18,6 +18,10 @@
 #include "Src/WallActor.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
 
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Switch.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Block.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/TargetWall.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/Coin.h"
 
 namespace
 {
@@ -87,6 +91,33 @@ namespace GimmickPos
     {
         const Vector3 pos1 = Vector3(800.0f, 0.0f, -10.0f);
     }
+
+
+    namespace SwitchGimmick
+    {
+        // 足場ブロックの位置
+        const Vector3 BlockPos(500.0f, 0.0f, 0.0f);
+
+        const std::vector<Vector3> BlockPositions = {
+            Vector3(250.0f, 5.0f, 0.0f), // 1つ目
+            Vector3(265.0f, 15.0f, 0.0f), // 2つ目
+            Vector3(275.0f, 20.0f, 0.0f)  // 3つ目 (この上にスイッチ)
+        };
+
+        // スイッチの位置（足場の上に置く）
+        const Vector3 SwitchPos(280.0f, 0.0f, 0.0f); // 高さ50.0f上に配置
+
+        const Vector3 TargetWallPos(300.0f, 0.0f, 0.0f);
+
+        // 出現するコインの位置リスト
+        const std::vector<Vector3> CoinPositions =
+        {
+            Vector3(250.0f, 15.0f, 0.0f),  // 1つ目
+            Vector3(265.0f, 25.0f, 0.0f), // 2つ目
+            Vector3(275.0f, 30.0f, 0.0f)  // 3つ目 (この上にスイッチ)
+        };
+
+    } // namespace SwitchGimmick
 }
 
 
@@ -175,7 +206,19 @@ Stage1::~Stage1()
         DeleteGO(p);
     }
 
+    for (auto* block : lBlocks_)
+    {
+        DeleteGO(block);
+    }
 
+    if (pSwitch_)
+        DeleteGO(pSwitch_);
+    if (pTargetWall_)
+        DeleteGO(pTargetWall_);
+    if (pBlock_)
+        DeleteGO(pBlock_);
+
+    lBlocks_.clear();
     lJumpPad_.clear();
     lStar_.clear();
     lWall_.clear();
@@ -225,11 +268,12 @@ bool Stage1::Start()
     CreateNormalEnemy();
 
     // 落下タイプの敵を生成。
-    CreateFallEnenmy();
+//    CreateFallEnenmy();
 
     // トゥイーンエネミー生成。
     CreateThwompEnemy();
 
+    CreateSwitchGimmick();
 
 	stageRender_.Update();
 
@@ -240,6 +284,37 @@ bool Stage1::Start()
 void Stage1::Update()
 {
 	stageRender_.Update();
+
+    if (pSwitch_ && pSwitch_->GetIsPressedTrigger())
+    {
+        for (auto* coin : lAppearCoins_)
+        {
+            if (coin)
+                coin->Appear();
+        }
+    }
+
+    // 2. コインの収集判定
+    if (collectedCoinCount_ < (int) lAppearCoins_.size())
+    {
+        for (auto* coin : lAppearCoins_)
+        {
+            // AppearCoinではなくCoinクラスの関数を使用
+            if (coin && coin->GetIsCollectedTrigger())
+            {
+                collectedCoinCount_++;
+
+                // 全て集め終わったら壁を消す
+                if (collectedCoinCount_ >= (int) lAppearCoins_.size())
+                {
+                    if (pTargetWall_)
+                    {
+                        pTargetWall_->Vanish();
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -407,6 +482,37 @@ void Stage1::WallCreateInstance()
 
 }
 
+
+void Stage1::CreateSwitchGimmick()
+{
+    lBlocks_.clear(); // リストを初期化
+    for (const auto& pos : GimmickPos::SwitchGimmick::BlockPositions)
+    {
+        auto block = NewGO<app::gimmick::Block>(0, "block_gimmick");
+        block->SetPos(pos);
+        lBlocks_.push_back(block);
+    }
+
+
+    // 2. スイッチ (足場の上)
+    pSwitch_ = NewGO<app::gimmick::Switch>(0, "switch_gimmick");
+    pSwitch_->SetPos(GimmickPos::SwitchGimmick::SwitchPos);
+
+    // 3. ターゲット壁 (道を塞ぐ)
+    pTargetWall_ = NewGO<app::gimmick::TargetWall>(0, "target_wall");
+    pTargetWall_->SetPos(GimmickPos::SwitchGimmick::TargetWallPos);
+
+    // 4. 出現コイン (複数生成)
+    lAppearCoins_.clear();
+    collectedCoinCount_ = 0;
+
+    for (const auto& pos : GimmickPos::SwitchGimmick::CoinPositions)
+    {
+        auto coin = NewGO<app::gimmick::Coin>(0, "coin");
+        coin->SetPos(pos);
+        lAppearCoins_.push_back(coin);
+    }
+}
 
 void Stage1::CreateNormalEnemy()
 {

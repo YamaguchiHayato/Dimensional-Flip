@@ -1,11 +1,10 @@
 #pragma once
 
 // レイヤー分けしたタイトル画面クラス。
-#include "Src/Scene/title/TitleLayerBase.h"
-#include "Src/Scene/title/TitleButtonActionLayer.h"
 #include "Src/Scene/title/TitleBackgroundLayer.h"
+#include "Src/Scene/title/TitleLayerBase.h"
 #include "Src/Scene/title/TitleLogoLayer.h"
-
+#include "Src/UI/Select/TitleMenu.h" // パスは環境に合わせてください
 
 class Fade;
 class TitleView : public IGameObject
@@ -15,30 +14,23 @@ public:
     virtual ~TitleView();
 
     bool Start();
-    void Update() {};
+    void Update();
     void Render(RenderContext& rc) {};
-    inline const std::string Init(const std::string layerName)
-    {
-        const std::string path = "Assets/title/" + layerName + ".DDS";
-        return path;
-    }
-
-// セッター。
-public:
-    inline const void SetGameLooadFlag(bool flag) { gameLoadFlag = flag; }
-
-// ゲッター。
-public:
-    inline bool GetGameLoadFlag() { return gameLoadFlag; }
 
 private:
-    // フェード。
-    Fade* fade_ = nullptr;
     // 各レイヤー。
-    TitleLayerBase* pBackgroundLayer_ = nullptr;  // 背景画像。
-    TitleLayerBase* pButtonActionLayer = nullptr; // ボタンアクション。
-    TitleLayerBase* pLogoLayer_ = nullptr;        // ロゴ。
+    TitleLayerBase* pBackgroundLayer_ = nullptr;
+    TitleLayerBase* pLogoLayer_ = nullptr;
+    app::nsUI::TitleMenu* pTitleMenu_ = nullptr;
+    Fade* m_pFade = nullptr; // フェードオブジェクト
+
 
 private:
+    TitleMenuType m_selectedMenu = TitleMenuType::Max; // 選択された項目
+
+
+private:
+    bool m_isStartedFadeOut = false; // フェードアウトを開始したか
+
     bool gameLoadFlag = false;
 };

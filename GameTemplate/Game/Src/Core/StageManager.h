@@ -48,16 +48,23 @@ namespace app
                 }
                 return StageStartPos::stage2;
             }
+
+
             // 現在のステージIDを取得。
             // ステージ変更検知で使用。
             inline StageID GetCurrentStageID() const { return stageCurrentID_; }
 
+
+        public:
             StageManager() = default;
             virtual ~StageManager();
+
 
         private:
             // static メンバー。
             static StageManager* pStageManger_;
+
+            static StageID nextInitStageID_;
 
         public:
             // シングルトンインスタンスの生成。
@@ -75,8 +82,16 @@ namespace app
             }
 
             // シングルトンインスタンスを取得
-            inline static StageManager* GetInstance() { return pStageManger_; }
-        };
+            inline static StageManager* GetInstance()
+            {
+                return pStageManger_;
+            }
 
+            // 次に初期化するステージIDを設定。
+            inline static void SetNextInitStageID(StageID id)
+            {
+                nextInitStageID_ = id;
+            }
+        };
     }
 }

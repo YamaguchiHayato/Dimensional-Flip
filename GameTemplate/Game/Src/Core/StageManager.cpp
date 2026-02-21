@@ -36,6 +36,9 @@ namespace app
     {
         StageManager* StageManager::pStageManger_ = nullptr;
 
+        // デフォルトのステージの値をここで設定。
+        StageID StageManager::nextInitStageID_ = StageID::sTutorialStage;
+
 
         StageManager::~StageManager()
         {
@@ -50,11 +53,11 @@ namespace app
         bool StageManager::Start()
         {
             // 最初のシーンを生成する。
-            pCurrentStage_ = CreateStage(StageID::sStageEX);
+            pCurrentStage_ = CreateStage(nextInitStageID_);
             if (pCurrentStage_)
             {
                 // ステージの初期値を設定する。
-                stageCurrentID_ = StageID::sStageEX;
+                stageCurrentID_ = nextInitStageID_;
                 return true;
             }
             return false;

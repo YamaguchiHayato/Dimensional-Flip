@@ -333,6 +333,7 @@
     <ClCompile Include="Src\UI\HPbarUI.cpp" />
     <ClCompile Include="Src\UI\NumberUI.cpp" />
     <ClCompile Include="Src\UI\ScoreUI.cpp" />
+    <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
     <ClCompile Include="Src\UI\TimerUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
@@ -457,6 +458,7 @@
     <ClInclude Include="Src\UI\HPbarUI.h" />
     <ClInclude Include="Src\UI\NumberUI.h" />
     <ClInclude Include="Src\UI\ScoreUI.h" />
+    <ClInclude Include="Src\UI\Select\TitleMenu.h" />
     <ClInclude Include="Src\UI\TimerUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />

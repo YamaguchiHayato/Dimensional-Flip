@@ -243,6 +243,7 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Coin.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
+    <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -443,6 +444,7 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\coin.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
+    <ClInclude Include="Src\UI\Select\TitleMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

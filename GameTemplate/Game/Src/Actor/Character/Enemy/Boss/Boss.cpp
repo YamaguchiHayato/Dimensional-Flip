@@ -40,6 +40,8 @@ namespace
 
     const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
 
+    const float WEAK_POINT_BONE_OFFSET_Y = 4.0f;
+
     // エフェクトｗセットするための構造体。
     struct EffectResource
     {
@@ -345,6 +347,33 @@ namespace app
             pos.y = 0.0f;
             return pos;
         }
-    }
+
+
+        Vector3 Boss::GetWeakPoint() const
+        {
+            // 修正1: Boss.h の定義に合わせて変数名を使用 (isManualOverride_)
+            if (isManualOverride_)
+            {
+                // 修正2: Boss.h の定義に合わせて変数名を使用 (manualWeakHeight_)
+                return pos_ + Vector3(0.0f, manualWeakHeight_, 0.0f);
+            }
+            // ボーン追従モード
+            else
+            {
+                // ボーンのワールド行列を取得
+                const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
+
+                // 修正3: 関数を使わず、行列の要素(m[3][0]など)から直接座標を取り出す
+                // これなら関数名の違いによるエラーは起きません
+                Vector3 bonePos;
+                bonePos.x = mat.m[3][0];
+                bonePos.y = mat.m[3][1];
+                bonePos.z = mat.m[3][2];
+
+                // オフセットを加算して返す
+                return bonePos + Vector3(0.0f, WEAK_POINT_BONE_OFFSET_Y, 0.0f);
+            }
+        }
+    } 
 }
 

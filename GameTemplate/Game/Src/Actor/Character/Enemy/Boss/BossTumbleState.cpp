@@ -45,8 +45,8 @@ namespace app
             timer_ = 0.0f;
             delayTimer_ = 0.0f;
             canBeAttacked_ = false;
-            currentWeakHeight_ = 22.0f;
-            pBoss_->SetWeakPointHeight(currentWeakHeight_, true);
+
+            pBoss_->SetWeakPointHeight(22.0f, false);
 
             // 弱点を有効化。
             if (pBoss_->pWeeekPoint_)
@@ -70,10 +70,6 @@ namespace app
             float deltaTime = g_gameTime->GetFrameDeltaTime();
             timer_ += deltaTime;
 
-            currentWeakHeight_ += (targetHeight_ - currentWeakHeight_) * 0.1f;
-
-            // 現在のボスの高さをボスに通達。
-            pBoss_->SetWeakPointHeight(currentWeakHeight_, true);
 
             // 倒れこみ処理を待つ処理。
             if (!canBeAttacked_) {
@@ -138,41 +134,41 @@ namespace app
             if (!pPlayer)
                 return false;
 
-            // ボスへの攻撃判定ベクトルの作成。
-            headPos_ = pBoss_->GetWeakPoint() + Vector3(0.0f, 1.2f, 0.0f);
-            playerPos_ = pPlayer->GetPlayerPos();
+            // ■ 修正1: 判定の基準点を「物理コリジョンの中心」に合わせる
+            // (以前の +1.2f という固定オフセットはなくします)
+            Vector3 weakPointCenter = pBoss_->GetWeakPoint();
+            Vector3 playerPos = pPlayer->GetPlayerPos();
 
+            // 差分ベクトル
+            Vector3 diff = playerPos - weakPointCenter;
 
-            // 距離判定用ベクトルの作成。
-            diff_ = playerPos_ - headPos_;
-            auto distXZ = sqrtf(diff_.x * diff_.x + diff_.z * diff_.z);
+            float distXZSq = diff.x * diff.x + diff.z * diff.z;
+            bool isNearXZ = (distXZSq < 3.0f * 3.0f);
 
-            // 水平方向。
-            bool isNearXZ_ = (distXZ < 1.2f);
-
-            // 高さ判定。
-            bool isAboveY = (diff_.y > -0.5f && diff_.y < 0.4f);
+            bool isAboveY = (diff.y > -1.0f && diff.y < 4.0f);
 
             // 落下中の判定をとる
             bool isFalling = (pPlayer->GetMoveSpeed().y <= 0.0f);
 
-
-            // 範囲内かつ、ボスの頭上付近にいればヒット判定とする。
-            if (isNearXZ_ && isAboveY && isFalling)
+            // 範囲内かつ、落下中（踏みつけ）ならヒット
+            if (isNearXZ && isAboveY && isFalling)
                 return true;
 
             return false;
         }
 
 
-        void BossTumbleState::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
+       void BossTumbleState::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
         {
+            // ★修正：イベントでは当たり判定の有効/無効だけを切り替える
+            // 高さ（targetHeight_）の変更処理は不要になるので削除します
+
             if (wcscmp(eventName, L"Down_Start") == 0)
             {
                 if (pBoss_->pWeeekPoint_)
                 {
                     pBoss_->pWeeekPoint_->SetIsEnable(true);
-                    targetHeight_ = 5.0f; // 倒れこみ開始時の低い値。
+                    // targetHeight_ = 5.0f; // 削除
                 }
             }
             else if (wcscmp(eventName, L"Down_End") == 0)
@@ -180,19 +176,12 @@ namespace app
                 if (pBoss_->pWeeekPoint_)
                 {
                     pBoss_->pWeeekPoint_->SetIsEnable(true);
-                    targetHeight_ = 3.0f; // 完全に倒れこんだ値。
+                    // targetHeight_ = 3.0f; // 削除
                 }
-            }
-
-            // 起き上がり
-            if (wcscmp(eventName, L"Stand_Start") == 0)
-            {
-                targetHeight_ = 8.0f; // 地面付近の高さ
             }
             else if (wcscmp(eventName, L"Stand_End") == 0)
             {
-                targetHeight_ = 22.0f; // 中間の高さ
-
+                // targetHeight_ = 22.0f; // 削除
                 if (pBoss_->pWeeekPoint_)
                 {
                     pBoss_->pWeeekPoint_->SetIsEnable(false);

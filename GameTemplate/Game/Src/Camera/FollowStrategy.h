@@ -41,10 +41,6 @@ private:
     // ボス戦用のカメラワーク。
     void BossCamera();
  
-    // 足場を登る際の視点を作る。
-    void MakeClimbingPerspective();
-
-
 private:
     app::enemy::Boss* pBoss_ = nullptr; 
 
@@ -52,12 +48,13 @@ private:
 private:
     //直前の地面に居たときのY座標を保存。
     float lastGroundY_ = 0.0f;
-
     float orbitAngleY_ = 0.0f;
     float orbitAngleX_ = 0.0f;
+    float transitionTimer_ = 0.0f; // 遷移タイマー
 
     bool isScreenRock_ = false;
     bool isBossTumbler_ = false; // ボスが疲労ステートに入ったかどうか。
+    bool isTransitioningToClimb_ = false; // クライミング視点への遷移中フラグ
 
     Vector3 rangeMin_ = Vector3::Zero;
     Vector3 rangeMax_ = Vector3::Zero;
@@ -66,9 +63,10 @@ private:
     Vector3 backOffset_ = Vector3::Zero;
     Vector3 frontOffset_ = Vector3::Zero;
     Vector3 finalOffset_ = Vector3::Zero;
-
+    Vector3 transitionStartPos_ = Vector3::Zero; // 遷移開始時のカメラ位置
     Vector3 idealPos_ = Vector3::Zero; // 理想的な位置
     Vector3 lookAtPoint_ = Vector3::Zero;
     Vector3 targetPos_ = Vector3::Zero;
+
     Quaternion currentPlayerRot_ = Quaternion::Identity;
 };

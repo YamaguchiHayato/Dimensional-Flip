@@ -17,21 +17,21 @@ namespace ScaffoldingStatus
 
     // 2D用パターン: ボスの正面(X軸)に向かって階段状に配置
     const std::vector<Vector3> PATTERN_2D = {
-        Vector3(-25.0f, 8.0f, 0.0f),  // 1段目 (左端)
-        Vector3(-10.0f, 16.0f, 0.0f), // 2段目 (中央)
+        Vector3(-25.0f, 8.0f, 0.0f),   // 1段目 (左端)
+        Vector3(-10.0f, 16.0f, 0.0f),  // 2段目 (中央)
         Vector3(10.0f, 24.0f, 0.0f),   // 3段目 (右端)
-        Vector3(20.0f, 32.0f, 0.0f)   // 4段目 (中央)
+        Vector3(20.0f, 32.0f, 0.0f)    // 4段目 (中央)
     };
 
 
     // 3D用パターン: ボスを中心に螺旋やジグザグに配置
     const std::vector<Vector3> PATTERN_3D = {
-        Vector3(0.0f, 5.0f, 20.0f),     // 1: 正面手前
-        Vector3(14.0f, 10.0f, 14.0f),   // 2: 右手前
-        Vector3(20.0f, 15.0f, 0.0f),    // 3: 右真横
-        Vector3(14.0f, 20.0f, -14.0f),  // 4: 右奥
-        Vector3(0.0f, 25.0f, -20.0f),   // 5: 真裏
-        Vector3(-14.0f, 30.0f, -14.0f), // 6: 左奥
+        Vector3(0.0f, 5.0f, 20.0f),     // 1: 手前中央 (スタート)
+        Vector3(-30.0f, 8.0f, 12.0f),   // 2: 左へ大きく移動
+        Vector3(30.0f, 11.0f, 4.0f),    // 3: 右へ大きく移動
+        Vector3(-30.0f, 14.0f, -4.0f),  // 4: 左へ大きく移動
+        Vector3(30.0f, 17.0f, -12.0f),  // 5: 右へ大きく移動
+        Vector3(0.0f, 20.0f, -20.0f),   // 6: 奥中央 (ボスの目の前)
     };
 }
 
@@ -56,8 +56,6 @@ namespace app
             }
 
         }
-
-
 
 
         void BattlePhaseManager::ActivateScaffolding()

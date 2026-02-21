@@ -1,12 +1,9 @@
 #include "stdafx.h"
+
 #include "FollowStrategy.h"
-
-#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
-
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/BossUIManager.h"
-
-
 
 namespace
 {
@@ -30,8 +27,9 @@ namespace
     // 俯瞰視点の基準位置。
     const Vector3 BOSS_FIXED_POSS = {0.0f, 40.0f, -50.0f};
     const Vector3 BOSS_FIXED_LOOKAT = {0.0f, 5.0f, 0.0f};
-}
 
+    const float CLIMB_TRANSITION_TIME = 1.0f;
+} // namespace
 
 FollowStrategy::FollowStrategy(Player* pPlayer)
 {
@@ -39,20 +37,17 @@ FollowStrategy::FollowStrategy(Player* pPlayer)
     SetTargetRotationY(0.0f);
 }
 
-
 bool FollowStrategy::Start()
 {
-	////ニアクリップとファークリップの設定
-	g_camera3D->SetNear(10.0f);         
-	// スカイキューブの大きさに合わせて調整
-    // 700 
-	g_camera3D->SetFar(10000.0f);      
-
+    ////ニアクリップとファークリップの設定
+    g_camera3D->SetNear(10.0f);
+    // スカイキューブの大きさに合わせて調整
+    // 700
+    g_camera3D->SetFar(10000.0f);
 
     pBoss_ = FindGO<app::enemy::Boss>("boss");
-	return true;
+    return true;
 }
-
 
 void FollowStrategy::Update()
 {
@@ -78,7 +73,6 @@ void FollowStrategy::Update()
         StageCamera();
 }
 
-
 void FollowStrategy::ApplyScreenRock(Vector3& cameraPos)
 {
     if (!isScreenRock_)
@@ -96,7 +90,6 @@ void FollowStrategy::ApplyScreenRock(Vector3& cameraPos)
     if (cameraPos.z > rangeMax_.z)
         cameraPos.z = rangeMax_.z;
 }
-
 
 void FollowStrategy::StageCamera()
 {
@@ -158,7 +151,6 @@ void FollowStrategy::StageCamera()
     g_camera3D->SetTarget(lookAtPoint);
 }
 
-
 void FollowStrategy::BossCamera()
 {
     targetPos_ = pPlayer_->GetPlayerPos();
@@ -197,7 +189,6 @@ void FollowStrategy::BossCamera()
     // ④ 次元反転などの外部回転があれば適用
     targetRotation_.Apply(orbitOffset);
 
-
     // 注視点（プレイヤーの少し上）
     lookAtPoint_ = targetPos_;
     lookAtPoint_.y += 7.5f;
@@ -205,61 +196,17 @@ void FollowStrategy::BossCamera()
     // 理想座標 = 注視点 + 計算したオフセット
     idealPos_ = lookAtPoint_ + orbitOffset;
 
-    // ---------------------------------------------------------
-    // 4. ボスダウン（疲労）時の特殊カメラ上書き
-    // ---------------------------------------------------------
-    isBossTumbler_ = (pBoss_->GetCurrentState() == pBoss_->GetStateList()[app::enemyStatus::state_Tumble]);
-    if (isBossTumbler_ && targetPos_.y > THRESHOLD_Y_BOSS)
-    {
-        MakeClimbingPerspective();
-    }
-
     const Vector3 currentCamPos = g_camera3D->GetPosition();
     const auto deltaTime = g_gameTime->GetFrameDeltaTime();
 
-    // ボスダウン時は追従を速く、通常時は少し滑らかに
-    auto followSpeed = isBossTumbler_ ? 10.0f : 15.0f;
+    // 通常の追従速度
+    float followSpeed = 15.0f;
 
+    // 単純なLerpで追従
     Vector3 nextPos = Lerp(followSpeed * deltaTime, currentCamPos, idealPos_);
 
     ApplyScreenRock(nextPos);
     g_camera3D->SetPosition(nextPos);
     g_camera3D->SetTarget(lookAtPoint_);
 }
-
-void FollowStrategy::MakeClimbingPerspective()
-{
-    // Playerの移動ベクトルを取得。
-    auto moveVec = pPlayer_->GetMoveSpeed();
-
-    if (moveVec.Length() > 0.001f || targetPos_.y > THRESHOLD_Y_BOSS)
-    {
-        // プレイヤーの回転を取得。
-        // 足場を登る際のみ、Playerの真後ろあたりのベクトルを設定。
-        currentPlayerRot_ = pPlayer_->GetPlayerRotation();
-    }
-
-    backOffset_ = Vector3::Front;
-    currentPlayerRot_.Apply(backOffset_);
-
-    // 最終的なオフセットを計算。
-    auto climbDist = OFFSET_CLIMB.z - 10.0f;
-    finalOffset_ = backOffset_ * climbDist;
-
-    // XZ軸の同期。
-    idealPos_.x = targetPos_.x + finalOffset_.x;
-    idealPos_.z = targetPos_.z + finalOffset_.z;
-
-    // Y軸の同期。
-    auto followY = targetPos_.y + OFFSET_CLIMB.y;
-    idealPos_.y = (followY > BOSS_FIXED_POSS.y) ? followY : BOSS_FIXED_POSS.y + 10.0f;
-
-    // 注視点の追従。
-    frontOffset_ = Vector3::Front;
-    currentPlayerRot_.Apply(frontOffset_);
-    lookAtPoint_ = targetPos_ + (frontOffset_ * 20.0f);
-    lookAtPoint_.y += 2.0f;
-}
-
-
 

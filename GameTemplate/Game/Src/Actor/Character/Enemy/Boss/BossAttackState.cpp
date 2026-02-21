@@ -113,19 +113,28 @@ namespace app
                 // 攻撃回数カウントなどの共通処理
                 pBoss_->AddAttackCount();
 
-                // 疲労判定
-                if (pBoss_->IsTired())
+                // カメラモードを取得
+                CameraMode currentMode = CameraMode::mode3D;
+                if (auto* pPlayer = pBoss_->GetPlayer())
+                {
+                    if (auto* pCamMan = pPlayer->GetCameraManager())
+                        currentMode = pCamMan->GetCurrentCameraMode();
+                }
+
+                // 3Dモードの時は疲れない（攻撃を続ける or 待機に戻る）
+                if (pBoss_->IsTired() && currentMode == CameraMode::mode2D)
                 {
                     // 攻撃回数リセット
                     pBoss_->ResetAttackCount();
 
-                    // 倒れ状態へ移行
+                    // 倒れ状態へ移行（足場生成）
                     request = app::enemyStatus::BossState::state_Tumble;
                     return true;
                 }
                 else
                 {
-                    // 待機へ戻る
+                    // 3Dモード、またはまだ疲れていない場合は待機へ戻る
+                    // (3Dモードで攻撃回数が溜まったまま2Dに移行すると、即座にダウンするようになります)
                     request = app::enemyStatus::BossState::state_Idle;
                     return true;
                 }

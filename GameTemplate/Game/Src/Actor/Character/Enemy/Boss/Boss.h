@@ -158,22 +158,8 @@ namespace app
             Vector3 GetRandomAttackPos();
 
             // 弱点ベクトルのワールド座標を取得する。
-            Vector3 GetWeakPoint() const
-            {
-                // ステートで false に設定された場合、ボーンがあればここが実行される
-                if (!isManualOverride_ && weakPointBoneID_ != -1)
-                {
-                    const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
-                    Vector3 boneWorldPos;
-                    boneWorldPos.Set(mat.v[3]);
+            Vector3 GetWeakPoint() const;
 
-                    // ボスの移動とアニメーションの両方が反映された座標をそのまま返す
-                    return boneWorldPos;
-                }
-
-                // ボーンがない、または手動フラグが true の時の予備（足元 + 高さ）
-                return pos_ + Vector3(0.0f, manualWeakHeight_, 0.0f);
-            }
             // ゲームクラスを取得。
             inline app::core::Game* GetGameInstance() const
             {
@@ -260,6 +246,7 @@ namespace app
             float stateTimer_ = 0.0f;
             float nextInterval_ = 3.0f;
             float manualWeakHeight_ = 22.0f;
+
             // @ uint8_tだと負数が扱えないためint型で定義。
             int weakPointBoneID_ = -1;
             

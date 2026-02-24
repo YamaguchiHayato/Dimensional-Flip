@@ -14,11 +14,13 @@ enum GameSoundList
 
 
 	// SE
-	GameSoundList_SE_SelectScreen_Decision,						//決定音
-	GameSoundList_SE_Fall,						// 落下音。
-	GameSoundList_SE_Rotation,					// 回転音。
-	GameSoundList_SE_BossHit,				    // ボスにダメージを与える音。
-	GameSoundList_SE_StarRotation,				    // スター回転音。
+	GameSoundList_SE_CursorMove,						        // カーソル移動音
+    GameSoundList_SE_Button,                                    // ボタン音
+	GameSoundList_SE_SelectScreen_Decision,						// 決定音
+	GameSoundList_SE_Fall,						                // 落下音。
+	GameSoundList_SE_Rotation,					                // 回転音。
+	GameSoundList_SE_BossHit,				                    // ボスにダメージを与える音。
+	GameSoundList_SE_StarRotation,				                // スター回転音。
 	GameSoundList_SE_SelectScreen_Decision_ScreenTransition,	//決定音(画面遷移用)
 	GameSoundList_SE_SelectScreen_Select,						//選択音
 	GameSoundList_SE_SelectScreen_Cancel,						//キャンセル音

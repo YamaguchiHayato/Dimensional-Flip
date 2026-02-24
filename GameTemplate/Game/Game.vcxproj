@@ -325,6 +325,7 @@
     <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp" />
     <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp" />
     <ClCompile Include="Src\Scene\title\TitleView.cpp" />
+    <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp" />
@@ -334,12 +335,14 @@
     <ClCompile Include="Src\UI\NumberUI.cpp" />
     <ClCompile Include="Src\UI\ScoreUI.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
+    <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
     <ClCompile Include="Src\UI\TimerUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
     <ClCompile Include="Src\UI\UIBase.cpp" />
     <ClCompile Include="Src\WallActor.cpp" />
+    <ClCompile Include="StageIcon.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -450,6 +453,7 @@
     <ClInclude Include="Src\Scene\title\TitleLayerBase.h" />
     <ClInclude Include="Src\Scene\title\TitleLogoLayer.h" />
     <ClInclude Include="Src\Scene\title\TitleView.h" />
+    <ClInclude Include="Src\Scene\WorldSelectScene.h" />
     <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h" />
     <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h" />
     <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h" />
@@ -459,12 +463,14 @@
     <ClInclude Include="Src\UI\NumberUI.h" />
     <ClInclude Include="Src\UI\ScoreUI.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
+    <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
     <ClInclude Include="Src\UI\TimerUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
     <ClInclude Include="Src\UI\UIBase.h" />
     <ClInclude Include="Src\WallActor.h" />
+    <ClInclude Include="StageIcon.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

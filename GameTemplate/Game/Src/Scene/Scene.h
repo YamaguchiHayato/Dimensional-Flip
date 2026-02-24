@@ -26,6 +26,7 @@ enum class SceneID : uint8_t
 {
     sFade = 0,
     sTitle,
+    sWorldSelect,
     sInGame,
     sResult,
     sGameOver,
@@ -35,10 +36,15 @@ enum class SceneID : uint8_t
 class IScene 
 {
 public:
-    IScene() {};
-    virtual ~IScene() {};
+    IScene() = default;
+    virtual ~IScene() = default;
 
-    virtual bool Start() = 0 { return true; };
+
+public:
+    virtual bool Start() = 0
+    {
+        return true;
+    };
     virtual void Update() = 0 {};
 };
 

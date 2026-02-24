@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "Src/Production/Fade.h"
+
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/GameClear.h"
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Scene/GameOverScene.h"
+#include "Src/Scene/WorldSelectScene.h"
+
+#include "Src/UI/Select/WorldSelectUI.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
+
 
 SceneManager::~SceneManager()
 {
@@ -23,6 +28,7 @@ SceneManager::~SceneManager()
         pFade_ = nullptr;
     }
 }
+
 
 bool SceneManager::Start()
 {
@@ -43,6 +49,7 @@ bool SceneManager::Start()
     }
     return false;
 } 
+
 
 void SceneManager::Update()
 {
@@ -73,6 +80,7 @@ void SceneManager::Update()
     }
 }
 
+
 IScene* SceneManager::CreateScene(SceneID id)
 {
     IScene* newScene = nullptr;
@@ -83,7 +91,10 @@ IScene* SceneManager::CreateScene(SceneID id)
              newScene= new TitleScene();
              break;
 
-        // ケース: インゲームシーン。
+        case SceneID::sWorldSelect:
+             newScene = new WorldSelectScene();
+             break;
+
         case SceneID::sInGame:
              newScene = new InGameScene();
              break;

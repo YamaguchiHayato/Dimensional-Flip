@@ -43,7 +43,6 @@ public:
     inline void ChangeScene(SceneID newID)
     {
         requestID_ = newID;
-        //requestID_ = SceneID::sFade;
     }
 
 

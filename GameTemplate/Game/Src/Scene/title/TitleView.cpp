@@ -32,11 +32,11 @@ bool TitleView::Start()
     pTitleMenu_ = NewGO<app::nsUI::TitleMenu>(1, "TitleMenu");
     pTitleMenu_->Init();
 
-    // ★ フェードオブジェクトをマネージャーから取得しておく
     m_pFade = SceneManager::GetInstance()->GetFade();
 
     return true;
 }
+
 
 void TitleView::Update()
 {
@@ -48,8 +48,7 @@ void TitleView::Update()
             switch (m_selectedMenu)
             {
             case TitleMenuType::GameStart:
-                app::core::StageManager::SetNextInitStageID(StageID::sTutorialStage);
-                SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
+                SceneManager::GetInstance()->ChangeScene(SceneID::sWorldSelect);
                 break;
 
             case TitleMenuType::Manual:

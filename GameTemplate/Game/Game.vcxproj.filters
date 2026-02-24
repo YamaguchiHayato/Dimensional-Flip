@@ -244,6 +244,9 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Coin.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
+    <ClCompile Include="StageIcon.cpp" />
+    <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
+    <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -445,6 +448,9 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\coin.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
+    <ClInclude Include="StageIcon.h" />
+    <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
+    <ClInclude Include="Src\Scene\WorldSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

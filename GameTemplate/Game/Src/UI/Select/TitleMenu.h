@@ -52,6 +52,7 @@ namespace app
 
             // メニューの項目の総数。(今回は3)
             FontRender menuFonts_[(int) TitleMenuType::Max];
+
         };
 
     }

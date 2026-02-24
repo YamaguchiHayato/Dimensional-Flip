@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Src/UI/Select/TitleMenu.h"
+#include "Src/Core/SoundManager.h"
 
 namespace app
 {
@@ -12,7 +13,7 @@ namespace app
             menuFonts_[(int) TitleMenuType::Manual].SetText(L"Manual");
             menuFonts_[(int) TitleMenuType::GameEnd].SetText(L"Game End");
 
-            // --- 2. 各項目の個別座標設定（ここを直接いじって調整してください） ---
+            // --- 2. 各項目の個別座標設定
 
             // 【Game Start】の位置
             menuFonts_[(int) TitleMenuType::GameStart].SetPosition({-150.0f, -100.0f, 0.0f});
@@ -39,20 +40,25 @@ namespace app
 
 
        bool TitleMenu::Update(bool isUp, bool isDown, bool isDecide)
-        {
+       {
             // --- カーソル移動処理 ---
             if (isUp)
             {
                 curenntIndex_--;
                 if (curenntIndex_ < 0)
                     curenntIndex_ = (int) TitleMenuType::Max - 1;
+
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_CursorMove, 2.0f);
             }
             if (isDown)
             {
                 curenntIndex_++;
                 if (curenntIndex_ >= (int) TitleMenuType::Max)
                     curenntIndex_ = 0;
+
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_CursorMove, 2.0f);
             }
+
 
             // --- 色の更新処理 ---
             // 選ばれているものは「赤」、そうでないものは「白」にする
@@ -76,6 +82,8 @@ namespace app
             // --- 決定処理 ---
             if (isDecide)
             {
+                // 決定音SE。
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Button, 2.0f);
                 return true;
             }
 

@@ -134,13 +134,7 @@ namespace app
             // 初期地点
            pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
-            // 壁付近。
-    //      pPlayer_->SetPlayerPos(Vector3(780.0f, 10.0f, 0.0f));
-
-            // スター付近の座標
-    //        pPlayer_->SetPlayerPos(Vector3(1240.0f, 10.0f, 0.0f));
-
-           // ステージ背景の生成。
+            // ステージ背景の生成。
             CreateBackGround();
 
             // SkyCubeの初期化。

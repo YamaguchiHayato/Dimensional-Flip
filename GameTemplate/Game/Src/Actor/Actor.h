@@ -3,13 +3,24 @@
 class Actor : public IGameObject
 {
 protected:
-	Actor() {};
-	virtual ~Actor() {};
+	Actor() = default;
+	virtual ~Actor() = default;
 
 
 protected:
-	virtual bool Start() override{ return true; }
-	virtual void Update() override{}
-	virtual void Render(RenderContext& rc) override{}
+    // 初期化処理。
+	virtual bool Start() override
+    {
+        return true;
+    }
+    // 更新処理。
+	virtual void Update() override
+    {
 
+    }
+    // 描画処理。
+	virtual void Render(RenderContext& rc) override
+    {
+
+    }
 };

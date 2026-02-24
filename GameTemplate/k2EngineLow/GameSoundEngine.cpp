@@ -47,10 +47,20 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_SelectScreen_Decision] = false;
 		m_sound[GameSoundList_SE_SelectScreen_Decision] = nullptr;
 
+		// カーソル移動音
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_CursorMove, "Assets/sound/se/CursorMove.wav");
+		m_isPlayingSound[GameSoundList_SE_CursorMove] = false;
+		m_sound[GameSoundList_SE_CursorMove] = nullptr;
 
-		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_StarRotation, "Assets/sound/se/getStar.wav");
-		m_isPlayingSound[GameSoundList_SE_StarRotation] = false;
-		m_sound[GameSoundList_SE_StarRotation] = nullptr;
+		// 決定音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_CursorMove, "Assets/sound/se/CursorMove.wav");
+		m_isPlayingSound[GameSoundList_SE_CursorMove] = false;
+		m_sound[GameSoundList_SE_CursorMove] = nullptr;
+
+		// ボタン音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Button, "Assets/sound/se/Button.wav");
+		m_isPlayingSound[GameSoundList_SE_Button] = false;
+		m_sound[GameSoundList_SE_Button] = nullptr;
 
 		// 落下音。
 		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Fall, "Assets/sound/se/fall.wav");

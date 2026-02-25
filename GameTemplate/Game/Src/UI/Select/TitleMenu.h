@@ -23,7 +23,7 @@ namespace app
 
 
         public:
-
+            // 初期化処理。
             void Init();
 
             // メニュー画面の更新処理。
@@ -36,6 +36,20 @@ namespace app
             // 描画処理。
             void Render(RenderContext& rc);
 
+
+        // セッター。
+        public:
+            // 表示。
+            inline void Open()
+            {
+                isActive_ = true;
+            }
+
+            // 非表示。
+            inline void Close()
+            {
+                isActive_ = false;
+            }
 
         // ゲッター。
         public:
@@ -53,6 +67,8 @@ namespace app
             // メニューの項目の総数。(今回は3)
             FontRender menuFonts_[(int) TitleMenuType::Max];
 
+            // 表示フラグ。
+            bool isActive_ = false;
         };
 
     }

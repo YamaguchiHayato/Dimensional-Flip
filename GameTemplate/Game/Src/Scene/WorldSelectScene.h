@@ -36,7 +36,7 @@ private:
 
 private:
     // アイコンたちを管理するリスト
-    std::vector<StageIcon*> icons_;
+    std::vector<app::nsUI::StageIcon*> icons_;
 
     // 今どれを選んでいるか
     int currentIndex_ = 0;

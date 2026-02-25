@@ -33,6 +33,7 @@ namespace
     const auto POST_FLIP_DURATION = 0.3f;     // 余韻時間。
 }
 
+
 bool TitleBackgroundLayer::Start()
 {
     // 回転用画像。
@@ -52,8 +53,20 @@ bool TitleBackgroundLayer::Start()
 
 void TitleBackgroundLayer::Update()
 {
-    // 一定周期で回転。
-    Rotation();
+    // マニュアルモードじゃないときだけ回転させる
+    if (isManualMode_ == false)
+    {
+        // 一定周期で回転。
+        Rotation();
+
+        // 通常時の色はデフォルト値。
+        titleLayerRender_.SetMulColor(Vector4::White);
+    }
+
+    // マニュアルモード時は回転しない。
+    else
+        titleLayerRender_.SetMulColor({1.0f, 1.0f, 1.0f, 0.3f});
+
 
     // 画像を更新する。
     titleLayerRender_.SetRotation(rot_);
@@ -83,7 +96,6 @@ void TitleBackgroundLayer::Rotation()
     // 回転ベクトルを正規化する。
     rot_.Normalize();
 }
-
 
 
 void TitleBackgroundLayer::Render(RenderContext& rc)

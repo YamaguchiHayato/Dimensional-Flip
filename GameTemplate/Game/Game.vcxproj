@@ -334,6 +334,7 @@
     <ClCompile Include="Src\UI\HPbarUI.cpp" />
     <ClCompile Include="Src\UI\NumberUI.cpp" />
     <ClCompile Include="Src\UI\ScoreUI.cpp" />
+    <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
     <ClCompile Include="Src\UI\TimerUI.cpp" />
@@ -462,6 +463,7 @@
     <ClInclude Include="Src\UI\HPbarUI.h" />
     <ClInclude Include="Src\UI\NumberUI.h" />
     <ClInclude Include="Src\UI\ScoreUI.h" />
+    <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
     <ClInclude Include="Src\UI\TimerUI.h" />

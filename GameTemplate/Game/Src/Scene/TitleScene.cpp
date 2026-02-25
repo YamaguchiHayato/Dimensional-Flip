@@ -24,9 +24,13 @@ TitleScene::~TitleScene()
     // Titleオブジェクトの削除。
     DeleteGO(pTitleView_);
 
-        // メニュー画面の削除。
-        if (pTitleMenu_)
-            DeleteGO(pTitleMenu_);
+    // メニュー画面の削除。
+    if (pTitleMenu_)
+        DeleteGO(pTitleMenu_);
+
+    // マニュアルUIの削除。
+    if (pManualUI_)
+        DeleteGO(pManualUI_);
 }
 
 
@@ -44,6 +48,12 @@ bool TitleScene::Start()
     pTitleMenu_ = NewGO<app::nsUI::TitleMenu>(1, "titleMenu");
     pTitleMenu_->Init();
 
+    pTitleMenu_->Open();
+
+    // マニュアルUIの生成。
+    pManualUI_ = NewGO<app::nsUI::ManualUI>(1, "ManualUI");
+    pManualUI_->Init();
+
     // タイトル画面BGMの再生。
     app::core::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_Title);
 
@@ -52,6 +62,9 @@ bool TitleScene::Start()
 
     // フェード合うとフラグをリセット。
     isFadingOut = false;
+
+    // 初期の状態をセットする。
+    titleState_ = TitleState::Normal;
 
     // シーン開始と同時にFadeInを開始する。
     pFade_->StartFadeIn();
@@ -65,43 +78,14 @@ void TitleScene::Update()
     if (pFade_ == nullptr)
         return;
 
+    // ゲーム終了がリクエストされている場合は、ゲームループを終了させる。
     if (isGameEndRequested_)
     {
         g_gameLoop_.isLoop_ = false;
         return;
     }
 
-    // 入力待ち状態。
-    if (isFadingOut == false)
-    {
-        // 入力待ち状態のときは、入力処理を行う。
-        WaitInputAction();
-    }
-
-
-    else
-    {
-        if (pFade_->IsFadeOutEnd())
-        {
-            // ゲームスタート時の場合。
-            if (selectType_ == TitleMenuType::GameStart)
-                StartToInGame();
-
-            // ゲーム終了時の場合。
-            else if (selectType_ == TitleMenuType::GameEnd)
-                RequestGameEnd();
-        }
-    }
-}
-
-
-void TitleScene::StartFadeOutToInGame()
-{
-    // フラグを立ててUpdateでの入力を無効にする。
-    isFadingOut = true;
-
-    // FadeオブジェクトにFadeOutを指示。
-    pFade_->StartFadeOut();
+    UpdateTitleState();
 }
 
 
@@ -117,7 +101,6 @@ void TitleScene::WaitInputAction()
     // 入力状態の更新。
     if (pTitleMenu_ && pTitleMenu_->Update(isUp_, isDown_, isDecide_))
     {
-        // 決定された項目を取得する。
         selectType_ = pTitleMenu_->GetCurrentSelect();
 
         switch (selectType_)
@@ -125,47 +108,165 @@ void TitleScene::WaitInputAction()
         case TitleMenuType::GameStart:
              nextSceneID_ = (int) SceneID::sWorldSelect;
 
-             // フェードアウトを開始する。
-             StartFadeOutToInGame();
+             // フェードアウト開始
+             pFade_->StartFadeOut();
+             titleState_ = TitleState::GameStartFade;
              break;
-
 
         case TitleMenuType::Manual:
-             // マニュアル画像を出すようにする。
+             pFade_->StartFadeOut();
+             app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Button);
+
+             titleState_ = TitleState::FadingToManual;
              break;
 
-
         case TitleMenuType::GameEnd:
-             StartFadeOutToInGame();
+             pFade_->StartFadeOut();
+             titleState_ = TitleState::GameEndFade;
              break;
         }
     }
 }
 
 
-void TitleScene::StartToInGame()
+void TitleScene::UpdateTitleState()
 {
-    // フェードアウトがお終わり次第、選択したSceneにへ遷移。
-    if (nextSceneID_ != -1)
-        SceneManager::GetInstance()->ChangeScene((SceneID) nextSceneID_);
+    switch (titleState_)
+    {
+    case TitleState::Normal:
+         UpdateNormalState();
+         break;
+
+    case TitleState::FadingToManual:
+         UpdateFadingToManualState();
+         break;
+
+    case TitleState::ManualOpen:
+         UpdateManualOpenState();
+         break;
+
+    case TitleState::FadingToMenu:
+         UpdateFadingToMenuState();
+         break;
+
+    case TitleState::GameStartFade:
+         UpdateGameStartFadeState();
+         break;
+
+    case TitleState::GameEndFade:
+         UpdateGameEndFadeState();
+         break;
+
+    default:
+        break;
+    }
 }
 
 
-void TitleScene::RequestGameEnd()
+void TitleScene::UpdateNormalState()
 {
-    // フェードで画面が真っ暗になっている今、こっそり片付ける
-    if (pTitleView_)
-    {
-        DeleteGO(pTitleView_);
-        pTitleView_ = nullptr;
-    }
+    if (!pFade_->IsFadeOutEnd())
+        WaitInputAction();
+}
 
-    if (pTitleMenu_)
-    {
-        DeleteGO(pTitleMenu_);
-        pTitleMenu_ = nullptr;
-    }
 
-    isGameEndRequested_ = true;
-  
+void TitleScene::UpdateFadingToManualState()
+{
+    // 画面が完全に暗くなったら切り替える
+    if (pFade_->IsFadeOutEnd())
+    {
+        if (pTitleMenu_)
+            pTitleMenu_->Close();
+
+        if (pManualUI_)
+            pManualUI_->Open();
+
+        // ロゴを消す。
+        if (pTitleView_)
+        {
+            pTitleView_->SetShowLogo(false);
+            pTitleView_->SetManualMode(true);
+        }
+
+        pFade_->StartFadeIn();
+        titleState_ = TitleState::ManualOpen;
+    }
+}
+
+
+void TitleScene::UpdateManualOpenState()
+{
+    // ManualUI →　Title画面に戻る処理。
+    // フェードイン完了後、Bボタン入力をまつ。
+    if (g_pad[0]->IsTrigger(enButtonB))
+    {
+        // マニュアルUIを閉じる。
+        pFade_->StartFadeOut();
+
+        // キャンセルSEを鳴らす。
+        app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_SelectScreen_Cancel);
+
+        // タイトルメニューを開く。
+        titleState_ = TitleState::FadingToMenu;
+    }
+}
+
+
+void TitleScene::UpdateFadingToMenuState()
+{
+    // 画面が完全に暗くなったら元に戻す。
+    if (pFade_->IsFadeOutEnd())
+    {
+        if (pManualUI_)
+            pManualUI_->Close();
+
+        if (pTitleMenu_)
+            pTitleMenu_->Open();
+
+        // ロゴを再表示させる
+        if (pTitleView_)
+        {
+            pTitleView_->SetShowLogo(true);
+            pTitleView_->SetManualMode(false);
+        }
+
+        pFade_->StartFadeIn();
+        titleState_ = TitleState::Normal;
+    }
+}
+
+
+void TitleScene::UpdateGameStartFadeState()
+{
+    // フェードアウトが終わったらInGameSceneに遷移する。
+    if (pFade_->IsFadeOutEnd())
+        if (nextSceneID_ != -1)
+            SceneManager::GetInstance()->ChangeScene((SceneID) nextSceneID_);
+}
+
+
+void TitleScene::UpdateGameEndFadeState()
+{
+    if (pFade_->IsFadeOutEnd())
+    {
+        if (pTitleView_)
+        {
+            DeleteGO(pTitleView_);
+            pTitleView_ = nullptr;
+        }
+
+        if (pTitleMenu_)
+        {
+            DeleteGO(pTitleMenu_);
+            pTitleMenu_ = nullptr;
+        }
+
+        if (pManualUI_)
+        {
+            DeleteGO(pManualUI_);
+            pManualUI_ = nullptr;
+        }
+
+        isGameEndRequested_ = true;
+    }
 }

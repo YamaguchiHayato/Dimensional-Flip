@@ -20,9 +20,6 @@ bool TitleLogoLayer::Start()
     std::string layerName = Init("title");
     titleLayerRender_.Init(layerName.c_str(), LOGO_WIDTH, LOGO_HEIGHT);
 
-    // プレスボタン。
-    std::string Abutton = Init("Button");
-    pressButtonRender_.Init(Abutton.c_str(), BUTTON_WIDTH, BUTTON_HEIGHT);
 
     return true;
 }
@@ -35,18 +32,15 @@ void TitleLogoLayer::Update()
     titleLayerRender_.SetScale(Vector3(2.0f, 2.0f, 2.0f));
     titleLayerRender_.Update();
 
-    // プレスボタン。
-    pressButtonRender_.SetScale(BUTTON_SCALE);
-    pressButtonRender_.SetPosition(Vector3(0.0f, -100.0f, 0.0f));
-    pressButtonRender_.Update();
 }
 
 
 void TitleLogoLayer::Render(RenderContext& rc)
 {
+    if (isVisible_ == false)
+        return;
+
     // タイトルロゴ描画。
     titleLayerRender_.Draw(rc);
 
-    // プレスボタン描画。
-//    pressButtonRender_.Draw(rc);
 }

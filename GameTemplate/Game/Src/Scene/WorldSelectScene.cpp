@@ -75,7 +75,7 @@ bool WorldSelectScene::Start()
     // アイコンを生成
     for (const auto& data : dataList)
     {
-        auto* icon = NewGO<StageIcon>(0, "StageIcon");
+        auto* icon = NewGO<app::nsUI::StageIcon>(0, "StageIcon");
         icon->Init(data.path, data.id);
         icons_.push_back(icon);
     }

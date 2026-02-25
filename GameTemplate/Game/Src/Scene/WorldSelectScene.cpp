@@ -33,7 +33,6 @@ namespace
         {"Assets/stage/tutorialStage.tkm", StageID::sTutorialStage, L"Tutorial Stage"},
         {"Assets/stage/StageEX/StageEX.tkm", StageID::sStageEX, L"Boss Stage"},
     };
-
 } 
 
 
@@ -68,6 +67,9 @@ bool WorldSelectScene::Start()
         // カメラの注視点は中心に固定する。
         g_camera3D->SetTarget({0.0f, 0.0f, 0.0f});
     }
+
+    // ステージセレクト画面のBGMを再生する。
+    app::core::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_StageSelect);
 
 
     // アイコンを生成
@@ -132,6 +134,7 @@ void WorldSelectScene::Update()
             pFade_->StartFadeOut();
 
             // キャンセル音SE。
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_SelectScreen_Cancel);
         }
     }
 
@@ -164,6 +167,9 @@ void WorldSelectScene::Update()
     // --- 遷移処理 ---
     if (pFade_ && pFade_->IsFadeOutEnd())
     {
+        // 遷移する瞬間にBGMを停止する。
+        app::core::SoundManager::GetInstance()->StopBGM(GameSoundList_BGM_StageSelect);
+
         // 決定時: ゲーム画面へ遷移。
         if (isDecided_)
         {
@@ -177,7 +183,7 @@ void WorldSelectScene::Update()
             SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);
         }
 
-        // キャンセル時: タイトル画面へ遷移する。
+        // キャンセル時: Bボタンアクションでタイトル画面へ遷移する。
         else if (isButtonB_)
         {
             SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
@@ -188,8 +194,10 @@ void WorldSelectScene::Update()
 
 void WorldSelectScene::CreateSkyCube()
 {
+    // SkyCubeの生成。
     pSkyCube_ = NewGO<SkyCube>(0, "skycube");
 
+    // SkyCubeの大きさを設定。
     pSkyCube_->SetScale(Vector3::One * 100.0f);
 
     // IBLテクスチャを設定。

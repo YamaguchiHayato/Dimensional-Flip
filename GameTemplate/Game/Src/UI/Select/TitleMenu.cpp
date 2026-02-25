@@ -6,22 +6,21 @@ namespace app
 {
     namespace nsUI
     {
-        void TitleMenu::Init()
+       void TitleMenu::Init()
         {
-            // --- 1. テキストの設定 ---
+            // メニュー画面の項目のテキストを設定。
             menuFonts_[(int) TitleMenuType::GameStart].SetText(L"Game Start");
             menuFonts_[(int) TitleMenuType::Manual].SetText(L"Manual");
             menuFonts_[(int) TitleMenuType::GameEnd].SetText(L"Game End");
 
-            // --- 2. 各項目の個別座標設定
 
-            // 【Game Start】の位置
+            // ゲームスタートコマンドテキストの座標。
             menuFonts_[(int) TitleMenuType::GameStart].SetPosition({-150.0f, -100.0f, 0.0f});
 
-            // 【Manual】の位置（Game Startより少し右に寄せたい、などの微調整が可能）
+            // マニュアルコマンドテキストの座標。
             menuFonts_[(int) TitleMenuType::Manual].SetPosition({-150.0f,  -200.0f, 0.0f});
 
-            // 【Game End】の位置
+            // ゲーム終了コマンドテキストの位置
             menuFonts_[(int) TitleMenuType::GameEnd].SetPosition({-150.0f, -300.0f, 0.0f});
 
             // --- 3. 共通設定（サイズや影） ---
@@ -33,7 +32,7 @@ namespace app
                 // 影の設定
                 menuFonts_[i].SetShadowParam(true, 2.0f, {0.0f, 0.0f, 0.0f, 1.0f});
 
-                // 中央揃えの基準点（これを0.5にすることで、指定したX座標が文字の中心になります）
+                // 中央揃えの基準点
                 menuFonts_[i].SetPivot(0.5f, 0.5f);
             }
         }
@@ -42,20 +41,24 @@ namespace app
        bool TitleMenu::Update(bool isUp, bool isDown, bool isDecide)
        {
             // --- カーソル移動処理 ---
+            // 上移動。 
             if (isUp)
             {
                 curenntIndex_--;
                 if (curenntIndex_ < 0)
                     curenntIndex_ = (int) TitleMenuType::Max - 1;
 
+                // 効果音の再生。
                 app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_CursorMove, 2.0f);
             }
+            // 下移動。
             if (isDown)
             {
                 curenntIndex_++;
                 if (curenntIndex_ >= (int) TitleMenuType::Max)
                     curenntIndex_ = 0;
 
+                // 効果音の再生。
                 app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_CursorMove, 2.0f);
             }
 
@@ -68,13 +71,14 @@ namespace app
                 {
                     // 選択中：赤色 (RGBA)
                     menuFonts_[i].SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-                    // 少し大きくしてもいいかも
+                    // 選択時に少し大きくする。
                     menuFonts_[i].SetScale(1.2f);
                 }
                 else
                 {
                     // 非選択：白色
                     menuFonts_[i].SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+                    // 通常の大きさ。
                     menuFonts_[i].SetScale(1.0f);
                 }
             }
@@ -90,6 +94,7 @@ namespace app
             return false;
         }
 
+
         void TitleMenu::Render(RenderContext& rc)
         {
             // 全項目の描画コマンドを発行
@@ -98,5 +103,5 @@ namespace app
                 menuFonts_[i].Draw(rc);
             }
         }
-    } // namespace nsUI
+    }
 }

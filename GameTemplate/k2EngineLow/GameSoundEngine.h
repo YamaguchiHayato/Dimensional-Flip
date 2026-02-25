@@ -7,6 +7,7 @@ enum GameSoundList
 {
 	// BGM
 	GameSoundList_BGM_Title,									//タイトル画面BGM
+	GameSoundList_BGM_StageSelect,							    //ステージセレクト画面BGM
 	GameSoundList_BGM_Stage1,									//ステージ1BGM
 	GameSoundList_BGM_Stage2,									//ステージ2BGM
 	GameSoundList_BGM_BOSS,									    //BOSS戦

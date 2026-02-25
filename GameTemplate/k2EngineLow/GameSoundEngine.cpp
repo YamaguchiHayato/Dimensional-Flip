@@ -16,6 +16,11 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_BGM_Title] = false;
 		m_sound[GameSoundList_BGM_Title] = nullptr;
 
+		// ステージ選択画面BGM
+		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_StageSelect, "Assets/sound/bgm/selectStage.wav");
+		m_isPlayingSound[GameSoundList_BGM_StageSelect] = false;
+		m_sound[GameSoundList_BGM_StageSelect] = nullptr;
+
 		//1. ステージ1BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Stage1, "Assets/sound/bgm/stage1.wav");
 		m_isPlayingSound[GameSoundList_BGM_Stage1] = false;

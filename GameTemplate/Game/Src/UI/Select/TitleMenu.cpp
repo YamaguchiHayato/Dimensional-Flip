@@ -96,6 +96,10 @@ namespace app
 
         void TitleMenu::Render(RenderContext& rc)
         {
+            // 非アクティブ状態なら描画しない。
+            if (!isActive_)
+                return;
+
             // 全項目の描画コマンドを発行
             for (int i = 0; i < (int) TitleMenuType::Max; ++i)
             {

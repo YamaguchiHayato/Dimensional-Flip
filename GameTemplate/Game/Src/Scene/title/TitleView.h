@@ -4,33 +4,42 @@
 #include "Src/Scene/title/TitleBackgroundLayer.h"
 #include "Src/Scene/title/TitleLayerBase.h"
 #include "Src/Scene/title/TitleLogoLayer.h"
-#include "Src/UI/Select/TitleMenu.h" // パスは環境に合わせてください
+#include "Src/UI/Select/TitleMenu.h" 
 
 class Fade;
 class TitleView : public IGameObject
 {
 public:
-    TitleView() {};
+    TitleView() = default;
     virtual ~TitleView();
 
+
+public:
     bool Start();
-    void Update();
-    void Render(RenderContext& rc) {};
+
+
+// セッター。
+public:
+    // ロゴの表示を切り替える処理。
+    inline void SetShowLogo(bool isShow)
+    {
+        if (pLogoLayer_)
+            pLogoLayer_->SetVisible(isShow);
+    }
+
+    // ロゴの表示切替
+    inline void SetManualMode(bool enable)
+    {
+        if (pBackgroundLayer_)
+            pBackgroundLayer_->SetManualMode(enable);
+    }
 
 private:
     // 各レイヤー。
-    TitleLayerBase* pBackgroundLayer_ = nullptr;
-    TitleLayerBase* pLogoLayer_ = nullptr;
-    app::nsUI::TitleMenu* pTitleMenu_ = nullptr;
-    Fade* m_pFade = nullptr; // フェードオブジェクト
+    TitleBackgroundLayer* pBackgroundLayer_ = nullptr;
+    TitleLogoLayer* pLogoLayer_ = nullptr;
 
 
 private:
-    TitleMenuType m_selectedMenu = TitleMenuType::Max; // 選択された項目
-
-
-private:
-    bool m_isStartedFadeOut = false; // フェードアウトを開始したか
-
     bool gameLoadFlag = false;
 };

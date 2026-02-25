@@ -1,6 +1,7 @@
 #pragma once
 #include "Src/Scene/Scene.h"
 #include "Src/UI/Select/TitleMenu.h"
+#include "Src/UI/Select/ManualUI.h"
 
 class Fade;
 class TitleView;
@@ -11,6 +12,16 @@ namespace app {
     }
 }
 
+enum class TitleState
+{
+    Normal,
+    FadingToManual,
+    ManualOpen,
+    FadingToMenu,
+    GameStartFade,
+    GameEndFade,
+};
+
 class TitleScene : public IScene
 {
 public:
@@ -20,25 +31,41 @@ public:
 
 public:
 	bool Start() override;
-	void Update() override;
+    void Update() override;
 
 
 private:
-    void StartFadeOutToInGame();
-
     // 入力処理を待つ。
     void WaitInputAction();
 
-    // ゲーム開始処理。
-    void StartToInGame();
 
-    // ゲーム終了処理。
-    void RequestGameEnd();
+private:
+    // TitleStateを更新するためのヘルパー関数。
+    void UpdateTitleState();
+
+    // NormalState時の更新処理。
+    void UpdateNormalState();
+
+    // FadingToManual時の更新処理。
+    void UpdateFadingToManualState();
+
+    // ManualOpen時の更新処理。
+    void UpdateManualOpenState();
+
+    // FadingToMenu時の更新処理。
+    void UpdateFadingToMenuState();
+
+    // GameStartFade時の更新処理。
+    void UpdateGameStartFadeState();
+
+    // GameEndFade時の更新処理。
+    void UpdateGameEndFadeState();
 
 private:
     Fade* pFade_ = nullptr;
     TitleView* pTitleView_ = nullptr;
     app::nsUI::TitleMenu* pTitleMenu_ = nullptr;
+    app::nsUI::ManualUI* pManualUI_ = nullptr;
 
 private:
     // 現在がフェード中かどうかを調べる。    
@@ -53,5 +80,6 @@ private:
     int nextSceneID_ = -1;
 
     TitleMenuType selectType_;
+    TitleState titleState_ = TitleState::Normal;
 };
 

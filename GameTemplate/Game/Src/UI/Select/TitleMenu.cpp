@@ -13,7 +13,6 @@ namespace app
             menuFonts_[(int) TitleMenuType::Manual].SetText(L"Manual");
             menuFonts_[(int) TitleMenuType::GameEnd].SetText(L"Game End");
 
-
             // ゲームスタートコマンドテキストの座標。
             menuFonts_[(int) TitleMenuType::GameStart].SetPosition({-150.0f, -100.0f, 0.0f});
 

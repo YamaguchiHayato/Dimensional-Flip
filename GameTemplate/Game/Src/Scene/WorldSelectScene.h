@@ -47,4 +47,7 @@ private:
 
     bool isDecided_ = false;
     bool isButtonB_ = false;
+
+    bool isRight_ = false;
+    bool isLeft_ = false;
 };

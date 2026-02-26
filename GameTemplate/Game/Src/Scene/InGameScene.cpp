@@ -21,8 +21,6 @@ bool InGameScene::Start()
 }
 
 
-// Src/Scene/InGameScene.cpp
-
 void InGameScene::Update()
 {
     // フェードアウトが完了したらシーン遷移
@@ -35,7 +33,7 @@ void InGameScene::Update()
         // 全ステージ（StageEX）をクリアした時だけリザルトへ
         if (current == StageID::sStageEX && pGame_->GetNextStageID() == StageID::sInvalid)
         {
-            SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
+            SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
         }
     }
 }

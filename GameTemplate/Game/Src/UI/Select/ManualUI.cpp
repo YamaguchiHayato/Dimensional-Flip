@@ -10,6 +10,9 @@ namespace app
             // コントローラーの画像を初期化。
             InitManualText();
 
+            // ガイドライン画像を初期化。
+            InitGuideLine();
+
             // BボタンのUIを初期化。
             InitBackButton();
 
@@ -38,6 +41,9 @@ namespace app
             if (isActive_)
             {
                 manualSprite_.Update();
+                moveLine_.Update();
+                jumpLine_.Update();
+                cameraActionLine_.Update();
                 buttonActionUI_.Update();
             }
         }
@@ -48,6 +54,11 @@ namespace app
             {
                 // コントローラー画像を描画。
                 manualSprite_.Draw(rc);
+
+                // ガイドラインを描画。
+                moveLine_.Draw(rc);
+                jumpLine_.Draw(rc);
+                cameraActionLine_.Draw(rc);
 
                 // BボタンUIを描画。
                 buttonActionUI_.Draw(rc);
@@ -67,8 +78,6 @@ namespace app
                 // 「Back」と表記
                 backTextFont_.Draw(rc);
             }
-
-
         }
 
 
@@ -80,6 +89,43 @@ namespace app
             // 画面中央に配置する。
             manualSprite_.SetPosition(Vector3::Zero);
             manualSprite_.SetPivot({0.5f, 0.5f});
+        }
+
+
+        void ManualUI::InitGuideLine()
+        {
+            const char* linePath = "Assets/UI/showController.DDS";
+
+            // --- 1. 移動 (Stick Move) のガイドライン ---
+            // 左側のテキスト(-600) と 左スティック(中央左) の間をつなぐ位置へ
+            moveLine_.Init(linePath, 800, 300.0f);
+            moveLine_.SetPosition(Vector3(80.0f, 80.0f, 0.0f));
+            moveLine_.SetScale(Vector3::One * 3.0f);
+            moveLine_.SetMulColor(Vector4::Black);
+            moveLine_.SetPivot({0.5f, 0.5f});
+
+
+            // --- 2. ジャンプ (A Jump) のガイドライン ---
+            // 右下のテキスト(300, 100) と Aボタン の間へ
+            jumpLine_.Init(linePath, 800, 300.0f);
+            jumpLine_.SetPosition(Vector3(550.0f, 350.0f, 0.0f));
+            Quaternion rotJump;
+            rotJump.AddRotationDegZ(90.0f);
+            jumpLine_.SetRotation(rotJump);
+            jumpLine_.SetScale(Vector3::One * 3.0f);
+            jumpLine_.SetMulColor(Vector4::Black);
+            jumpLine_.SetPivot({0.5f, 0.5f});
+
+            // --- 3. カメラ (Camera Action) のガイドライン ---
+            // 右上のテキスト(300, 300) と Bボタン の間へ
+            cameraActionLine_.Init(linePath, 800, 300.0f);
+            cameraActionLine_.SetPosition(Vector3(550.0f, 220.0f, 0.0f));
+            Quaternion rotCam;
+            rotCam.AddRotationDegZ(70.0f);
+            cameraActionLine_.SetRotation(rotCam);
+            cameraActionLine_.SetScale(Vector3::One * 3.0f);
+            cameraActionLine_.SetMulColor(Vector4::Black);
+            cameraActionLine_.SetPivot({0.5f, 0.5f});
         }
 
 

@@ -268,6 +268,7 @@
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
     <ClCompile Include="Src\Core\BossUIManager.cpp" />
+    <ClCompile Include="Src\Core\EndRollManager.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Actor\Character\Character.cpp" />
@@ -309,11 +310,14 @@
     <ClCompile Include="Src\Production\CutIn\CutInShadowLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInSlideLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInView.cpp" />
+    <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
+    <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp" />
     <ClCompile Include="Src\Production\Fade.cpp" />
     <ClCompile Include="Src\Production\GameClear.cpp" />
     <ClCompile Include="Src\Production\GameOver.cpp" />
     <ClCompile Include="Src\Production\StageClear.cpp" />
     <ClCompile Include="Src\Production\StarGetProduction.cpp" />
+    <ClCompile Include="Src\Scene\EndRollScene.cpp" />
     <ClCompile Include="Src\Scene\GameClearScene.cpp" />
     <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Scene\InGameScene.cpp" />
@@ -397,6 +401,7 @@
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />
     <ClInclude Include="Src\Core\BossUIManager.h" />
+    <ClInclude Include="Src\Core\EndRollManager.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
@@ -438,11 +443,15 @@
     <ClInclude Include="Src\Production\CutIn\CutInShadowLayer.h" />
     <ClInclude Include="Src\Production\CutIn\CutInSlideLayer.h" />
     <ClInclude Include="Src\Production\CutIn\CutInView.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollBase.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollImage.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollText.h" />
     <ClInclude Include="Src\Production\Fade.h" />
     <ClInclude Include="Src\Production\GameClear.h" />
     <ClInclude Include="Src\Production\GameOver.h" />
     <ClInclude Include="Src\Production\StageClear.h" />
     <ClInclude Include="Src\Production\StarGetProduction.h" />
+    <ClInclude Include="Src\Scene\EndRollScene.h" />
     <ClInclude Include="Src\Scene\GameClearScene.h" />
     <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Scene\InGameScene.h" />

@@ -21,6 +21,9 @@ namespace app
             // マニュアルテキストの初期化。
             void InitManualText();
 
+            // ガイドライン画像を初期化。
+            void InitGuideLine();
+
             // BackボタンのUIの初期化。
             void InitBackButton();
 
@@ -66,6 +69,11 @@ namespace app
         private:
             // コントローラーの画像。
             SpriteRender manualSprite_;
+
+            // コントローラーのガイドラインの画像。
+            SpriteRender moveLine_;
+            SpriteRender jumpLine_;
+            SpriteRender cameraActionLine_;
 
             // BボタンUIの画像。
             SpriteRender buttonActionUI_;

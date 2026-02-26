@@ -38,10 +38,12 @@ namespace
 
 WorldSelectScene::~WorldSelectScene()
 {
+    // ステージアイコンモデルの削除。
     for (auto* icon : icons_)
     {
         DeleteGO(icon);
     }
+    // アイコンリストをクリア。
     icons_.clear();
 
     // UIの削除。
@@ -49,6 +51,13 @@ WorldSelectScene::~WorldSelectScene()
     {
         DeleteGO(pSelectUI_);
         pSelectUI_ = nullptr;
+    }
+
+    // SkyCubeの削除。
+    if (pSkyCube_)
+    {
+        DeleteGO(pSkyCube_);
+        pSkyCube_ = nullptr;
     }
 }
 

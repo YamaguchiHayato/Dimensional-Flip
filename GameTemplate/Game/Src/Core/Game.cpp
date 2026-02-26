@@ -20,7 +20,6 @@
 
 static GameSoundList StageToBgm(StageID id)
 {
-
     switch (id)
     {
     case StageID::sStage1:
@@ -41,44 +40,58 @@ namespace app
 
         Game::~Game()
         {
-            DeleteGO(pSkyCube_);
+            // SkyCubeを削除。
+            if (pSkyCube_)
+            {
+                DeleteGO(pSkyCube_);
+                pSkyCube_ = nullptr;
+            }
 
+            // ステージ背景を削除。
+            if (pBackGround_)
+            {
+                DeleteGO(pBackGround_);
+                pBackGround_ = nullptr;
+            }
 
-
+            // ローディング画面を削除。
             if (pLoadingScene_)
             {
                 DeleteGO(pLoadingScene_);
                 pLoadingScene_ = nullptr;
             }
 
-
+            // Playerを削除。 
             if (pPlayer_)
             {
                 DeleteGO(pPlayer_);
                 pPlayer_ = nullptr;
             }
 
-
+            // CameraManagerを削除。
             if (pCameraManager_)
             {
                 DeleteGO(pCameraManager_);
                 pCameraManager_ = nullptr;
             }
 
-
+            // 制限時間UIを削除。
             if (pTimerUI_)
                 DeleteGO(pTimerUI_);
-
             if (pNumberUI_)
                 DeleteGO(pNumberUI_);
 
+            // スコアUIを削除。
             if (pScoreUI_)
                 DeleteGO(pScoreUI_);
 
+            // HPバーUIを削除。
             if (pHpbarUI_)
                 DeleteGO(pHpbarUI_);
 
+            // ステージを削除。
             StageManager::DeleteInstance();
+            // 音を削除。
             SoundManager::DeleteInstence();
         }
 

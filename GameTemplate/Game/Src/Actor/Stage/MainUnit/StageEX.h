@@ -44,12 +44,16 @@ namespace app
         {
         public:
             StageEX() = default;
-            virtual ~StageEX() = default;
+            virtual ~StageEX();
 
+
+        public:
             bool Start() override;
             void Update() override;
             void Render(RenderContext& rc) override;
 
+
+        public:
             inline Vector3 GetStageStartPos() const override
             {
                 return nsStageEX::nsPlayer::InitPos;

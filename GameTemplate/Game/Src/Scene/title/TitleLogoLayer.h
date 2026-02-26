@@ -10,8 +10,13 @@ public:
 
 public:
     bool Start() override;
-    void Update() override;
+    void Update() override {};
     void Render(RenderContext& rc) override;
+
+
+private:
+    // タイトルロゴテキストの初期化。
+    void InitTitleLogoText();
 
 
 // セッター。
@@ -31,7 +36,8 @@ public:
         return TitleLayerBase::Init(layerName);
     }
 
-
 private:
+    FontRender titleFont_;
+
     bool isVisible_ = true;
 };

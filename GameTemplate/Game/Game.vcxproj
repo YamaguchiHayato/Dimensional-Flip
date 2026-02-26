@@ -321,8 +321,7 @@
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Scene\TitleScene.cpp" />
     <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp" />
-    <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp" />
-    <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp" />
+    <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
     <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp" />
     <ClCompile Include="Src\Scene\title\TitleView.cpp" />
     <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
@@ -451,7 +450,7 @@
     <ClInclude Include="Src\Scene\Scene.h" />
     <ClInclude Include="Src\Scene\TitleScene.h" />
     <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h" />
-    <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h" />
+    <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
     <ClInclude Include="Src\Scene\title\TitleLayerBase.h" />
     <ClInclude Include="Src\Scene\title\TitleLogoLayer.h" />
     <ClInclude Include="Src\Scene\title\TitleView.h" />

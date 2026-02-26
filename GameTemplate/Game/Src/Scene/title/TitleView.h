@@ -6,7 +6,12 @@
 #include "Src/Scene/title/TitleLogoLayer.h"
 #include "Src/UI/Select/TitleMenu.h" 
 
-class Fade;
+namespace app {
+    namespace title {
+        class TitleInformationLayer;
+    }
+}
+
 class TitleView : public IGameObject
 {
 public:
@@ -38,7 +43,7 @@ private:
     // 各レイヤー。
     TitleBackgroundLayer* pBackgroundLayer_ = nullptr;
     TitleLogoLayer* pLogoLayer_ = nullptr;
-
+    app::title::TitleInformationLayer* pInformationLayer_ = nullptr;
 
 private:
     bool gameLoadFlag = false;

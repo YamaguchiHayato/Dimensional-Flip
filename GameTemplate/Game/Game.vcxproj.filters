@@ -101,12 +101,6 @@
     <ClCompile Include="Src\Scene\title\TitleBackgroundLayer.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Scene\title\TitleButtonActionLayer.cpp">
-      <Filter>Src\Scene\title</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Scene\title\TitleLayerBase.cpp">
-      <Filter>Src\Scene\title</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene\title\TitleLogoLayer.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
@@ -248,6 +242,7 @@
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
     <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
     <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
+    <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -304,9 +299,6 @@
       <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleBackgroundLayer.h">
-      <Filter>Src\Scene\title</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Scene\title\TitleButtonActionLayer.h">
       <Filter>Src\Scene\title</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleLayerBase.h">
@@ -454,6 +446,7 @@
     <ClInclude Include="Src\Scene\WorldSelectScene.h" />
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="ResultData.h" />
+    <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

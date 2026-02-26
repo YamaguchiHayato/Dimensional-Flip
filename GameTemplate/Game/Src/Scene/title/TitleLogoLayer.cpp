@@ -3,36 +3,24 @@
 
 namespace
 {
-    // ボタン画像のステータス。
-    const float BUTTON_WIDTH = 512.0f;
-    const float BUTTON_HEIGHT = 512.0f;
-    const Vector3 BUTTON_SCALE(Vector3::One);
+    // フォントのパラメータ。
+    const Vector3 POSITION = Vector3{-700.0f, 300.0f, 0.0f};
+    const auto SCALE = 3.5f;
 
-    // タイトルロゴ画像のステータス。
-    const float LOGO_WIDTH = 687.0f;
-    const float LOGO_HEIGHT = 141.0f;
-
+    // 色。
+    const Vector4 BASE_COLOR = Vector4::White;
+    const Vector4 SHADOW_COLOR = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+    
 }
 
 bool TitleLogoLayer::Start()
 {
-    // タイトルロゴ。
-    std::string layerName = Init("title");
-    titleLayerRender_.Init(layerName.c_str(), LOGO_WIDTH, LOGO_HEIGHT);
-
+    // タイトルロゴテキストの初期化。
+    InitTitleLogoText();
 
     return true;
 }
 
-
-void TitleLogoLayer::Update()
-{
-    // タイトルロゴ。
-    titleLayerRender_.SetPosition({ 0.0f, 100.0f, 0.0f });
-    titleLayerRender_.SetScale(Vector3(2.0f, 2.0f, 2.0f));
-    titleLayerRender_.Update();
-
-}
 
 
 void TitleLogoLayer::Render(RenderContext& rc)
@@ -41,6 +29,20 @@ void TitleLogoLayer::Render(RenderContext& rc)
         return;
 
     // タイトルロゴ描画。
-    titleLayerRender_.Draw(rc);
+    titleFont_.Draw(rc);
+}
 
+
+void TitleLogoLayer::InitTitleLogoText()
+{
+    // 描画するテキスト。
+    titleFont_.SetText(L"Dimension Flip");
+    // 座標をセット。
+    titleFont_.SetPosition(POSITION);
+    // 大きさをセット。
+    titleFont_.SetScale(SCALE);
+    // ベースカラーをセット。
+    titleFont_.SetColor(BASE_COLOR);
+    // 影のパラメータをセット。
+    titleFont_.SetShadowParam(true, 5.0f, SHADOW_COLOR);
 }

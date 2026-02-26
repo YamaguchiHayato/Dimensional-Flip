@@ -37,7 +37,7 @@ namespace
 bool TitleBackgroundLayer::Start()
 {
     // 回転用画像。
-    std::string backgroundPath = Init("ground");
+    std::string backgroundPath = Init("titleBackGround");
     titleLayerRender_.Init(backgroundPath.c_str(), WIDTH, HEIGHT);
 
     // 黒背景用画像。

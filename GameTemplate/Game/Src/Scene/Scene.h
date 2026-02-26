@@ -30,6 +30,7 @@ enum class SceneID : uint8_t
     sInGame,
     sResult,
     sGameOver,
+    sEndRoll,
     sInvalid = 0xff
 };
 

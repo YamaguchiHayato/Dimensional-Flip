@@ -3,6 +3,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
 
+#include "Src/Core/StageManager.h"
 
 GameClearScene::~GameClearScene()
 {
@@ -17,14 +18,22 @@ bool GameClearScene::Start()
 {
     pGameClear_= NewGO<GameClear>(0, "gameClear");
 
+    const auto& data = app::core::StageManager::GetStageResultData();
+    pGameClear_->SetUpResultData(data);
+
     SceneManager::GetInstance()->GetFade()->StartFadeIn();
     return true;
 }
 
+
 void GameClearScene::Update()
 {
-    if (g_pad[0]->IsTrigger(enButtonA))
+    if (pGameClear_ && pGameClear_->IsFinished())
     {
-        SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
+        if (g_pad[0]->IsTrigger(enButtonA))
+        {
+            // 演出が終わっていて、かつボタンが押されていたら。
+            SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace app
                 pPlayer_->GetCameraManager()->SetButtonActionControl(true);
 
             // シーケンサー生成
-            pTutorialSequencer_ = NewGO<app::nsUI::TutorialSequencer>(0);
+            pTutorialSequencer_ = NewGO<app::nsUI::TutorialSequencer>(0, "TutorialSequencer");
 
             // UIのポインタも取得しておく
             pTutorialMessageUI_ = FindGO<app::nsUI::TutorialMessageUI>("TutorialMessageUI");

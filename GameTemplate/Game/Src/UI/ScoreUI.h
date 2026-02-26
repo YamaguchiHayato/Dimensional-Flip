@@ -33,6 +33,22 @@ private:
 	void InitUIScore();
 
 
+public:
+    // Scoreを取得する。
+    inline float GetScore() const
+    {
+        return static_cast<int>(score_);
+    }
+
+    inline static ScoreUI* GetInstance()
+    {
+        return instance_;
+    }
+
+private:
+    static ScoreUI* instance_;
+
+
 private:
 	Player* pPlayer_ = nullptr;
 

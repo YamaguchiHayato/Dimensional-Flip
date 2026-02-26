@@ -15,13 +15,15 @@ namespace
 	const Vector3 UI_SCALE(0.5f, 0.5f, 0.5f );
     const Vector3 TIMER_POS{-940.0f, 430.0f, 0.0f};
     const float TIMER_SCALE = 2.0f;
-}
+} // namespace
+NumberUI* NumberUI::instance_ = nullptr;
+
 
 bool NumberUI::Start()
 {
+    instance_ = this;
 	InitUINumber();
 	isTimerStart_ = true;
-
 	return true;
 }
 

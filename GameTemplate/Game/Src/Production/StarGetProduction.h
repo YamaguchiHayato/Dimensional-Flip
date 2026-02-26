@@ -1,4 +1,5 @@
 #pragma once
+#include "ResultData.h"
 
 enum  class StarGetPhase
 {
@@ -12,6 +13,7 @@ enum  class StarGetPhase
 
 class Player;
 class Star;
+class GameClear;
 
 // スターを取った時の演出を行うクラス。
 namespace app
@@ -39,14 +41,19 @@ namespace app
             void UpdateOrbit(float deltaTime);
             void UpdateFinish(float deltaTime);
 
+            // リザルトデータを収集してStageManagerクラスに送信。
+            void CollectAndSendResultData();
+
 
         private:
             Player* pPlayer_ = nullptr;
             Star* pStar_ = nullptr;
-
+            GameClear* pGameClear_ = nullptr;
 
         private:
             StarGetPhase currentPhase_ = StarGetPhase::Num;
+            StageResultData resultData_;
+
             SpriteRender stegeClearSprite_; 
 
             float timer_ = 0.0f;

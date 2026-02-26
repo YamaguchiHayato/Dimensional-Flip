@@ -18,10 +18,13 @@ namespace
 }
 
 
+ScoreUI* ScoreUI::instance_ = nullptr;
+
+
 bool ScoreUI::Start()
 {
+    instance_ = this;
     InitUIScore();
-
     pPlayer_ = FindGO<Player>("player");
     return true;
 }

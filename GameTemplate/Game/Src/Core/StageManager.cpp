@@ -39,6 +39,8 @@ namespace app
         // デフォルトのステージの値をここで設定。
         StageID StageManager::nextInitStageID_ = StageID::sTutorialStage;
 
+        StageResultData StageManager::stageResultData_;
+
 
         StageManager::~StageManager()
         {

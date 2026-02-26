@@ -92,7 +92,6 @@ void Star::UpdateMovement(float deltaTime)
     // ガード節: 演出終了判定
     if (progress > 1.0f)
     {
-        app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_StarRotation);
         return;
     }
 
@@ -122,7 +121,7 @@ void Star::OnEffectFinished()
         pFade->StartFadeIn();
 
     // StageClearの生成。
-    NewGO<StageClear>(0);
+    NewGO<StageClear>(0, "");
     DeleteGO(this);
 }
 

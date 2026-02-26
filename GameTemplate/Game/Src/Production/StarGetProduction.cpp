@@ -6,8 +6,14 @@
 
 #include "Src/Production/Fade.h"
 #include "Src/Production/StageClear.h"
+#include "Src/Production/GameClear.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Core/StageManager.h"
+
 #include "Src/Actor/Stage/BackGround.h"
+
+#include "Src/UI/NumberUI.h"
+#include "Src/UI/ScoreUI.h"
 
 namespace
 {
@@ -110,6 +116,7 @@ namespace app
 
         void StarGetProduction::UpdateFinish(float deltaTime)
         {
+            // 経過時間の更新
             timer_ += deltaTime;
 
             // 常にスターを注視し、プレイヤーを隣に固定し続ける（位置戻り防止）
@@ -126,12 +133,11 @@ namespace app
             // 暗転するまで今の見た目をキープします
             if (timer_ >= 1.0f && currentPhase_ == StarGetPhase::Finish)
             {
-
                 auto* pBG = FindGO<app::stage::BackGround>("background");
                 if (pBG)
                     pBG->ClearOverride();
 
-                NewGO<StageClear>(0);
+                NewGO<StageClear>(0, "stage_clear_logo");
 
 
                 Fade* pFade = SceneManager::GetInstance()->GetFade();
@@ -142,16 +148,49 @@ namespace app
                 currentPhase_ = StarGetPhase::FadeOut;
             }
 
+
+            // フェードアウトが十分に進んだら、データ収集とシーン遷移
             if (timer_ >= 2.5f)
             {
+                // データを集めて送信
+                CollectAndSendResultData();
+
+                // 座標セットなど
+                Vector3 finalPos = starPos_ + Vector3(-5.0f, 0.0f, 0.0f);
+                finalPos.y = playerStartPos_.y;
                 pPlayer_->SetPlayerPos(finalPos);
 
                 auto* pCamMgr = FindGO<CameraManager>("cameramanager");
                 if (pCamMgr)
                     pCamMgr->SetTracking(true);
 
+                SceneManager::GetInstance()->ChangeScene(SceneID::sResult);
                 DeleteGO(this);
             }
+        }
+
+
+        void StarGetProduction::CollectAndSendResultData()
+        {
+            // 1. UIインスタンスを取得
+            auto* pNumberUI = NumberUI::GetInstance();
+            auto* pScoreUI = ScoreUI::GetInstance();
+
+            // 2. データ格納用
+            app::StageResultData finalData;
+
+            // 3. タイム収集
+            if (pNumberUI)
+                finalData.clearTime_ = pNumberUI->GetTimer();
+
+            // 4. スコア収集
+            if (pScoreUI)
+                finalData.baseScore_ = (int) pScoreUI->GetScore();
+
+            // 5. StageManagerに送信
+            auto* pStageManager = app::core::StageManager::GetInstance();
+            if (pStageManager)
+                pStageManager->SetStageResult(finalData);
         }
 
 

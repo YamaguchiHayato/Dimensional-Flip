@@ -243,6 +243,10 @@
     <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
     <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
+    <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp" />
+    <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
+    <ClCompile Include="Src\Core\EndRollManager.cpp" />
+    <ClCompile Include="Src\Scene\EndRollScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -447,6 +451,11 @@
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollBase.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollText.h" />
+    <ClInclude Include="Src\Production\EndRoll\EndRollImage.h" />
+    <ClInclude Include="Src\Core\EndRollManager.h" />
+    <ClInclude Include="Src\Scene\EndRollScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

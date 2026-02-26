@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "BossDeadState.h"
 
+#include "Src/Production/Fade.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
+#include "Src/Core/SceneManager.h"
 
 namespace app
 {
@@ -20,7 +22,25 @@ namespace app
 
         void BossDeadState::Update()
         {
-            // @ TODO アニメーションが終わればエンディングへ。
+            if (pBoss_->IsPlayingAnimation())
+                return;
+
+            auto* pGoalFade = SceneManager::GetInstance()->GetFade();
+
+            if (!isFadeStarted_)
+            {
+                if (pGoalFade)
+                    pGoalFade->StartFadeOut();
+
+                isFadeStarted_ = true;
+            }
+
+            // フェードを確認する処理。
+            if (pFade_)
+            {
+                if (pFade_->IsFadeOutEnd())
+                    SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
+            }
         }
 
 

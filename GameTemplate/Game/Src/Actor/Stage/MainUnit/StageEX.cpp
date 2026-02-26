@@ -36,6 +36,15 @@ namespace app
 {
     namespace stage
     {
+        StageEX::~StageEX()
+        {
+            if (pBoss_)
+            {
+                DeleteGO(pBoss_);
+                pBoss_ = nullptr;
+            }
+        }
+
         bool StageEX::Start()
         {
             // モデル読み込み

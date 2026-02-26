@@ -36,7 +36,7 @@ namespace
     const float STAGE_LIMIT_X = 35.0f;
 
     // 最大HP
-    const auto MAX_HP = 9.0f;
+    const auto MAX_HP = 1.0f;
 
     const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
 

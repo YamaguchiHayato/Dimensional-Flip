@@ -8,7 +8,7 @@
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Scene/GameOverScene.h"
 #include "Src/Scene/WorldSelectScene.h"
-
+#include "Src/Scene/EndRollScene.h"
 #include "Src/UI/Select/WorldSelectUI.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
@@ -105,6 +105,10 @@ IScene* SceneManager::CreateScene(SceneID id)
                  ;
         case SceneID::sGameOver:
              newScene = new app::scene::GameOverScene();
+             break;
+
+        case SceneID::sEndRoll:
+             newScene = new app::production::EndRollScene();
              break;
 
         default:

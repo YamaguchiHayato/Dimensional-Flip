@@ -7,6 +7,8 @@ namespace app{
     }
 }
 
+class Fade;
+
 namespace app
 {
     namespace enemyState
@@ -19,14 +21,23 @@ namespace app
 
 
         public:
+            // 初期化処理。
             void Enter() override;
+            // 更新処理。
             void Update() override;
+            // ステート終了処理。
             void Exit() override;
+            // 次のステートへ遷移要求をする処理。
             bool RequestID(uint8_t& request) override;
 
 
         private:
             app::enemy::Boss* pBoss_ = nullptr;
+            Fade* pFade_ = nullptr;
+
+
+        private:
+            bool isFadeStarted_ = false;
         };
 
     }

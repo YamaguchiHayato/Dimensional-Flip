@@ -26,7 +26,6 @@ namespace app
     } 
 }
 
-
 class Player;
 
 
@@ -40,15 +39,16 @@ namespace app
             Boss() = default;
             virtual ~Boss();
 
+
         public:
+            // 初期化処理。
             bool Start() override;
+            // 更新処理。
             void Update() override;
+            // 描画処理。
             void Render(RenderContext& rc) override;
-            inline const virtual std::string InitModel(const std::string& enemyName) override
-            {
-                std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
-                return enemyPath;
-            };
+
+
 
 
         public:
@@ -106,7 +106,6 @@ namespace app
                 manualWeakHeight_ = height;
                 isManualOverride_ = overrideBone;
             }
-
 
 
         // ゲッター。
@@ -184,6 +183,14 @@ namespace app
                 return pStateList_;
             }
 
+            // モデルをセット。
+            inline const virtual std::string InitModel(const std::string& enemyName) override
+            {
+                std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
+                return enemyPath;
+            };
+
+
         // ヘルパー。
         public:
             // 攻撃回数を加算数する。
@@ -218,7 +225,6 @@ namespace app
             CollisionObject* pWeeekPoint_ = nullptr;
             app::core::InputManager* pInputManager_ = nullptr;
             app::core::Game* pGame_ = nullptr;
-
             app::cutIn::CutInView* pCutInView_ = nullptr;
 
 
@@ -242,6 +248,7 @@ namespace app
             bool isPhasePlaying;
             bool canBeAttacked_ = true;    // ダメージを受け付けるかどうか。
             bool isManualOverride_ = false;
+            bool isFadeStart_ = false;
 
             float stateTimer_ = 0.0f;
             float nextInterval_ = 3.0f;
@@ -249,7 +256,8 @@ namespace app
 
             // @ uint8_tだと負数が扱えないためint型で定義。
             int weakPointBoneID_ = -1;
-            
+
+
         // ステート用変数群。
         // フレンドクラス。
         private:

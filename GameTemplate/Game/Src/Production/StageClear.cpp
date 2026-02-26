@@ -17,16 +17,7 @@ bool StageClear::Start()
 
 void StageClear::Update()
 {
-    if (timer_ >= 2.0f)
-    {
-        StageID nextStageID = DecideStage();
-        // Gameクラスを探索。
-        app::core::Game* pGame = FindGO<app::core::Game>("game");
-        if (pGame)
-            pGame->RequestStageTransition(nextStageID);
-        DeleteGO(this);
-    }
-
+    timer_ += g_gameTime->GetFrameDeltaTime();
 
     stageClearSprite_.SetScale(Vector3::One);
     stageClearSprite_.Update();

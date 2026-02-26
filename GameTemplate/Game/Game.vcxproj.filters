@@ -453,6 +453,7 @@
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
     <ClInclude Include="Src\Scene\WorldSelectScene.h" />
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
+    <ClInclude Include="ResultData.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

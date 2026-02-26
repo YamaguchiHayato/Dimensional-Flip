@@ -1,14 +1,16 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
 #include "Src/Actor/Actor.h"
+#include "ResultData.h"
 
 namespace StageStartPos
 {
     const Vector3 stage2(3000.0f, 800.0f, -60.0f);
 }
 
-class LoadingScene;
 
+
+class LoadingScene;
 
 namespace app
 {
@@ -21,6 +23,11 @@ namespace app
             StageID stageCurrentID_ = StageID::sStage1;
             StageID stageRequestID_ = StageID::sInvalid;
 
+
+        private:
+            static StageResultData stageResultData_;
+
+
         public:
             // 初期化処理。
             bool Start() override;
@@ -32,12 +39,24 @@ namespace app
             IStage* CreateStage(StageID id);
             // ステージの同期的変更処理。
             void ChangeStageSync(StageID newStageID);
-            // セッター。
+
+
+        // セッター。
         public:
             // ステージの変更処理。
-            inline void ChangeStage(StageID newStageID) { stageRequestID_ = newStageID; }
+            inline void ChangeStage(StageID newStageID)
+            {
+                stageRequestID_ = newStageID;
+            }
 
-            // ゲッター。
+            // リザルトデータを設定。
+            static inline void SetStageResult(const StageResultData& data)
+            {
+                stageResultData_ = data;
+            }
+
+
+        // ゲッター。
         public:
             // ステージ開始位置の取得。
             inline Vector3 GetStageStartPos() const override
@@ -54,6 +73,12 @@ namespace app
             // ステージ変更検知で使用。
             inline StageID GetCurrentStageID() const { return stageCurrentID_; }
 
+            // リザルトデータを取得。
+            static inline StageResultData& GetStageResultData()
+            {
+                return stageResultData_;
+            }
+
 
         public:
             StageManager() = default;
@@ -64,6 +89,8 @@ namespace app
             // static メンバー。
             static StageManager* pStageManger_;
 
+            // 次に初期化するステージID。
+            // ステージ変更要求があった際、次のフレームでこのIDのステージを初期化する。
             static StageID nextInitStageID_;
 
         public:

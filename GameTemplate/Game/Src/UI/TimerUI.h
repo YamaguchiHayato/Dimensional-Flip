@@ -19,13 +19,14 @@ public:
 
 
 public:
+    // UIの初期化。
 	inline const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
 
-
 public:
     void Reset();
+
 
 };
 

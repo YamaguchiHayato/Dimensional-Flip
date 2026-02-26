@@ -12,8 +12,8 @@ namespace app{
 class NumberUI : public UIBase
 {
 public:
-	NumberUI() {};
-	virtual ~NumberUI() {};
+	NumberUI() = default;
+	virtual ~NumberUI() = default;
 
 
 public:
@@ -22,8 +22,16 @@ public:
 	void Render(RenderContext& rc)override;
 
 
+public:
+    // タイマー更新処理。
+    void UpdateTimer();
+    // 数字UIの初期化。
+    void InitUINumber();
+
+
 // ゲッター。
 public:
+    // UIの初期化。
 	inline virtual const std::string InitUI(const std::string& UIname) override{
 		return UIBase::InitUI(UIname);
 	};
@@ -34,12 +42,14 @@ public:
         return isTimerStart_;
     }
 
+    // タイムを取得する。
+    inline float GetTimer() const
+    {
+        return timer_;
+    }
 
-    // タイマー更新処理。
-	void UpdateTimer();
-    // 数字UIの初期化。
-	void InitUINumber();
-
+// セッター。
+public:
     // タイマーリセット処理。
     // 各ステージ開始時に呼ぶ。
     inline void ResetTimer()
@@ -63,5 +73,17 @@ private:
 
     FontRender timerFont_;
     wchar_t timerText_[32];
+
+
+private:
+    static NumberUI* instance_;
+
+
+public:
+    //
+    inline static NumberUI* GetInstance()
+    {
+        return instance_;
+    }
 };
 

@@ -49,6 +49,7 @@ namespace app
 
 
         private:
+            // 何回ジャンプするのかを設定。
             inline void AddJumpCount()
             {
                 jumopCount_++;
@@ -65,12 +66,13 @@ namespace app
             Vector3 targetPos_ = Vector3::Zero;
             Vector3 velocity_ = Vector3::Zero;
 
-
             Quaternion faceAngle_ = Quaternion::Identity;
 
-
             float timer_ = 0.0f;
+
             int jumopCount_ = 3;
+
+            bool hasHitPlayer_ = false;
         };
 
     }

@@ -4,20 +4,30 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
 
+#include "Src/Core/SoundManager.h"
+
 namespace
 {
-    const auto GRAVITY = 0.4f;        // 重力。
-    const auto JUMP_POWER = 12.0f;    // ジャンプ力。
+    // 重力。
+    const auto GRAVITY = 0.4f;        
 
-    const auto PREPARE_TIME = 1.0f;   // 準備時間。
+    // ジャンプ力。
+    const auto JUMP_POWER = 12.0f;    
 
-    const auto CAMERA_EDGE_OFFSET = 15.0f; // カメラ端からのオフセット。
+    // 準備時間。
+    const auto PREPARE_TIME = 1.0f;   
 
-    const auto STAGE_LIMIT_X = 35.0f; // ステージ端のX座標。
+    // カメラ端からのオフセット。
+    const auto CAMERA_EDGE_OFFSET = 15.0f; 
 
+    // ステージ端のX座標。
+    const auto STAGE_LIMIT_X = 35.0f; 
+
+    // ジャンプの最大回数。
     const int MAX_JUMP_COUNT = 3;
 
-    const auto LEG_HIT_RADIUS = 10.0f; // 足元の当たり判定の半径。
+    // 足元の当たり判定の半径。
+    const auto LEG_HIT_RADIUS = 15.0f; 
 } 
 
 namespace app
@@ -31,8 +41,11 @@ namespace app
             timer_ = 0.0f;
             jumopCount_ = 0;
 
+            // ヒットフラグを初期化。
+            hasHitPlayer_ = false;
+
             // アニメーションの再生。
-            pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Jump, false, 0.2f);
+            pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Idle, true, 0.2f);
 
             // 正面を向くようにする。
             faceAngle_.SetRotationDegY(180.0f);
@@ -81,6 +94,9 @@ namespace app
             // --- ジャンプ開始判定 ---
             if (timer_ >= PREPARE_TIME)
             {
+                // ジャンプ(上昇)SEの再生。
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_BossJump, 2.0f);
+
                 // ジャンプ開始
                 step_ = app::enemyStatus::JumpStep::Jumping;
 
@@ -116,6 +132,14 @@ namespace app
                 velocity_.y = JUMP_POWER;
                 velocity_.z = 0.0f;
 
+                Quaternion targetRot;
+                if (distanceX > 0)
+                    targetRot.SetRotationDegY(-90.0f);
+
+                else
+                    targetRot.SetRotationDegY(90.0f);
+                pBoss_->SetRot(targetRot);
+
                 // ジャンプアニメーション再生
                 pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Jump, false, 0.1f);
             }
@@ -139,6 +163,12 @@ namespace app
                 // 衝撃波エフェクトを再生。
                 InitEffect();
 
+                // 着地SEの再生。
+                app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Land, 2.0f);
+
+                // 着地時にヒットフラグをリセットする。
+                hasHitPlayer_ = false;
+
                 // 着地
                 step_ = app::enemyStatus::JumpStep::Landing;
 
@@ -155,8 +185,13 @@ namespace app
 
         void BossAttackJumpState::UpdateLanding()
         {
-            // 着地中もPlayerの当たり判定を行う。
-            CheckPlayerCollision();
+            // まだ、ヒットしていなければ、当たり判定を行う。
+            if (!hasHitPlayer_)
+            {
+                if (CheckPlayerCollision())
+                    hasHitPlayer_ = true;
+            }
+
 
             // 着地アニメーションが終わるのを待つ
             if (!pBoss_->IsPlayingAnimation())
@@ -167,8 +202,15 @@ namespace app
                 // 最大ジャンプ回数に達していなければ、再度ジャンプへ。
                 if (jumopCount_ < MAX_JUMP_COUNT)
                 {
+                    // ジャンプの準備へ。
                     step_ = app::enemyStatus::JumpStep::Prepare;
+                    // タイマーをリセット。
                     timer_ = 0.0f;
+                    // ヒットフラグをリセット。
+                    hasHitPlayer_ = false;
+
+                    // 次のジャンプまでの待機中、Idleアニメーションを再生する。
+                    pBoss_->LoadAnimation(app::enemyStatus::bossAnim_Idle, true, 0.1f);
                 }
 
                 else
@@ -204,13 +246,13 @@ namespace app
 
             // プレイヤーの判定用の座標。
             Vector3 playerPos = pPlayer->GetPlayerPos();
-            playerPos.y += 10.0f;
 
             // ボスの現在の足元の座標を取得。
             Vector3 bossLegPos = pBoss_->GetPos();
 
             // 距離の計算。
             Vector3 diff = playerPos - bossLegPos;
+            diff.y = 0.0f; 
 
             if (diff.LengthSq() <= LEG_HIT_RADIUS * LEG_HIT_RADIUS)
             {

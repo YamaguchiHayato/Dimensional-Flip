@@ -23,7 +23,8 @@ enum GameSoundList
 	GameSoundList_SE_BossHit,				                    // ボスにダメージを与える音。
 	GameSoundList_SE_StarRotation,				                // スター回転音。
 	GameSoundList_SE_BossJump,				                    // ボスのジャンプ音。
-	GameSoundList_SE_Land,				                        // ボスの着地音。
+	GameSoundList_SE_Land,                                      // 着地音。
+	GameSoundList_SE_SpawnBlock,				                // 足場ブロックを生成する音。
 
 
 

@@ -31,7 +31,7 @@ namespace app
             // 攻撃アニメーションが終了しているか。
             inline bool IsFinished() const override
             {
-                return !pBoss_->IsPlayingAnimation();
+                return timer_ >= 1.5f;
             }
 
 

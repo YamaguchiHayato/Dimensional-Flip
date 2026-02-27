@@ -287,11 +287,11 @@ namespace app
 
              // 攻撃状態。
              animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackCast].Load("Assets/animData/boss/attack.tka");
-             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackCast].SetLoopFlag(false);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackCast].SetLoopFlag(true);
 
              // 咆哮攻撃状態。
              animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackRoar].Load("Assets/animData/boss/roar.tka");
-             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackRoar].SetLoopFlag(false);
+             animClips_[app::enemyStatus::BossAnimation::bossAnim_AttackRoar].SetLoopFlag(true);
 
              // ダメージヒット状態。
              animClips_[app::enemyStatus::BossAnimation::bossAnim_Hit].Load("Assets/animData/boss/damage.tka");
@@ -351,20 +351,15 @@ namespace app
 
         Vector3 Boss::GetWeakPoint() const
         {
-            // 修正1: Boss.h の定義に合わせて変数名を使用 (isManualOverride_)
             if (isManualOverride_)
-            {
-                // 修正2: Boss.h の定義に合わせて変数名を使用 (manualWeakHeight_)
                 return pos_ + Vector3(0.0f, manualWeakHeight_, 0.0f);
-            }
+
             // ボーン追従モード
             else
             {
                 // ボーンのワールド行列を取得
                 const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
 
-                // 修正3: 関数を使わず、行列の要素(m[3][0]など)から直接座標を取り出す
-                // これなら関数名の違いによるエラーは起きません
                 Vector3 bonePos;
                 bonePos.x = mat.m[3][0];
                 bonePos.y = mat.m[3][1];

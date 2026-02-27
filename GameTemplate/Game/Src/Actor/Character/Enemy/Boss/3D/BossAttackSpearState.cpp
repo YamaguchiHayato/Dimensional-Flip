@@ -32,7 +32,7 @@ namespace app
             timer_ = 0.0f;
             isAttackSpawned_ = false;
 
-            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackCast, false, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackCast, true, 0.1f);
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Spear);
         }
 

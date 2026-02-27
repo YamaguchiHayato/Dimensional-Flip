@@ -17,6 +17,8 @@ namespace
     const auto WAIT_TIME = 1.0f;
 
     const auto HIT_RADIUS = 20.0f;
+
+    const auto ATTACK_DURATION = 1.5f;
 } // namespace
 
 namespace app

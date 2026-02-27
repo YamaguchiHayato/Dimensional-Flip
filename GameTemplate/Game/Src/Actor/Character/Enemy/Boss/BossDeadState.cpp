@@ -4,6 +4,7 @@
 #include "Src/Production/Fade.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Core/SoundManager.h"
 
 namespace app
 {
@@ -17,6 +18,9 @@ namespace app
             if (pBoss_->pWeeekPoint_)
                 // 攻撃ポイントを無効化する。
                 pBoss_->pWeeekPoint_->SetIsEnable(false);
+
+            // ボス戦のBGMを停止する。
+            app::core::SoundManager::GetInstance()->StopBGM(GameSoundList_BGM_BOSS);
         }
 
 

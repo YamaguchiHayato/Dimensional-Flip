@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "EndRollScene.h"
 
-#include "Src/Core/EndRollManager.h"
+#include "Src/Production/Fade.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Core/EndRollManager.h"
 
 namespace app
 {
@@ -50,6 +51,12 @@ namespace app
         {
             if (pCamera_)
                 pCamera_->Update();
+
+            // EndRoll終了後、タイトルへ遷移。
+            if (IsEnd())
+            {
+                SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
+            }
         }
 
         bool EndRollScene::IsEnd() const

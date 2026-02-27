@@ -2,6 +2,8 @@
 #include "Src/Production/EndRoll/EndRollBase.h"
 #include <vector>
 
+class Fade;
+
 namespace app
 {
     namespace production
@@ -20,7 +22,7 @@ namespace app
             // 初期化処理。
             bool Start()override;
             // 更新処理。
-            void Update() override {};
+            void Update() override;
             // 描画処理。
             void Render(RenderContext& rc) override {};
 
@@ -38,6 +40,14 @@ namespace app
 
             // テキストクラス。
             app::production::EndRollText* pText_;
+
+            // フェードクラス。
+            Fade* pFade_ = nullptr;
+
+
+        private:
+            // フェードアウト開始フラグ。
+            bool isFadeOutStarted_ = false;
         };
 
     }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Src/Scene/Scene.h"
+#include <vector>
 
 namespace nsK2EngineLow
 {
@@ -38,7 +39,6 @@ namespace app
 
             // カメラ。
             nsK2EngineLow::Camera* pCamera_ = nullptr;
-
         };
     }
 }

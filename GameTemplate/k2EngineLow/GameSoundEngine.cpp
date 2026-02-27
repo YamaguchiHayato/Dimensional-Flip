@@ -11,7 +11,7 @@ namespace nsK2EngineLow
 	void GameSoundEngine::Init()
 	{
 		//BGM
-		//0. タイトル画面BGM
+		// タイトル画面BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Title, "Assets/sound/bgm/title.wav");
 		m_isPlayingSound[GameSoundList_BGM_Title] = false;
 		m_sound[GameSoundList_BGM_Title] = nullptr;
@@ -21,17 +21,17 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_BGM_StageSelect] = false;
 		m_sound[GameSoundList_BGM_StageSelect] = nullptr;
 
-		//1. ステージ1BGM
+		// ステージ1BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Stage1, "Assets/sound/bgm/stage1.wav");
 		m_isPlayingSound[GameSoundList_BGM_Stage1] = false;
 		m_sound[GameSoundList_BGM_Stage1] = nullptr;
 
-		//2. ステージ2BGM
+		// ステージ2BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Stage2, "Assets/sound/bgm/stage2.wav");
 		m_isPlayingSound[GameSoundList_BGM_Stage2] = false;
 		m_sound[GameSoundList_BGM_Stage2] = nullptr;
 
-		//2. BOSSBGM
+		// BOSSBGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_BOSS, "Assets/sound/bgm/boss.wav");
 		m_isPlayingSound[GameSoundList_BGM_BOSS] = false;
 		m_sound[GameSoundList_BGM_BOSS] = nullptr;
@@ -41,10 +41,15 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_BossHit] = false;
 		m_sound[GameSoundList_SE_BossHit] = nullptr;
 
-		//3. リザルト画面BGM
+		// リザルト画面BGM
 		g_soundEngine->ResistWaveFileBank(GameSoundList_BGM_Result, "Assets/sound/bgm/result.wav");
 		m_isPlayingSound[GameSoundList_BGM_Result] = false;
 		m_sound[GameSoundList_BGM_Result] = nullptr;
+
+		// EndRollBGM。
+		g_soundEngine->ResistWaveFileBank(GameSoudList_BGM_EndRoll, "Assets/sound/bgm/endRoll.wav");
+		m_isPlayingSound[GameSoudList_BGM_EndRoll] = false;
+		m_sound[GameSoudList_BGM_EndRoll] = nullptr;
 
 		//SE
 		//0. 決定音

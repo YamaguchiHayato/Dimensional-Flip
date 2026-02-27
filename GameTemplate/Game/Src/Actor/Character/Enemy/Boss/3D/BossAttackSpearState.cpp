@@ -5,6 +5,9 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Spear.h"
 
+#include "Src/Core/BossUIManager.h"
+#include "Src/Core/SoundManager.h"
+
 namespace
 {
     const float SPAWN_TIME = 0.5f;
@@ -32,8 +35,14 @@ namespace app
             timer_ = 0.0f;
             isAttackSpawned_ = false;
 
+            // アニメーションの再生。
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackCast, true, 0.1f);
+
+            // 攻撃のタイプをセット。
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Spear);
+
+            // 攻撃UIをセット。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Spear);
         }
 
 
@@ -51,25 +60,35 @@ namespace app
 
         void BossAttackSpearState::Exit()
         {
+            // 攻撃のインターバル時間をセット。
             pBoss_->SettNextInterval(3.0f);
+
+            // 攻撃UIをセット。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Spear);
+
+            // BGMの停止。
+            app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Spear);
         }
 
 
         void BossAttackSpearState::CreateSpearAttack()
         {
-            float centerX = 0.0f;
+            // SEの再生。
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Spear, 2.0);
+
+            centerX_ = 0.0f;
             if (auto* pPlayer = pBoss_->GetPlayer())
-                centerX = pPlayer->GetPlayerPos().x;
+                centerX_ = pPlayer->GetPlayerPos().x;
 
-            float randomOffset = (static_cast<float>(rand() % 200) / 10.0f) - 10.0f;
-            centerX += randomOffset;
+            randomOffset_ = (static_cast<float>(rand() % 200) / 10.0f) - 10.0f;
+            centerX_ += randomOffset_;
 
-            float startX = centerX - 25.0f;
-            float endX = centerX + 25.0f;
-            int pattern = rand() % 3;
+            startX_ = centerX_ - 25.0f;
+            endX_ = centerX_ + 25.0f;
+            pattern_ = rand() % 3;
 
             // グリッド状に生成
-            for (float x = startX; x <= endX; x += GRID_SIZE)
+            for (float x = startX_; x <= endX_; x += GRID_SIZE)
             {
                 // ステージ外ならスキップ
                 if (x < -STAGE_WIDTH_HALF || x > STAGE_WIDTH_HALF)
@@ -78,31 +97,31 @@ namespace app
                 for (float y = 2.0f; y <= WALL_HEIGHT; y += GRID_SIZE)
                 {
                     // --- パターン判定: 奥の壁を出すか？ ---
-                    if (pattern == 0 || pattern == 2)
+                    if (pattern_ == 0 || pattern_ == 2)
                     {
                         // 奥の壁 (Z+ -> 手前へ)
                         auto spearBack = NewGO<app::gimmick::Spear>(0);
                         spearBack->SetType(SpearType::Cross);
 
-                        Vector3 posBackStart(x, y, SPAWN_Z_DIST);
-                        Vector3 posBackTarget(x, y, SAFE_GAP_Z); // +7.0fで止まる
+                        posBackStart_ = Vector3(x, y, SPAWN_Z_DIST);
+                        posBackTarget_ = Vector3(x, y, SAFE_GAP_Z); // +7.0fで止まる
 
-                        spearBack->SetStartPos(posBackStart);
-                        spearBack->SetTargetPos(posBackTarget);
+                        spearBack->SetStartPos(posBackStart_);
+                        spearBack->SetTargetPos(posBackTarget_);
                     }
 
                     // --- パターン判定: 手前の壁を出すか？ ---
-                    if (pattern == 1 || pattern == 2)
+                    if (pattern_ == 1 || pattern_ == 2)
                     {
                         // 手前の壁 (Z- -> 奥へ)
                         auto spearFront = NewGO<app::gimmick::Spear>(0);
                         spearFront->SetType(SpearType::Cross);
 
-                        Vector3 posFrontStart(x, y, -SPAWN_Z_DIST);
-                        Vector3 posFrontTarget(x, y, -SAFE_GAP_Z); // -7.0fで止まる
+                        posFrontStart_ = Vector3(x, y, -SPAWN_Z_DIST);
+                        posFrontTarget_ = Vector3(x, y, -SAFE_GAP_Z); // -7.0fで止まる
 
-                        spearFront->SetStartPos(posFrontStart);
-                        spearFront->SetTargetPos(posFrontTarget);
+                        spearFront->SetStartPos(posFrontStart_);
+                        spearFront->SetTargetPos(posFrontTarget_);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EndRollText.h"
+
 #include <memory>
 
 namespace
@@ -28,6 +29,7 @@ namespace app
             // テキストの管理。
             ManageText();
 
+            
             return true;
         }
 
@@ -89,14 +91,27 @@ namespace app
                 {L"Boss", 1.0f, 40.0f},
                 {MY_NAME, 1.5f, 80.0f},
 
+                // βテスター。
+                {L"Tester", 1.0f, 40.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+
                 // スペシャルサンクス。
                 {L"Special Thanks", 1.0f, 40.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
+                {MY_NAME, 1.5f, 80.0f},
                 {MY_NAME, 1.5f, 80.0f},
 
                 // 代表挨拶。
                 {L"Presented by", 1.0f, 50.0f},
                 {MY_NAME, 2.0f, 200.0f},
-                {L"Thank You For Playing !", 2.5f, 0.0f},
+                {L"Thank You !", 2.5f, 0.0f},
             };
 
             // ここの設定値を基準に文字を下に並べていく。
@@ -104,7 +119,8 @@ namespace app
 
             for (const auto& d : data)
             {
-                auto line  =std::make_unique<StaffRollLine>();
+                // 1行ごとのラインを生成する。
+                auto line  = std::make_unique<StaffRollLine>();
 
                 // フォントを設定。
                 // テキストをセット。

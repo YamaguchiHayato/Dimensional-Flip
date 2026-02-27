@@ -3,10 +3,10 @@
 
 namespace
 {
-    const float CHANGE_INTERVAL = 3.0f;        // 3秒ごとに切り替え
-    const Vector3 POS = {-400.0f, 0.0f, 0.0f}; // 画面左側に配置
-    const float IMG_WIDTH = 800.0f;            // 画像の幅
-    const float IMG_HEIGHT = 450.0f;           // 画像の高さ
+    const float CHANGE_INTERVAL = 8.0f;        // n秒ごとに切り替え
+    const Vector3 POS = {-300.0f, 0.0f, 0.0f}; // 画面左側に配置
+    const float IMG_WIDTH = 1200.0f;           // 画像の幅
+    const float IMG_HEIGHT = 600.0f;           // 画像の高さ
 
 
     const char* paths[] =
@@ -88,15 +88,11 @@ namespace app
 
                 // 20枚目の画像に行くと最初に戻る。
                 if (currentIndex_ >= images_.size())
-                {
                     currentIndex_ = 0;
-                }
             }
 
             if (images_[currentIndex_])
-            {
                 images_[currentIndex_]->Update();
-            }
         }
 
 

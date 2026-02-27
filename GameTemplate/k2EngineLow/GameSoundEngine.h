@@ -12,7 +12,7 @@ enum GameSoundList
 	GameSoundList_BGM_Stage2,									//ステージ2BGM
 	GameSoundList_BGM_BOSS,									    //BOSS戦
 	GameSoundList_BGM_Result,									//リザルト画面BGM
-
+	GameSoudList_BGM_EndRoll,									//エンドロールBGM
 
 	// SE
 	GameSoundList_SE_CursorMove,						        // カーソル移動音

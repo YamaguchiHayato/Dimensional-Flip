@@ -7,8 +7,14 @@
 
 namespace
 {
-    const auto SPAWN_TIME = 0.8f; // 何秒で攻撃オブジェクトを生成し始めるか。
+    // 何秒で攻撃オブジェクトを生成し始めるか。
+    const auto SPAWN_TIME = 0.8f;
+
+    // 生成する数。
     const int SPAWN_NUM = 6;
+
+    // 何秒間攻撃をするか。
+    const auto ATTACK_DURATION = 2.0f;
 }
 
 namespace app
@@ -53,7 +59,7 @@ namespace app
         bool BossAttackMeteoState::IsFinished() const
         {
 
-            return !pBoss_->IsPlayingAnimation();
+            return timer_ >= ATTACK_DURATION;
         }
 
 

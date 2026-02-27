@@ -66,7 +66,6 @@ namespace app
 
         void BossAttackFireBallState::ShotFireBall()
         {
-
             // 0:左, 1:右, 2:上, 3:下 からランダムに選択
             int side = rand() % 4;
             float offsetX = 80.0f; // 画面端
@@ -162,7 +161,8 @@ namespace app
                 currentStep_ = AttackStep::Barrage;
                 stepTimer_ = 0.0f;
                 shootTimer_ = 0.0f;
-                pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackRoar, false, 0.1f);
+
+                pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackRoar, true, 0.1f);
             }
         }
 

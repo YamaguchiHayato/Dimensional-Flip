@@ -16,6 +16,8 @@ enum class State : uint8_t
     Falling
 };
 
+class Player;
+
 namespace app
 {
     namespace gimmick
@@ -26,9 +28,16 @@ namespace app
             Meteo() = default;
             virtual ~Meteo() = default;
 
+
+        public:
             bool Start()override;
             void Update()override;
             void Render(RenderContext& rc)override;
+
+
+        // ゲッター。
+        public:
+            // ギミック名をセット。
             inline const std::string InitGimmick(const std::string& gimmickname) override
             {
                 return IGimmic::InitGimmick(gimmickname);
@@ -59,9 +68,13 @@ namespace app
             // 状態を更新する。
             void UpdateState();
 
+            // 当たり判定。
+            bool CheckCollision();
+
 
         private:
             app::production::AttackMarker* pMarker_ = nullptr;
+            Player* pPlayer_ = nullptr;
 
 
         private:
@@ -74,6 +87,8 @@ namespace app
             float lifeTime_ = 0.0f;
             float fallSpeed_ = 30.0f;  // 落下速度
             float warningTime_ = 2.0f; // 警告時間
+
+            bool hasHit = false; // プレイヤーに当たったかどうか
         };
 
     }

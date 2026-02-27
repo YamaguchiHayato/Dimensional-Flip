@@ -97,6 +97,10 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_SpawnBlock] = false;
 		m_sound[GameSoundList_SE_SpawnBlock] = nullptr;
 
+		// 槍攻撃の音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Spear, "Assets/sound/se/Spear.wav");
+		m_isPlayingSound[GameSoundList_SE_Spear] = false;
+		m_sound[GameSoundList_SE_Spear] = nullptr;
 
 
 		//1. 決定音(画面遷移用)

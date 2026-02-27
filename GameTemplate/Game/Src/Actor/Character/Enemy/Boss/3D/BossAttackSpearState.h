@@ -54,10 +54,20 @@ namespace app
 
         private:
             float timer_ = 0.0f;
+            float centerX_ = 0.0f;
+            float randomOffset_ = 0.0f;
+            float startX_ = 0.0f;
+            float endX_ = 0.0f;
+
+            int pattern_ = 0;
 
             bool isAttackSpawned_ = false;
 
             Vector3 startPos_ = Vector3::Zero;
+            Vector3 posBackStart_ = Vector3::Zero;
+            Vector3 posBackTarget_ = Vector3::Zero;
+            Vector3 posFrontStart_ = Vector3::Zero;
+            Vector3 posFrontTarget_ = Vector3::Zero;
         };
 
     }

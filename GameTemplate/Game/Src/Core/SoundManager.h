@@ -46,6 +46,13 @@ namespace app
             }
 
             // SEの停止。
+            inline void StopSE(GameSoundList se)
+            {
+                if (pSoundEngine_)
+                    pSoundEngine_->StopSound(se);
+            }
+
+            // ボリュームの設定。。
             inline void SetVolume(GameSoundList sound, float vol)
             {
                 if (pSoundEngine_)

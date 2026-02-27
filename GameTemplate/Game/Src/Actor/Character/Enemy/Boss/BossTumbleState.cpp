@@ -26,6 +26,9 @@ namespace
 
     // 無敵時間。
     const float INVINCIBLE_TIME = 1.0f;
+
+    // 足場が上がり切るまでの時間。
+    const auto SCAFFOLD_MOVE_DURATION = 2.5f;
 }
 
 
@@ -43,6 +46,7 @@ namespace app
 
             // タイマーをリセット。
             timer_ = 0.0f;
+            spawnSeTimer_ = 0.0f;
             delayTimer_ = 0.0f;
             canBeAttacked_ = false;
 
@@ -59,9 +63,14 @@ namespace app
             // アイコンを描画するように通知。
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Tumbler);
 
-
             // 足場を生成する。
             app::core::BattlePhaseManager::GetInstance()->ActivateScaffolding();
+
+            // 足場を生成時のSEを再生。
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_SpawnBlock, 2.0f);
+
+            // Seを一度だけ再生するフラグをリセット。
+            isSePlayed_ = true;
         }
 
 
@@ -69,6 +78,17 @@ namespace app
         {
             float deltaTime = g_gameTime->GetFrameDeltaTime();
             timer_ += deltaTime;
+
+            // 足場SEを制御。
+            if (isSePlayed_)
+            {
+                spawnSeTimer_ += deltaTime;
+                if (spawnSeTimer_ >= SCAFFOLD_MOVE_DURATION)
+                {
+                    app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_SpawnBlock);
+                    isSePlayed_ = false;
+                }
+            }
 
 
             // 倒れこみ処理を待つ処理。
@@ -82,6 +102,13 @@ namespace app
 
         void BossTumbleState::Exit()
         {
+            // ステートを抜ける際、必ず音を止めるように制限。
+            if (isSePlayed_)
+            {
+                app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_SpawnBlock);
+                isSePlayed_ = false;
+            }
+
             // 弱点を無効化。
             canBeAttacked_ = false;
 

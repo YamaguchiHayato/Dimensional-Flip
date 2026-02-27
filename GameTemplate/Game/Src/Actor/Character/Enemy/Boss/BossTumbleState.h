@@ -40,23 +40,20 @@ namespace app
 
 
         private:
-            float timer_ = 0.0f; // 転倒時間を計測。
-            float delayTimer_ = 0.0f;// 倒れこむまでの無敵時間タイマー。
+            float timer_ = 0.0f;                 // 転倒時間を計測。
+            float spawnSeTimer_ = 0.0f;          // ギミックをスポーンさせるタイマー。
+            float delayTimer_ = 0.0f;            // 倒れこむまでの無敵時間タイマー。
+            float currentWeakHeight_ = 22.0f;
+            float targetHeight_ = 22.0f;
 
-            bool canBeAttacked_ = true; // ダメージを受け付けるかどうか。
-
+            bool canBeAttacked_ = true;          // ダメージを受け付けるかどうか。
             bool isWeakCollision_;
-
             bool isAbove_;
+            bool isSePlayed_ = false;            // SEを一度だけ再生するためのフラグ。
 
             Vector3 headPos_ = Vector3::Zero;
             Vector3 playerPos_ = Vector3::Zero;
             Vector3 diff_ = Vector3::Zero;
-
-
-            float currentWeakHeight_ = 22.0f;
-            float targetHeight_ = 22.0f;
         };
-
     }
 }

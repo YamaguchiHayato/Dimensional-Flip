@@ -16,6 +16,7 @@ enum class SceneTransitionState : uint8_t
 };
 
 class Fade;
+class LoadingScene;
 class SceneManager : public IScene
 {
 private:
@@ -29,7 +30,17 @@ public:
     bool Start() override;
     // 更新処理。
     void Update() override;
-        IScene* CreateScene(SceneID id);
+    // 描画処理。
+    IScene* CreateScene(SceneID id);
+
+
+public:
+    // ロード画面の表示。
+    void ShowLoading();
+
+    // ロード画面の非表示。
+    void HideLoading();
+
 
 // セッター。
 public:
@@ -47,12 +58,14 @@ public:
 
 
 private:
-    SceneManager(){};
+    SceneManager() = default;
     virtual ~SceneManager();
+
 
 private:
     static SceneManager* pSceneManger_;
     Fade* pFade_ = nullptr;
+    LoadingScene* pLoadingScene_ = nullptr;
 
 public:
     // シングルトンインスタンスの生成。
@@ -61,6 +74,7 @@ public:
         if (!pSceneManger_)
             pSceneManger_ = new SceneManager();
     }
+
     // Fadeシーンの生成管理。
     inline Fade* GetFade()
     {
@@ -85,4 +99,12 @@ public:
         delete pSceneManger_;
         pSceneManger_ = nullptr;
     }
+
+
+private:
+    bool isLoadingSceneActive_ = false;
+    bool isSceneControler_ = false;
+
+    float minLoadingTime_ = 0.0f; // 最小ローディング時間。
+    
 };

@@ -1,13 +1,32 @@
 #pragma once
+
 class Fade;
 class LoadingScene : public IGameObject
 {
 public:
-    bool Start() ;
+    LoadingScene() = default;
+    ~LoadingScene() = default;
+
+
+public:
+    bool Start();
     void Update();
+
+
+public:
+    // ローディング画面の描画。
     void Render(RenderContext& rc);
 
-private:
-    SpriteRender loadingSprite_;
 
+private:
+    // 「Now Loading」の文字を初期化。
+    void CreateLoadingFont();
+
+
+private:
+    // 「Now Loading」と表記。
+    FontRender loadingFont_;
+
+    // 点滅計算用タイマー。
+    float timer_ = 0.0f;
 };

@@ -22,7 +22,6 @@ class CameraManager;
 class Player;
 class TrackingEnemy;
 class Fade;
-class LoadingScene;
 
 // UI。
 class NumberUI;
@@ -51,7 +50,6 @@ namespace app
         public:
             bool Start();
             void Update();
-
 
         public:
             // ステージ遷移要求。
@@ -107,7 +105,6 @@ namespace app
             ScoreUI* pScoreUI_ = nullptr;
             HPbarUI* pHpbarUI_ = nullptr;
             Fade* pFade_ = nullptr;
-            LoadingScene* pLoadingScene_ = nullptr;
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;

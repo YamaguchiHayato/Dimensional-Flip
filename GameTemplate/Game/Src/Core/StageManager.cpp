@@ -187,14 +187,6 @@ namespace app
         }
 
 
-        void StageManager::Render(RenderContext& rc)
-        {
-            LoadingScene* pLoadingScene = FindGO<LoadingScene>("LoadingScene");
-
-            if (pLoadingScene == nullptr && pCurrentStage_ != nullptr)
-            {
-            }
-        }
     }
 }
 

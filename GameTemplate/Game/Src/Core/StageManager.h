@@ -34,7 +34,7 @@ namespace app
             // 更新処理。
             void Update() override;
             // 描画処理。
-            void Render(RenderContext& rc) override;
+            void Render(RenderContext& rc) override {};
             // ステージの生成処理。
             IStage* CreateStage(StageID id);
             // ステージの同期的変更処理。

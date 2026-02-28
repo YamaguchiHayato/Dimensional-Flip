@@ -182,6 +182,9 @@ void WorldSelectScene::Update()
         // 決定時: ゲーム画面へ遷移。
         if (isDecided_)
         {
+            // 念のため処理を呼ぶ。
+            SceneManager::GetInstance()->ShowLoading();
+
             // 選んだステージIDを取得してセット
             StageID selectID = dataList[currentIndex_].id;
 

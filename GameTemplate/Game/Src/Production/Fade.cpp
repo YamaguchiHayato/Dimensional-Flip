@@ -10,12 +10,6 @@ Fade::Fade()
     fadeSprite_.SetWipeSize(900.0f);
 }
 
-bool Fade::Start()
-{
-    
-
-    return true;
-}
 
 void Fade::Update()
 {
@@ -23,11 +17,11 @@ void Fade::Update()
     ChangeFadeState();
 
     // フェードイン完了判定。
-    if (fadeSprite_.GetWipeSize() > 2000.0f && fadeState_ == FadeState::Fade_In)
+    if (fadeSprite_.GetWipeSize() > 1300.0f && fadeState_ == FadeState::Fade_In)
         fadeInEnd_ = true; 
 
     // フェードアウト完了判定。
-    if (fadeSprite_.GetWipeSize() < -800.0f && fadeState_ == FadeState::Fade_Out)
+    if (fadeSprite_.GetWipeSize() < 0.0f && fadeState_ == FadeState::Fade_Out)
         fadeOutEnd_ = true;
 
     fadeSprite_.Update();

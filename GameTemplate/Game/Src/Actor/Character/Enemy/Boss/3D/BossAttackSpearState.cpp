@@ -16,7 +16,7 @@ namespace
     const float STAGE_WIDTH_HALF = 35.0f; // 横幅の半分
     const float WALL_HEIGHT = 25.0f;      // 壁の高さ
 
-    // 槍の間隔（グリッドサイズ）
+    // 槍の間隔
     const float GRID_SIZE = 5.0f;
 
     // 出現位置（Z軸の奥と手前）
@@ -65,9 +65,6 @@ namespace app
 
             // 攻撃UIをセット。
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Spear);
-
-            // BGMの停止。
-            app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Spear);
         }
 
 

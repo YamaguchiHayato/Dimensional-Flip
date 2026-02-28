@@ -102,6 +102,11 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_Spear] = false;
 		m_sound[GameSoundList_SE_Spear] = nullptr;
 
+		// 咆哮の音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Roar, "Assets/sound/se/Roar.wav");
+		m_isPlayingSound[GameSoundList_SE_Roar] = false;
+		m_sound[GameSoundList_SE_Roar] = nullptr;
+
 
 		//1. 決定音(画面遷移用)
 		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_SelectScreen_Decision_ScreenTransition,"Assets/sound/se/decision_gamestart.wav");

@@ -26,7 +26,7 @@ enum GameSoundList
 	GameSoundList_SE_Land,                                      // 着地音。
 	GameSoundList_SE_SpawnBlock,				                // 足場ブロックを生成する音。
 	GameSoundList_SE_Spear,				                        // 槍攻撃の音。
-
+	GameSoundList_SE_Roar,				                        // 咆哮の音。
 
 
 	GameSoundList_SE_SelectScreen_Decision_ScreenTransition,	//決定音(画面遷移用)

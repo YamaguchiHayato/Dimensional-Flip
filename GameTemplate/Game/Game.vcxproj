@@ -254,6 +254,7 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
@@ -387,6 +388,7 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />

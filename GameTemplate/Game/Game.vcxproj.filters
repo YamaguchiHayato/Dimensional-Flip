@@ -247,6 +247,7 @@
     <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
     <ClCompile Include="Src\Core\EndRollManager.cpp" />
     <ClCompile Include="Src\Scene\EndRollScene.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -456,6 +457,7 @@
     <ClInclude Include="Src\Production\EndRoll\EndRollImage.h" />
     <ClInclude Include="Src\Core\EndRollManager.h" />
     <ClInclude Include="Src\Scene\EndRollScene.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

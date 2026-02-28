@@ -4,6 +4,8 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Thunder.h"
+#include "Src/Core/SoundManager.h"
+#include "Src/Core/BossUIManager.h"
 
 namespace
 {
@@ -17,7 +19,7 @@ namespace
 
     const auto STAGE_RANGE_X = 35.0f;         // ステージ端の座標。
 
-
+     const auto ROAR_DURATION = 3.0f;
 }
 
 namespace app
@@ -29,7 +31,7 @@ namespace app
             pBoss_ = pBoss;
 
             // 咆哮アニメーションを設定する。
-            pBoss_->LoadAnimation(app::enemyStatus::bossAnim_AttackRoar, false, 0.1f);
+            pBoss_->LoadAnimation(app::enemyStatus::bossAnim_AttackRoar, true, 0.1f);
 
             // 攻撃タイプの設定。
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Roar2D);
@@ -39,6 +41,13 @@ namespace app
 
             // Playerの方を向かせるように補正。
             LookAtPlayerDirection();
+
+            // 咆哮SEの再生。
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Roar, 2.0f);
+
+            // UIを設定。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
+
         }
 
 
@@ -61,12 +70,18 @@ namespace app
         {
             // 咆哮後のインターバルを設定。
             pBoss_->SettNextInterval(3.0f);
+
+            // 咆哮SEの停止。
+            app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Roar);
+
+            // UIを削除。
+            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
         }
 
 
         bool BossAttackRoar2DState::IsFinished() const
         {
-            return isMovingAttackStarted_ && !pBoss_->IsPlayingAnimation();
+            return timer_ >= ROAR_DURATION;
         }
 
 

@@ -54,13 +54,6 @@ namespace app
                 pBackGround_ = nullptr;
             }
 
-            // ローディング画面を削除。
-            if (pLoadingScene_)
-            {
-                DeleteGO(pLoadingScene_);
-                pLoadingScene_ = nullptr;
-            }
-
             // Playerを削除。 
             if (pPlayer_)
             {
@@ -141,7 +134,6 @@ namespace app
             // 遷移ステートを初期化。
             state_ = SceneTransitionState::None;
             nextStageID_ = StageID::sInvalid;
-            pLoadingScene_ = nullptr;
 
             // Playerの初期位置設定。
             // 初期地点
@@ -279,9 +271,9 @@ namespace app
             case SceneTransitionState::Load:
             {
                 stageClearTimer_.Stop();
-                if (pFade_->IsFadeOutEnd() && stageClearTimer_.GetElapsed() >= 3.0f)
+                if (pFade_->IsFadeOutEnd())
                 {
-                    pLoadingScene_ = NewGO<LoadingScene>(0, "LoadingScene");
+                    SceneManager::GetInstance()->ShowLoading();
                     state_ = SceneTransitionState::Load_Render;
                 }
                 break;
@@ -322,11 +314,7 @@ namespace app
 
             case SceneTransitionState::FadeIn:
             {
-                if (pLoadingScene_ != nullptr)
-                {
-                    DeleteGO(pLoadingScene_);
-                    pLoadingScene_ = nullptr;
-                }
+                SceneManager::GetInstance()->HideLoading();
                 pPlayer_->SetPaused(false);
                 pFade_->StartFadeIn();
                 pNumberUI_->ResetTimer();
@@ -347,6 +335,7 @@ namespace app
             default:
                 break;
             }
+
         }
 
 

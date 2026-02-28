@@ -23,7 +23,6 @@ namespace app
                 delete pCamera_;
                 pCamera_ = nullptr;
             }
-
         }
 
 
@@ -54,10 +53,9 @@ namespace app
 
             // EndRoll終了後、タイトルへ遷移。
             if (IsEnd())
-            {
                 SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
-            }
         }
+
 
         bool EndRollScene::IsEnd() const
         {

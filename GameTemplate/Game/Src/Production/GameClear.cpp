@@ -30,6 +30,10 @@ bool GameClear::Start()
 
     // 不要なUIを削除する。
     CleanUpUI();
+
+    // 入力促進用のテキストを初期化する。
+    InitInputPromptFont();
+
 	return true;
 }
 
@@ -69,6 +73,13 @@ void GameClear::Update()
             state_ = GameClearState::WaitInput;
         }
         break;
+
+    case GameClearState::WaitInput:
+         finishTimer_ += g_gameTime->GetFrameDeltaTime();
+        auto alphaValue = fabs(sinf(finishTimer_ * 3.0f));
+         inputPromptFont_.SetColor(Vector4(1.0f, 1.0f, 1.0f, alphaValue));
+        break;
+    
     }
 
     wchar_t timeStr[64];
@@ -92,6 +103,10 @@ void GameClear::Render(RenderContext& rc)
     // タイムとスコアの描画。
     timerFont_.Draw(rc);
     scoreFont_.Draw(rc);
+
+    // 入力待ち状態の間、描画する。
+    if (state_ == GameClearState::WaitInput)
+        inputPromptFont_.Draw(rc);
 }
 
 
@@ -143,4 +158,17 @@ void GameClear::CleanUpUI()
     auto* pTutorialSeq = FindGO<app::nsUI::TutorialSequencer>("TutorialSequencer");
     if (pTutorialSeq)
         DeleteGO(pTutorialSeq);
+}
+
+
+void GameClear::InitInputPromptFont()
+{
+    // 入力促進用のテキストを初期化する。
+    inputPromptFont_.SetText(L"A:Return Title");
+    // 画面下部に配置。
+    inputPromptFont_.SetPosition(Vector3(-400.0f, -350.0f, 0.0f));
+    // 大きさを設定。
+    inputPromptFont_.SetColor(Vector4::White);
+    // 中央揃えにする。
+    inputPromptFont_.SetScale(2.0f);
 }

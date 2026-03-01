@@ -2,6 +2,12 @@
 #include "Src/Production/GameClear.h"
 #include "Src/Scene/Scene.h"
 
+namespace app {
+    namespace stage {
+        class BackGround;
+    }
+}
+
 class GameClearScene : public IScene
 {
 public:
@@ -16,4 +22,5 @@ public:
 
 private:
     GameClear* pGameClear_ = nullptr;
+    SkyCube* pSkyCube_ = nullptr;
 };

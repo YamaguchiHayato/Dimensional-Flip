@@ -107,6 +107,16 @@ namespace nsK2EngineLow
 		m_isPlayingSound[GameSoundList_SE_Roar] = false;
 		m_sound[GameSoundList_SE_Roar] = nullptr;
 
+		// ボスの攻撃UIを出している間鳴らす音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_Warning, "Assets/sound/se/Warning.wav");
+		m_isPlayingSound[GameSoundList_SE_Warning] = false;
+		m_sound[GameSoundList_SE_Warning] = nullptr;
+
+		// ボスにダメージを与える音。
+		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_BossHit, "Assets/sound/se/bossHit.wav");
+		m_isPlayingSound[GameSoundList_SE_BossHit] = false;
+		m_sound[GameSoundList_SE_BossHit] = nullptr;
+
 
 		//1. 決定音(画面遷移用)
 		g_soundEngine->ResistWaveFileBank(GameSoundList_SE_SelectScreen_Decision_ScreenTransition,"Assets/sound/se/decision_gamestart.wav");

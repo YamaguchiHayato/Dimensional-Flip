@@ -41,6 +41,8 @@ private:
     // 不要なUIの削除。
     void CleanUpUI();
 
+    // 入力促進用のテキストを初期化。
+    void InitInputPromptFont();
 
 public:
     // データを受け取る処理。
@@ -68,12 +70,15 @@ private:
     FontRender timerFont_;
     // スコア表示
     FontRender scoreFont_;
+    // 「タイトルに戻る」と表記。
+    FontRender inputPromptFont_;
 
     GameClearState state_ = GameClearState::ShowLogo;
     app::StageResultData resultData_;
 
     float targetTime_ = 0.0f;
     float disPlayTime = 0.0f;
+    float finishTimer_ = 0.0f;
 
     int targetScore_ = 0;
     int displayScore_ = 0;

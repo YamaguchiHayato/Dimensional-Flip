@@ -48,6 +48,10 @@ namespace nsK2EngineLow {
 		/// </summary>
 		void Stop()
 		{
+			// @Add 音声データがないなら停止処理を行わない。
+			if (m_sourceVoice == nullptr)
+				return;
+
 			m_sourceVoice->Stop();
 			m_isPlaying = false;
 		}

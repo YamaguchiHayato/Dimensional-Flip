@@ -41,6 +41,9 @@ namespace app
             // ステートに遷移した瞬間にジャンプの初速を与える。
             pPlayer_->GetMoveSpeed().y = PlayerStatus::Move::JUMP_POWER;
             pPlayer_->SetJumpedThisFrame(true);
+
+            // 多段再生防止のため、1回きりの再生とする。
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
         }
 
 
@@ -152,7 +155,6 @@ namespace app
                 // 上昇中
                 if (!g_pad[0]->IsPress(enButtonA))
                 {
-                    app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
                     speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
                 }
                 else

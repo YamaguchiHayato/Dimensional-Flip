@@ -2,6 +2,7 @@
 
 #include "PlayerTutorialPauseStage.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
+#include "Src/Core/SoundManager.h"
 
 // 必要なヘッダの読み込み
 #include "Src/Actor/Character/Player/Player.h"
@@ -83,8 +84,6 @@ namespace app
 
         bool PlayerTutorialPauseStage::RequestID(uint8_t& request)
         {
-
-
             if (pTutorialSequencer_ && pTutorialSequencer_->IsAllFinished())
             {
                 request = EnPlayerState::enState_Idle;
@@ -182,6 +181,8 @@ namespace app
                 if (g_pad[0]->IsTrigger(enButtonA))
                 {
                     speed.y = pPlayer_->GetJumpPower();
+
+                    app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
 
                     pPlayer_->SetCurrentIndex(pPlayer_->GetKeyDirection().x < 0 ? 0 : 4);
                 }

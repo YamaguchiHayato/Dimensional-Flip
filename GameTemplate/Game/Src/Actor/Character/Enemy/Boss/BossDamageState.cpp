@@ -3,6 +3,7 @@
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 
 #include "Src/Core/BattlePhaseManager.h"
+#include "Src/Core/SoundManager.h"
 
 namespace
 {
@@ -19,6 +20,12 @@ namespace app
     {
         void BossDamageState::Enter()
         {
+            // ダメージSE
+            app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_BossHit, 3.0f);
+
+            // 念のため、ここではPlayerのジャンプSEは停止する。
+            app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Player_Jump);
+
             // ダメージアニメーションを再生する。
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Hit, false, 0.1f);
 
@@ -31,6 +38,7 @@ namespace app
             // 初期化。
             istiredPlaying_ = false;
             timer_ = 0.0f;
+
         }
 
 

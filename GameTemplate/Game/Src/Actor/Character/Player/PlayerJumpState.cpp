@@ -1,7 +1,7 @@
 #include "stdafx.h"
+
 #include "PlayerJumpState.h"
 #include "Src/Actor/Character/Player/Player.h"
-
 #include "Src/Core/SoundManager.h"
 
 struct PlayerStatus
@@ -14,7 +14,7 @@ struct PlayerStatus
     {
         static constexpr auto JUMP_POWER = 150.0f;  // ジャンプ力アップ
         static constexpr auto WALK_SPEED = 100.0f;  // 地上での移動速度。
-        static constexpr auto AIR_MOVE_RATE = 0.7f; // 空中で動ける移動倍率。        
+        static constexpr auto AIR_MOVE_RATE = 0.7f; // 空中で動ける移動倍率。
     };
 
     // ジャンプ用のパラメータ。
@@ -29,7 +29,6 @@ struct PlayerStatus
     };
 };
 
-
 namespace app
 {
     namespace state
@@ -38,8 +37,20 @@ namespace app
         {
             pPlayer_->SetCurrentIndex(0); // ジャンプアニメーション
 
-            // ステートに遷移した瞬間にジャンプの初速を与える。
-            pPlayer_->GetMoveSpeed().y = PlayerStatus::Move::JUMP_POWER;
+            // ★修正ポイント：バウンド時はボタン入力に関わらず「固定の高さ」にする
+            if (pPlayer_->IsBounce())
+            {
+                // バウンド時の固定初速。
+                // 通常ジャンプ(150.0f)より少し抑え、毎回安定して跳ねるように設定。
+                // ※高さが足りない場合は 100.0f ～ 120.0f の間で調整してください。
+                pPlayer_->GetMoveSpeed().y = 100.0f;
+            }
+            else
+            {
+                // 通常ジャンプ（Playerクラスの設定値を使用）
+                pPlayer_->GetMoveSpeed().y = pPlayer_->GetJumpPower();
+            }
+
             pPlayer_->SetJumpedThisFrame(true);
 
             // 多段再生防止のため、1回きりの再生とする。
@@ -147,30 +158,48 @@ namespace app
             if (isGround && speed.y <= 0.0f)
             {
                 speed.y = 0.0f;
+                // ★修正：タイポ修正 (SetIsBoune -> SetIsBounce)
+                pPlayer_->SetIsBounce(false);
                 return;
             }
 
             if (speed.y > 0.0f)
             {
-                // 上昇中
-                if (!g_pad[0]->IsPress(enButtonA))
+                // --- 上昇中 ---
+
+                // ★修正ポイント：バウンド中はボタン入力を無視し、常に重い重力(CUT倍)をかける
+                // これにより、Aボタンを押していても高く飛びすぎず、毎回同じ高さで止まります
+                if (pPlayer_->IsBounce())
                 {
                     speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
                 }
                 else
-                    speed.y -= PlayerStatus::GLAVITY;
+                {
+                    // 通常ジャンプ：ボタン入力で重力を可変させる
+                    if (!g_pad[0]->IsPress(enButtonA))
+                    {
+                        speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
+                    }
+                    else
+                        speed.y -= PlayerStatus::GLAVITY;
+                }
             }
             else
             {
-                // 下降中
+                // --- 下降中 ---
+
+                if (speed.y <= 0.0f)
+                    // ★修正：タイポ修正 (SetIsBoune -> SetIsBounce)
+                    pPlayer_->SetIsBounce(false);
+
+                // 下降中重力
                 speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
             }
 
+            // 落下速度制限
             if (speed.y < PlayerStatus::Jump::FALLINGSPEED)
                 speed.y = PlayerStatus::Jump::FALLINGSPEED;
         }
-
-
 
         void PlayerJumpState::Move(float speedRate)
         {
@@ -180,6 +209,5 @@ namespace app
             pPlayer_->GetMoveSpeed().x = keyDir.x * PlayerStatus::Move::WALK_SPEED * speedRate;
             pPlayer_->GetMoveSpeed().z = keyDir.z * PlayerStatus::Move::WALK_SPEED * speedRate;
         }
-    }
-}
-
+    } // namespace state
+} // namespace app

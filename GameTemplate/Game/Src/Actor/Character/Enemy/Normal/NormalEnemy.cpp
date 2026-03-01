@@ -121,7 +121,6 @@ namespace app
 
                 if (dy > 0.0f && dy < 30.0f && distXZSq <= stompRadius * stompRadius)
                 {
-                    v.y = 60.0f; // プレイヤーをバウンドさせる
                     pPlayer_->Bound();
 
                     // スコア加算

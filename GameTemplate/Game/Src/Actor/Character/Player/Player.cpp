@@ -159,6 +159,9 @@ void Player::Update()
     if (fade != nullptr && fade->GetFadeState() == FadeState::Fade_Out)
         return;
 
+    if (bounceCooldown_ > 0.0f)
+        bounceCooldown_ -= g_gameTime->GetFrameDeltaTime();
+
 
     if (pCurrentState_ != pStateArray_[enState_TutorialPause])
     {

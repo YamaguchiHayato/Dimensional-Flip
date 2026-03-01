@@ -100,6 +100,7 @@ private:
     float invincibleTime_ = 0.0f;
     float jumpPower_ = 0.0f;
     float walkSpeed_ = 0.0f;
+    float bounceCooldown_ = 0.0f;
 
     bool canAirControl_ = false;
     bool didJumpThisFrame_ = false;
@@ -110,6 +111,7 @@ private:
     bool isMoveLimited_ = false;
     bool isTutorialDone_ = false;
     bool requestTutorialPause_ = false;
+    bool isBounce_ = false;
 
 public:
     Player() = default;
@@ -128,14 +130,23 @@ public:
     // 敵を踏みつけた際に行うバウンド処理。
     void Bound()
     {
-        moveSpeed_.y = jumpPower_;
-        moveSpeed_.x = 0.0f;
-        moveSpeed_.z = 0.0f;
+        // 二重バウンド防止
+        if (moveSpeed_.y > 0.0f)
+            return;
+        if (bounceCooldown_ > 0.0f)
+            return;
+
+        if (pCurrentState_)
+            pCurrentState_->Exit();
+
+        isBounce_ = true;
+
+        pCurrentState_ = pStateArray_[enState_Jump];
+        pCurrentState_->Enter();
 
         state_ = PlayerState::sJump;
-
-        // バウンド時は空中での操作を可能にする。
         canAirControl_ = true;
+        bounceCooldown_ = 0.2f;
     }
     // ジャンプ処理を管轄。
     void UpdateJumpAndGravity();
@@ -287,6 +298,12 @@ public:
         isTutorialDone_ = isDone;
     }
 
+    // バウンドフラグのセット。
+    void SetIsBounce(bool isBounce)
+    {
+        isBounce_ = isBounce;
+    }
+
 
 // ゲッター。
 public:
@@ -414,6 +431,12 @@ public:
     {
         return isTutorialDone_;
     }  
+
+    // バウンドフラグ。
+    inline bool IsBounce() const
+    {
+        return isBounce_;
+    }
 
 public:
     /**

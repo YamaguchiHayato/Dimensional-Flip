@@ -60,6 +60,9 @@ bool TitleScene::Start()
     // Fadeオブジェクトの取得。
     pFade_ = SceneManager::GetInstance()->GetFade();
 
+    // 自動ロード画面表示を無効にする。
+    SceneManager::GetInstance()->SetEnableAutoLoading(false);
+
     // フェード合うとフラグをリセット。
     isFadingOut = false;
 
@@ -107,6 +110,9 @@ void TitleScene::WaitInputAction()
         {
         case TitleMenuType::GameStart:
              nextSceneID_ = (int) SceneID::sWorldSelect;
+
+             // 本編開始時はロード画面が必要なのでONにする。
+             SceneManager::GetInstance()->SetEnableAutoLoading(true);
 
              // フェードアウト開始
              pFade_->StartFadeOut();
@@ -186,6 +192,8 @@ void TitleScene::UpdateFadingToManualState()
         {
             pTitleView_->SetShowLogo(false);
             pTitleView_->SetManualMode(true);
+
+            pTitleView_->SetShowInformation(false);
         }
 
         pFade_->StartFadeIn();
@@ -228,6 +236,8 @@ void TitleScene::UpdateFadingToMenuState()
         {
             pTitleView_->SetShowLogo(true);
             pTitleView_->SetManualMode(false);
+
+            pTitleView_->SetShowInformation(false);
         }
 
         pFade_->StartFadeIn();

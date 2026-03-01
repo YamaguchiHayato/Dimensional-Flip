@@ -54,7 +54,7 @@ bool SceneManager::Start()
 
 void SceneManager::Update()
 {
-    if (pFade_ && pFade_->GetFadeState() == FadeState::Fade_Out)
+    if (isAutoLoadingEnabled_ && pFade_ && pFade_->GetFadeState() == FadeState::Fade_Out)
     {
         if (pFade_->GetFadeSprite().GetWipeSize() < 300.0f)
         {

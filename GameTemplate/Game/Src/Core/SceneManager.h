@@ -41,6 +41,12 @@ public:
     // ロード画面の非表示。
     void HideLoading();
 
+    // 自動ロード画面表示の有効・無効を切り替えるセッター
+    void SetEnableAutoLoading(bool enable)
+    {
+        isAutoLoadingEnabled_ = enable;
+    }
+
 
 // セッター。
 public:
@@ -104,6 +110,8 @@ public:
 private:
     bool isLoadingSceneActive_ = false;
     bool isSceneControler_ = false;
+    bool isAutoLoadingEnabled_ = true;
+
 
     float minLoadingTime_ = 0.0f; // 最小ローディング時間。
     

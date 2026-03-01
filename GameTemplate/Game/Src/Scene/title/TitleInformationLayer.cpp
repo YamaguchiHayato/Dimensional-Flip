@@ -37,6 +37,9 @@ namespace app
 
         void TitleInformationLayer::Render(RenderContext& rc)
         {
+            if (isVisible_ == false)
+                return;
+
             // Versionを描画。
             versionText_.Draw(rc);
 

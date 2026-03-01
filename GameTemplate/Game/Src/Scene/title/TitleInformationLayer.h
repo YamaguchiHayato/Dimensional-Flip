@@ -37,6 +37,12 @@ namespace app
                 return TitleLayerBase::Init(layerName);
             }
 
+            // 表示フラグをセット。
+            inline void SetVisible(bool isVisble)
+            {
+                isVisible_ = isVisble;
+            }
+
 
         private:
             // Version表記用(随時更新します)。
@@ -44,6 +50,8 @@ namespace app
 
             // 権利表記用
             FontRender copyRightText_;
+
+            bool isVisible_ = true;
 
         };
     }

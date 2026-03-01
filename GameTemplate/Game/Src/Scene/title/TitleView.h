@@ -6,6 +6,7 @@
 #include "Src/Scene/title/TitleLogoLayer.h"
 #include "Src/UI/Select/TitleMenu.h" 
 
+#include "Src/Scene/title/TitleInformationLayer.h"
 namespace app {
     namespace title {
         class TitleInformationLayer;
@@ -38,6 +39,14 @@ public:
         if (pBackgroundLayer_)
             pBackgroundLayer_->SetManualMode(enable);
     }
+
+    // クレジット表記の切り替え。
+    inline void SetShowInformation(bool isShow)
+    {
+        if (pInformationLayer_)
+            pInformationLayer_->SetVisible(isShow);
+    }
+
 
 private:
     // 各レイヤー。

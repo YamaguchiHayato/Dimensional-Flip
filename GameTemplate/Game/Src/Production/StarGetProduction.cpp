@@ -10,10 +10,10 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
 
-#include "Src/Actor/Stage/BackGround.h"
-
+#include "NormalBackGround.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
+
 
 namespace
 {
@@ -35,9 +35,9 @@ namespace app
             pPlayer_->SetPaused(true);
 
             // 1. 演出開始時にスターの座標で背景を固定する
-            auto* pBG = FindGO<app::stage::BackGround>("background");
+            auto* pBG = FindGO<app::stage::NormalBackGround>("Normal");
             if (pBG)
-                pBG->SetOverrideTrackingPos(starPos_);
+                pBG->SetOverrideTrackingPosition(starPos_);
 
             // 2. カメラのプレイヤー追従を停止させる
             auto* pCamMgr = FindGO<CameraManager>("cameramanager");
@@ -133,7 +133,7 @@ namespace app
             // 暗転するまで今の見た目をキープします
             if (timer_ >= 1.0f && currentPhase_ == StarGetPhase::Finish)
             {
-                auto* pBG = FindGO<app::stage::BackGround>("background");
+                auto* pBG = FindGO<app::stage::NormalBackGround>("Normal");
                 if (pBG)
                     pBG->ClearOverride();
 

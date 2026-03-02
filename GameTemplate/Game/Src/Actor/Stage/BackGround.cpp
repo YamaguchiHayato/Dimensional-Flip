@@ -1,32 +1,31 @@
 #include "stdafx.h"
 
 #include "BackGround.h"
-
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/StageManager.h"
-#include "../k2EngineLow/graphics/Camera.h"
 
 namespace
 {
     const float BG_Z_OFFSET = 100.0f;
-    const float HEIGHT_SKY = 8.0f;
-    const float HEIGHT_GROUND = -5.0f;
     const Vector3 SCALE_2D = Vector3(0.5f, 0.5f, 0.5f);
 
-    const float BASE_HEIGHT = 25.0f;
-    const float BASE_SCALE = 0.15f;
-
-    // 山の設定
-    struct MountainSetting
+    // ステージ背景の構造体。
+    struct BackGroundData
     {
-        static constexpr float WIDTH = 800.0f;           // 画像幅
-        static constexpr float SCROLL_START_X = 200.0f;  // スクロール開始位置
-        static constexpr float SCROLL_SPEED = 0.5f;      // 速度係数
-        static constexpr float HEIGHT_MOUNTAIN = -50.0f; // 高さ
-
-        // カリング距離
-        static constexpr float CULLING_RANGE = 1200.0f;
+        const char* modelFilePath;
+        float yPos = 0.0f;
+        Vector3 scale = Vector3::Zero;
+        float scrollSpeed = 0.0f;
+        bool isLoop = true;
     };
+
+    // 背景データリスト（Enumの順番と一致させる）
+    const BackGroundData BackGroundDataList[] =
+    {
+        {"Assets/stage/BackGround/Sky.tkm", -30.0f, SCALE_2D, 0.1f, true},               // type_NormalStage
+        {"Assets/stage/BackGround/BossBackGround.tkm", 0.0f, Vector3::One, 0.0f, false}, // type_BossBattle
+    };
+
 }
 
 
@@ -36,13 +35,8 @@ namespace app
     {
         bool BackGround::Start()
         {
-
-            // モデルの初期化。
-            SettingSky();
-
             pPlayer_ = FindGO<Player>("player");
             pCameraManager_ = FindGO<CameraManager>("cameramanager");
-
             return true;
         }
 
@@ -51,7 +45,7 @@ namespace app
         {
             for (int i = 0; i < BG_COUNT; i++)
             {
-                skyModel_[i].Update();
+                backGroundModels_[i].Update();
             }
         }
 
@@ -63,32 +57,48 @@ namespace app
 
             for (int i = 0; i < BG_COUNT; i++)
             {
-                skyModel_[i].Draw(rc);
+                backGroundModels_[i].Draw(rc);
             }
         }
 
-        
-        void BackGround::SettingSky()
+
+        void BackGround::SetBackGroundType(EnBackGroundType type)
         {
-            // 回転設定。
-            Quaternion rot;
-            rot.SetRotationDegX(-90.0f);
+            backGroundType_ = type;
+            SettingBackGround();
+        }
 
-            for (uint8_t i = 0; i <  BG_COUNT; i++)
+
+        void BackGround::SettingBackGround()
+        {
+            typeIndex_ = static_cast<int>(backGroundType_);
+            dataSize_ = sizeof(BackGroundDataList) / sizeof(BackGroundDataList[0]);
+
+            if (typeIndex_ < 0 || typeIndex_ >= dataSize_)
+                typeIndex_ = 0;
+
+            const BackGroundData& data = BackGroundDataList[typeIndex_];
+
+            // デバッグログ
+            char debugMsg[256];
+            sprintf_s(debugMsg, "SettingBackGround. Type: %d, File: %s\n", typeIndex_, data.modelFilePath);
+            OutputDebugStringA(debugMsg);
+
+            rot_.SetRotationDegX(-90.0f);
+
+            for (uint8_t i = 0; i < BG_COUNT; i++)
             {
-                // モデルの初期化。
-                skyModel_[i].Init("Assets/stage/BackGround/Sky.tkm");
+                backGroundModels_[i].Init(data.modelFilePath);
 
-                // 一定間隔で並べて配置する。
-                auto xPos = static_cast<float>(i) * BG_WIDTH;
-                auto yPos = -30.0f;
-                auto zPos = BG_Z_OFFSET + (static_cast<float>(i) * 0.1f);
-                skyModel_[i].SetRotation(rot);
-                skyModel_[i].SetScale(SCALE_2D);
+                // 修正ポイント：BG_WIDTH(150.0f)を掛けて正しく並べる
+                backGroundPosition_.x = static_cast<float>(i) * BG_WIDTH;
+                backGroundPosition_.z = BG_Z_OFFSET + (static_cast<float>(i) * 0.1f);
 
-                skyModel_[i].SetPosition(xPos, yPos, zPos);
-                skyModel_[i].Update();
+                backGroundModels_[i].SetPosition(backGroundPosition_.x, data.yPos, backGroundPosition_.z);
+                backGroundModels_[i].SetRotation(rot_);
+                backGroundModels_[i].SetScale(data.scale);
+                backGroundModels_[i].Update();
             }
         }
-    } 
-} 
+    } // namespace stage
+} // namespace app

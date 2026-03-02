@@ -18,6 +18,10 @@
 #include "Src/Core/SoundManager.h"
 #include "Src/Core/StageManager.h"
 
+// ステージ背景。
+#include "NormalBackGround.h"
+#include "BossBackGround.h"
+
 static GameSoundList StageToBgm(StageID id)
 {
     switch (id)
@@ -32,6 +36,7 @@ static GameSoundList StageToBgm(StageID id)
         return GameSoundList_BGM_Stage1;
     }
 }
+
 
 namespace app
 {
@@ -48,10 +53,10 @@ namespace app
             }
 
             // ステージ背景を削除。
-            if (pBackGround_)
+            if (pBackGrounds_)
             {
-                DeleteGO(pBackGround_);
-                pBackGround_ = nullptr;
+                DeleteGO(pBackGrounds_);
+                pBackGrounds_ = nullptr;
             }
 
             // Playerを削除。 
@@ -106,11 +111,13 @@ namespace app
 
         bool Game::Start()
         {
+            // 乱数のシード値を初期化する。
             srand(static_cast<unsigned int>(time(nullptr)));
 
             // ステージの生成。
             StageManager::CreateInstance();
 
+            // サウンドの生成。
             app::core::SoundManager::CreateInstence();
             app::core::SoundManager::GetInstance()->Init();
 
@@ -124,8 +131,6 @@ namespace app
             pCameraManager_ = NewGO<CameraManager>(0, "cameramanager");
             pPlayer_->InitCameraManager(pCameraManager_);
 
-
-
             // SceneManagerから Fade を取得。
             pFade_ = SceneManager::GetInstance()->GetFade();
             if (pFade_ == nullptr)
@@ -133,14 +138,14 @@ namespace app
 
             // 遷移ステートを初期化。
             state_ = SceneTransitionState::None;
-            nextStageID_ = StageID::sInvalid;
+            nextStageID_ = StageManager::GetInstance()->GetCurrentStageID();
 
             // Playerの初期位置設定。
             // 初期地点
-           pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
+            pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // ステージ背景の生成。
-            CreateBackGround();
+            CreateBackGround(StageID::sStageEX);
 
             // SkyCubeの初期化。
             InitSkyCube();
@@ -201,7 +206,7 @@ namespace app
                 }
             }
 
-
+            // プレイヤーのHPが0以下ならゲームオーバーへ遷移。
             if (pPlayer_ && pPlayer_->GetHP() <= 0)
             {
                 SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
@@ -257,7 +262,7 @@ namespace app
             switch (state_)
             {
             case SceneTransitionState::None:
-                break;
+                 break;
 
             case SceneTransitionState::FadeOut:
             {
@@ -289,6 +294,10 @@ namespace app
             {
                 StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
+                // 状況に応じたステージ背景を作り直す。
+                CreateBackGround(StageManager::GetInstance()->GetCurrentStageID());
+
+                // プレイヤーの位置を新しいステージの開始位置にリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
                 pPlayer_->SetPlayerPos(newStartPos);
 
@@ -302,6 +311,7 @@ namespace app
                     nextStageID_ = StageID::sInvalid;
                     state_ = SceneTransitionState::None;
                 }
+
                 state_ = SceneTransitionState::Load_WaitFinish;
                 break;
             }
@@ -335,7 +345,6 @@ namespace app
             default:
                 break;
             }
-
         }
 
 
@@ -378,10 +387,23 @@ namespace app
         }
 
 
-        void Game::CreateBackGround()
+        void Game::CreateBackGround(StageID stageID)
         {
-            // 背景画像の生成。
-            pBackGround_ = NewGO<app::stage::BackGround>(0, "background");
+            switch (stageID)
+            {
+            // 通常ステージとチュートリアルステージは同じ背景モデルを使う。
+            case StageID::sTutorialStage:
+            case StageID::sStage1:
+                 pBackGrounds_ = NewGO<app::stage::NormalBackGround>(0, "Normal");
+                 break;
+
+            case StageID::sStageEX:
+                 pBackGrounds_ = NewGO<app::stage::BossBackGround>(0, "Boss");
+                 break;
+
+            default:
+                break;
+            }
         }
-    } // namespace core
-} // namespace app
+    } 
+} 

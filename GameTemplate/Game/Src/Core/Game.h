@@ -16,7 +16,7 @@
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/TimerUI.h"
 
-#include "Src/Actor/Stage/BackGround.h"
+#include "IBackGround.h"
 
 class CameraManager;
 class Player;
@@ -31,7 +31,7 @@ class HPbarUI;
 
 namespace app{
     namespace stage{
-        class BackGround;
+        class IBackGround;
     }
 }
 
@@ -51,22 +51,24 @@ namespace app
             bool Start();
             void Update();
 
+
         public:
             // ステージ遷移要求。
             void RequestStageTransition(StageID nextStageID);
 
+
         public:
+            // ステージ遷移中かどうかを返す。
             inline bool IsStageTransitioning() const
             {
                 return state_ != SceneTransitionState::None;
             }
 
-
+            // 次のステージIDを取得する。
             inline StageID GetNextStageID() const
             {
                 return nextStageID_;
             }
-
 
             // カメラのモードを切り替える共通関数。
             void ChangeDimension(CameraMode mode);
@@ -88,9 +90,8 @@ namespace app
             inline void HPbarCreateInstance();
             // その他。
             void InitSkyCube(); // スカイキューブの初期化。
-
             // ステージ背景画像。
-            void CreateBackGround();
+            void CreateBackGround(StageID stageID);
 
 
         private:
@@ -108,7 +109,7 @@ namespace app
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;
-            app::stage::BackGround* pBackGround_ = nullptr;
+            app::stage::IBackGround* pBackGrounds_ = nullptr;
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
 
@@ -119,9 +120,11 @@ namespace app
             StageID nextStageID_ = StageID::sInvalid;
             Stopwatch stageClearTimer_;
 
+
         private:
             // 現在のステージ番号を追跡するための変数。
             uint8_t currentStageNum_ = -1;
+
 
         private:
 

@@ -4,7 +4,6 @@
 #include "Src/Production/Fade.h"
 
 #include "Src/Core/StageManager.h"
-#include "Src/Actor/Stage/BackGround.h"
 
 
 GameClearScene::~GameClearScene()

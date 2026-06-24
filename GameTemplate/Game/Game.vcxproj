@@ -358,8 +358,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBackGround.h" />
+    <ClInclude Include="IActorState.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="NormalBackGround.h" />
+    <ClInclude Include="NullState.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
@@ -487,6 +489,9 @@
     <ClInclude Include="Src\UI\UIBase.h" />
     <ClInclude Include="Src\WallActor.h" />
     <ClInclude Include="StageIcon.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="StateMachineCommand.h" />
+    <ClInclude Include="StateMachineCommandIterator.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

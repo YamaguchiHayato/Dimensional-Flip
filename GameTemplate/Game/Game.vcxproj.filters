@@ -43,6 +43,9 @@
     <Filter Include="Src\Direction\CutIn">
       <UniqueIdentifier>{106d9842-38cf-435e-9af8-3976ef7d2984}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\StateMachine">
+      <UniqueIdentifier>{7ac4a93e-e0e5-46e9-810e-835b02d05981}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -461,6 +464,21 @@
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="NormalBackGround.h" />
     <ClInclude Include="BossBackGround.h" />
+    <ClInclude Include="StateMachine.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="IActorState.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachineCommand.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachineCommandIterator.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="NullState.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

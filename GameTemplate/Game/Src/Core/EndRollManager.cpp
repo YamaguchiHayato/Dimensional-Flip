@@ -45,12 +45,19 @@ namespace app
             // フラグの初期化。
             isFadeOutStarted_ = false;
 
+            // スキップ用のフォントを初期化。
+            InitSkipFont(); 
+
             return true;
         }
 
 
         void EndRollManager::Update()
         {
+            if (!isFadeOutStarted_)
+                TrySkip();
+
+
             if (pText_ && pText_->IsEnd())
             {
                 if (!isFadeOutStarted_)
@@ -62,6 +69,34 @@ namespace app
                 }
             }
         }
+
+
+        void EndRollManager::Render(RenderContext& rc)
+        {
+            if (!isFadeOutStarted_)
+                skipFont_.Draw(rc);
+        }
+
+
+        void EndRollManager::InitSkipFont()
+        {
+            skipFont_.SetText(L"A:Skip");
+            skipFont_.SetPosition(Vector3(600.0f, -335.0f, 0.0f));
+            skipFont_.SetScale(2.0f);
+            skipFont_.SetColor(Vector4::White);
+            skipFont_.SetPivot({1.0f, 0.5f});
+            skipFont_.SetShadowParam(true, 2.0f, Vector4::Black);
+        }
+
+
+        void EndRollManager::TrySkip()
+        {
+            if (!g_pad[0]->IsTrigger(enButtonA))
+                return;
+            if (pText_)
+                pText_->Skip();
+        }
+
 
         bool EndRollManager::IsEnd() const
         {

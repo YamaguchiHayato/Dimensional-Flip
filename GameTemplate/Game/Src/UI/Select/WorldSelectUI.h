@@ -41,6 +41,13 @@ namespace app
             // 「Back」と表記。
             void DrawBackText();
 
+            // 「Skip」と表記。
+            void DrawSkipText();
+
+            // スキップ処理を行う。
+            void TrySkip();
+
+
         private:
             // 左上のステージ名表示用
             FontRender stageNameText_;
@@ -60,6 +67,5 @@ namespace app
             // バックテキスト用。
             FontRender backUIText_;
         };
-
     }
 }

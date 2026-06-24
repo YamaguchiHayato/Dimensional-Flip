@@ -25,6 +25,9 @@ namespace app
 
             // Bボタンの横にBackと描画。
             DrawBackText();
+
+            // 右下にSkipと描画。
+            DrawSelectText();
         }
 
 
@@ -33,6 +36,8 @@ namespace app
             stickUIRender_.Update();
 
             backButtonRender_.Update();
+
+
         }
 
 
@@ -157,6 +162,17 @@ namespace app
             // テキストの影のパラメータを設定。
             backUIText_.SetShadowParam(true, 2.0f, Vector4::Black);
 
+        }
+
+
+        void WorldSelectUI::DrawSkipText()
+        {
+            backUIText_.SetText(L"Skip");
+            backUIText_.SetPosition({680.0f, -335.0f, 0.0f});
+            backUIText_.SetScale(2.0f);
+            backUIText_.SetColor(Vector4::White);
+            backUIText_.SetPivot({1.0f, 0.5f});
+            backUIText_.SetShadowParam(true, 2.0f, Vector4::Black);
         }
     }
 }

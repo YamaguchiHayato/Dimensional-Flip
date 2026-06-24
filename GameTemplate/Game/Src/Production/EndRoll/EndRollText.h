@@ -22,6 +22,12 @@ namespace app
             // 描画処理。
             void Render(RenderContext& rc) override;
 
+            // スキップ処理（スクロールを即終了）。
+            void Skip()
+            {
+                isEnd_ = true;
+            }
+
 
         private:
             // 1行のTextを管理する構造体。
@@ -34,6 +40,7 @@ namespace app
             std::vector<std::unique_ptr<StaffRollLine>> lines_;          // スタッフロールの行の集合。
 
             float scrollSpeed_ = 1.0f;                  // スクロール速度。
+
 
         private:
             // 表示する文字を管理する。

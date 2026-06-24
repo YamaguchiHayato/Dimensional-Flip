@@ -32,8 +32,6 @@ void InGameScene::Update()
 
         // 全ステージ（StageEX）をクリアした時だけリザルトへ
         if (current == StageID::sStageEX && pGame_->GetNextStageID() == StageID::sInvalid)
-        {
             SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
-        }
     }
 }

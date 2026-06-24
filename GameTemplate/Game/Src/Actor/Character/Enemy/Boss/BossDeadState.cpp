@@ -21,6 +21,8 @@ namespace app
 
             // ボス戦のBGMを停止する。
             app::core::SoundManager::GetInstance()->StopBGM(GameSoundList_BGM_BOSS);
+
+            pFade_ = SceneManager::GetInstance()->GetFade();
         }
 
 
@@ -40,11 +42,8 @@ namespace app
             }
 
             // フェードを確認する処理。
-            if (pFade_)
-            {
-                if (pFade_->IsFadeOutEnd())
-                    SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
-            }
+            if (pFade_ && pFade_->IsFadeOutEnd())
+                SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
         }
 
 

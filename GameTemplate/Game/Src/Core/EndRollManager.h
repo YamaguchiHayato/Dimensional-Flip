@@ -24,7 +24,11 @@ namespace app
             // 更新処理。
             void Update() override;
             // 描画処理。
-            void Render(RenderContext& rc) override {};
+            void Render(RenderContext& rc) override;
+
+            void InitSkipFont();
+
+            void TrySkip();
 
         // ゲッター。
         public:
@@ -48,7 +52,9 @@ namespace app
         private:
             // フェードアウト開始フラグ。
             bool isFadeOutStarted_ = false;
-        };
 
+            // スキップテキスト用。
+            FontRender skipFont_;
+        };
     }
 }

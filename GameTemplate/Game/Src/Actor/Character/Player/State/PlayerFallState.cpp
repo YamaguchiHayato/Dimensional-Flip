@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/Actor/Character/Player/PlayerFallState.h"
+#include "Src/Actor/Character/Player/State/PlayerFallState.h"
+#include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
 #include "Src/Core/Game.h"
+
+using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
 namespace
 {
@@ -24,9 +27,9 @@ namespace
 }
 
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
         void PlayerFallState::Update()
         {

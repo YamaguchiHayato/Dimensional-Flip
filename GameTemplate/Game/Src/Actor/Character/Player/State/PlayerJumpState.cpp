@@ -2,7 +2,10 @@
 
 #include "PlayerJumpState.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
 #include "Src/Core/SoundManager.h"
+
+using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
 struct PlayerStatus
 {
@@ -29,9 +32,9 @@ struct PlayerStatus
     };
 };
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
         void PlayerJumpState::Enter()
         {

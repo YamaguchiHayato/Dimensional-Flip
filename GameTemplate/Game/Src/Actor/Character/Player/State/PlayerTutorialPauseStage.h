@@ -1,5 +1,6 @@
 #pragma once
 #include "Src/Actor/Character/IState.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
 // 前方宣言
 namespace app
@@ -12,11 +13,10 @@ namespace app
     } 
 } 
 
-class Player;
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
 
         class PlayerTutorialPauseStage : public IState

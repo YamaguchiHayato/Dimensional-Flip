@@ -2,8 +2,11 @@
 
 #include "PlayerRunState.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
 #include "Src/Core/CameraManager.h"
-#include "Src/Actor/Character/Player/PlayerTutorialPauseStage.h"
+
+using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
+#include "Src/Actor/Character/Player/State/PlayerTutorialPauseStage.h"
 
 namespace
 {
@@ -15,9 +18,9 @@ namespace
     };
 }
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
         void PlayerRunState::Enter()
         {

@@ -1,14 +1,14 @@
 #pragma once
 #include "Src/Actor/Actor.h"
 #include "Src/Actor/Character/IState.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
 
-class Player;
 class CameraManager;
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
         class PlayerRunState : public IState
         {
@@ -30,10 +30,10 @@ namespace app
 
 
         private:
-            void CalculateRunMovement(); // 移動計算
-            void ApplyMovement();        // 物理反映
-            
+            void CalculateRunMovement(); 
+            void ApplyMovement();                   
             void UpdatePlayerMove();
+
 
         private:
             float currentTime_ = 0.0f;

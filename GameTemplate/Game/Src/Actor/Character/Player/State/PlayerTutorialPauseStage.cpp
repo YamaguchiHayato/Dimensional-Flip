@@ -3,6 +3,9 @@
 #include "PlayerTutorialPauseStage.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Wall.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
+
+using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
 // 必要なヘッダの読み込み
 #include "Src/Actor/Character/Player/Player.h"
@@ -11,9 +14,9 @@
 #include "Src/UI/Tutorial/TutorialSequencer.h"
 #include "Src/UI/Tutorial/TutorialCompleteUI.h"
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
         static bool isMoveTutorialDone_ = false;
 
@@ -33,9 +36,7 @@ namespace app
             // Complete演出UIをセット。
             pTutorialCompleteUI_ = NewGO<app::nsUI::TutorialCompleteUI>(0, "TutorialCompleteUI");
             if (pTutorialCompleteUI_ == nullptr)
-            {
                 pTutorialCompleteUI_ = NewGO<app::nsUI::TutorialCompleteUI>(0, "TutorialCompleteUI");
-            }
 
             // チュートリアルテキストの切り替え設定
             TutorialTextChange();

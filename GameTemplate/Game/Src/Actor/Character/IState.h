@@ -1,45 +1,62 @@
 #pragma once
+#include "Src/StateMachine/IActorState.h"
 
-
-class IState
+/**
+ * @brief 既存キャラクターステートの基底クラス。
+ * @note RequestTransition は RequestID に委譲し、新 StateMachine と互換にする。
+ */
+class IState : public nsApp::nsFunction::IActorState
 {
 public:
-    IState() =default;
+    IState() = default;
     virtual ~IState() = default;
 
-
 public:
-    // 1回処理される処理。
+    /**
+     * @brief IActorState 互換の遷移要求。
+     * @param[out] request 遷移先ステート ID。
+     * @return 遷移する場合 true。
+     */
+    bool RequestTransition(uint8_t& request) override { return RequestID(request); }
+
+    /** @brief ステート開始時の処理。 */
     virtual void Enter() = 0;
-    // 更新処理。
+
+    /** @brief ステート更新処理。 */
     virtual void Update() = 0;
-    // 終了判定。
+
+    /** @brief ステート終了時の処理。 */
     virtual void Exit() = 0;
-    // ステート遷移要求処理。
+
+    /**
+     * @brief ステート遷移要求処理。
+     * @param[out] request 遷移先ステート ID。
+     * @return 遷移する場合 true。
+     */
     virtual bool RequestID(uint8_t& request) = 0;
 
 public:
-    // モデルのパスを取得。
+    /**
+     * @brief モデルのパスを取得。
+     * @param[in] stagename ステージ名。
+     * @return ステージモデルのパス。
+     */
     virtual const std::string InitStage(const std::string& stagename)
     {
         std::string Stagepath = "Assets/stage/" + stagename + ".tkm";
         return Stagepath;
-    };
-
-// ゲッター。
-public:
-    virtual Vector3 GetStageStartPos() const
-    {
-        return startPos_;
     }
 
+public:
+    /**
+     * @brief ステージ開始座標を取得する。
+     * @return 開始座標。
+     */
+    virtual Vector3 GetStageStartPos() const { return startPos_; }
 
 protected:
-    ModelRender render_;
-
-    Vector3 startPos_ = Vector3(0.0f, -3.0f, 0.0f);
-    Vector3 initPos_ = Vector3::Zero;
-    PhysicsStaticObject physics_;
-
+    ModelRender render_;                            ///< モデルレンダラ。
+    Vector3 startPos_ = Vector3(0.0f, -3.0f, 0.0f); ///< 開始座標。
+    Vector3 initPos_ = Vector3::Zero;               ///< 初期座標。
+    PhysicsStaticObject physics_;                   ///< 物理オブジェクト。
 };
-

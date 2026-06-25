@@ -1,36 +1,36 @@
 #pragma once
 #include "Src/Actor/Actor.h"
 #include "Src/Actor/Character/IState.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-class Player;
 
 
-namespace app
+namespace nsApp
 {
-    namespace state
+    namespace nsState
     {
-        class PlayerIdleState : public IState
+        class PlayerJumpState : public IState
         {
         private:
             Player* pPlayer_ = nullptr;
 
 
         public:
-            PlayerIdleState(Player* player) : pPlayer_(player) {};
-            virtual ~PlayerIdleState() = default;
+            PlayerJumpState(Player* player) : pPlayer_(player) {};
+            virtual ~PlayerJumpState() {};
 
 
         public:
             void Enter() override;
             void Update() override;
-            void Exit() override {};
+            void Exit() override;
             bool RequestID(uint8_t& request) override;
 
 
         private:
-            void ApplyMovement();
+            void Move(float speedRate);
+            void UpdateJumpAndGravity();
         };
-
     }
 }
 

@@ -16,8 +16,6 @@ enum class State : uint8_t
     Falling
 };
 
-class Player;
-
 namespace app
 {
     namespace gimmick

@@ -1,7 +1,7 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-class Player;
 
 /// <summary>
 /// Z軸方向に転がりながら移動し、重力で落下するトゲ敵。

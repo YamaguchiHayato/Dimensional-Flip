@@ -1,7 +1,7 @@
 #pragma once
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-class Player;
 
 namespace app
 {

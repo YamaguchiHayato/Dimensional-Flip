@@ -15,7 +15,7 @@ enum class EnemyType : uint8_t
     type_Num,      // 敵の種類数。
 };
 
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 
 namespace app
 {

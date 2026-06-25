@@ -1,7 +1,7 @@
 #pragma once
 #include "Src/UI/ButtonActionUI.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-class Player;
 
 namespace app
 {

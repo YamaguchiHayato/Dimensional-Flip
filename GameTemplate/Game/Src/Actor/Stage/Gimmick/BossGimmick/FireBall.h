@@ -1,8 +1,6 @@
 #pragma once
 #include "Src/Actor/Stage/Gimmick/IGimmic.h"
 
-class Player;
-
 namespace app
 {
     namespace gimmick

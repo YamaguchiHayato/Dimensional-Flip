@@ -9,7 +9,7 @@
 #include "Src/UI/Tutorial/TutorialMessageUI.h"
 
 class Star;
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 class DimensionTrigger;
 
 

@@ -1,5 +1,7 @@
 #pragma once
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
+
+
 class Stage3;
 class DimensionTrigger : public IGameObject
 {

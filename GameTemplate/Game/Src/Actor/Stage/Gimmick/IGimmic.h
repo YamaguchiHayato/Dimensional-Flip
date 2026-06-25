@@ -1,6 +1,8 @@
 #pragma once
 #include "Src/Actor/Actor.h"
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
+
+
 class IGimmic : public Actor
 {
 public:

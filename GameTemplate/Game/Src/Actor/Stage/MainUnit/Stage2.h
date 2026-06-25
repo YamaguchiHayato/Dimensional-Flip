@@ -1,5 +1,7 @@
 #pragma once
 #include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Character/PlayerForward.h"
+
 
 namespace
 {
@@ -8,7 +10,6 @@ namespace
 
 class DimensionTrigger;
 class RotationFool;
-class Player;
 class CameraManager;
 
 namespace app{

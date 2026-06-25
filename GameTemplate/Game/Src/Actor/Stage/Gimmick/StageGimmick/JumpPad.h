@@ -1,7 +1,7 @@
 #pragma once
 #include "Src/Actor/Actor.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-class Player;
 class JumpPad : public Actor
 {
 public:

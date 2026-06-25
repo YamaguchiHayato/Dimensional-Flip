@@ -7,7 +7,6 @@ namespace app{
     }
 }
 
-class Player;
 class FollowStrategy : public ICameraStrategy
 {
 public:

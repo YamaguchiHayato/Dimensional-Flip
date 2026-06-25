@@ -5,7 +5,8 @@
 
 #pragma once
 #include "Src/UI/UIBase.h"
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
+
 
 class HPbarUI : public UIBase
 {

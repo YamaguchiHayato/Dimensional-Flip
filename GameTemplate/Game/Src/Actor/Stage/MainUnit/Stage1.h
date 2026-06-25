@@ -11,7 +11,7 @@ class Thwomp;
 class WallActor;
 class DimensionTrigger;
 class RotationFool;
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 
 namespace app{
     namespace stage{

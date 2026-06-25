@@ -4,7 +4,7 @@
 #include "Src/Camera/ICameraStrategy.h"
 
 // 前方宣言
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 class Boss;
 
 // カメラモード列挙型

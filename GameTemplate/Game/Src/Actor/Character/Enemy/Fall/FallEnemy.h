@@ -3,6 +3,7 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
 namespace
 {
@@ -22,7 +23,6 @@ namespace app{
     } // namespace enemyState
 }
 
-class Player;
 
 // 落下する敵クラス。
 namespace app

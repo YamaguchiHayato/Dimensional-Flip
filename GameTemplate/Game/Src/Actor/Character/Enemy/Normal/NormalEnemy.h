@@ -12,7 +12,7 @@ namespace app{
     } 
 } 
 
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 
 enum  NormalEnemyState : uint8_t
 {

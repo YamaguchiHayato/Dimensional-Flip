@@ -46,6 +46,18 @@
     <Filter Include="Src\StateMachine">
       <UniqueIdentifier>{7ac4a93e-e0e5-46e9-810e-835b02d05981}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Actor\Character\Player">
+      <UniqueIdentifier>{8205c7b2-087d-4881-a4ab-c8675f7578d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Player\Context">
+      <UniqueIdentifier>{4be14d6c-169d-43c7-9d10-7d96a287b928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Player\Component">
+      <UniqueIdentifier>{340f4547-7169-4ecf-ba47-38c4a5915add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Player\State">
+      <UniqueIdentifier>{0c699852-8b90-4cda-bb88-f32a813ccfbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -131,9 +143,6 @@
     <ClCompile Include="Src\Camera\FollowStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera\ICameraStrategy.cpp">
-      <Filter>Src\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Production\CutIn\CutInBase.cpp">
       <Filter>Src\Direction\CutIn</Filter>
     </ClCompile>
@@ -169,13 +178,6 @@
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\IState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\PlayerIdleState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\PlayerJumpState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\PlayerRunState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Character.cpp" />
-    <ClCompile Include="Src\Actor\Character\IState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\PlayerFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
     <ClCompile Include="Src\Collision\NonCopyable.cpp" />
@@ -183,7 +185,6 @@
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
@@ -230,7 +231,6 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
     <ClCompile Include="Src\Production\StarGetProduction.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\PlayerTutorialPauseStage.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
@@ -252,6 +252,33 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
     <ClCompile Include="NormalBackGround.cpp" />
     <ClCompile Include="BossBackGround.cpp" />
+    <ClCompile Include="Src\Actor\Character\Player\Player.cpp">
+      <Filter>Src\Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\Component\PlayerLocomotion.cpp">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\State\PlayerFallState.cpp">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\State\PlayerIdleState.cpp">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\State\PlayerJumpState.cpp">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\State\PlayerRunState.cpp">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.cpp">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\Component\PlayerPresentation.cpp">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\Component\PlayerStateMachine.cpp">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -378,13 +405,7 @@
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\StageEX.h" />
-    <ClInclude Include="Src\Actor\Character\Player\IState.h" />
-    <ClInclude Include="Src\Actor\Character\Player\PlayerIdleState.h" />
-    <ClInclude Include="Src\Actor\Character\Player\PlayerJumpState.h" />
-    <ClInclude Include="Src\Actor\Character\Player\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
-    <ClInclude Include="Src\Actor\Character\IState.h" />
-    <ClInclude Include="Src\Actor\Character\Player\PlayerFallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
     <ClInclude Include="Src\Collision\NonCopyable.h" />
@@ -392,7 +413,6 @@
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
     <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
-    <ClInclude Include="Src\Actor\Character\Player\Player.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
@@ -439,7 +459,6 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
     <ClInclude Include="Src\Production\StarGetProduction.h" />
-    <ClInclude Include="Src\Actor\Character\Player\PlayerTutorialPauseStage.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
@@ -464,20 +483,59 @@
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="NormalBackGround.h" />
     <ClInclude Include="BossBackGround.h" />
-    <ClInclude Include="StateMachine.h">
+    <ClInclude Include="Src\Actor\Character\Player\Player.h">
+      <Filter>Src\Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\StateMachine\IActorState.h">
       <Filter>Src\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="IActorState.h">
+    <ClInclude Include="Src\StateMachine\NullState.h">
       <Filter>Src\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="StateMachineCommand.h">
+    <ClInclude Include="Src\StateMachine\StateMachine.h">
       <Filter>Src\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="StateMachineCommandIterator.h">
+    <ClInclude Include="Src\StateMachine\StateMachineCommand.h">
       <Filter>Src\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="NullState.h">
+    <ClInclude Include="Src\StateMachine\StateMachineCommandIterator.h">
       <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\StateMachine\ActorStateBase.h">
+      <Filter>Src\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\IPlayerStateContext.h">
+      <Filter>Src\Actor\Character\Player\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\Component\PlayerLocomotion.h">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\State\PlayerFallState.h">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\State\PlayerIdleState.h">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\State\PlayerJumpState.h">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\State\PlayerRunState.h">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.h">
+      <Filter>Src\Actor\Character\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\Component\PlayerPresentation.h">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\Component\PlayerStateMachine.h">
+      <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\IState.h">
+      <Filter>Src\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\PlayerForward.h">
+      <Filter>Src\Actor\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

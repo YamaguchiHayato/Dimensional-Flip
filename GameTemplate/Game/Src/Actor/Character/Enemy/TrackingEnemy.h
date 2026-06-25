@@ -2,7 +2,7 @@
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 
 // 前方宣言
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
 
 namespace app
 {

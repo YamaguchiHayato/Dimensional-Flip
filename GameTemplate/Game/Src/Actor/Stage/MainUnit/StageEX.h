@@ -5,7 +5,9 @@
 
 
 class Boss;
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
+
+
 class CameraManager;
 
 namespace app

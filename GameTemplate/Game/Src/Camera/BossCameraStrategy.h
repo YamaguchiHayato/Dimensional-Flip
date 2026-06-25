@@ -8,8 +8,6 @@ namespace app{
 }
 
 class CameraManager;
-class Player;
-
 
 namespace app
 {

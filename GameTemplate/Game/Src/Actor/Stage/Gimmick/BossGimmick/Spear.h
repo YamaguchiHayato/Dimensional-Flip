@@ -8,8 +8,6 @@ namespace app {
     }
 }
 
-class Player;
-
 enum class SpearState : uint8_t
 {
     Idle,    // 予兆。

@@ -7,7 +7,8 @@ namespace app{
     }
 }
 
-class Player;
+#include "Src/Actor/Character/PlayerForward.h"
+
 class CutInView;
 
 class Star : public IGameObject

@@ -1,7 +1,8 @@
 #pragma once
 #include "ResultData.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
-enum  class StarGetPhase
+enum class StarGetPhase
 {
     Approach, // ズーム & 接近
     Orbit,    // スターの周りを回転
@@ -11,7 +12,6 @@ enum  class StarGetPhase
     Num       // 初期化用
 };
 
-class Player;
 class Star;
 class GameClear;
 

@@ -4,9 +4,10 @@
  * @dote 2025/10/27 … クラス作成日。
  */
 
-class Player;
-
 #pragma once
+#include "Src/Actor/Character/PlayerForward.h"
+
+
 namespace nsK2EngineLow
 {
     class Camera;

@@ -6,6 +6,7 @@
 
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 #include "Src/Production/CutIn/CutInView.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
 namespace app
 {
@@ -26,7 +27,6 @@ namespace app
     } 
 }
 
-class Player;
 
 
 namespace app

@@ -17,9 +17,9 @@
 #include "Src/UI/TimerUI.h"
 
 #include "IBackGround.h"
+#include "Src/Actor/Character/PlayerForward.h"
 
 class CameraManager;
-class Player;
 class TrackingEnemy;
 class Fade;
 

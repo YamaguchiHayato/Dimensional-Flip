@@ -7,8 +7,9 @@ namespace app{
         class Boss;
     }
 }
+#include "Src/Actor/Character/PlayerForward.h"
+
 class DimensionTrigger;
-class Player;
 class WallActor;
 class Star;
 class Stage3 : public IStage

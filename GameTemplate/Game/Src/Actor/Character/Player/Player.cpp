@@ -20,6 +20,12 @@
 #include "Src/Production/Fade.h"
 #include "Src/UI/ScoreUI.h"
 
+#include "Src/Parameter/Player/PlayerStatusParameterTable.h"
+#include "Src/Parameter/Player/PlayerMoveParameterTable.h"
+#include "Src/Parameter/Player/PlayerAirParameterTable.h"
+#include "Src/Parameter/Player/PlayerPhysicsParameterTable.h"
+
+
 
 /**
  * @brief プレイヤーステータス定数。
@@ -89,14 +95,13 @@ namespace nsApp
                     pRender_->Init(std::vector<std::string>(PARH_LIST, PARH_LIST + MAX_NUM));
 
                     /** @brief コンポーネントのバインド。 */
-                    locomotion_.Bind(charaCon_, pos_, moveSpeed_, walkSpeed_, moveLimitMin_, moveLimitMax_,
-                                     isMoveLimited_, pCameraManager_, pRender_);
+                    locomotion_.Bind(charaCon_, pos_, moveSpeed_, walkSpeed_, moveLimitMin_, moveLimitMax_, isMoveLimited_, pCameraManager_, pRender_);
 
+                    /** @brief 描画のバインド。 */
                     presentation_.Bind(pRender_, currentIndex, rot_, offsetRot_, SCALE);
 
                     /** @brief ステート登録。 */
-                    stateCommand_.Emplace<nsApp::nsState::PlayerIdleState>(
-                        enState_Idle, static_cast<nsApp::IPlayerStateContext&>(*this));
+                    stateCommand_.Emplace<nsApp::nsState::PlayerIdleState>(enState_Idle, static_cast<nsApp::IPlayerStateContext&>(*this));
                     stateCommand_.Emplace<nsApp::nsState::PlayerRunState>(enState_Run, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerJumpState>(enState_Jump, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerFallState>(enState_Fall, this);
@@ -107,21 +112,28 @@ namespace nsApp
 
                     walkSpeed_ = PlayerStatus::Move::SPEED;
 
-                    charaCon_.Init(2.0f, 1.0f, pos_);
-                    status_.Initial(PlayerStatus::MAX_HP, walkSpeed_, PlayerStatus::ATTACK_POWER);
+                    /** @brief TSV パラメータの取得。 */
+                    using namespace nsApp::nsSystem;
+                    const auto& statusParam = PlayerStatusParameterTable::Get();
+                    const auto& moveParam = PlayerMoveParameterTable::Get();
+                    const auto& airParam = PlayerAirParameterTable::Get();
+                    const auto& physicsParam = PlayerPhysicsParameterTable::Get();
 
+                    walkSpeed_ = moveParam.walkSpeed;
+                    SetJumpPower(airParam.jumpPower);
+                    charaCon_.Init(physicsParam.colliderRadius, physicsParam.colliderHeight, pos_);
+                    locomotion_.SetFixedDeltaTime(physicsParam.fixedDeltaTime);
+                    status_.Initial(statusParam.maxHP, walkSpeed_, statusParam.attackPower);
                     score_ = 0;
                     invincibleTime_ = 0.0f;
-
                     posFont_.SetPosition({-600.0f, 300.0f, 0.0f});
                     posFont_.SetScale(1.0f);
                     posFont_.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
 
+
                     if (requestTutorialPause_ && !isTutorialDone_)
                         isTutorialDone_ = true;
-
                     SetRespwanPos(pos_);
-                    SetJumpPower(150.0f);
 
                     return true;
                 }

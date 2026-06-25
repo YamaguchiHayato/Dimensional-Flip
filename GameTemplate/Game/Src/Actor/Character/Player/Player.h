@@ -80,15 +80,20 @@ namespace nsApp
                     Quaternion respwanRot_ = Quaternion::Identity;          ///< リスポーン時回転。
                     Quaternion offsetRot_ = Quaternion::Identity;           ///< カメラオフセット回転。
                     FontRender posFont_;                                    ///< 座標表示フォント。
+
+
                 private:
                     uint8_t state_;                     ///< 旧 PlayerState 互換用。
                     uint8_t triggerOverlapCount_ = 0;   ///< トリガーエリア重なり数。
                     uint8_t currentIndex = 0;           ///< 現在のモデルインデックス。
+
                     int score_ = 0;                     ///< スコア。
+
                     float invincibleTime_ = 0.0f;       ///< 無敵時間。
                     float jumpPower_ = 0.0f;            ///< ジャンプ力。
                     float walkSpeed_ = 0.0f;            ///< 歩行速度。
                     float bounceCooldown_ = 0.0f;       ///< バウンドクールダウン。
+
                     bool canAirControl_ = false;        ///< 空中操作可能か。
                     bool didJumpThisFrame_ = false;     ///< 今フレームでジャンプしたか。
                     bool isPaused_ = false;             ///< 一時停止中か。
@@ -99,6 +104,8 @@ namespace nsApp
                     bool isTutorialDone_ = false;       ///< チュートリアル完了か。
                     bool requestTutorialPause_ = false; ///< チュートリアル一時停止要求。
                     bool isBounce_ = false;             ///< バウンド中か。
+
+
                 public:
                     /**
                      * @brief コンストラクタ。
@@ -106,15 +113,31 @@ namespace nsApp
                     Player() : stateMachine_(stateCommand_, *this) {}
                     virtual ~Player() = default;
 
+
                 public:
+                    /**
+                     * @brief 開始処理。
+                     * @return 成功した場合 true。
+                     */
                     bool Start() override;
+
+                    /**
+                     * @brief 更新処理。
+                     */
                     void Update() override;
+
+                    /**
+                     * @brief 描画処理。
+                     * @param rendercontext 描画コンテキスト。 
+                     */
                     void Render(RenderContext& rendercontext) override;
+
                     /**
                      * @brief 次元切替アクションが発生したか判定する。
                      * @return 切替する場合 true。
                      */
                     bool IsDimensionSwitchAction();
+
                     /**
                      * @brief 敵を踏みつけた際のバウンド処理。
                      */
@@ -131,10 +154,12 @@ namespace nsApp
                         canAirControl_ = true;
                         bounceCooldown_ = 0.2f;
                     }
+
                     /**
                      * @brief リスポーン処理。
                      */
                     void CheckRespawn();
+
                     /**
                      * @brief 視点切替の試行。
                      * @param[in] area エリア内からの要求か。
@@ -142,22 +167,26 @@ namespace nsApp
                      */
                     bool TryFlipDimension(bool area) override;
 
+
                 public:
                     /**
                      * @brief 移動速度を加算する。
                      * @param[in] addMoveSpeed 加算する速度。
                      */
                     inline void AddMoveSpeed(const Vector3& addMoveSpeed) { moveSpeed_ += addMoveSpeed; }
+
                     /**
                      * @brief スコアを加算する。
                      * @param[in] amount 加算量。
                      */
                     inline void AddScore(int amount) { score_ += amount; }
+
                     /**
                      * @brief カメラの向きに合わせて移動ベクトルを計算する。
                      * @param[in] stickInput スティック入力。
                      */
                     void CalculateMovement(const Vector3& stickInput) override;
+
 
                 public:
                     /**
@@ -165,15 +194,18 @@ namespace nsApp
                      * @param[in] pCameraManager カメラマネージャ。
                      */
                     inline void InitCameraManager(CameraManager* pCameraManager) { pCameraManager_ = pCameraManager; }
+
                     /**
                      * @brief ジャンプ力を設定する。
                      * @param[in] jumpPower ジャンプ力。
                      */
                     inline void SetJumpPower(float jumpPower) { jumpPower_ = jumpPower; }
+
                     /**
                      * @brief トリガーエリア進入時に呼ぶ。
                      */
                     inline void EnterTriggerArea() { triggerOverlapCount_++; }
+
                     /**
                      * @brief トリガーエリア退出時に呼ぶ。
                      */
@@ -183,51 +215,61 @@ namespace nsApp
                         if (triggerOverlapCount_ < 0)
                             triggerOverlapCount_ = 0;
                     }
+
                     /**
                      * @brief 座標を設定する。
                      * @param[in] pos 座標。
                      */
                     void SetPlayerPos(const Vector3& pos) override;
+
                     /**
                      * @brief 一時停止フラグを設定する。
                      * @param[in] isPaused 一時停止する場合 true。
                      */
                     inline void SetPaused(bool isPaused) { isPaused_ = isPaused; }
+
                     /**
                      * @brief リスポーン座標を設定する。
                      * @param[in] pos 座標。
                      */
                     inline void SetRespwanPos(const Vector3& pos) { respwanPos_ = pos; }
+
                     /**
                      * @brief 空中操作可能フラグを設定する。
                      * @param[in] flag 空中操作可能なら true。
                      */
                     void SetCanAirControl(bool flag) override;
+
                     /**
                      * @brief 今フレームでジャンプしたかを設定する。
                      * @param[in] flag ジャンプした場合 true。
                      */
                     void SetJumpedThisFrame(bool flag) override;
+
                     /**
                      * @brief 回転を設定する。
                      * @param[in] rot 回転。
                      */
                     void SetRotation(const Quaternion& rot) override;
+
                     /**
                      * @brief リスポーンフラグを設定する。
                      * @param[in] flag リスポーンした場合 true。
                      */
                     void SetRespawnFlag(bool flag) override;
+
                     /**
                      * @brief 現在のモデルインデックスを設定する。
                      * @param[in] index インデックス。
                      */
                     void SetCurrentIndex(uint8_t index) override;
+
                     /**
                      * @brief キー入力方向を設定する。
                      * @param[in] direction 入力方向。
                      */
                     void SetKeyDirection(const Vector3& direction) override;
+
                     /**
                      * @brief 移動制限を設定する。
                      * @param[in] min 最小座標。
@@ -239,29 +281,35 @@ namespace nsApp
                         moveLimitMax_ = max;
                         isMoveLimited_ = true;
                     }
+
                     /**
                      * @brief 移動制限を解除する。
                      */
                     inline void ReleaseMoveLimit() { isMoveLimited_ = false; }
+
                     /**
                      * @brief チュートリアル完了フラグを設定する。
                      * @param[in] isDone 完了している場合 true。
                      */
                     inline void SetTutorialFlag(bool isDone) { isTutorialDone_ = isDone; }
+
                     /**
                      * @brief チュートリアル一時停止を要求する。
                      */
                     void RequestTutorialPause() override;
+
                     /**
                      * @brief チュートリアル完了を設定する。
                      * @param[in] isDone 完了している場合 true。
                      */
                     inline void SetTutorialDone(bool isDone) { isTutorialDone_ = isDone; }
+
                     /**
                      * @brief バウンドフラグを設定する。
                      * @param[in] isBounce バウンド中なら true。
                      */
                     void SetIsBounce(bool isBounce) override;
+
 
                 public:
                     /**
@@ -269,86 +317,103 @@ namespace nsApp
                      * @return スコア。
                      */
                     inline int GetScore() { return score_; }
+
                     /**
                      * @brief HP を取得する。
                      * @return 現在 HP。
                      */
                     inline uint8_t GetHP() const { return status_.GetHP(); }
+
                     /**
                      * @brief 最大 HP を取得する。
                      * @return 最大 HP。
                      */
                     inline uint8_t GetMaxHP() const { return status_.GetMaxHP(); }
+
                     /**
                      * @brief ジャンプ力を取得する。
                      * @return ジャンプ力。
                      */
                     const float& GetJumpPower() const override { return jumpPower_; }
+
                     /**
                      * @brief 座標を取得する。
                      * @return 座標への参照。
                      */
                     Vector3& GetPlayerPos() override { return pos_; }
+
                     /**
                      * @brief 前方向ベクトルを取得する。
                      * @return 前方向。
                      */
                     inline const Vector3 GetForward() const { return forward_; }
+
                     /**
                      * @brief トリガーエリア内かどうか。
                      * @return エリア内なら true。
                      */
                     inline bool GetInTriggerArea() const { return triggerOverlapCount_ > 0; }
+
                     /**
                      * @brief カメラマネージャを取得する。
                      * @return カメラマネージャ。
                      */
                     CameraManager* GetCameraManager() override { return pCameraManager_; }
+
                     /**
                      * @brief リスポーンしたかどうか。
                      * @return リスポーンした場合 true。
                      */
                     bool IsRespawn() override { return respawnFlag_; }
+
                     /**
                      * @brief 歩行速度を取得する。
                      * @return 歩行速度。
                      */
                     float GetWalkSpeed() const override { return walkSpeed_; }
+
                     /**
                      * @brief 今フレームでジャンプしたか。
                      * @return ジャンプした場合 true。
                      */
                     inline bool DoJumpCheck() const { return didJumpThisFrame_; }
+
                     /**
                      * @brief リスポーン座標を取得する。
                      * @return リスポーン座標。
                      */
                     const Vector3& GetRespwanPos() const override { return respwanPos_; }
+
                     /**
                      * @brief リスポーン時の回転を取得する。
                      * @return 回転。
                      */
                     const Quaternion& GetRespwanRot() const override { return respwanRot_; }
+
                     /**
                      * @brief キー入力方向を取得する。
                      * @return 入力方向。
                      */
                     Vector3 GetKeyDirection() const override { return keyDirection_; }
+
                     /**
                      * @brief キャラクターコントローラを取得する。
                      * @return キャラクターコントローラ。
                      */
                     CharacterController& GetCharacterController() override { return charaCon_; }
+
                     /**
                      * @brief 移動速度を取得する。
                      * @return 移動速度への参照。
                      */
                     Vector3& GetMoveSpeed() override { return moveSpeed_; }
+
                     /**
                      * @brief 2D 描画コンポーネントを取得する。
                      * @return 描画コンポーネント。
                      */
                     inline Character2DRender* GetCharacter2DRender() { return pRender_; }
+
                     /**
                      * @brief プレイヤーの向きを取得する。
                      * @return 回転。
@@ -358,21 +423,25 @@ namespace nsApp
                         pRender_->GetRotation();
                         return rot_;
                     }
+
                     /**
                      * @brief 一時停止中かどうか。
                      * @return 一時停止中なら true。
                      */
                     inline bool IsPaused() const { return isPaused_; }
+
                     /**
                      * @brief チュートリアルを完了したか。
                      * @return 完了している場合 true。
                      */
                     inline bool IsTutorialComplete() const { return isTutorialDone_; }
+
                     /**
                      * @brief チュートリアルが終わったかどうか。
                      * @return 終了している場合 true。
                      */
                     bool IsTutorialDone() const override { return isTutorialDone_; }
+
                     /**
                      * @brief バウンド中かどうか。
                      * @return バウンド中なら true。
@@ -387,19 +456,23 @@ namespace nsApp
                      * @return 接地していれば true。
                      */
                     bool IsOnGround() const override;
+
                     /**
                      * @brief 移動処理を加える。
                      */
                     void ApplyMovement() override;
+
                     /**
                      * @brief 座標と描画を同期する。
                      */
                     void SyncView() override;
+
                     /**
                      * @brief ダメージ処理。
                      * @param[in] damage ダメージ量。
                      */
                     void OnDamage(uint8_t damage) override;
+
 
                 private:
                     /**

@@ -1,5 +1,6 @@
 #pragma once
 #include "Src/Actor/Character/Player/Character2DRender.h"
+#include "Src/Parameter/Player/PlayerAirParameterTable.h"
 
 class CameraManager;
 
@@ -45,6 +46,22 @@ namespace nsApp
                               bool& isMoveLimited,
                               CameraManager*& pCameraManager,
                               Character2DRender*& pRender);
+
+                    /**
+                     * @brief 空中重力を加える。
+                     * @param speed 速度。
+                     * @param isOnGround 地面に接地しているかどうかのフラグ。
+                     * @param air 空中パラメータ。
+                     * @param isBounce バウンドしたかどうかのフラグ。バウンドした場合は true にセットされる。
+                     * @param allowJumpCut ジャンプカットを許可するかどうか。true
+                     * の場合、上昇中にジャンプボタンを離すと上昇速度が減衰する。
+                     */
+                    void ApplyAirGravity(
+                              Vector3& speed,
+                              const nsSystem::PlayerAirParameter& air,
+                              bool isOnGround,
+                              bool& isBounce,
+                              bool allowJumpCut);
 
                     /**
                      * @brief 移動処理を加える。
@@ -93,6 +110,15 @@ namespace nsApp
                      * @return 地上歩行速度
                      */
                     float GetWalkSpeed() const;
+
+                    /**
+                     * @brief 物理更新の固定フレーム時間を設定する。
+                     * @param[in] fixedDeltaTime 秒（例: 1/150）
+                     */
+                    inline void SetFixedDeltaTime(float fixedDeltaTime)
+                    {
+                        fixedDeltaTime_ = fixedDeltaTime;
+                    }
 
 
                 private:

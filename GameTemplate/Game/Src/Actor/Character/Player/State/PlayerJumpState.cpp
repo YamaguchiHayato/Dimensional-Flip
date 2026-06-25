@@ -1,9 +1,12 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PlayerJumpState.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Actor/Character/Player/Component/PlayerLocomotion.h"
+#include "Src/Parameter/Player/PlayerAirParameterTable.h"
+
 
 using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
@@ -40,14 +43,9 @@ namespace nsApp
         {
             pPlayer_->SetCurrentIndex(0); // ジャンプアニメーション
 
-            // ★修正ポイント：バウンド時はボタン入力に関わらず「固定の高さ」にする
             if (pPlayer_->IsBounce())
-            {
-                // バウンド時の固定初速。
-                // 通常ジャンプ(150.0f)より少し抑え、毎回安定して跳ねるように設定。
-                // ※高さが足りない場合は 100.0f ～ 120.0f の間で調整してください。
-                pPlayer_->GetMoveSpeed().y = 100.0f;
-            }
+                pPlayer_->GetMoveSpeed().y = nsSystem::PlayerAirParameterTable::Get().bounceJumpPower;
+
             else
             {
                 // 通常ジャンプ（Playerクラスの設定値を使用）
@@ -156,61 +154,23 @@ namespace nsApp
         {
             Vector3& speed = pPlayer_->GetMoveSpeed();
             const bool isGround = pPlayer_->GetCharacterController().IsOnGround();
+            const auto& air = nsApp::nsSystem::PlayerAirParameterTable::Get();
 
-            // 接地中のリセット
-            if (isGround && speed.y <= 0.0f)
-            {
-                speed.y = 0.0f;
-                // ★修正：タイポ修正 (SetIsBoune -> SetIsBounce)
-                pPlayer_->SetIsBounce(false);
-                return;
-            }
-
-            if (speed.y > 0.0f)
-            {
-                // --- 上昇中 ---
-
-                // ★修正ポイント：バウンド中はボタン入力を無視し、常に重い重力(CUT倍)をかける
-                // これにより、Aボタンを押していても高く飛びすぎず、毎回同じ高さで止まります
-                if (pPlayer_->IsBounce())
-                {
-                    speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
-                }
-                else
-                {
-                    // 通常ジャンプ：ボタン入力で重力を可変させる
-                    if (!g_pad[0]->IsPress(enButtonA))
-                    {
-                        speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::CUT;
-                    }
-                    else
-                        speed.y -= PlayerStatus::GLAVITY;
-                }
-            }
-            else
-            {
-                // --- 下降中 ---
-
-                if (speed.y <= 0.0f)
-                    // ★修正：タイポ修正 (SetIsBoune -> SetIsBounce)
-                    pPlayer_->SetIsBounce(false);
-
-                // 下降中重力
-                speed.y -= PlayerStatus::GLAVITY * PlayerStatus::Jump::GLAVITY;
-            }
-
-            // 落下速度制限
-            if (speed.y < PlayerStatus::Jump::FALLINGSPEED)
-                speed.y = PlayerStatus::Jump::FALLINGSPEED;
+            bool isBounce = pPlayer_->IsBounce();
+            pPlayer_->locomotion_.ApplyAirGravity(speed, air, isGround, isBounce, true);
+            pPlayer_->SetIsBounce(isBounce);
         }
+
 
         void PlayerJumpState::Move(float speedRate)
         {
-            // プレイヤーの入力方向を取得。
+            /* 移動速度の取得。*/
             const Vector3& keyDir = pPlayer_->GetKeyDirection();
+            const float walkSpeed = pPlayer_->GetWalkSpeed();
 
-            pPlayer_->GetMoveSpeed().x = keyDir.x * PlayerStatus::Move::WALK_SPEED * speedRate;
-            pPlayer_->GetMoveSpeed().z = keyDir.z * PlayerStatus::Move::WALK_SPEED * speedRate;
+            /* 移動速度の適用。*/
+            pPlayer_->GetMoveSpeed().x = keyDir.x * walkSpeed * speedRate;
+            pPlayer_->GetMoveSpeed().z = keyDir.z * walkSpeed * speedRate;
         }
-    } // namespace state
+    } // namespace nsState
 } // namespace app

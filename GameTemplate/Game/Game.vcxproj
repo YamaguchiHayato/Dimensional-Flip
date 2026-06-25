@@ -274,6 +274,7 @@
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
+    <ClCompile Include="Src\Build\InGameBuildHelper.cpp" />
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
     <ClCompile Include="Src\Core\BossUIManager.cpp" />
@@ -303,6 +304,11 @@
     <ClCompile Include="Src\Core\SceneManager.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
+    <ClCompile Include="Src\Parameter\ParameterSystem.cpp" />
+    <ClCompile Include="Src\Parameter\Player\PlayerAirParameterTable.cpp" />
+    <ClCompile Include="Src\Parameter\Player\PlayerMoveParameterTable.cpp" />
+    <ClCompile Include="Src\Parameter\Player\PlayerPhysicsParameterTable.cpp" />
+    <ClCompile Include="Src\Parameter\Player\PlayerStatusParameterTable.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInBase.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
@@ -346,6 +352,7 @@
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
     <ClCompile Include="Src\UI\UIBase.cpp" />
+    <ClCompile Include="Src\Utilty\TSVTable.cpp" />
     <ClCompile Include="Src\WallActor.cpp" />
     <ClCompile Include="StageIcon.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -412,6 +419,7 @@
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
+    <ClInclude Include="Src\Build\InGameBuildHelper.h" />
     <ClInclude Include="Src\Camera\SideCameraStrategy.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h" />
     <ClInclude Include="Src\Core\BossUIManager.h" />
@@ -443,6 +451,12 @@
     <ClInclude Include="Src\Core\SceneManager.h" />
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
+    <ClInclude Include="Src\Parameter\ParameterSystem.h" />
+    <ClInclude Include="Src\Parameter\ParameterSystemTableBase.h" />
+    <ClInclude Include="Src\Parameter\Player\PlayerAirParameterTable.h" />
+    <ClInclude Include="Src\Parameter\Player\PlayerMoveParameterTable.h" />
+    <ClInclude Include="Src\Parameter\Player\PlayerPhysicsParameterTable.h" />
+    <ClInclude Include="Src\Parameter\Player\PlayerStatusParameterTable.h" />
     <ClInclude Include="Src\Production\AttackMarker.h" />
     <ClInclude Include="Src\Production\CutIn\CutInBase.h" />
     <ClInclude Include="Src\Production\CutIn\CutInLogoLayer.h" />
@@ -494,6 +508,8 @@
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
     <ClInclude Include="Src\UI\UIBase.h" />
+    <ClInclude Include="Src\Utilty\TSVTable.h" />
+    <ClInclude Include="Src\Utilty\TSVTableLoder.h" />
     <ClInclude Include="Src\WallActor.h" />
     <ClInclude Include="StageIcon.h" />
     <ClInclude Include="stdafx.h" />
@@ -501,6 +517,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\Utilty\TSVTableLoder.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

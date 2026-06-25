@@ -61,6 +61,45 @@ namespace nsApp
                 }
 
 
+                void PlayerLocomotion::ApplyAirGravity(Vector3& speed, const nsSystem::PlayerAirParameter& air,bool isOnGround, bool& isBounce, bool allowJumpCut)
+                {
+                    if (isOnGround && speed.y <= 0.0f)
+                    {
+                        speed.y = 0.0f;
+                        isBounce = false;
+                        return;
+                    }
+
+                    if (speed.y > 0.0f)
+                    {
+                        /** @brief 上昇中の処理。 */
+                        if (isBounce)
+                            speed.y -= air.gravityBase * air.jumpCutScale;
+
+                        /** @brief 上昇中のジャンプカット処理。 */
+                        else if (allowJumpCut && !g_pad[0]->IsPress(enButtonA))
+                            speed.y -= air.gravityBase * air.jumpCutScale;
+
+                        else
+                            /** @brief 上昇中の重力加速度を適用。 */
+                            speed.y -= air.gravityBase;
+                    }
+                    else
+                    {
+                        /** @brief 落下中の処理。 */
+                        if (speed.y <= 0.0f)
+                            isBounce = false;
+
+                        /** @brief 落下中の重力加速度を適用。 */
+                        speed.y -= air.gravityBase * air.jumpGravityScale;
+                    }
+
+                    /** @brief 落下速度の制限。 */
+                    if (speed.y < air.maxFallSpeed)
+                        speed.y = air.maxFallSpeed;
+                }
+
+
                 void PlayerLocomotion::ApplyMovement()
                 {
                     if (pCharaCon_ == nullptr || pCameraManager_ == nullptr)

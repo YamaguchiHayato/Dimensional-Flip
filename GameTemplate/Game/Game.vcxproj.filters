@@ -58,6 +58,18 @@
     <Filter Include="Src\Actor\Character\Player\State">
       <UniqueIdentifier>{0c699852-8b90-4cda-bb88-f32a813ccfbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Utilty">
+      <UniqueIdentifier>{a63a7c44-f1f9-4bd9-b0b3-53bb2dc2fb97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Parameter">
+      <UniqueIdentifier>{e7170df9-16ef-4f3d-bdbe-38ce4ebc9d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Build">
+      <UniqueIdentifier>{1ae135f4-6c56-40e2-bb15-6c6195edd960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Parameter\Player">
+      <UniqueIdentifier>{0bd874bf-3ba4-45e3-9ea6-61b2b5b92fc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -278,6 +290,27 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Player\Component\PlayerStateMachine.cpp">
       <Filter>Src\Actor\Character\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Utilty\TSVTable.cpp">
+      <Filter>Src\Utilty</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\ParameterSystem.cpp">
+      <Filter>Src\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Build\InGameBuildHelper.cpp">
+      <Filter>Src\Build</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Player\PlayerStatusParameterTable.cpp">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Player\PlayerMoveParameterTable.cpp">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Player\PlayerAirParameterTable.cpp">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Player\PlayerPhysicsParameterTable.cpp">
+      <Filter>Src\Parameter\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -537,8 +570,40 @@
     <ClInclude Include="Src\Actor\Character\PlayerForward.h">
       <Filter>Src\Actor\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Utilty\TSVTable.h">
+      <Filter>Src\Utilty</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utilty\TSVTableLoder.h">
+      <Filter>Src\Utilty</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\ParameterSystem.h">
+      <Filter>Src\Parameter</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Build\InGameBuildHelper.h">
+      <Filter>Src\Build</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Player\PlayerStatusParameterTable.h">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\ParameterSystemTableBase.h">
+      <Filter>Src\Parameter</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Player\PlayerMoveParameterTable.h">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Player\PlayerAirParameterTable.h">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Player\PlayerPhysicsParameterTable.h">
+      <Filter>Src\Parameter\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\Utilty\TSVTableLoder.inl">
+      <Filter>Src\Utilty</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -18,6 +18,8 @@
 
 #include "IBackGround.h"
 #include "Src/Actor/Character/PlayerForward.h"
+#include "Src/Build/InGameBuildHelper.h"
+
 
 class CameraManager;
 class TrackingEnemy;
@@ -28,6 +30,10 @@ class NumberUI;
 class ScoreUI;
 class TimerUI;
 class HPbarUI;
+
+namespace nsApp {
+    class InGameBuildHelper;
+}
 
 namespace app{
     namespace stage{
@@ -100,7 +106,9 @@ namespace app
 
             
 
-        private:    
+        private:
+            nsApp::InGameBuildHelper buildHelper_;
+
             TimerUI* pTimerUI_ = nullptr;
             NumberUI* pNumberUI_ = nullptr;
             ScoreUI* pScoreUI_ = nullptr;

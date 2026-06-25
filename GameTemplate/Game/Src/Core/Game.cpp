@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Game.h"
 #include "GameSoundEngine.h"
@@ -21,6 +21,7 @@
 // ステージ背景。
 #include "NormalBackGround.h"
 #include "BossBackGround.h"
+
 
 static GameSoundList StageToBgm(StageID id)
 {
@@ -113,6 +114,18 @@ namespace app
         {
             // 乱数のシード値を初期化する。
             srand(static_cast<unsigned int>(time(nullptr)));
+
+            /* TSVファイルの読み込み。*/
+            {
+                buildHelper_.Initialize();
+
+                while (!buildHelper_.IsFinished())
+                    buildHelper_.Update();
+
+                if (!buildHelper_.IsLoadSuccess())
+                    OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
+            }
+
 
             // ステージの生成。
             StageManager::CreateInstance();

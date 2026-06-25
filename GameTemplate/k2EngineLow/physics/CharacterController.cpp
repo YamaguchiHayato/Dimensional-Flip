@@ -268,16 +268,19 @@ namespace nsK2EngineLow {
 			if (fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON) {
 				PhysicsWorld::GetInstance()->ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 				if (callback.isHit) {
-					//当たった。
-					moveSpeed.y = 0.0f;
-					m_isJump = false;
-					m_isOnGround = true;
-					nextPosition.y = callback.hitPos.y;
-				}
-				else {
-					//地面上にいない。
-					m_isOnGround = false;
+					const float feetY = m_position.y;
+					const float snapY = callback.hitPos.y;
+					// 足元より上の面にワープするのを防ぐ（下から足場に当たった場合）
+					if (snapY > feetY + 0.05f)
+						m_isOnGround = false;
 
+					else
+					{
+						moveSpeed.y = 0.0f;
+						m_isJump = false;
+						m_isOnGround = true;
+						nextPosition.y = snapY;
+					}
 				}
 			}
 		}

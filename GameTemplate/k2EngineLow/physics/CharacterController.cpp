@@ -263,17 +263,19 @@ namespace nsK2EngineLow {
 			SweepResultGround callback;
 			callback.me = m_rigidBody.GetBody();
 			Vector3CopyFrom(callback.startPos, start.getOrigin());
-
 			//衝突検出。
 			if (fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON) {
 				PhysicsWorld::GetInstance()->ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 				if (callback.isHit) {
 					const float feetY = m_position.y;
 					const float snapY = callback.hitPos.y;
-					// 足元より上の面にワープするのを防ぐ（下から足場に当たった場合）
-					if (snapY > feetY + 0.05f)
+					// 上昇中だけ：下から天板に引っ張られるのを防ぐ
+					const bool rejectUpwardSnap =
+						(snapY > feetY + 0.05f) && (moveSpeed.y > 0.0f);
+					if (rejectUpwardSnap)
+					{
 						m_isOnGround = false;
-
+					}
 					else
 					{
 						moveSpeed.y = 0.0f;
@@ -281,6 +283,10 @@ namespace nsK2EngineLow {
 						m_isOnGround = true;
 						nextPosition.y = snapY;
 					}
+				}
+				else
+				{
+					m_isOnGround = false;
 				}
 			}
 		}

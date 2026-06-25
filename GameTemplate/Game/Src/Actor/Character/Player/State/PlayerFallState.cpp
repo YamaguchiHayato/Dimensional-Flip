@@ -81,15 +81,13 @@ namespace nsApp
         void PlayerFallState::ApplyGravity()
         {
             Vector3& speed = pPlayer_->GetMoveSpeed();
+            const bool isGround = pPlayer_->GetCharacterController().IsOnGround();
+            const auto& air = nsApp::nsSystem::PlayerAirParameterTable::Get();
 
-            // 落下中は重力を強くする。
-            speed.y -= GRAVITY * FALL_GRAVITY_SCALE;
-
-            // 落下速度を制限する。
-            if (speed.y < MAX_FALL_SPEED)
-                speed.y = MAX_FALL_SPEED;
+            bool isBounce = pPlayer_->IsBounce();
+            pPlayer_->locomotion_.ApplyAirGravity(speed, air, isGround, isBounce, true);
+            pPlayer_->SetIsBounce(isBounce);
         }
-
 
         void PlayerFallState::CheckRespawn()
         {

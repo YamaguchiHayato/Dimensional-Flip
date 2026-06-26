@@ -96,6 +96,7 @@ bool WorldSelectScene::Start()
     // ステージセレクト画面用のステージ背景を生成する。
     CreateSkyCube();
 
+    g_renderingEngine->EnableCompositeBackground(false);
     return true;
 }
 

@@ -224,6 +224,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BossBackGround.cpp" />
+    <ClCompile Include="CompositeBackground.cpp" />
     <ClCompile Include="NormalBackGround.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
@@ -364,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBackGround.h" />
+    <ClInclude Include="CompositeBackground.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="NormalBackGround.h" />
     <ClInclude Include="ResultData.h" />

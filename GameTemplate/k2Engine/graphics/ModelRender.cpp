@@ -145,6 +145,7 @@ namespace nsK2Engine {
 			g_renderingEngine->AddModelToRaytracingWorld(m_renderToGBufferModel);
 			m_addRaytracingWorldModel = &m_renderToGBufferModel;
 		}
+
 	}
 
 	void ModelRender::InitGeometryDatas(int maxInstance)
@@ -505,6 +506,10 @@ namespace nsK2Engine {
 
 	void ModelRender::OnZPrepass(RenderContext& rc)
 	{
+		if(!m_isEnableZPrepass || !m_zprepassModel.IsInited()) {
+			return;
+		}
+
 		m_zprepassModel.Draw(rc, 1);
 	}
 	void ModelRender::OnRenderToGBuffer(RenderContext& rc)

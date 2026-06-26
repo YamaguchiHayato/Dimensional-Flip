@@ -226,6 +226,16 @@ namespace nsK2Engine {
 		{
 			m_isShadowCaster = flag;
 		}
+
+		/**
+		 * @brief 
+		 * @param flag 
+		 */
+		void SetZprepassEnabled(bool flag)
+		{
+			m_isEnableZPrepass = flag;
+		}
+
 		/// <summary>
 		/// アニメーション再生の速度を設定する。
 		/// </summary>
@@ -473,6 +483,7 @@ namespace nsK2Engine {
 		int							m_maxInstance = 1;					// 最大インスタンス数。
 		bool						m_isEnableInstancingDraw = false;	// インスタンシング描画が有効？
 		bool						m_isRaytracingWorld = true;			//レイトレワールドに登録する？
+		bool						m_isEnableZPrepass = true;			// ZPrepassを有効にするかどうか
 		std::unique_ptr<Matrix[]>	m_worldMatrixArray;					// ワールド行列の配列。
 		StructuredBuffer			m_worldMatrixArraySB;				// ワールド行列の配列のストラクチャードバッファ。
 		std::vector< GemometryData > m_geometryDatas;					// ジオメトリ情報。

@@ -7,6 +7,7 @@
 #include "graphics/preRender/LightCulling.h"
 #include "geometry/SceneGeometryData.h"
 #include "graphics/light/VolumeLightRender.h"
+#include "../Game/CompositeBackground.h"
 
 namespace nsK2Engine {
    
@@ -127,6 +128,18 @@ namespace nsK2Engine {
         /// ハードシャドウにしたい場合は、falseを指定してください。
         /// </param>
         void Init(bool isSoftShadow);
+
+        /**
+		 * @brief CompositeBackgroundのUVオフセットを設定する。
+         * @param offset 
+         */
+        void SetCompositeBackgroundUvOffset(const Vector2& offset);
+
+        /**
+		 * @brief CompositeBackgroundの乗算カラーを設定する。
+         * @param enable 
+         */
+        void EnableCompositeBackground(bool enable);
 
         /// <summary>
         /// 描画オブジェクトを追加。
@@ -655,6 +668,9 @@ namespace nsK2Engine {
         SIBLData m_iblData;                                             // IBLデータ。
         bool m_isEnableRaytracing = true;                               // レイトレーシングが有効？
         GaussianBlur m_giTextureBlur[eGITextureBlur_Num];                                // GIテクスチャにブラーをかける処理。
+        CompositeBackground m_compositeBackground;
+
+
         /// <summary>
         /// イベントリスナーのデータ。
         /// </summary>

@@ -70,6 +70,9 @@
     <Filter Include="Src\Parameter\Player">
       <UniqueIdentifier>{0bd874bf-3ba4-45e3-9ea6-61b2b5b92fc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Collision">
+      <UniqueIdentifier>{e5779816-2c8f-4f84-91ed-5a019e8d4d27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -185,17 +188,13 @@
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
     <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
-    <ClCompile Include="Src\Collision\NonCopyable.cpp" />
-    <ClCompile Include="Src\Collision\CollisionManager.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
-    <ClCompile Include="Src\Core\InputManager.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
@@ -225,10 +224,8 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
-    <ClCompile Include="Src\Core\BattlePhaseManager.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp" />
-    <ClCompile Include="Src\Core\BossUIManager.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp" />
     <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp" />
@@ -258,7 +255,6 @@
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
     <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp" />
     <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
-    <ClCompile Include="Src\Core\EndRollManager.cpp" />
     <ClCompile Include="Src\Scene\EndRollScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
     <ClCompile Include="NormalBackGround.cpp" />
@@ -313,6 +309,28 @@
     </ClCompile>
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CompositeBackground.cpp" />
+    <ClCompile Include="Src\Core\BattlePhaseManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\BossUIManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\EndRollManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\InputManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\SoundManager.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Collision\CollisionManager.cpp">
+      <Filter>Src\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Collision\NonCopyable.cpp">
+      <Filter>Src\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -435,7 +453,6 @@
     <ClInclude Include="Src\Camera\BossCameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
     <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
@@ -443,10 +460,7 @@
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
-    <ClInclude Include="Src\Collision\NonCopyable.h" />
-    <ClInclude Include="Src\Collision\CollisionManager.h" />
     <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
-    <ClInclude Include="Src\Core\InputManager.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
@@ -476,10 +490,8 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
-    <ClInclude Include="Src\Core\BattlePhaseManager.h" />
     <ClInclude Include="Src\UI\BossUI\BossUIBase.h" />
     <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h" />
-    <ClInclude Include="Src\Core\BossUIManager.h" />
     <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h" />
     <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDeadState.h" />
@@ -511,7 +523,6 @@
     <ClInclude Include="Src\Production\EndRoll\EndRollBase.h" />
     <ClInclude Include="Src\Production\EndRoll\EndRollText.h" />
     <ClInclude Include="Src\Production\EndRoll\EndRollImage.h" />
-    <ClInclude Include="Src\Core\EndRollManager.h" />
     <ClInclude Include="Src\Scene\EndRollScene.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
     <ClInclude Include="IBackGround.h" />
@@ -600,6 +611,28 @@
     </ClInclude>
     <ClInclude Include="Src\Camera\SideCameraStrategy.h">
       <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CompositeBackground.h" />
+    <ClInclude Include="Src\Core\BattlePhaseManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\BossUIManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\EndRollManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\InputManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\SoundManager.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Collision\CollisionManager.h">
+      <Filter>Src\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Collision\NonCopyable.h">
+      <Filter>Src\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

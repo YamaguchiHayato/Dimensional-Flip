@@ -38,7 +38,8 @@ namespace nsK2Engine {
             m_gBuffer[enGBufferNormal],
             m_gBuffer[enGBufferMetaricShadowSmooth],
             m_gBuffer[enGBufferAlbedoDepth]);
-        
+
+        m_compositeBackground.Init(m_mainRenderTarget, m_zprepassRenderTarget);
     }
     void RenderingEngine::InitDefferedLighting_Sprite()
     {
@@ -362,6 +363,8 @@ namespace nsK2Engine {
         // フォワードレンダリング
         ForwardRendering(rc);
 
+        m_compositeBackground.Render(rc, m_mainRenderTarget);
+
         // ポストエフェクトを実行
         m_postEffect.Render(rc, m_mainRenderTarget);
 
@@ -579,5 +582,19 @@ namespace nsK2Engine {
         m_copyMainRtToFrameBufferSprite.Draw(rc);
 
         EndGPUEvent();
+    }
+
+
+    void RenderingEngine::SetCompositeBackgroundUvOffset(const Vector2& offset)
+    {
+        m_compositeBackground.SetUvOffset(offset);
+    }
+
+    void RenderingEngine::EnableCompositeBackground(bool enable)
+    {
+        if (enable)
+            m_compositeBackground.Enable();
+        else
+            m_compositeBackground.Disable();
     }
 }

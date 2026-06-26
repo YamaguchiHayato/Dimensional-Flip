@@ -174,6 +174,10 @@ namespace app
 
         void Game::Update()
         {
+            StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+            const bool isPlaying = (state_ == SceneTransitionState::None) && pFade_->IsFadeInEnd();
+            g_renderingEngine->EnableCompositeBackground(stage != StageID::sStageEX);
+
             // フェードイン開始。
             if (!m_isFadeInEnd)
             {
@@ -182,6 +186,9 @@ namespace app
                 m_isFadeInEnd = true;
             }
 
+            float cameraX = g_camera3D->GetPosition().x;
+            float u = fmodf(cameraX * 0.00025f, 1.0f);
+            g_renderingEngine->SetCompositeBackgroundUvOffset({u, 0.0f});
 
             // 遷移処理を毎フレーム更新。
             UpdateTransition();

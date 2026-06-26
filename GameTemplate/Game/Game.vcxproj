@@ -223,9 +223,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BossBackGround.cpp" />
-    <ClCompile Include="CompositeBackground.cpp" />
-    <ClCompile Include="NormalBackGround.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
@@ -260,7 +257,10 @@
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerRunState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\BossBackGround.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\CompositeBackground.cpp" />
     <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\NormalBackGround.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
@@ -365,10 +365,7 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BossBackGround.h" />
-    <ClInclude Include="CompositeBackground.h" />
     <ClInclude Include="IBackGround.h" />
-    <ClInclude Include="NormalBackGround.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
@@ -407,7 +404,10 @@
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\BossBackGround.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\CompositeBackground.h" />
     <ClInclude Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\NormalBackGround.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />

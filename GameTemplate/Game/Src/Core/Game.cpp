@@ -19,8 +19,8 @@
 #include "Src/Core/StageManager.h"
 
 // ステージ背景。
-#include "NormalBackGround.h"
-#include "BossBackGround.h"
+#include "Src/Actor/Stage/BackGround/NormalBackGround.h"
+#include "Src/Actor/Stage/BackGround/BossBackGround.h"
 
 
 static GameSoundList StageToBgm(StageID id)

@@ -260,8 +260,6 @@
     <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
     <ClCompile Include="Src\Scene\EndRollScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
-    <ClCompile Include="NormalBackGround.cpp" />
-    <ClCompile Include="BossBackGround.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp">
       <Filter>Src\Actor\Character\Player</Filter>
     </ClCompile>
@@ -313,7 +311,6 @@
     <ClCompile Include="Src\Camera\SideCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CompositeBackground.cpp" />
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp">
       <Filter>Src\Core</Filter>
     </ClCompile>
@@ -336,6 +333,15 @@
       <Filter>Src\Direction\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\CompositeBackground.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\NormalBackGround.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\BossBackGround.cpp">
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
@@ -532,8 +538,6 @@
     <ClInclude Include="Src\Scene\EndRollScene.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
     <ClInclude Include="IBackGround.h" />
-    <ClInclude Include="NormalBackGround.h" />
-    <ClInclude Include="BossBackGround.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h">
       <Filter>Src\Actor\Character\Player</Filter>
     </ClInclude>
@@ -618,7 +622,6 @@
     <ClInclude Include="Src\Camera\SideCameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CompositeBackground.h" />
     <ClInclude Include="Src\Core\BattlePhaseManager.h">
       <Filter>Src\Core</Filter>
     </ClInclude>
@@ -641,6 +644,15 @@
       <Filter>Src\Direction\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\CompositeBackground.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\BossBackGround.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\NormalBackGround.h">
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
 
-#include "NormalBackGround.h"
+#include "Src/Actor/Stage/BackGround/NormalBackGround.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 

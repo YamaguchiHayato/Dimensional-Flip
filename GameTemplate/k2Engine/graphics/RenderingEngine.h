@@ -7,7 +7,7 @@
 #include "graphics/preRender/LightCulling.h"
 #include "geometry/SceneGeometryData.h"
 #include "graphics/light/VolumeLightRender.h"
-#include "../Game/CompositeBackground.h"
+#include "../Game/Src/Actor/Stage/BackGround/CompositeBackground.h"
 
 namespace nsK2Engine {
    

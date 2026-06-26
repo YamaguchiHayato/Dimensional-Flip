@@ -82,15 +82,27 @@ namespace nsApp
                      */
                     std::string GetFilePath(const char*name) const;
 
+                    /**
+                     * @brief 必要に応じてテクスチャをロードする。
+                     */
                     void EnsureLoaded();
 
-                    Texture* pZprepassTexture_ = nullptr;
-                    float cameraWorldX_ = 0.0f;
-                    std::vector<std::unique_ptr<FontFormulaEntry>> entries_;
-                    Vector2 baseUvOffset_{};
-                    bool enabled_ = true;
-                    bool isLoaded_ = false;
-                    DXGI_FORMAT colorFormat_ = DXGI_FORMAT_UNKNOWN;
+
+                private:
+                    Texture* pZprepassTexture_ = nullptr;                    //! ZPrepassで作成された深度テクスチャへのポインタ。
+
+
+                private:
+                    float cameraWorldX_ = 0.0f;                              //! カメラのワールド空間のX座標。
+
+                    bool enabled_ = true;                                    //! 有効化フラグ。
+                    bool isLoaded_ = false;                                  //! 読み込み済みフラグ。
+
+                    std::vector<std::unique_ptr<FontFormulaEntry>> entries_; //! フォント数式のエントリ。
+
+                    Vector2 baseUvOffset_{};                                 //! 基本UVオフセット。
+
+                    DXGI_FORMAT colorFormat_ = DXGI_FORMAT_UNKNOWN;          //! カラーバッファのフォーマット。
                 };
             } // namespace nsBackGround
         } // namespace nsStage

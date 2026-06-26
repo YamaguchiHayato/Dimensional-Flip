@@ -260,6 +260,7 @@
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerRunState.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerRunState.h" />
     <ClInclude Include="Src\Actor\Character\Player\State\PlayerTutorialPauseStage.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />

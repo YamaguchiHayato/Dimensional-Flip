@@ -26,6 +26,9 @@ namespace app
             for (int i = 0; i < 10; i++)
             {
                 models_[i].Init("Assets/stage/BackGround/Sky.tkm");
+                models_[i].SetZprepassEnabled(false);
+                models_[i].SetShadowCasterFlag(false);
+
 
                 float x = static_cast<float>(i) * BG_WIDTH;
                 float z = BG_Z_OFFSET + (static_cast<float>(i) * 0.1f);

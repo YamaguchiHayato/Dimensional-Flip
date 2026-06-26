@@ -70,7 +70,10 @@
     <Filter Include="Src\Parameter\Player">
       <UniqueIdentifier>{0bd874bf-3ba4-45e3-9ea6-61b2b5b92fc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Collision">
+    <Filter Include="Src\Actor\Stage\BackGround">
+      <UniqueIdentifier>{536ffd81-5736-46b0-9359-a0d1490a5c2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Direction\Collision">
       <UniqueIdentifier>{e5779816-2c8f-4f84-91ed-5a019e8d4d27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -327,10 +330,13 @@
       <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Collision\CollisionManager.cpp">
-      <Filter>Src\Collision</Filter>
+      <Filter>Src\Direction\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Src\Collision\NonCopyable.cpp">
-      <Filter>Src\Collision</Filter>
+      <Filter>Src\Direction\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -629,10 +635,13 @@
       <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Collision\CollisionManager.h">
-      <Filter>Src\Collision</Filter>
+      <Filter>Src\Direction\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Src\Collision\NonCopyable.h">
-      <Filter>Src\Collision</Filter>
+      <Filter>Src\Direction\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

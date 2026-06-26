@@ -8,19 +8,19 @@ public:
 	JumpPad() {};
 	virtual ~JumpPad();
 
-	/* ‰Šú‰»ˆ—B*/ 
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B*/ 
 	bool Start()override;
-	/* XVˆ—B*/
+	/* ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½B*/
 	void Update()override;
-	/* •`‰æˆ—B*/
+	/* ï¿½`ï¿½æˆï¿½ï¿½ï¿½B*/
 	void Render(RenderContext& rc)override;
 
 	/* 
-	 * @brief JumpPad‚Æ‚µ‚Ä‚ÌƒRƒAˆ—B
+	 * @brief JumpPadï¿½Æ‚ï¿½ï¿½Ä‚ÌƒRï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½B
 	 */
 	void LaunchPlayer();
 	/* 
-	 * @brief ƒWƒƒƒ“ƒvƒpƒbƒh‚ÌÀ•Wİ’èB
+	 * @brief ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½pï¿½bï¿½hï¿½Ìï¿½ï¿½Wï¿½İ’ï¿½B
 	 */
 	const void SetJumpPadPosition(const Vector3& jumpPadPosition)
 	{

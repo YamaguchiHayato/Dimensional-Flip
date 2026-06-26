@@ -1,5 +1,6 @@
 #include "k2EngineLowPreCompile.h"
 #include "Texture.h"
+#include "DirectXTK/Inc/WICTextureLoader.h"
 
 namespace nsK2EngineLow {
 	Texture::Texture(const wchar_t* filePath)
@@ -17,9 +18,14 @@ namespace nsK2EngineLow {
 	void Texture::InitFromDDSFile(const wchar_t* filePath)
 	{
 		Release();
-		//DDSファイルからテクスチャをロード。
+		//DDS?t?@?C??????e?N?X?`???????[?h?B
 		LoadTextureFromDDSFile(filePath);
 
+	}
+	void Texture::InitFromWICFile(const wchar_t* filePath)
+	{
+		Release();
+		LoadTextureFromWICFile(filePath);
 	}
 	void Texture::InitFromD3DResource(ID3D12Resource* texture)
 	{
@@ -37,7 +43,7 @@ namespace nsK2EngineLow {
 	void Texture::InitFromMemory(const char* memory, unsigned int size)
 	{
 		Release();
-		//DDSファイルからテクスチャをロード。
+		//DDS?t?@?C??????e?N?X?`???????[?h?B
 		LoadTextureFromMemory(memory, size);
 
 	}
@@ -62,7 +68,7 @@ namespace nsK2EngineLow {
 		re.End(g_graphicsEngine->GetCommandQueue());
 
 		if (FAILED(hr)) {
-			//テクスチャの作成に失敗しました。
+			//?e?N?X?`?????????s????????B
 			return;
 		}
 
@@ -90,12 +96,35 @@ namespace nsK2EngineLow {
 		re.End(g_graphicsEngine->GetCommandQueue());
 
 		if (FAILED(hr)) {
-			//テクスチャの作成に失敗しました。
+			//?e?N?X?`?????????s????????B
 			return;
 		}
 
 		m_texture = texture;
 		m_textureDesc = m_texture->GetDesc();
+	}
+	void Texture::LoadTextureFromWICFile(const wchar_t* filePath)
+	{
+		Release();
+		auto device = g_graphicsEngine->GetD3DDevice();
+		DirectX::ResourceUploadBatch re(device);
+		re.Begin();
+		ID3D12Resource* texture = nullptr;
+		auto hr = DirectX::CreateWICTextureFromFile(
+			device,
+			re,
+			filePath,
+			&texture,
+			false
+		);
+		re.End(g_graphicsEngine->GetCommandQueue());
+
+		if (FAILED(hr))
+			return;
+
+		m_texture = texture;
+		m_textureDesc = m_texture->GetDesc();
+		m_isCubemap = false;
 	}
 
 	void Texture::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)

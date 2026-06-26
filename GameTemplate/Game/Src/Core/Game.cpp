@@ -186,9 +186,8 @@ namespace app
                 m_isFadeInEnd = true;
             }
 
-            float cameraX = g_camera3D->GetPosition().x;
-            float u = fmodf(cameraX * 0.00025f, 1.0f);
-            g_renderingEngine->SetCompositeBackgroundUvOffset({u, 0.0f});
+            float cameraX = g_camera3D->GetTarget().x;
+            g_renderingEngine->UpdateCompositeBackground(cameraX);
 
             // 遷移処理を毎フレーム更新。
             UpdateTransition();

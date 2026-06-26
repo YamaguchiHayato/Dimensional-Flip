@@ -5,7 +5,7 @@ namespace nsK2Engine {
 
     RenderingEngine::RenderingEngine()
     {
-        // ƒV[ƒ“ƒ‰ƒCƒg
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½g
         g_sceneLight = &m_sceneLight;
     }
     RenderingEngine::~RenderingEngine()
@@ -43,20 +43,20 @@ namespace nsK2Engine {
     }
     void RenderingEngine::InitDefferedLighting_Sprite()
     {
-        // ƒ|ƒXƒgƒGƒtƒFƒNƒg“I‚ÉƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO‚ğs‚¤‚½‚ß‚ÌƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+        // ï¿½|ï¿½Xï¿½gï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Iï¿½Éƒfï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ÌƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         SpriteInitData spriteInitData;
 
-        // ‰æ–Ê‘S‘Ì‚ÉƒŒƒ“ƒ_ƒŠƒ“ƒO‚·‚é‚Ì‚Å•‚Æ‚‚³‚ÍƒtƒŒ[ƒ€ƒoƒbƒtƒ@[‚Ì•‚Æ‚‚³‚Æ“¯‚¶
+        // ï¿½ï¿½Ê‘Sï¿½Ì‚Éƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½Ì‚Å•ï¿½ï¿½Æï¿½ï¿½ï¿½ï¿½Íƒtï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½[ï¿½Ì•ï¿½ï¿½Æï¿½ï¿½ï¿½ï¿½Æ“ï¿½ï¿½ï¿½
         spriteInitData.m_width = g_graphicsEngine->GetFrameBufferWidth();
         spriteInitData.m_height = g_graphicsEngine->GetFrameBufferHeight();
 
-        // ƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO‚Åg—p‚·‚éƒeƒNƒXƒ`ƒƒ‚ğİ’è
+        // ï¿½fï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½Ågï¿½pï¿½ï¿½ï¿½ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½İ’ï¿½
         int texNo = 0;
         for (auto& gBuffer : m_gBuffer)
         {
             spriteInitData.m_textures[texNo++] = &gBuffer.GetRenderTargetTexture();
         }
-        // IBL—p‚ÌƒeƒNƒXƒ`ƒƒ‚ğƒZƒbƒgB
+        // IBLï¿½pï¿½Ìƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½B
 
         spriteInitData.m_fxFilePath = "Assets/shader/DeferredLighting.fx";
         if (m_isSoftShadow) {
@@ -70,7 +70,7 @@ namespace nsK2Engine {
         spriteInitData.m_expandShaderResoruceView[0] = &m_pointLightNoListInTileUAV;
         spriteInitData.m_expandShaderResoruceView[1] = &m_spotLightNoListInTileUAV;
         if (g_graphicsEngine->IsPossibleRaytracing()) {
-            // ƒŒƒCƒgƒŒ‚ğs‚¤‚±‚Æ‚ª‰Â”\B
+            // ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Â”\ï¿½B
             spriteInitData.m_expandShaderResoruceView[2] = &g_graphicsEngine->GetRaytracingOutputTexture();
             spriteInitData.m_expandShaderResoruceView[3] = &m_giTextureBlur[eGITextureBlur_1024x1024].GetBokeTexture();
             spriteInitData.m_expandShaderResoruceView[4] = &m_giTextureBlur[eGITextureBlur_512x512].GetBokeTexture();
@@ -92,12 +92,12 @@ namespace nsK2Engine {
         }
 
         spriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
-        // ‰Šú‰»ƒf[ƒ^‚ğg‚Á‚ÄƒXƒvƒ‰ƒCƒg‚ğì¬
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÄƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ì¬
         m_diferredLightingSprite.Init(spriteInitData);
     }
     void RenderingEngine::ReInitIBL(const wchar_t* iblTexFilePath, float luminance)
     {
-        // IBLƒf[ƒ^‚ğ‰Šú‰»B
+        // IBLï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
         InitIBLData(iblTexFilePath, luminance);
         
         InitDefferedLighting_Sprite();
@@ -108,14 +108,14 @@ namespace nsK2Engine {
             m_pointLightNoListInTileUAV,
             m_spotLightNoListInTileUAV
         );
-        // ƒCƒxƒ“ƒgƒŠƒXƒi[‚ÉIBLƒf[ƒ^‚É•ÏX‚ª‚ ‚Á‚½‚±‚Æ‚ğ’Ê’m‚·‚éB
+        // ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Xï¿½iï¿½[ï¿½ï¿½IBLï¿½fï¿½[ï¿½^ï¿½É•ÏXï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½Ê’mï¿½ï¿½ï¿½ï¿½B
         for (auto& listener : m_eventListeners) {
             listener.listenerFunc(enEventReInitIBLTexture);
         }
     }
     void RenderingEngine::InitShadowMapRender()
     {
-        // ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì•`‰æˆ—‚Ì‰Šú‰»
+        // ï¿½Vï¿½ï¿½ï¿½hï¿½Eï¿½}ï¿½bï¿½vï¿½Ì•`ï¿½æˆï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
         for (auto& shadowMapRender : m_shadowMapRenders) {
             shadowMapRender.Init(m_isSoftShadow);
         }
@@ -162,7 +162,7 @@ namespace nsK2Engine {
         int frameBuffer_w = g_graphicsEngine->GetFrameBufferWidth();
         int frameBuffer_h = g_graphicsEngine->GetFrameBufferHeight();
 
-        // ƒAƒ‹ƒxƒhƒJƒ‰[‚ğo—Í—p‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ‰Šú‰»‚·‚é
+        // ï¿½Aï¿½ï¿½ï¿½xï¿½hï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½Í—pï¿½Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float clearColor[] = { 0.5f, 0.5f, 0.5f, 1.0f };
         m_gBuffer[enGBufferAlbedoDepth].Create(
             frameBuffer_w,
@@ -174,7 +174,7 @@ namespace nsK2Engine {
             clearColor
         );
 
-        // –@üo—Í—p‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ‰Šú‰»‚·‚é
+        // ï¿½@ï¿½ï¿½ï¿½oï¿½Í—pï¿½Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         m_gBuffer[enGBufferNormal].Create(
             frameBuffer_w,
             frameBuffer_h,
@@ -185,7 +185,7 @@ namespace nsK2Engine {
         );
 
 
-        // ƒƒ^ƒŠƒbƒNA‰eƒpƒ‰ƒ[ƒ^AƒXƒ€[ƒXo—Í—p‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ‰Šú‰»‚·‚é    
+        // ï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½bï¿½Nï¿½Aï¿½eï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Aï¿½Xï¿½ï¿½ï¿½[ï¿½Xï¿½oï¿½Í—pï¿½Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    
         m_gBuffer[enGBufferMetaricShadowSmooth].Create(
             frameBuffer_w,
             frameBuffer_h,
@@ -200,19 +200,19 @@ namespace nsK2Engine {
     {
         SpriteInitData spriteInitData;
 
-        // ƒeƒNƒXƒ`ƒƒ‚ÍyBlurRenderTarget‚ÌƒJƒ‰[ƒoƒbƒtƒ@[
+        // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½yBlurRenderTargetï¿½ÌƒJï¿½ï¿½ï¿½[ï¿½oï¿½bï¿½tï¿½@ï¿½[
         spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOæ‚ªƒtƒŒ[ƒ€ƒoƒbƒtƒ@[‚È‚Ì‚ÅA‰ğ‘œ“x‚ÍƒtƒŒ[ƒ€ƒoƒbƒtƒ@[‚Æ“¯‚¶
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½æ‚ªï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½[ï¿½È‚Ì‚ÅAï¿½ğ‘œ“xï¿½Íƒtï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½[ï¿½Æ“ï¿½ï¿½ï¿½
         spriteInitData.m_width = g_graphicsEngine->GetFrameBufferWidth();
         spriteInitData.m_height = g_graphicsEngine->GetFrameBufferHeight();
 
-        // ƒKƒ“ƒ}•â³‚ ‚è‚Ì2D•`‰æ‚ÌƒVƒF[ƒ_[‚ğw’è‚·‚é
+        // ï¿½Kï¿½ï¿½ï¿½}ï¿½â³ï¿½ï¿½ï¿½ï¿½ï¿½2Dï¿½`ï¿½ï¿½ÌƒVï¿½Fï¿½[ï¿½_ï¿½[ï¿½ï¿½ï¿½wï¿½è‚·ï¿½ï¿½
         spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
         spriteInitData.m_psEntryPoinFunc = "PSMain";
         spriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-        // ‰Šú‰»ƒIƒuƒWƒFƒNƒg‚ğg‚Á‚ÄAƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÄAï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         m_copyMainRtToFrameBufferSprite.Init(spriteInitData);
 
     }
@@ -224,30 +224,30 @@ namespace nsK2Engine {
     }
     void RenderingEngine::InitDeferredLighting()
     {
-        // GIƒeƒNƒXƒ`ƒƒ‚ğì¬‚·‚é‚½‚ß‚Ìƒuƒ‰[ˆ—‚ğ‰Šú‰»‚·‚éB
+        // GIï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½é‚½ï¿½ß‚Ìƒuï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
         m_giTextureBlur[eGITextureBlur_1024x1024].Init(&g_graphicsEngine->GetRaytracingOutputTexture(), 1024, 1024);
         m_giTextureBlur[eGITextureBlur_512x512].Init(&m_giTextureBlur[eGITextureBlur_1024x1024].GetBokeTexture(), 512, 512);
         m_giTextureBlur[eGITextureBlur_256x256].Init(&m_giTextureBlur[eGITextureBlur_512x512].GetBokeTexture(), 256, 256);
         m_giTextureBlur[eGITextureBlur_128x128].Init(&m_giTextureBlur[eGITextureBlur_256x256].GetBokeTexture(), 128, 128);
 
-        // ƒV[ƒ“ƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚éB
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
         m_sceneLight.Init();
 
-        // ƒ^ƒCƒ‹‚²‚Æ‚Ìƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ì”Ô†‚ğ‹L˜^‚·‚éƒŠƒXƒg‚ÌUAV‚ğì¬B
+        // ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Ìƒ|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Cï¿½gï¿½Ì”Ôï¿½ï¿½ï¿½ï¿½Lï¿½^ï¿½ï¿½ï¿½éƒŠï¿½Xï¿½gï¿½ï¿½UAVï¿½ï¿½ï¿½ì¬ï¿½B
         m_pointLightNoListInTileUAV.Init(
             sizeof(int),
             MAX_POINT_LIGHT * NUM_TILE,
             nullptr,
             false
         );
-        // ƒ^ƒCƒ‹‚²‚Æ‚ÌƒXƒ|ƒbƒgƒ‰ƒCƒg‚Ì”Ô†‚ğ‹L‰¯‚·‚éƒŠƒXƒg‚ÌUAV‚ğì¬B
+        // ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ÌƒXï¿½|ï¿½bï¿½gï¿½ï¿½ï¿½Cï¿½gï¿½Ì”Ôï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½éƒŠï¿½Xï¿½gï¿½ï¿½UAVï¿½ï¿½ï¿½ì¬ï¿½B
         m_spotLightNoListInTileUAV.Init(
             sizeof(int),
             MAX_SPOT_LIGHT * NUM_TILE,
             nullptr,
             false
         );
-        // ƒ|ƒXƒgƒGƒtƒFƒNƒg“I‚ÉƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO‚ğs‚¤‚½‚ß‚ÌƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+        // ï¿½|ï¿½Xï¿½gï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Iï¿½Éƒfï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ÌƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         InitDefferedLighting_Sprite();
     }
     void RenderingEngine::Init2DRenderTarget()
@@ -264,31 +264,31 @@ namespace nsK2Engine {
             clearColor
         );
 
-        // ÅI‡¬—p‚ÌƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+        // ï¿½ÅIï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ÌƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         SpriteInitData spriteInitData;
-        //ƒeƒNƒXƒ`ƒƒ‚Í2DƒŒƒ“ƒ_\ƒ^[ƒQƒbƒgB
+        //ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½2Dï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½\ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½B
         spriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
-        // ‰ğ‘œ“x‚ÍmainRenderTarget‚Ì•‚Æ‚‚³
+        // ï¿½ğ‘œ“xï¿½ï¿½mainRenderTargetï¿½Ì•ï¿½ï¿½Æï¿½ï¿½ï¿½
         spriteInitData.m_width = m_mainRenderTarget.GetWidth();
         spriteInitData.m_height = m_mainRenderTarget.GetHeight();
-        // 2D—p‚ÌƒVƒF[ƒ_[‚ğg—p‚·‚é
+        // 2Dï¿½pï¿½ÌƒVï¿½Fï¿½[ï¿½_ï¿½[ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½
         spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
         spriteInitData.m_vsEntryPointFunc = "VSMain";
         spriteInitData.m_psEntryPoinFunc = "PSMain";
-        //ã‘‚«B
+        //ï¿½ã‘ï¿½ï¿½ï¿½B
         spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-        //ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÌƒtƒH[ƒ}ƒbƒgB
+        //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ìƒtï¿½Hï¿½[ï¿½}ï¿½bï¿½gï¿½B
         spriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
 
         m_2DSprite.Init(spriteInitData);
 
-        //ƒeƒNƒXƒ`ƒƒ‚ÍƒƒCƒ“ƒŒƒ“ƒ_\ƒ^[ƒQƒbƒgB
+        //ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Íƒï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½\ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½B
         spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
 
-        //‰ğ‘œ“x‚Í2DƒŒƒ“ƒ_\ƒ^[ƒQƒbƒg‚Ì•‚Æ‚‚³
+        //ï¿½ğ‘œ“xï¿½ï¿½2Dï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½\ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ì•ï¿½ï¿½Æï¿½ï¿½ï¿½
         spriteInitData.m_width = m_2DRenderTarget.GetWidth();
         spriteInitData.m_height = m_2DRenderTarget.GetHeight();
-        //ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÌƒtƒH[ƒ}ƒbƒgB
+        //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ìƒtï¿½Hï¿½[ï¿½}ï¿½bï¿½gï¿½B
         spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
        
         m_mainSprite.Init(spriteInitData);
@@ -306,11 +306,11 @@ namespace nsK2Engine {
     }
     void RenderingEngine::Update()
     {
-        // ƒrƒ…[ƒJƒŠƒ“ƒO—p‚Ìƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ÌŒvZB
+        // ï¿½rï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½pï¿½Ìƒrï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ÌŒvï¿½Zï¿½B
         CalcViewProjectionMatrixForViewCulling();
-        // ƒV[ƒ“‚ÌƒWƒIƒƒgƒŠî•ñ‚ÌXVB
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½ÌƒWï¿½Iï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ÌXï¿½Vï¿½B
         m_sceneGeometryData.Update();
-        // ƒV[ƒ“ƒ‰ƒCƒg‚ÌXVB
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½gï¿½ÌXï¿½Vï¿½B
         m_sceneLight.Update();
     }
     void RenderingEngine::ComputeAnimatedVertex(RenderContext& rc)
@@ -321,32 +321,32 @@ namespace nsK2Engine {
     }
     void RenderingEngine::Execute(RenderContext& rc)
     {
-        // ƒV[ƒ“ƒ‰ƒCƒg‚Ìƒf[ƒ^‚ğƒRƒs[B
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½gï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½Rï¿½sï¿½[ï¿½B
         m_deferredLightingCB.m_light = m_sceneLight.GetSceneLight();
         m_deferredLightingCB.m_isEnableRaytracing = IsEnableRaytracing() ? 1 : 0;
 
-        // ƒŒƒCƒgƒŒ—p‚Ìƒ‰ƒCƒgƒf[ƒ^‚ğƒRƒs[B
+        // ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½pï¿½Ìƒï¿½ï¿½Cï¿½gï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½Rï¿½sï¿½[ï¿½B
         m_raytracingLightData.m_directionalLight = m_sceneLight.GetSceneLight().directionalLight[0];
         m_raytracingLightData.m_iblIntencity = m_iblData.m_intencity;
         m_raytracingLightData.m_ambientLight = m_sceneLight.GetSceneLight().ambinetLight;
         m_raytracingLightData.m_enableIBLTexture = m_iblData.m_texture.IsValid() ? 1 : 0;
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_‚ÌŒvZB
+        // ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ï‚İ’ï¿½ï¿½_ï¿½ÌŒvï¿½Zï¿½B
         ComputeAnimatedVertex(rc);
 
-        // ƒVƒƒƒhƒEƒ}ƒbƒv‚Ö‚Ì•`‰æ
+        // ï¿½Vï¿½ï¿½ï¿½hï¿½Eï¿½}ï¿½bï¿½vï¿½Ö‚Ì•`ï¿½ï¿½
         RenderToShadowMap(rc);
 
         // ZPrepass
         ZPrepass(rc);
 
-        // ƒ‰ƒCƒgƒJƒŠƒ“ƒO
+        // ï¿½ï¿½ï¿½Cï¿½gï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½O
         m_lightCulling.Execute(rc);
 
-        // G-Buffer‚Ö‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
+        // G-Bufferï¿½Ö‚Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½O
         RenderToGBuffer(rc);
 
-        // ƒŒƒCƒgƒŒ‚Å‰f‚è‚İ‰æ‘œ‚ğì¬‚·‚éB
+        // ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½Å‰fï¿½èï¿½İ‰æ‘œï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½B
         if (IsEnableRaytracing()) {
             g_graphicsEngine->DispatchRaytracing(rc);
             for (auto& blur : m_giTextureBlur) {
@@ -354,31 +354,31 @@ namespace nsK2Engine {
             }
         }
 
-        // ƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO
+        // ï¿½fï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½O
         DeferredLighting(rc);
             
-        // •s“§–¾ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ‚ªI‚í‚Á‚½“_‚ÅƒXƒiƒbƒvƒVƒ‡ƒbƒg‚ğB‰e‚·‚é
+        // ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ì•`ï¿½æ‚ªï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ÅƒXï¿½iï¿½bï¿½vï¿½Vï¿½ï¿½ï¿½bï¿½gï¿½ï¿½ï¿½Bï¿½eï¿½ï¿½ï¿½ï¿½
         SnapshotMainRenderTarget(rc, EnMainRTSnapshot::enDrawnOpacity);
 
-        // ƒtƒHƒ[ƒhƒŒƒ“ƒ_ƒŠƒ“ƒO
+        // ï¿½tï¿½Hï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½O
         ForwardRendering(rc);
 
         m_compositeBackground.Render(rc, m_mainRenderTarget);
 
-        // ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğÀs
+        // ï¿½|ï¿½Xï¿½gï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½s
         m_postEffect.Render(rc, m_mainRenderTarget);
 
-        // 2D•`‰æ
+        // 2Dï¿½`ï¿½ï¿½
         Render2D(rc);
 
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ì“à—e‚ğƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚ÉƒRƒs[
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ì“ï¿½ï¿½eï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½ÉƒRï¿½sï¿½[
         CopyMainRenderTargetToFrameBuffer(rc);
 #ifdef COPY_RAYTRACING_FRAMEBUFFER
         g_graphicsEngine->DispatchRaytracing(rc);
-        //ƒŒƒCƒgƒŒ‚ÌŒ‹‰Ê‚ğƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚É‘‚«–ß‚·B
+        //ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ÌŒï¿½ï¿½Ê‚ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½Éï¿½ï¿½ï¿½ï¿½ß‚ï¿½ï¿½B
         g_graphicsEngine->CopyToFrameBuffer(rc, g_graphicsEngine->GetRaytracingOutputTexture().Get());
 #endif
-        // “o˜^‚³‚ê‚Ä‚¢‚é•`‰æƒIƒuƒWƒFƒNƒg‚ğƒNƒŠƒA
+        // ï¿½oï¿½^ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½`ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
         m_renderObjects.clear();
     }
 
@@ -409,13 +409,13 @@ namespace nsK2Engine {
     void RenderingEngine::ZPrepass(RenderContext& rc)
     {
         BeginGPUEvent("ZPrepass");
-        // ‚Ü‚¸AƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Æ‚µ‚Äİ’è‚Å‚«‚é‚æ‚¤‚É‚È‚é‚Ü‚Å‘Ò‚Â
+        // ï¿½Ü‚ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Æ‚ï¿½ï¿½Äİ’ï¿½Å‚ï¿½ï¿½ï¿½æ‚¤ï¿½É‚È‚ï¿½Ü‚Å‘Ò‚ï¿½
         rc.WaitUntilToPossibleSetRenderTarget(m_zprepassRenderTarget);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğİ’è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½İ’ï¿½
         rc.SetRenderTargetAndViewport(m_zprepassRenderTarget);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
         rc.ClearRenderTargetView(m_zprepassRenderTarget);
 
         for (auto& renderObj : m_renderObjects) {
@@ -428,14 +428,14 @@ namespace nsK2Engine {
     void RenderingEngine::Render2D(RenderContext& rc)
     {
         BeginGPUEvent("Render2D");
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Æ‚µ‚Ä—˜—p‚Å‚«‚é‚Ü‚Å‘Ò‚ÂB
-        //PRESENT‚©‚çRENDERTARGET‚ÖB
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Æ‚ï¿½ï¿½Ä—ï¿½ï¿½pï¿½Å‚ï¿½ï¿½ï¿½Ü‚Å‘Ò‚ÂB
+        //PRESENTï¿½ï¿½ï¿½ï¿½RENDERTARGETï¿½ÖB
         rc.WaitUntilToPossibleSetRenderTarget(m_2DRenderTarget);
     
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğİ’è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½İ’ï¿½
         rc.SetRenderTargetAndViewport(m_2DRenderTarget);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
         rc.ClearRenderTargetView(m_2DRenderTarget);
 
         m_mainSprite.Draw(rc);
@@ -444,17 +444,17 @@ namespace nsK2Engine {
             renderObj->OnRender2D(rc);
         }
 
-        //RENDERTARGET‚©‚çPRESENT‚ÖB
+        //RENDERTARGETï¿½ï¿½ï¿½ï¿½PRESENTï¿½ÖB
         rc.WaitUntilFinishDrawingToRenderTarget(m_2DRenderTarget);
-        //PRESENT‚©‚çRENDERTARGET‚ÖB
+        //PRESENTï¿½ï¿½ï¿½ï¿½RENDERTARGETï¿½ÖB
         rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğİ’è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½İ’ï¿½
         rc.SetRenderTargetAndViewport(m_mainRenderTarget);
 
         m_2DSprite.Draw(rc);
 
-        //RENDERTARGET‚©‚çPRESENT‚ÖB
+        //RENDERTARGETï¿½ï¿½ï¿½ï¿½PRESENTï¿½ÖB
         rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
         EndGPUEvent();
@@ -472,19 +472,19 @@ namespace nsK2Engine {
             renderObj->OnForwardRender(rc);
         }
 
-        // ƒ{ƒŠƒ…[ƒ€ƒ‰ƒCƒg‚ğ•`‰æB
+        // ï¿½{ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½`ï¿½ï¿½B
         m_volumeLightRender.Render(
             rc, 
             m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
             m_gBuffer[enGBufferAlbedoDepth].GetDSVCpuDescriptorHandle()
         );
 
-        // ‘±‚¢‚Ä”¼“§–¾ƒIƒuƒWƒFƒNƒg‚ğ•`‰æB
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ä”ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½`ï¿½ï¿½B
         for (auto& renderObj : m_renderObjects) {
             renderObj->OnTlanslucentRender(rc);
         }
 
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ö‚Ì‘‚«‚İI—¹‘Ò‚¿
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ö‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İIï¿½ï¿½ï¿½Ò‚ï¿½
         rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
         
         EndGPUEvent();
@@ -492,27 +492,27 @@ namespace nsK2Engine {
     void RenderingEngine::RenderToGBuffer(RenderContext& rc)
     {
         BeginGPUEvent("RenderToGBuffer");
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğG-Buffer‚É•ÏX
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½G-Bufferï¿½É•ÏX
         RenderTarget* rts[enGBufferNum] = {
-            &m_gBuffer[enGBufferAlbedoDepth],         // 0”Ô–Ú‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
-            &m_gBuffer[enGBufferNormal],              // 1”Ô–Ú‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
-            &m_gBuffer[enGBufferMetaricShadowSmooth], // 2”Ô–Ú‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+            &m_gBuffer[enGBufferAlbedoDepth],         // 0ï¿½Ô–Ú‚Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½g
+            &m_gBuffer[enGBufferNormal],              // 1ï¿½Ô–Ú‚Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½g
+            &m_gBuffer[enGBufferMetaricShadowSmooth], // 2ï¿½Ô–Ú‚Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½g
         };
 
-        // ‚Ü‚¸AƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Æ‚µ‚Äİ’è‚Å‚«‚é‚æ‚¤‚É‚È‚é‚Ü‚Å‘Ò‚Â
+        // ï¿½Ü‚ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Æ‚ï¿½ï¿½Äİ’ï¿½Å‚ï¿½ï¿½ï¿½æ‚¤ï¿½É‚È‚ï¿½Ü‚Å‘Ò‚ï¿½
         rc.WaitUntilToPossibleSetRenderTargets(ARRAYSIZE(rts), rts);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğİ’è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½İ’ï¿½
         rc.SetRenderTargets(ARRAYSIZE(rts), rts);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
         rc.ClearRenderTargetViews(ARRAYSIZE(rts), rts);
 
         for (auto& renderObj : m_renderObjects) {
             renderObj->OnRenderToGBuffer(rc);
         }
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ö‚Ì‘‚«‚İ‘Ò‚¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ö‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ‘Ò‚ï¿½
         rc.WaitUntilFinishDrawingToRenderTargets(ARRAYSIZE(rts), rts);
         EndGPUEvent();
     }
@@ -521,7 +521,7 @@ namespace nsK2Engine {
     {
         BeginGPUEvent("SnapshotMainRenderTarget");
 
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ì“à—e‚ğƒXƒiƒbƒvƒVƒ‡ƒbƒg
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ì“ï¿½ï¿½eï¿½ï¿½ï¿½Xï¿½iï¿½bï¿½vï¿½Vï¿½ï¿½ï¿½bï¿½g
         rc.WaitUntilToPossibleSetRenderTarget(m_mainRTSnapshots[(int)enSnapshot]);
         rc.SetRenderTargetAndViewport(m_mainRTSnapshots[(int)enSnapshot]);
         m_copyMainRtToFrameBufferSprite.Draw(rc);
@@ -534,7 +534,7 @@ namespace nsK2Engine {
     {
         BeginGPUEvent("DeferredLighting");
 
-        // ƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO‚É•K—v‚Èƒ‰ƒCƒgî•ñ‚ğXV‚·‚é
+        // ï¿½fï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½É•Kï¿½vï¿½Èƒï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
         m_deferredLightingCB.m_light.eyePos = g_camera3D->GetPosition();
         for (int i = 0; i < MAX_DIRECTIONAL_LIGHT; i++)
         {
@@ -545,15 +545,15 @@ namespace nsK2Engine {
         }
         m_deferredLightingCB.m_light.mViewProjInv.Inverse(g_camera3D->GetViewProjectionMatrix());
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOæ‚ğƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚É‚·‚é
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğİ’è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½É‚ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½İ’ï¿½
         rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
         rc.SetRenderTargetAndViewport(m_mainRenderTarget);
 
-        // G-Buffer‚Ì“à—e‚ğŒ³‚É‚µ‚ÄƒfƒBƒtƒ@[ƒhƒ‰ƒCƒeƒBƒ“ƒO
+        // G-Bufferï¿½Ì“ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½Äƒfï¿½Bï¿½tï¿½@ï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½O
         m_diferredLightingSprite.Draw(rc);
 
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ö‚Ì‘‚«‚İI—¹‘Ò‚¿
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½Ö‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İIï¿½ï¿½ï¿½Ò‚ï¿½
         rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
         EndGPUEvent();
@@ -563,13 +563,13 @@ namespace nsK2Engine {
     {
         BeginGPUEvent("CopyMainRenderTargetToFrameBuffer");
 
-        // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÌŠG‚ğƒtƒŒ[ƒ€ƒoƒbƒtƒ@[‚ÉƒRƒs[
+        // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ÌŠGï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½[ï¿½ÉƒRï¿½sï¿½[
         rc.SetRenderTarget(
             g_graphicsEngine->GetCurrentFrameBuffuerRTV(),
             g_graphicsEngine->GetCurrentFrameBuffuerDSV()
         );
 
-        // ƒrƒ…[ƒ|[ƒg‚ğw’è‚·‚é
+        // ï¿½rï¿½ï¿½ï¿½[ï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½wï¿½è‚·ï¿½ï¿½
         D3D12_VIEWPORT viewport;
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;
@@ -584,11 +584,6 @@ namespace nsK2Engine {
         EndGPUEvent();
     }
 
-
-    void RenderingEngine::SetCompositeBackgroundUvOffset(const Vector2& offset)
-    {
-        m_compositeBackground.SetUvOffset(offset);
-    }
 
     void RenderingEngine::EnableCompositeBackground(bool enable)
     {

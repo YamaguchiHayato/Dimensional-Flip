@@ -158,7 +158,7 @@ namespace app
             pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // ステージ背景の生成。
-            CreateBackGround(StageID::sStageEX);
+            CreateBackGround(StageManager::GetInstance()->GetCurrentStageID());
 
             // SkyCubeの初期化。
             InitSkyCube();

@@ -227,6 +227,14 @@ namespace nsK2Engine {
 			m_isShadowCaster = flag;
 		}
 
+		void SetZPrepassFilePath(const char* filePath)
+		{
+			if (filePath != nullptr && filePath[0] != '\0')
+				m_zprepassFxFilePath = filePath;
+			else
+				m_zprepassFxFilePath = "Assets/shader/preProcess/ZPrepass.fx";
+		}
+
 		/**
 		 * @brief 
 		 * @param flag 
@@ -484,6 +492,7 @@ namespace nsK2Engine {
 		bool						m_isEnableInstancingDraw = false;	// インスタンシング描画が有効？
 		bool						m_isRaytracingWorld = true;			//レイトレワールドに登録する？
 		bool						m_isEnableZPrepass = true;			// ZPrepassを有効にするかどうか
+		std::string m_zprepassFxFilePath = "Assets/shader/preProcess/ZPrepass.fx";
 		std::unique_ptr<Matrix[]>	m_worldMatrixArray;					// ワールド行列の配列。
 		StructuredBuffer			m_worldMatrixArraySB;				// ワールド行列の配列のストラクチャードバッファ。
 		std::vector< GemometryData > m_geometryDatas;					// ジオメトリ情報。

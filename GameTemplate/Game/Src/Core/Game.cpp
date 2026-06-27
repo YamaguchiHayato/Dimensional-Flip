@@ -1,10 +1,10 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "Game.h"
 #include "GameSoundEngine.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/production/Fade.h"
 #include "Src/Scene/LoadingScene.h"
+#include "Src/production/Fade.h"
 // UI。
 #include "Src/UI/HPbarUI.h"
 #include "Src/UI/NumberUI.h"
@@ -17,11 +17,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
 #include "Src/Core/StageManager.h"
-
-// ステージ背景。
-#include "Src/Actor/Stage/BackGround/NormalBackGround.h"
-#include "Src/Actor/Stage/BackGround/BossBackGround.h"
-
+#include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
 
 static GameSoundList StageToBgm(StageID id)
 {
@@ -37,7 +33,6 @@ static GameSoundList StageToBgm(StageID id)
         return GameSoundList_BGM_Stage1;
     }
 }
-
 
 namespace app
 {
@@ -60,7 +55,7 @@ namespace app
                 pBackGrounds_ = nullptr;
             }
 
-            // Playerを削除。 
+            // Playerを削除。
             if (pPlayer_)
             {
                 DeleteGO(pPlayer_);
@@ -94,12 +89,12 @@ namespace app
             SoundManager::DeleteInstence();
         }
 
-
         void Game::InitSkyCube()
         {
             pSkyCube_ = NewGO<SkyCube>(0, "skycube");
 
-            pSkyCube_->SetScale(Vector3::One * 100.0f);
+            // 見た目はスクロール背景を使うため、スケール0で非表示にする（IBLのみ利用）。
+            pSkyCube_->SetScale(0.0f);
 
             // IBLテクスチャを設定。
             g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(), 1.0f);
@@ -109,26 +104,36 @@ namespace app
             g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
         }
 
-
         bool Game::Start()
         {
             // 乱数のシード値を初期化する。
             srand(static_cast<unsigned int>(time(nullptr)));
 
-            /* TSVファイルの読み込み。*/
+            // ステージ情報が必要なため、Build より先に StageManager を生成する。
+            StageManager::CreateInstance();
+
+            // TSV 読み込みとステージ背景生成（InGameBuildHelper）。
             {
-                buildHelper_.Initialize();
+                const StageID startStageID = StageManager::GetInstance()->GetCurrentStageID();
+                buildHelper_.Initialize(startStageID);
 
                 while (!buildHelper_.IsFinished())
                     buildHelper_.Update();
 
                 if (!buildHelper_.IsLoadSuccess())
                     OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
+
+                // Build ステップで生成済みの背景を受け取る。
+                pBackGrounds_ = buildHelper_.GetBackGround();
             }
 
-
-            // ステージの生成。
-            StageManager::CreateInstance();
+            g_renderingEngine->SetStageBackGroundRenderer(
+                [](RenderContext& rc, RenderTarget& mainRT)
+                {
+                    auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("Normal");
+                    if (pBG != nullptr)
+                        pBG->RenderToMainTarget(rc, mainRT);
+                });
 
             // サウンドの生成。
             app::core::SoundManager::CreateInstence();
@@ -154,29 +159,23 @@ namespace app
             nextStageID_ = StageManager::GetInstance()->GetCurrentStageID();
 
             // Playerの初期位置設定。
-            // 初期地点
             pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
-            // ステージ背景の生成。
-            CreateBackGround(StageManager::GetInstance()->GetCurrentStageID());
-
-            // SkyCubeの初期化。
+            // SkyCubeの初期化（IBL用。見た目は非表示）。
             InitSkyCube();
 
             // 物理デバッグワイヤーフレーム表示有効化。
             PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
 
-
             return true;
         }
-
 
         void Game::Update()
         {
             StageID stage = StageManager::GetInstance()->GetCurrentStageID();
-            const bool isPlaying = (state_ == SceneTransitionState::None) && pFade_->IsFadeInEnd();
-            g_renderingEngine->EnableCompositeBackground(stage != StageID::sStageEX);
+            const bool useFormulaBg = (stage != StageID::sStageEX);
+            g_renderingEngine->EnableCompositeBackground(useFormulaBg);
 
             // フェードイン開始。
             if (!m_isFadeInEnd)
@@ -186,6 +185,7 @@ namespace app
                 m_isFadeInEnd = true;
             }
 
+            // 数式背景のパララックス更新。
             float cameraX = g_camera3D->GetTarget().x;
             g_renderingEngine->UpdateCompositeBackground(cameraX);
 
@@ -198,7 +198,6 @@ namespace app
             if (!pFade_->IsFadeInEnd())
                 return;
 
-
             if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
             {
                 const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
@@ -206,23 +205,15 @@ namespace app
                 m_hasAppliedStageBgm_ = true;
             }
 
-
             // ケースをNoneの状態でのみ、ゲームのメインロジックを実行。
             if (state_ == SceneTransitionState::None)
             {
                 // ステージマネージャーの更新。
                 StageManager::GetInstance()->Update();
 
-
-                // 背景の切り替え更新。
-                if (pCameraManager_ && pSkyCube_)
-                {
-                    if (pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D)
-                        pSkyCube_->SetScale(0.0f);
-
-                    else
-                        pSkyCube_->SetScale(2000.0f);
-                }
+                // スクロール背景を使うため SkyCube は常に非表示（IBLのみ）。
+                if (pSkyCube_)
+                    pSkyCube_->SetScale(0.0f);
             }
 
             // プレイヤーのHPが0以下ならゲームオーバーへ遷移。
@@ -233,10 +224,9 @@ namespace app
             }
         }
 
-
         void Game::RequestStageTransition(StageID nextStageID)
         {
-            // 遷移中でければばリクエストを受け付ける。
+            // 遷移中でなければリクエストを受け付ける。
             if (state_ == SceneTransitionState::None)
             {
                 nextStageID_ = nextStageID;
@@ -250,7 +240,6 @@ namespace app
             }
         }
 
-
         void Game::ChangeDimension(CameraMode mode)
         {
             // カメラの切り替え。
@@ -263,25 +252,21 @@ namespace app
                     pCameraManager_->Request3DMode();
             }
 
-
             // コリジョンの切り替え。
             auto& collision = app::collision::CollisionManager::GetInstance();
             if (mode == CameraMode::mode2D)
-                // 2Dへ。
                 collision.SetDimension(collision::DimensionMode::dim2D);
 
             else
-                // 3Dへ。
                 collision.SetDimension(collision::DimensionMode::dim3D);
         }
-
 
         void Game::UpdateTransition()
         {
             switch (state_)
             {
             case SceneTransitionState::None:
-                 break;
+                break;
 
             case SceneTransitionState::FadeOut:
             {
@@ -313,8 +298,15 @@ namespace app
             {
                 StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
-                // 状況に応じたステージ背景を作り直す。
-                CreateBackGround(StageManager::GetInstance()->GetCurrentStageID());
+                // 旧背景を破棄してから、新ステージ用に作り直す。
+                if (pBackGrounds_)
+                {
+                    DeleteGO(pBackGrounds_);
+                    pBackGrounds_ = nullptr;
+                }
+
+                const StageID currentStageID = StageManager::GetInstance()->GetCurrentStageID();
+                pBackGrounds_ = buildHelper_.CreateBackGround(currentStageID);
 
                 // プレイヤーの位置を新しいステージの開始位置にリセット。
                 Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
@@ -366,7 +358,6 @@ namespace app
             }
         }
 
-
         void Game::UICreateInstance()
         {
             TimerCreateInstance();
@@ -375,54 +366,30 @@ namespace app
             HPbarCreateInstance();
         }
 
-
         void Game::PlayerCreateInstance()
         {
             pPlayer_ = NewGO<Player>(0, "player");
         }
-
 
         void Game::TimerCreateInstance()
         {
             pTimerUI_ = NewGO<TimerUI>(0, "timerui");
         }
 
-
         void Game::NumberCreateInstance()
         {
             pNumberUI_ = NewGO<NumberUI>(0, "numberui");
         }
-
 
         void Game::ScoreCreateInstance()
         {
             pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
         }
 
-
         void Game::HPbarCreateInstance()
         {
             pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
         }
 
-
-        void Game::CreateBackGround(StageID stageID)
-        {
-            switch (stageID)
-            {
-            // 通常ステージとチュートリアルステージは同じ背景モデルを使う。
-            case StageID::sTutorialStage:
-            case StageID::sStage1:
-                 pBackGrounds_ = NewGO<app::stage::NormalBackGround>(0, "Normal");
-                 break;
-
-            case StageID::sStageEX:
-                 pBackGrounds_ = NewGO<app::stage::BossBackGround>(0, "Boss");
-                 break;
-
-            default:
-                break;
-            }
-        }
-    } 
-} 
+    } // namespace core
+} // namespace app

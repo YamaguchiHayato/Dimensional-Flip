@@ -9,6 +9,8 @@
 #include "graphics/light/VolumeLightRender.h"
 #include "../Game/Src/Actor/Stage/BackGround/CompositeBackground.h"
 
+#include <functional> 
+
 namespace nsK2Engine {
    
     /// <summary>
@@ -142,6 +144,20 @@ namespace nsK2Engine {
         void UpdateCompositeBackground(float cameraWorldX)
         {
             m_compositeBackground.Update(cameraWorldX);
+        }
+
+        /**
+         * @brief ステージ背景描画コールバックの型。
+         */
+        using StageBackGroundRenderFunc = std::function<void(RenderContext&, RenderTarget&)>;
+        /**
+         * @brief ステージ背景の描画コールバックを登録する。
+         * @param func Forward 直前に呼ばれる描画関数。
+         * @note  Game::Start() から ScrollStageBackGround::RenderToMainTarget を登録する。
+         */
+        void SetStageBackGroundRenderer(StageBackGroundRenderFunc func)
+        {
+            m_stageBackGroundRenderer_ = std::move(func);
         }
 
         /// <summary>
@@ -671,9 +687,9 @@ namespace nsK2Engine {
         SIBLData m_iblData;                                             // IBL�f�[�^�B
         bool m_isEnableRaytracing = true;                               // ���C�g���[�V���O���L���H
         GaussianBlur m_giTextureBlur[eGITextureBlur_Num];                                // GI�e�N�X�`���Ƀu���[�������鏈���B
+
         CompositeBackground m_compositeBackground;
-
-
+        StageBackGroundRenderFunc m_stageBackGroundRenderer_; //!< ステージ背景描画コールバック。
         /// <summary>
         /// �C�x���g���X�i�[�̃f�[�^�B
         /// </summary>

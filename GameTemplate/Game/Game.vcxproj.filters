@@ -344,6 +344,18 @@
     <ClCompile Include="Src\Actor\Stage\BackGround\BossBackGround.cpp">
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayerConfig.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayerTile.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollStageBackGround.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayer.cpp">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -653,6 +665,18 @@
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\BackGround\NormalBackGround.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayerConfig.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayerTile.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollStageBackGround.h">
+      <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayer.h">
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClInclude>
   </ItemGroup>

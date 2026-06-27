@@ -1,11 +1,16 @@
 #include "stdafx.h"
 
 #include "InGameBuildHelper.h"
+#include "Src/Actor/Stage/BackGround/BossBackGround.h"
+#include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
 
 namespace nsApp
 {
-    void InGameBuildHelper::Initialize()
+    void InGameBuildHelper::Initialize(StageID stageID)
     {
+        stageID_ = stageID;
+        pBackGround_ = nullptr;
+
         buildFunctions_.clear();
         currentBuildIndex_ = 0;
         isFinished_ = false;
@@ -14,16 +19,14 @@ namespace nsApp
         InitializeBuildFunctions();
     }
 
-
     void InGameBuildHelper::InitializeBuildFunctions()
     {
         buildFunctions_.clear();
 
-        // 現在は TSV 読み込みのみ。将来ここにステップを追加する。
         buildFunctions_.push_back([this]() { BuildParameters(); });
+        buildFunctions_.push_back([this]() { BuildBackGroundStep(); });
         buildFunctions_.push_back([this]() { FinishBuild(); });
     }
-
 
     void InGameBuildHelper::ExecuteNextBuildFunction()
     {
@@ -40,7 +43,6 @@ namespace nsApp
         ++currentBuildIndex_;
     }
 
-
     void InGameBuildHelper::BuildParameters()
     {
         isLoadSuccess_ = parameterSystem_.LoadAll();
@@ -49,12 +51,34 @@ namespace nsApp
             OutputDebugStringA("InGameBuildHelper::BuildParameters - LoadAll failed.\n");
     }
 
+    void InGameBuildHelper::BuildBackGroundStep()
+    {
+        pBackGround_ = CreateBackGround(stageID_);
+
+        if (pBackGround_ == nullptr)
+            OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
+    }
+
+    nsStage::nsBackGround::IBackGround* InGameBuildHelper::CreateBackGround(StageID stageID)
+    {
+        switch (stageID)
+        {
+        case StageID::sTutorialStage:
+        case StageID::sStage1:
+            return NewGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>(0, "Normal");
+
+        case StageID::sStageEX:
+            return NewGO<nsApp::nsStage::nsBackGround::BossBackGround>(0, "Boss");
+
+        default:
+            return nullptr;
+        }
+    }
 
     void InGameBuildHelper::FinishBuild()
     {
         isFinished_ = true;
     }
-
 
     float InGameBuildHelper::GetProgress() const
     {

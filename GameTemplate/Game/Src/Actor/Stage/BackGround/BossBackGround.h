@@ -1,26 +1,46 @@
 #pragma once
+
 #include "IBackGround.h"
 
-namespace app
+namespace nsApp 
 {
-    namespace stage
+    namespace nsStage
     {
-        class BossBackGround : public IBackGround
+        namespace nsBackGround
         {
-        public:
-            BossBackGround() = default;
-            virtual ~BossBackGround() = default;
+            /**
+             * @brief ボスステージ用背景。
+             *
+             * 3D モデル（BossBackGround.tkm）を 2D カメラ時のみ描画する。
+             */
+            class BossBackGround : public IBackGround
+            {
+            public:
+                BossBackGround() = default;
+                virtual ~BossBackGround() = default;
 
+            public:
+                /**
+                 * @brief 初期化処理。
+                 * @return 成功時 true。
+                 */
+                bool Start() override;
 
-        public:
-            bool Start() override;
-            void Update() override;
-            void Render(RenderContext& rc) override;
+                /**
+                 * @brief 更新処理。
+                 */
+                void Update() override;
 
+                /**
+                 * @brief 描画処理。
+                 * @param rc レンダリングコンテキスト。
+                 */
+                void Render(RenderContext& rc) override;
 
-        private:
-            // ボス戦は1枚の巨大なモデルで覆う想定
-            ModelRender bossModel_;
-        };
-    } 
-} 
+            private:
+                ModelRender bossModel_; //!< ボス戦背景モデル。
+            };
+
+        } // namespace nsBackGround
+    } // namespace nsStage
+} // namespace nsApp

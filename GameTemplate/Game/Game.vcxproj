@@ -261,6 +261,10 @@
     <ClCompile Include="Src\Actor\Stage\BackGround\CompositeBackground.cpp" />
     <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp" />
     <ClCompile Include="Src\Actor\Stage\BackGround\NormalBackGround.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayer.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayerConfig.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayerTile.cpp" />
+    <ClCompile Include="Src\Actor\Stage\BackGround\ScrollStageBackGround.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
@@ -408,6 +412,10 @@
     <ClInclude Include="Src\Actor\Stage\BackGround\CompositeBackground.h" />
     <ClInclude Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.h" />
     <ClInclude Include="Src\Actor\Stage\BackGround\NormalBackGround.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayer.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayerConfig.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayerTile.h" />
+    <ClInclude Include="Src\Actor\Stage\BackGround\ScrollStageBackGround.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />

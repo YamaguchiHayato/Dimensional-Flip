@@ -35,12 +35,6 @@ namespace nsApp {
     class InGameBuildHelper;
 }
 
-namespace app{
-    namespace stage{
-        class IBackGround;
-    }
-}
-
 namespace app
 {
     namespace core
@@ -96,8 +90,6 @@ namespace app
             inline void HPbarCreateInstance();
             // その他。
             void InitSkyCube(); // スカイキューブの初期化。
-            // ステージ背景画像。
-            void CreateBackGround(StageID stageID);
 
 
         private:
@@ -117,7 +109,7 @@ namespace app
             SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;
-            app::stage::IBackGround* pBackGrounds_ = nullptr;
+            nsApp::nsStage::nsBackGround::IBackGround* pBackGrounds_ = nullptr;
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
 

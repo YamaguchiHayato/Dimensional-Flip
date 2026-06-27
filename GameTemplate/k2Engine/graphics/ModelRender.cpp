@@ -361,7 +361,7 @@ namespace nsK2Engine {
 	{
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = tkmFilePath;
-		modelInitData.m_fxFilePath = "Assets/shader/preProcess/ZPrepass.fx";
+		modelInitData.m_fxFilePath = m_zprepassFxFilePath.c_str();
 		modelInitData.m_modelUpAxis = modelUpAxis;
 
 		// 頂点シェーダーのエントリーポイントをセットアップ。

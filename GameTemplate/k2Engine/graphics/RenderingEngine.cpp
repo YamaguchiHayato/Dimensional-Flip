@@ -360,7 +360,10 @@ namespace nsK2Engine {
         // �s�����I�u�W�F�N�g�̕`�悪�I��������_�ŃX�i�b�v�V���b�g���B�e����
         SnapshotMainRenderTarget(rc, EnMainRTSnapshot::enDrawnOpacity);
 
-        // �t�H���[�h�����_�����O
+        if (m_stageBackGroundRenderer_)
+            m_stageBackGroundRenderer_(rc, m_mainRenderTarget);        // �t�H���[�h�����_�����O
+
+
         ForwardRendering(rc);
 
         m_compositeBackground.Render(rc, m_mainRenderTarget);

@@ -35,6 +35,11 @@ namespace nsApp
                 float screenY = 0.0f;                        //!< 3D 画面 Y（中心原点。Font と同じ）。
                 float screenScale = 0.5f;                    //!< 3D 表示スケール。
                 float screenTileWidth = 960.0f;              //!< 3D タイル横幅（px 相当）。0 なら texW*screenScale。
+
+                float screenHeightRatio = 1.0f;              //!< 画面高さに対する表示比率（0〜1）。
+                float screenCenterY = 0.0f;                  //!< 画面中心原点 Y。Ground は 0 で下端揃え計算。
+                float parallaxPixelScale = 1.0f;             //!< ワールド X → スクロール px 変換係数（微調整用）。
+                bool anchorBottom = false;                   //!< true なら screenCenterY を無視して下端揃え。
             };
 
             /**

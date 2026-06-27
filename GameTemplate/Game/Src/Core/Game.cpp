@@ -38,16 +38,8 @@ namespace app
 {
     namespace core
     {
-
         Game::~Game()
         {
-            // SkyCubeを削除。
-            if (pSkyCube_)
-            {
-                DeleteGO(pSkyCube_);
-                pSkyCube_ = nullptr;
-            }
-
             // ステージ背景を削除。
             if (pBackGrounds_)
             {
@@ -89,20 +81,6 @@ namespace app
             SoundManager::DeleteInstence();
         }
 
-        void Game::InitSkyCube()
-        {
-            pSkyCube_ = NewGO<SkyCube>(0, "skycube");
-
-            // 見た目はスクロール背景を使うため、スケール0で非表示にする（IBLのみ利用）。
-            pSkyCube_->SetScale(0.0f);
-
-            // IBLテクスチャを設定。
-            g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(), 1.0f);
-
-            // SkyCubeのタイプを設定。
-            pSkyCube_->SetType(EnSkyCubeType::enSkyCubeType_Day);
-            g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
-        }
 
         bool Game::Start()
         {
@@ -161,9 +139,6 @@ namespace app
             // Playerの初期位置設定。
             pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
-            // SkyCubeの初期化（IBL用。見た目は非表示）。
-            InitSkyCube();
-
             // 物理デバッグワイヤーフレーム表示有効化。
             PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
@@ -210,10 +185,6 @@ namespace app
             {
                 // ステージマネージャーの更新。
                 StageManager::GetInstance()->Update();
-
-                // スクロール背景を使うため SkyCube は常に非表示（IBLのみ）。
-                if (pSkyCube_)
-                    pSkyCube_->SetScale(0.0f);
             }
 
             // プレイヤーのHPが0以下ならゲームオーバーへ遷移。

@@ -76,6 +76,9 @@
     <Filter Include="Src\Direction\Collision">
       <UniqueIdentifier>{e5779816-2c8f-4f84-91ed-5a019e8d4d27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Parameter\Stage">
+      <UniqueIdentifier>{ad5c2474-ce14-41cf-a42f-5472d9d2bc12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\BackGround\ScrollLayer.cpp">
       <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Stage\ScrollBackGroundLayerTable.cpp">
+      <Filter>Src\Parameter\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -678,6 +684,12 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\BackGround\ScrollLayer.h">
       <Filter>Src\Actor\Stage\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\ScrollBackGroundLayerParameter.h">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\ScrollBackGroundLayerTable.h">
+      <Filter>Src\Parameter\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

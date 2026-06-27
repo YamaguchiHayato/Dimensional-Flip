@@ -58,6 +58,7 @@ namespace nsApp
                  */
                 void ClearOverride();
 
+
             private:
                 /**
                  * @brief 更新・描画に使うカメラ基準 X を取得する。

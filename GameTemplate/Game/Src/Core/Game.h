@@ -88,8 +88,6 @@ namespace app
             inline void ScoreCreateInstance();
             // HPbar。
             inline void HPbarCreateInstance();
-            // その他。
-            void InitSkyCube(); // スカイキューブの初期化。
 
 
         private:
@@ -106,7 +104,6 @@ namespace app
             ScoreUI* pScoreUI_ = nullptr;
             HPbarUI* pHpbarUI_ = nullptr;
             Fade* pFade_ = nullptr;
-            SkyCube* pSkyCube_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;
             nsApp::nsStage::nsBackGround::IBackGround* pBackGrounds_ = nullptr;

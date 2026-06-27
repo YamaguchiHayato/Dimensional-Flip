@@ -1,5 +1,5 @@
 #pragma once
-
+#include "k2EnginePreCompile.h"
 #include <memory>
 #include <vector>
 
@@ -15,7 +15,8 @@ namespace nsApp
             /**
              * @brief スクロール背景のレイヤー1枚分（Sky / Mountain / Ground）。
              *
-             * 複数タイルの生成・更新・描画を担当する。
+             * 定義に応じた横タイル列を生成し、パララックス付きで更新・描画する。
+             * 2D / 3D で更新関数のみ切り替え、タイル数・スクロール式は共通。
              */
             class ScrollLayer
             {
@@ -23,6 +24,7 @@ namespace nsApp
                 /**
                  * @brief レイヤーを初期化する。
                  * @param definition レイヤー定義。
+                 * @param pZprepassDepthTexture ZPrepass 深度テクスチャ。
                  * @return 初期化に成功した場合 true。
                  */
                 bool Init(const ScrollLayerDefinition& definition, nsK2EngineLow::Texture* pZprepassDepthTexture);
@@ -37,7 +39,7 @@ namespace nsApp
                  * @brief 可視タイルを描画する。
                  * @param rc レンダリングコンテキスト。
                  * @param cameraWorldX カメラ基準のワールド X。
-                 * @param viewHalfWidth 可視範囲の半幅（ワールド単位）。
+                 * @param viewHalfWidth 可視範囲の半幅（将来のカリング拡張用）。
                  */
                 void Render(RenderContext& rc, float cameraWorldX, float viewHalfWidth);
 
@@ -54,12 +56,9 @@ namespace nsApp
                 int GetRenderOrder() const { return definition_.renderOrder; }
 
             private:
-                ScrollLayerDefinition definition_{}; //!< レイヤー定義のコピー。
-
-                //!< 横タイル列（Sprite は Noncopyable のため unique_ptr で保持）。
-                std::vector<std::unique_ptr<ScrollLayerTile>> tiles_;
-
-                bool isInitialized_ = false; //!< 初期化済みフラグ。
+                ScrollLayerDefinition definition_{};                  //!< レイヤー定義のコピー。
+                std::vector<std::unique_ptr<ScrollLayerTile>> tiles_; //!< 横タイル列。
+                bool isInitialized_ = false;                          //!< 初期化済みフラグ。
             };
 
         } // namespace nsScrollBackGround

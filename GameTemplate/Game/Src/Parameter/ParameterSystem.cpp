@@ -4,7 +4,7 @@
 #include "Src/Parameter/Player/PlayerMoveParameterTable.h"
 #include "Src/Parameter/Player/PlayerPhysicsParameterTable.h"
 #include "Src/Parameter/Player/PlayerStatusParameterTable.h"
-
+#include "Src/Parameter/Stage/ScrollBackGroundLayerTable.h"
 
 
 namespace nsApp
@@ -36,6 +36,9 @@ namespace nsApp
 
             /* PhysicsTSV。*/
             isSuccess_ &= PlayerPhysicsParameterTable::LoadTSVFile(MakeParameterPath("PlayerPhysicsParameter.tsv").c_str());
+
+            /* ScrollBackgroundTSV。*/
+            isSuccess_ &= ScrollBackGroundLayerTable::LoadTSVFile(MakeParameterPath("ScrollBackGroundLayer.tsv").c_str());
 
             /* ここに新しいパラメータテーブルの読み込みを追加する場合は、上記のように isSuccess_ に結果を加算する。*/
             return isSuccess_;

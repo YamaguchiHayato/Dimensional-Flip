@@ -26,6 +26,7 @@ void Character2DRender::Init(const std::vector<std::string>& assetPathList)
     for (const auto& assetPath : assetPathList)
     {
         auto modelRender = std::make_unique<ModelRender>();
+        modelRender->SetZPrepassFilePath("Assets/shader/preProcess/CharacterZPrepass.fx");
         modelRender->Init(assetPath.c_str());
         m_modelRenderList.push_back(std::move(modelRender));
     }

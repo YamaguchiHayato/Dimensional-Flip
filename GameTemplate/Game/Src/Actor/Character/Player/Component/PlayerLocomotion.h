@@ -151,6 +151,8 @@ namespace nsApp
                     Vector3 camForward_ = Vector3::Zero;        //! カメラの前方向（Y=0, 正規化済み）。
                     bool is2DMode_ = false;                     //! 現在 2D カメラモードか。
                     float fixedDeltaTime_ = 0.0f;               //! 固定フレーム時間（1/150 秒）。
+                    float lockedZ2D_ = 0.0f;                    //! 2Dモード中に固定するZ
+                    bool was2DMode_ = false;                    //! 前フレームが2Dだったか
                 };
             } // namespace nsPlayer
         } // namespace nsCharacter

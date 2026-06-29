@@ -105,27 +105,32 @@ namespace nsApp
                     if (pCharaCon_ == nullptr || pCameraManager_ == nullptr)
                         return;
 
-                    /** @brief 2D モードかどうかをメンバに保持。 */
-                    is2DMode_ = (pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D);
+                    const bool is2DMode = (pCameraManager_->GetCurrentCameraMode() == CameraMode::mode2D);
+
+                    // 2Dに入った瞬間だけ、今のZをロック（0に潰さない）
+                    if (is2DMode && !was2DMode_)
+                        lockedZ2D_ = pPos_->z;
+
+                    was2DMode_ = is2DMode;
+                    is2DMode_ = is2DMode;
                     pCharaCon_->Set2DMode(is2DMode_);
 
-                    /** @brief 移動処理。 */
+                    // 2D中はZ方向に動かない
+                    if (is2DMode_)
+                        pMoveSpeed_->z = 0.0f;
+
                     *pPos_ = pCharaCon_->Execute(*pMoveSpeed_, fixedDeltaTime_);
 
-                    /** @brief 移動制限の適応。 */
                     AddMovementRestrictions();
 
+                    // 旧: pPos_->z = 0.0f;  ← これがワープの原因
                     if (is2DMode_)
-                        pPos_->z = 0.0f;
+                        pPos_->z = lockedZ2D_;
 
-                    /** @brief 座標のセット。 */
                     pCharaCon_->SetPosition(*pPos_);
 
                     if (pRender_ != nullptr)
-                    {
-                        /** @brief モデルの移動。 */
                         pRender_->SetPosition(*pPos_);
-                    }
                 }
 
 

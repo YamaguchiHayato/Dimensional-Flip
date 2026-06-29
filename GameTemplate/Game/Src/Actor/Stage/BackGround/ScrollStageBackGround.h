@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
 #include "IBackGround.h"
 #include "Src/Actor/Stage/BackGround/ScrollLayer.h"
+#include "Src/Actor/Stage/StageID.h"
 
 namespace nsApp
 {
@@ -11,71 +13,91 @@ namespace nsApp
     {
         namespace nsScrollBackGround
         {
-            /**
-             * @brief 通常ステージ用のスクロール背景（Sky / Mountain / Ground）。
-             *
-             * IBackGround として Game から生成され、2D / 3D 共通で動作する。
-             * 実描画は RenderToMainTarget() で Forward 直前に行う。
-             */
             class ScrollStageBackGround : public nsBackGround::IBackGround
             {
             public:
+                /* コンストラクタとデストラクタ。*/
                 ScrollStageBackGround() = default;
                 virtual ~ScrollStageBackGround() = default;
 
+            public:
                 /**
-                 * @brief 初期化処理。
-                 * @return 成功時 true。
+                 * @brief 次のステージIDを設定する。
+                 * @param stageID 設定するステージID。
+                 */
+                static void SetPendingStageID(StageID stageID);
+
+                /**
+                 * @brief ステージIDを設定する。
+                 * @param stageID 設定するステージID。
+                 */
+                void SetStageID(StageID stageID);
+
+                /**
+                 * @brief 背景の初期化処理を行う。
+                 * @return 初期化に成功した場合は true、失敗した場合は false。
                  */
                 bool Start() override;
 
                 /**
-                 * @brief 更新処理。
+                 * @brief 背景の更新処理を行う。
                  */
                 void Update() override;
 
                 /**
-                 * @brief 描画処理（IGameObject 用。即時描画は行わない）。
-                 * @param rc レンダリングコンテキスト。
+                 * @brief 背景の描画処理を行う。
+                 * @param rc 描画コンテキスト。
                  */
                 void Render(RenderContext& rc) override;
 
                 /**
-                 * @brief メインレンダーターゲットへ背景を描画する。
-                 * @param rc レンダリングコンテキスト。
-                 * @param mainRT メインレンダリングターゲット。
+                 * @brief メインレンダーターゲットに背景を描画する。
+                 * @param rc 描画コンテキスト。
+                 * @param mainRT メインレンダーターゲット。
                  */
                 void RenderToMainTarget(RenderContext& rc, RenderTarget& mainRT);
 
                 /**
-                 * @brief 背景追従の基準 X を上書きする（スター取得演出など）。
-                 * @param overridePosition 上書き座標（X のみ使用）。
+                 * @brief 背景のスクロールをオーバーライドする位置を設定する。
+                 * @param overridePosition オーバーライドする位置。
                  */
                 void SetOverrideTrackingPosition(const Vector3& overridePosition);
 
                 /**
-                 * @brief 追従上書きを解除する。
+                 * @brief オーバーライドを解除する。
                  */
                 void ClearOverride();
 
 
             private:
                 /**
-                 * @brief 更新・描画に使うカメラ基準 X を取得する。
-                 * @return カメラ基準のワールド X。
+                 * @brief スクロールレイヤーを構築する。
+                 * @return 構築に成功した場合は true、失敗した場合は false。
+                 */
+                bool BuildLayers();
+
+                /**
+                 * @brief スクロールレイヤーを更新する。
+                 * @return 更新に成功した場合は true、失敗した場合は false。
                  */
                 float GetCameraWorldX() const;
 
                 /**
-                 * @brief 可視範囲の半幅を取得する。
-                 * @return ワールド単位の半幅。
+                 * @brief スクロールレイヤーの描画順を更新する。
+                 * @return 描画順の更新に成功した場合は true、失敗した場合は false。
                  */
                 float GetViewHalfWidth() const;
 
+
             private:
-                std::vector<ScrollLayer> layers_;                  //!< 背景レイヤー列。
-                Vector3 overrideTrackingPosition_ = Vector3::Zero; //!< 追従上書き座標。
-                bool isOverrideActive_ = false;                    //!< 追従上書きフラグ。
+                StageID stageId_ = StageID::sInvalid;
+                std::vector<ScrollLayer> layers_;
+                std::vector<std::string> texturePathStorage_;
+                std::vector<ScrollLayerDefinition> definitionStorage_;
+                Vector3 overrideTrackingPosition_ = Vector3::Zero;
+                bool isOverrideActive_ = false;
+
+                static StageID pendingStageID_;
             };
 
         } // namespace nsScrollBackGround

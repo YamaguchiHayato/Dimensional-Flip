@@ -6,6 +6,8 @@
 #include "ScrollBackGroundLayerTable.h"
 #include "Src/Parameter/ParameterSystemTableBase.h"
 #include "Src/Utilty/TSVTable.h"
+#include "Src/Actor/Stage/StageID.h"
+
 
 namespace
 {
@@ -146,6 +148,8 @@ namespace nsApp
                 return "Stage2";
             case StageID::sStage3:
                 return "Stage3";
+            case StageID::sStageEX:
+                return "StageEX";
             default:
                 return "";
             }

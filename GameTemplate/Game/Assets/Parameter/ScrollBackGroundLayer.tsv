@@ -2,3 +2,4 @@ StageId	LayerId	TexturePath	Parallax	TileCount	RenderOrder	ScreenHeightRatio	Scr
 Tutorial	Sky	Assets/stage/BackGround/sky.DDS	0	1	0	1	0	1	0
 Tutorial	Mountain	Assets/stage/BackGround/mountain.DDS	0.35	3	1	0.58	-40	1	0
 Tutorial	Ground	Assets/stage/BackGround/ground.DDS	0	1	2	0.4	0	1	1
+StageEX	Sky	Assets/stage/BackGround/backGround_Boss.DDS	0	1	0	1	0	1	0

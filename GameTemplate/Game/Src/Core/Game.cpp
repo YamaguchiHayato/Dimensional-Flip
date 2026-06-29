@@ -22,6 +22,7 @@
 
 #include "Src/Core/Job/JobQueue.h"
 #include "Src/Core/StageLoadContext.h"
+#include "Src/Parameter/Stage/StageMasterTable.h"   
 
 static GameSoundList StageToBgm(StageID id)
 {
@@ -96,32 +97,29 @@ namespace app
             // JobQueue を起動する。
             nsApp::nsJob::JobQueue::GetInstance().Startup(2);
 
-
-
             // ステージ情報が必要なため、Build より先に StageManager を生成する。
             nsApp::nsStage::StageManager::CreateInstance();
 
+                
+            const StageID startStageID = nsApp::nsStage::StageManager::GetInstance()->GetNextInitStageID();
+
             // TSV 読み込みとステージ背景生成（InGameBuildHelper）。
             {
-                const StageID startStageID = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
                 buildHelper_.Initialize(startStageID);
-
                 while (!buildHelper_.IsFinished())
                     buildHelper_.Update();
-
                 if (!buildHelper_.IsLoadSuccess())
                     OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
-
-                // Build ステップで生成済みの背景を受け取る。
-                pBackGrounds_ = buildHelper_.GetBackGround();
             }
 
+            // 背景は共通ヘルパーで1本化
+            RefreshStageBackGround(startStageID);
+
             g_renderingEngine->SetStageBackGroundRenderer(
-                [](RenderContext& rc, RenderTarget& mainRT)
+                [this](RenderContext& rc, RenderTarget& mainRT)
                 {
-                    auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("Normal");
-                    if (pBG != nullptr)
-                        pBG->RenderToMainTarget(rc, mainRT);
+                    if (pBackGrounds_ != nullptr)
+                        pBackGrounds_->RenderToMainTarget(rc, mainRT);
                 });
 
             // サウンドの生成。
@@ -162,8 +160,10 @@ namespace app
             nsApp::nsJob::JobQueue::GetInstance().PumpMain();
 
             StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
-            const bool useFormulaBg = (stage != StageID::sStageEX);
+            const auto& master = nsApp::nsSystem::StageMasterTable::Get(stage);
+            const bool useFormulaBg = (master.backgroundType == "Scroll");
             g_renderingEngine->EnableCompositeBackground(useFormulaBg);
+
 
             // フェードイン開始。
             if (!m_isFadeInEnd)
@@ -208,6 +208,7 @@ namespace app
             }
         }
 
+
         void Game::RequestStageTransition(StageID nextStageID)
         {
             // 遷移中でなければリクエストを受け付ける。
@@ -223,6 +224,25 @@ namespace app
                 state_ = SceneTransitionState::FadeOut;
             }
         }
+
+        void Game::RefreshStageBackGround(StageID stageID)
+        {
+            // 古い背景 GO を確実に消す（名前 "BackGround"）
+            if (auto* oldBg = FindGO<nsApp::nsStage::nsBackGround::IBackGround>("BackGround"))
+                DeleteGO(oldBg);
+
+            if (pBackGrounds_ != nullptr)
+            {
+                DeleteGO(pBackGrounds_);
+                pBackGrounds_ = nullptr;
+            }
+
+            pBackGrounds_ = buildHelper_.CreateBackGround(stageID);
+
+            if (pBackGrounds_ == nullptr)
+                OutputDebugStringA("Game::RefreshStageBackGround - CreateBackGround failed.\n");
+        }
+
 
         void Game::ChangeDimension(CameraMode mode)
         {
@@ -320,16 +340,7 @@ namespace app
                                     {
                                         nsApp::nsStage::StageManager::GetInstance()->ChangeStageSync(targetStageID);
 
-                                        if (pBackGrounds_)
-                                        {
-                                            DeleteGO(pBackGrounds_);
-                                            pBackGrounds_ = nullptr;
-                                        }
-
-                                        const StageID currentStageID =
-                                            nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
-                                        pBackGrounds_ = buildHelper_.CreateBackGround(currentStageID);
-
+                                        RefreshStageBackGround(targetStageID);
                                         const Vector3 newStartPos =
                                             nsApp::nsStage::StageManager::GetInstance()->GetStageStartPos();
                                         pPlayer_->SetPlayerPos(newStartPos);
@@ -388,6 +399,7 @@ namespace app
                 break;
             }
         }
+
 
         void Game::UICreateInstance()
         {

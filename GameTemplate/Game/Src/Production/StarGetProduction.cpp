@@ -35,7 +35,7 @@ namespace app
             pPlayer_->SetPaused(true);
 
             // 1. 演出開始時にスターの座標で背景を固定する
-            auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("Normal");
+            auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("BackGround");
             if (pBG)
                 pBG->SetOverrideTrackingPosition(starPos_);
 

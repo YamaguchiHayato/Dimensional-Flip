@@ -34,6 +34,12 @@ namespace nsApp
                  * @param rc レンダリングコンテキスト。
                  */
                 virtual void Render(RenderContext& rc) override = 0;
+
+                /**
+                 * @brief メインレンダーターゲットへ背景を描画する。
+                 * @note  Scroll / Boss 共通。Render() は空でよい。
+                 */
+                virtual void RenderToMainTarget(RenderContext& rc, RenderTarget& mainRT) = 0;
             };
 
         } // namespace nsBackGround

@@ -2,7 +2,7 @@
 
 #include "IBackGround.h"
 
-namespace nsApp 
+namespace nsApp
 {
     namespace nsStage
     {
@@ -12,6 +12,7 @@ namespace nsApp
              * @brief ボスステージ用背景。
              *
              * 3D モデル（BossBackGround.tkm）を 2D カメラ時のみ描画する。
+             * 実描画は RenderToMainTarget() で Forward 直前に行う。
              */
             class BossBackGround : public IBackGround
             {
@@ -20,22 +21,18 @@ namespace nsApp
                 virtual ~BossBackGround() = default;
 
             public:
-                /**
-                 * @brief 初期化処理。
-                 * @return 成功時 true。
-                 */
                 bool Start() override;
-
-                /**
-                 * @brief 更新処理。
-                 */
                 void Update() override;
 
                 /**
-                 * @brief 描画処理。
-                 * @param rc レンダリングコンテキスト。
+                 * @brief 描画処理（IGameObject 用。即時描画は行わない）。
                  */
                 void Render(RenderContext& rc) override;
+
+                /**
+                 * @brief メインレンダーターゲットへ背景を描画する。
+                 */
+                void RenderToMainTarget(RenderContext& rc, RenderTarget& mainRT) override;
 
             private:
                 ModelRender bossModel_; //!< ボス戦背景モデル。

@@ -2,7 +2,7 @@
 #include <vector>
 #include "Src/Utilty/TSVTable.h"
 #include "Src/Parameter/Stage/ScrollBackGroundLayerParameter.h"
-#include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Stage/StageID.h"
 
 namespace nsApp
 {

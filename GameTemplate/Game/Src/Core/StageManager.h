@@ -68,6 +68,9 @@ namespace nsApp
 
             inline static StageManager* GetInstance() { return pStageManger_; }
             inline static void SetNextInitStageID(StageID id) { nextInitStageID_ = id; }
+
+            /** @brief ゲーム開始時に読み込むステージ ID を取得する。 */
+            inline static StageID GetNextInitStageID() { return nextInitStageID_; }
         };
     } // namespace nsStage
 } // namespace nsApp

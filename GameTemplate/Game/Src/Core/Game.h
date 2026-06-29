@@ -68,6 +68,8 @@ namespace app
             void RequestStageTransition(nsApp::nsStage::StageID nextStageID);
 
 
+            void RefreshStageBackGround(nsApp::nsStage::StageID stageID);
+
         public:
             /**
              * @brief ステージ遷移中かどうかを判定する。
@@ -108,7 +110,6 @@ namespace app
             inline void ScoreCreateInstance();
             // HPbar。
             inline void HPbarCreateInstance();
-
 
         private:
             // 遷移時の更新処理。

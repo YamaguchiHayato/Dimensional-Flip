@@ -1,43 +1,49 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "InGameBuildHelper.h"
-#include "Src/Actor/Stage/BackGround/BossBackGround.h"
 #include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
+#include "Src/Parameter/Stage/StageMasterTable.h"
 
 namespace nsApp
 {
     void InGameBuildHelper::Initialize(nsStage::StageID stageID)
     {
+        /* 初期化処理。*/
         stageID_ = stageID;
         pBackGround_ = nullptr;
         buildFunctions_.clear();
         currentBuildIndex_ = 0;
         isFinished_ = false;
         isLoadSuccess_ = true;
+
+        /* ビルド関数の初期化。*/
         InitializeBuildFunctions();
     }
 
 
     void InGameBuildHelper::InitializeBuildFunctions()
     {
+        /* ビルド関数のリストを初期化。*/
         buildFunctions_.clear();
         buildFunctions_.push_back([this]() { BuildParameters(); });
-        buildFunctions_.push_back([this]() { BuildBackGroundStep(); });
         buildFunctions_.push_back([this]() { FinishBuild(); });
     }
 
 
     void InGameBuildHelper::ExecuteNextBuildFunction()
     {
+        /* ビルド関数を順番に実行。*/
         if (isFinished_)
             return;
 
+        /* 現在のビルド関数を実行。*/
         if (currentBuildIndex_ >= static_cast<int>(buildFunctions_.size()))
         {
             isFinished_ = true;
             return;
         }
 
+        /* 現在のビルド関数を実行。*/
         buildFunctions_[currentBuildIndex_]();
         ++currentBuildIndex_;
     }
@@ -52,28 +58,30 @@ namespace nsApp
 
     void InGameBuildHelper::BuildBackGroundStep()
     {
+        /* ステージ背景を生成。*/
         pBackGround_ = CreateBackGround(stageID_);
         if (pBackGround_ == nullptr)
             OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
     }
 
 
+
     nsStage::nsBackGround::IBackGround* InGameBuildHelper::CreateBackGround(nsStage::StageID stageID)
     {
-        using nsStage::StageID;
-
-        switch (stageID)
-        {
-        case StageID::sTutorialStage:
-        case StageID::sStage1:
-            return NewGO<nsStage::nsScrollBackGround::ScrollStageBackGround>(0, "Normal");
-
-        case StageID::sStageEX:
-            return NewGO<nsStage::nsBackGround::BossBackGround>(0, "Boss");
-
-        default:
+        const auto& master = nsSystem::StageMasterTable::Get(stageID);
+        if (master.stageID == nsStage::StageID::sInvalid)
             return nullptr;
-        }
+
+        if (master.backgroundType != "Scroll" && master.backgroundType != "Boss")
+            return nullptr;
+
+        nsStage::nsScrollBackGround::ScrollStageBackGround::SetPendingStageID(stageID);
+
+        auto* bg = NewGO<nsStage::nsScrollBackGround::ScrollStageBackGround>(0, "BackGround");
+        if (bg != nullptr)
+            bg->SetStageID(stageID);
+
+        return bg;
     }
 
 

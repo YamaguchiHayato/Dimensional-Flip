@@ -49,8 +49,6 @@ namespace app
             void Render(RenderContext& rc) override;
 
 
-
-
         public:
             // どのアニメーションを再生するか設定する。
             inline void LoadAnimation(app::enemyStatus::BossAnimation animation, bool isLoop, float interPolate)
@@ -149,8 +147,7 @@ namespace app
             // 疲労状態に入るか。
             inline bool IsTired() const
             {
-//                return attackCount_ >= 3;
-                return attackCount_ >= 1;
+               return attackCount_ >= 3;
             }
 
             // 攻撃クラスの座標計算を取得。

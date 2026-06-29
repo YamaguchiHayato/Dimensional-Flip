@@ -20,6 +20,9 @@
 #include "Src/Actor/Stage/StageSetup.h"
 #include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
 
+#include "Src/Core/Job/JobQueue.h"
+#include "Src/Core/StageLoadContext.h"
+
 static GameSoundList StageToBgm(StageID id)
 {
     switch (id)
@@ -41,6 +44,8 @@ namespace app
     {
         Game::~Game()
         {
+            nsApp::nsJob::JobQueue::GetInstance().Shutdown();
+
             // ステージ背景を削除。
             if (pBackGrounds_)
             {
@@ -87,6 +92,11 @@ namespace app
         {
             // 乱数のシード値を初期化する。
             srand(static_cast<unsigned int>(time(nullptr)));
+
+            // JobQueue を起動する。
+            nsApp::nsJob::JobQueue::GetInstance().Startup(2);
+
+
 
             // ステージ情報が必要なため、Build より先に StageManager を生成する。
             nsApp::nsStage::StageManager::CreateInstance();
@@ -146,8 +156,11 @@ namespace app
             return true;
         }
 
+
         void Game::Update()
         {
+            nsApp::nsJob::JobQueue::GetInstance().PumpMain();
+
             StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
             const bool useFormulaBg = (stage != StageID::sStageEX);
             g_renderingEngine->EnableCompositeBackground(useFormulaBg);
@@ -232,6 +245,7 @@ namespace app
                 collision.SetDimension(collision::DimensionMode::dim3D);
         }
 
+
         void Game::UpdateTransition()
         {
             switch (state_)
@@ -261,49 +275,90 @@ namespace app
 
             case SceneTransitionState::Load_Render:
             {
+                nsApp::nsStage::StageLoadContext::Reset();
+                stageLoadPhase_ = StageLoadPhase::Idle;
+                stageLoadWorkerJobId_ = 0;
+                stageLoadMainJobId_ = 0;
+                isStageLoadMainEnqueued_ = false;
+
                 state_ = SceneTransitionState::Load_Wait;
                 break;
             }
 
             case SceneTransitionState::Load_Wait:
             {
-                nsApp::nsStage::StageManager::GetInstance()->ChangeStageSync(nextStageID_);
+                const StageID targetStageID = nextStageID_;
+                auto& jobQueue = nsApp::nsJob::JobQueue::GetInstance();
 
-                // 旧背景を破棄してから、新ステージ用に作り直す。
-                if (pBackGrounds_)
+                // --- Phase 1: Worker Job を投げる（1回だけ）---
+                if (stageLoadPhase_ == StageLoadPhase::Idle)
                 {
-                    DeleteGO(pBackGrounds_);
-                    pBackGrounds_ = nullptr;
+                    stageLoadWorkerJobId_ =
+                        jobQueue
+                            .EnqueueWorker([targetStageID]()
+                                           { nsApp::nsStage::StageLoadContext::PrepareOnWorker(targetStageID); })
+                            .GetId();
+
+                    stageLoadPhase_ = StageLoadPhase::Worker;
+                    break;
                 }
 
-                const StageID currentStageID = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
-                pBackGrounds_ = buildHelper_.CreateBackGround(currentStageID);
-
-                // プレイヤーの位置を新しいステージの開始位置にリセット。
-                Vector3 newStartPos = nsApp::nsStage::StageManager::GetInstance()->GetStageStartPos();
-                pPlayer_->SetPlayerPos(newStartPos);
-
-                if (pFade_->IsFadeInEnd())
+                // --- Phase 2: Worker 完了待ち ---
+                if (stageLoadPhase_ == StageLoadPhase::Worker)
                 {
-                    const StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
-                    const GameSoundList bgm = StageToBgm(stage);
+                    if (!jobQueue.IsJobDone(stageLoadWorkerJobId_))
+                        break;
 
-                    app::core::SoundManager::GetInstance()->PlayBGM(bgm);
-                    m_hasAppliedStageBgm_ = true;
-                    nextStageID_ = StageID::sInvalid;
-                    state_ = SceneTransitionState::None;
+                    if (!isStageLoadMainEnqueued_)
+                    {
+                        isStageLoadMainEnqueued_ = true;
+
+                        stageLoadMainJobId_ =
+                            jobQueue
+                                .EnqueueMain(
+                                    [this, targetStageID]()
+                                    {
+                                        nsApp::nsStage::StageManager::GetInstance()->ChangeStageSync(targetStageID);
+
+                                        if (pBackGrounds_)
+                                        {
+                                            DeleteGO(pBackGrounds_);
+                                            pBackGrounds_ = nullptr;
+                                        }
+
+                                        const StageID currentStageID =
+                                            nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
+                                        pBackGrounds_ = buildHelper_.CreateBackGround(currentStageID);
+
+                                        const Vector3 newStartPos =
+                                            nsApp::nsStage::StageManager::GetInstance()->GetStageStartPos();
+                                        pPlayer_->SetPlayerPos(newStartPos);
+                                    })
+                                .GetId();
+
+                        stageLoadPhase_ = StageLoadPhase::Main;
+                    }
+                    break;
                 }
 
-                state_ = SceneTransitionState::Load_WaitFinish;
+                // --- Phase 4: Main Job 完了待ち ---
+                if (stageLoadPhase_ == StageLoadPhase::Main)
+                {
+                    if (!jobQueue.IsJobDone(stageLoadMainJobId_))
+                        break;
+
+                    stageLoadPhase_ = StageLoadPhase::Idle;
+                    isStageLoadMainEnqueued_ = false;
+                    state_ = SceneTransitionState::Load_WaitFinish;
+                }
+
                 break;
             }
-
             case SceneTransitionState::Load_WaitFinish:
             {
                 state_ = SceneTransitionState::FadeIn;
                 break;
             }
-
             case SceneTransitionState::FadeIn:
             {
                 SceneManager::GetInstance()->HideLoading();

@@ -19,7 +19,7 @@
 #include "IBackGround.h"
 #include "Src/Actor/Character/PlayerForward.h"
 #include "Src/Build/InGameBuildHelper.h"
-
+#include "Src/Core/Job/JobHandle.h"
 
 class CameraManager;
 class TrackingEnemy;
@@ -48,29 +48,49 @@ namespace app
 
 
         public:
+            /**
+             * @brief ゲームの初期化処理。
+             * @return 初期化に成功した場合は true、失敗した場合は false。
+             */
             bool Start();
+
+            /**
+             * @brief ゲームの更新処理。
+             */
             void Update();
 
 
         public:
-            // ステージ遷移要求。
+            /**
+             * @brief ステージ遷移をリクエストする。
+             * @param nextStageID 次のステージID。
+             */
             void RequestStageTransition(nsApp::nsStage::StageID nextStageID);
 
 
         public:
-            // ステージ遷移中かどうかを返す。
+            /**
+             * @brief ステージ遷移中かどうかを判定する。
+             * @return ステージ遷移中であれば true、そうでなければ false。
+             */
             inline bool IsStageTransitioning() const
             {
                 return state_ != SceneTransitionState::None;
             }
 
-            // 次のステージIDを取得する。
+            /**
+             * @brief 次のステージIDを取得する。
+             * @return 次のステージID。
+             */
             inline nsApp::nsStage::StageID GetNextStageID() const
             {
                 return nextStageID_;
             }
 
-            // カメラのモードを切り替える共通関数。
+            /**
+             * @brief カメラの次元を変更する。
+             * @param mode 変更するカメラモード。
+             */
             void ChangeDimension(CameraMode mode);
 
 
@@ -128,6 +148,23 @@ namespace app
             // フェードが終了しているかどうか
             bool m_isFadeInEnd = false;
             bool m_hasAppliedStageBgm_ = false;
+
+
+        private:
+            /**
+             * @brief ステージロード Job の内部フェーズ。
+             */
+            enum class StageLoadPhase : uint8_t
+            {
+                Idle,   //! Worker Job をまだ投げていない。
+                Worker, //! Worker 完了待ち。
+                Main,   //! Main Job 完了待ち。
+            };
+
+            StageLoadPhase stageLoadPhase_ = StageLoadPhase::Idle;
+            uint64_t stageLoadWorkerJobId_ = 0;
+            uint64_t stageLoadMainJobId_ = 0;
+            bool isStageLoadMainEnqueued_ = false;
         };
     }
 }

@@ -303,8 +303,10 @@
     <ClCompile Include="Src\Collision\NonCopyable.cpp" />
     <ClCompile Include="Src\Core\CameraManager.cpp" />
     <ClCompile Include="Src\Core\Game.cpp" />
+    <ClCompile Include="Src\Core\Job\JobQueue.cpp" />
     <ClCompile Include="Src\Core\SceneManager.cpp" />
     <ClCompile Include="Src\Core\SoundManager.cpp" />
+    <ClCompile Include="Src\Core\StageLoadContext.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
     <ClCompile Include="Src\Parameter\ParameterSystem.cpp" />
     <ClCompile Include="Src\Parameter\Player\PlayerAirParameterTable.cpp" />
@@ -456,8 +458,11 @@
     <ClInclude Include="Src\Collision\NonCopyable.h" />
     <ClInclude Include="Src\Core\CameraManager.h" />
     <ClInclude Include="Src\Core\Game.h" />
+    <ClInclude Include="Src\Core\Job\JobHandle.h" />
+    <ClInclude Include="Src\Core\Job\JobQueue.h" />
     <ClInclude Include="Src\Core\SceneManager.h" />
     <ClInclude Include="Src\Core\SoundManager.h" />
+    <ClInclude Include="Src\Core\StageLoadContext.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
     <ClInclude Include="Src\Parameter\ParameterSystem.h" />
     <ClInclude Include="Src\Parameter\ParameterSystemTableBase.h" />

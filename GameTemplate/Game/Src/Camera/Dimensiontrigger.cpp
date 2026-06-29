@@ -2,7 +2,6 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/CameraManager.h"
 #include "DimensionTrigger.h"
-#include "Src/Actor/Stage/MainUnit/Stage3.h"
 namespace
 {
 	const Vector3 COLLISION_HEIGHT(0.0f, 50.0f, 0.0f);//コリジョンの高さ

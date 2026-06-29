@@ -1,7 +1,7 @@
 #pragma once
 #include "stdint.h"
 #include "GameSoundEngine.h"
-#include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Stage/StageID.h"
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
 
@@ -54,7 +54,7 @@ namespace app
 
         public:
             // ステージ遷移要求。
-            void RequestStageTransition(StageID nextStageID);
+            void RequestStageTransition(nsApp::nsStage::StageID nextStageID);
 
 
         public:
@@ -65,7 +65,7 @@ namespace app
             }
 
             // 次のステージIDを取得する。
-            inline StageID GetNextStageID() const
+            inline nsApp::nsStage::StageID GetNextStageID() const
             {
                 return nextStageID_;
             }
@@ -114,7 +114,7 @@ namespace app
         private:
             // 遷移管理用メンバ。
             SceneTransitionState state_ = SceneTransitionState::None;
-            StageID nextStageID_ = StageID::sInvalid;
+            nsApp::nsStage::StageID nextStageID_ = nsApp::nsStage::StageID::sInvalid;
             Stopwatch stageClearTimer_;
 
 

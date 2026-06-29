@@ -1,68 +1,46 @@
 #include "stdafx.h"
 
-// キャラクタークラス。
 #include "Src/Actor/Character/Player/Player.h"
-
-
-// コアクラス。
-#include "Src/Core/CameraManager.h"
-#include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
-
-
-// ステージ。
-#include "Src/Actor/Stage/MainUnit/Stage1.h"
-#include "Src/Actor/Stage/MainUnit/Stage2.h"
-#include "Src/Actor/Stage/MainUnit/Stage3.h"
-#include "Src/Actor/Stage/MainUnit/StageEX.h"
-#include "Src/Actor/Stage/MainUnit/TutorialStage.h"
-
+#include "Src/Parameter/Stage/StageMasterTable.h"
 #include "Src/UI/NumberUI.h"
 
-// 演出クラス。
-#include "Src/Production/Fade.h"
-
-
-// ギミック。
-#include "Src/Actor/Stage/Gimmick/IGimmic.h"
-
-
-// ゲームシーン。  
-#include "Src/Scene/LoadingScene.h"
-
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsStage
     {
         StageManager* StageManager::pStageManger_ = nullptr;
-
-        // デフォルトのステージの値をここで設定。
         StageID StageManager::nextInitStageID_ = StageID::sTutorialStage;
-
         StageResultData StageManager::stageResultData_;
 
 
         StageManager::~StageManager()
         {
-            // このポインタをシングルトンで削除。
             if (pStageManger_ == this)
                 pStageManger_ = nullptr;
 
+            spawner_.Clear();
+            stageSetup_.OnLeave(stageCurrentID_);
+
             DeleteGO(pCurrentStage_);
+            pCurrentStage_ = nullptr;
         }
 
 
         bool StageManager::Start()
         {
-            // 最初のシーンを生成する。
             pCurrentStage_ = CreateStage(nextInitStageID_);
-            if (pCurrentStage_)
-            {
-                // ステージの初期値を設定する。
-                stageCurrentID_ = nextInitStageID_;
-                return true;
-            }
-            return false;
+            if (pCurrentStage_ == nullptr)
+                return false;
+
+            stageCurrentID_ = nextInitStageID_;
+
+            // TSV からオブジェクト生成（Boss / CutIn 含む）
+            spawner_.Spawn(stageCurrentID_);
+            // ボス戦ルール適用
+            stageSetup_.OnEnter(stageCurrentID_);
+
+            return true;
         }
 
 
@@ -74,119 +52,88 @@ namespace app
                 stageRequestID_ = StageID::sInvalid;
             }
 
+            // カットイン終了・BossUI 更新
+            stageSetup_.Update();
+
             if (pCurrentStage_ != nullptr)
                 pCurrentStage_->Update();
         }
 
 
+        void StageManager::Render(RenderContext& rc)
+        {
+            if (pCurrentStage_ != nullptr)
+                pCurrentStage_->Render(rc);
+
+            // Boss HP バーなど
+            stageSetup_.Render(rc);
+        }
+
+
         void StageManager::ChangeStageSync(StageID newStageID)
         {
-            // 0. すでに同じステージなら何もしない
             if (stageCurrentID_ == newStageID && pCurrentStage_ != nullptr)
-            {
-                OutputDebugStringA("ChangeStageSync: same stage, skip.\n");
                 return;
-            }
 
-            OutputDebugStringA("ChangeStageSync: start.\n");
+            // 古いステージのオブジェクトとルールを片付け
+            spawner_.Clear();
+            stageSetup_.OnLeave(stageCurrentID_);
 
-            // 1. 今のステージを確実に消す
             if (pCurrentStage_ != nullptr)
             {
-                OutputDebugStringA("  DeleteGO(pCurrentStage_)\n");
                 DeleteGO(pCurrentStage_);
                 pCurrentStage_ = nullptr;
             }
 
-            if (auto s1 = FindGO<Stage1>("stage1"))
-            {
-                OutputDebugStringA("  DeleteGO(stage1)\n");
-                DeleteGO(s1);
-            }
-            if (auto s2 = FindGO<Stage2>("stage2"))
-            {
-                OutputDebugStringA("  DeleteGO(stage2)\n");
-                DeleteGO(s2);
-            }
-            if (auto s3 = FindGO<Stage3>("stage3"))
-            {
-                OutputDebugStringA("  DeleteGO(stage3)\n");
-                DeleteGO(s3);
-            }
-            if (auto ex = FindGO<app::stage::StageEX>("stageEX"))
-            {
-                OutputDebugStringA("  DeleteGO(stageEX)\n");
-                DeleteGO(ex);
-            }
-
-            if (auto tutorial = FindGO<app::stage::TutorialStage>("tutorialStage"))
-            {
-                OutputDebugStringA("  DeleteGO(tutorialStage)\n");
-                DeleteGO(tutorial);
-            }
-
-            // 2. 新しいステージを生成
-            IStage* pNextStage = CreateStage(newStageID);
+            Stage* pNextStage = CreateStage(newStageID);
             if (pNextStage == nullptr)
-            {
-                OutputDebugStringA("  CreateStage FAILED\n");
                 return;
-            }
 
-            // 3. 現在のステージとして登録
             pCurrentStage_ = pNextStage;
             stageCurrentID_ = newStageID;
 
-            OutputDebugStringA("ChangeStageSync: end.\n");
+            // 新ステージのオブジェクト生成
+            spawner_.Spawn(newStageID);
+            // 新ステージのルール適用（ボス戦ならカメラ・Pause）
+            stageSetup_.OnEnter(newStageID);
 
-            auto* pPlayer = FindGO<Player>("player");
-            if (pPlayer)
+            if (auto* pPlayer = FindGO<Player>("player"))
             {
-                Vector3 startPos = pCurrentStage_->GetStageStartPos();
+                const Vector3 startPos = GetStageStartPos();
                 pPlayer->SetPlayerPos(startPos);
                 pPlayer->SetRespwanPos(startPos);
             }
 
-            auto* pTimer = FindGO<NumberUI>("numberui");
-            if (pTimer)
-            {
+            if (auto* pTimer = FindGO<NumberUI>("numberui"))
                 pTimer->ResetTimer();
-            }
         }
 
 
-        IStage* StageManager::CreateStage(StageID id)
+        Stage* StageManager::CreateStage(StageID id)
         {
-            switch (id)
-            {
-            case StageID::sTutorialStage:
-                pCurrentStage_ = NewGO<app::stage::TutorialStage>(0, "tutorialStage");
-                break;
+            const auto& master = nsSystem::StageMasterTable::Get(id);
+            if (master.stageID == StageID::sInvalid)
+                return nullptr;
 
-            case StageID::sStage1:
-                pCurrentStage_ = NewGO<Stage1>(0, "stage1");
-                break;
+            auto* stage = NewGO<Stage>(0, "stage");
+            if (stage == nullptr)
+                return nullptr;
 
-            case StageID::sStage2:
-                pCurrentStage_ = NewGO<Stage2>(0, "stage2");
-                break;
-
-            case StageID::sStage3:
-                pCurrentStage_ = NewGO<Stage3>(0, "stage3");
-                break;
-
-            case StageID::sStageEX:
-                pCurrentStage_ = NewGO<app::stage::StageEX>(0, "stageEX");
-                break;
-
-            default:
-                break;
-            }
-
-            return pCurrentStage_;
+            stage->SetStageID(id);
+            return stage;
         }
 
 
-    }
-}
+        Vector3 StageManager::GetStageStartPos() const
+        {
+            if (pCurrentStage_ != nullptr)
+                return pCurrentStage_->GetPlayerStartPos();
 
+            const auto& master = nsSystem::StageMasterTable::Get(stageCurrentID_);
+            if (master.stageID != StageID::sInvalid)
+                return master.playerStartPosition;
+
+            return Vector3(0.0f, 20.0f, 0.0f);
+        }
+    } // namespace nsStage
+} // namespace nsApp

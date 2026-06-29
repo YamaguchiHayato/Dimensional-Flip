@@ -37,7 +37,7 @@ bool GameClearScene::Start()
 
     // ゲームクリア演出の生成。
     pGameClear_= NewGO<GameClear>(0, "gameClear");
-    const auto& data = app::core::StageManager::GetStageResultData();
+    const auto& data = nsApp::nsStage::StageManager::GetStageResultData();
     pGameClear_->SetUpResultData(data);
 
     // フェードを取得。

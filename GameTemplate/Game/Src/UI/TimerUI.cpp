@@ -24,7 +24,7 @@ bool TimerUI::Start()
 
 void TimerUI::Update()
 {
-    auto* pStageManager = app::core::StageManager::GetInstance();
+    auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
     if (pStageManager)
     {
         if (pStageManager->GetCurrentStageID() == StageID::sStageEX)
@@ -42,7 +42,7 @@ void TimerUI::Update()
 void TimerUI::Render(RenderContext& rc)
 {
     // ボス戦時は描画しない。
-    auto* pStageManager = app::core::StageManager::GetInstance();
+    auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
 
     if (pStageManager && pStageManager->GetCurrentStageID() == StageID::sStageEX)
         return;

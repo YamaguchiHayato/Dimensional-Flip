@@ -39,7 +39,7 @@ void NumberUI::Update()
 
 void NumberUI::Render(RenderContext& rc)
 {
-    auto* pStageManager = app::core::StageManager::GetInstance();
+    auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
     if (pStageManager)
     {
         if (pStageManager->GetCurrentStageID() == StageID::sStageEX)
@@ -63,7 +63,7 @@ void NumberUI::InitUINumber()
 
 void NumberUI::UpdateTimer()
 {
-    auto* pStageManager = app::core::StageManager::GetInstance();
+    auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
     if (pStageManager)
     {
         if (pStageManager->GetCurrentStageID() == StageID::sStageEX)

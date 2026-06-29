@@ -17,6 +17,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
 #include "Src/Core/StageManager.h"
+#include "Src/Actor/Stage/StageSetup.h"
 #include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
 
 static GameSoundList StageToBgm(StageID id)
@@ -76,7 +77,7 @@ namespace app
                 DeleteGO(pHpbarUI_);
 
             // ステージを削除。
-            StageManager::DeleteInstance();
+            nsApp::nsStage::StageManager::DeleteInstance();
             // 音を削除。
             SoundManager::DeleteInstence();
         }
@@ -88,11 +89,11 @@ namespace app
             srand(static_cast<unsigned int>(time(nullptr)));
 
             // ステージ情報が必要なため、Build より先に StageManager を生成する。
-            StageManager::CreateInstance();
+            nsApp::nsStage::StageManager::CreateInstance();
 
             // TSV 読み込みとステージ背景生成（InGameBuildHelper）。
             {
-                const StageID startStageID = StageManager::GetInstance()->GetCurrentStageID();
+                const StageID startStageID = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
                 buildHelper_.Initialize(startStageID);
 
                 while (!buildHelper_.IsFinished())
@@ -134,13 +135,12 @@ namespace app
 
             // 遷移ステートを初期化。
             state_ = SceneTransitionState::None;
-            nextStageID_ = StageManager::GetInstance()->GetCurrentStageID();
+            nextStageID_ = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
 
             // Playerの初期位置設定。
             pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // 物理デバッグワイヤーフレーム表示有効化。
-            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
 
             return true;
@@ -148,7 +148,7 @@ namespace app
 
         void Game::Update()
         {
-            StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+            StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
             const bool useFormulaBg = (stage != StageID::sStageEX);
             g_renderingEngine->EnableCompositeBackground(useFormulaBg);
 
@@ -175,7 +175,7 @@ namespace app
 
             if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
             {
-                const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+                const StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
                 app::core::SoundManager::GetInstance()->PlayBGM(StageToBgm(stage));
                 m_hasAppliedStageBgm_ = true;
             }
@@ -184,7 +184,7 @@ namespace app
             if (state_ == SceneTransitionState::None)
             {
                 // ステージマネージャーの更新。
-                StageManager::GetInstance()->Update();
+                nsApp::nsStage::StageManager::GetInstance()->Update();
             }
 
             // プレイヤーのHPが0以下ならゲームオーバーへ遷移。
@@ -267,7 +267,7 @@ namespace app
 
             case SceneTransitionState::Load_Wait:
             {
-                StageManager::GetInstance()->ChangeStageSync(nextStageID_);
+                nsApp::nsStage::StageManager::GetInstance()->ChangeStageSync(nextStageID_);
 
                 // 旧背景を破棄してから、新ステージ用に作り直す。
                 if (pBackGrounds_)
@@ -276,16 +276,16 @@ namespace app
                     pBackGrounds_ = nullptr;
                 }
 
-                const StageID currentStageID = StageManager::GetInstance()->GetCurrentStageID();
+                const StageID currentStageID = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
                 pBackGrounds_ = buildHelper_.CreateBackGround(currentStageID);
 
                 // プレイヤーの位置を新しいステージの開始位置にリセット。
-                Vector3 newStartPos = StageManager::GetInstance()->GetStageStartPos();
+                Vector3 newStartPos = nsApp::nsStage::StageManager::GetInstance()->GetStageStartPos();
                 pPlayer_->SetPlayerPos(newStartPos);
 
                 if (pFade_->IsFadeInEnd())
                 {
-                    const StageID stage = StageManager::GetInstance()->GetCurrentStageID();
+                    const StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
                     const GameSoundList bgm = StageToBgm(stage);
 
                     app::core::SoundManager::GetInstance()->PlayBGM(bgm);
@@ -307,12 +307,17 @@ namespace app
             case SceneTransitionState::FadeIn:
             {
                 SceneManager::GetInstance()->HideLoading();
-                pPlayer_->SetPaused(false);
+
+                // ボス戦カットイン中は Pause を維持（StageSetup が終了後に解除）
+                if (!nsApp::nsStage::StageSetup::ShouldKeepPlayerPaused())
+                    pPlayer_->SetPaused(false);
+
                 pFade_->StartFadeIn();
                 pNumberUI_->ResetTimer();
                 state_ = SceneTransitionState::FadeIn_Wait;
                 break;
             }
+
 
             case SceneTransitionState::FadeIn_Wait:
             {

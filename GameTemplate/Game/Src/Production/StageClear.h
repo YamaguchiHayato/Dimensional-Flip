@@ -1,7 +1,7 @@
 #pragma once
 #include "stdint.h"
 #include "Src/Core/Game.h"
-#include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Stage/StageID.h"
 
 
 class StageClear : public IGameObject

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "StageIcon.h"
-
+#include "Src/Actor/Stage/StageID.h"
 
 namespace app
 {

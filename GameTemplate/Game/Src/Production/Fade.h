@@ -1,5 +1,6 @@
 #pragma once
-#include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Stage/StageID.h"
+
 
 class Fade : public IGameObject
 {

@@ -33,7 +33,7 @@ void StageClear::Render(RenderContext& rc)
 StageID StageClear::DecideStage()
 {
     // 1. StageManagerから「現在の」ステージIDを取得する。
-    StageID currentStageID = app::core::StageManager::GetInstance()->GetCurrentStageID();
+    StageID currentStageID = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
 
     // 2. 次のステージIDを決定するための変数。
     StageID nextStageID = currentStageID;

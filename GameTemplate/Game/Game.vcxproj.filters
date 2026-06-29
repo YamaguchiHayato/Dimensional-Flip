@@ -79,6 +79,12 @@
     <Filter Include="Src\Parameter\Stage">
       <UniqueIdentifier>{ad5c2474-ce14-41cf-a42f-5472d9d2bc12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Actor\Stage\Terrain">
+      <UniqueIdentifier>{53d53cc3-9f50-447a-a0fd-08435f2626bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\EndRoll">
+      <UniqueIdentifier>{89ac0712-122e-4343-a880-e63a06cd0a43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -94,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Enemy\TrackingEnemy.cpp">
       <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\IStage.cpp">
-      <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\WallActor.cpp">
       <Filter>Src</Filter>
@@ -194,10 +197,6 @@
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage1.cpp" />
-    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage2.cpp" />
-    <ClCompile Include="Src\Actor\Stage\MainUnit\Stage3.cpp" />
-    <ClCompile Include="Src\Actor\Stage\MainUnit\StageEX.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
@@ -206,10 +205,7 @@
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
-    <ClCompile Include="Src\Scene\GameClearScene.cpp" />
-    <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Production\GameOver.cpp" />
-    <ClCompile Include="Src\Actor\Stage\MainUnit\TutorialStage.cpp" />
     <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
@@ -221,7 +217,6 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
-    <ClCompile Include="Src\Production\AttackMarker.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
@@ -248,20 +243,14 @@
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Coin.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
     <ClCompile Include="StageIcon.cpp" />
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
-    <ClCompile Include="Src\Scene\WorldSelectScene.cpp" />
     <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
-    <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp" />
-    <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp" />
-    <ClCompile Include="Src\Scene\EndRollScene.cpp" />
     <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp">
       <Filter>Src\Actor\Character\Player</Filter>
@@ -362,6 +351,45 @@
     <ClCompile Include="Src\Parameter\Stage\ScrollBackGroundLayerTable.cpp">
       <Filter>Src\Parameter\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Parameter\Stage\StageMasterTable.cpp">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Stage.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Terrain\StageTerrain.cpp">
+      <Filter>Src\Actor\Stage\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Parameter\Stage\StageSpawnTable.cpp">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Production\AttackMarker.cpp">
+      <Filter>Src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp">
+      <Filter>Src\UI\EndRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp">
+      <Filter>Src\UI\EndRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\GameClearScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\GameOverScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\WorldSelectScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\EndRollScene.cpp">
+      <Filter>Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\StageSetup.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\StageObjectSpawner.cpp">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -376,9 +404,6 @@
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Enemy\TrackingEnemy.h">
       <Filter>Src\Actor\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\IStage.h">
-      <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\WallActor.h">
@@ -483,10 +508,6 @@
     <ClInclude Include="Src\Camera\BossCameraStrategy.h">
       <Filter>Src\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage1.h" />
-    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage2.h" />
-    <ClInclude Include="Src\Actor\Stage\MainUnit\Stage3.h" />
-    <ClInclude Include="Src\Actor\Stage\MainUnit\StageEX.h" />
     <ClInclude Include="Src\Actor\Character\Character.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
@@ -496,10 +517,7 @@
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
-    <ClInclude Include="Src\Scene\GameClearScene.h" />
-    <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Production\GameOver.h" />
-    <ClInclude Include="Src\Actor\Stage\MainUnit\TutorialStage.h" />
     <ClInclude Include="Src\UI\ButtonActionUI.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />
@@ -511,7 +529,6 @@
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
-    <ClInclude Include="Src\Production\AttackMarker.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
@@ -538,22 +555,15 @@
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Switch.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\coin.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
     <ClInclude Include="StageIcon.h" />
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
-    <ClInclude Include="Src\Scene\WorldSelectScene.h" />
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
-    <ClInclude Include="Src\Production\EndRoll\EndRollBase.h" />
-    <ClInclude Include="Src\Production\EndRoll\EndRollText.h" />
-    <ClInclude Include="Src\Production\EndRoll\EndRollImage.h" />
-    <ClInclude Include="Src\Scene\EndRollScene.h" />
     <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h">
@@ -690,6 +700,57 @@
     </ClInclude>
     <ClInclude Include="Src\Parameter\Stage\ScrollBackGroundLayerTable.h">
       <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\StageMasterTable.h">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Stage.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Terrain\StageTerrain.h">
+      <Filter>Src\Actor\Stage\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\StageMasterRecord.h">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\StageSpawnRecord.h">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Parameter\Stage\StageSpawnTable.h">
+      <Filter>Src\Parameter\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\AttackMarker.h">
+      <Filter>Src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\EndRoll\EndRollBase.h">
+      <Filter>Src\UI\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\EndRoll\EndRollImage.h">
+      <Filter>Src\UI\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\EndRoll\EndRollText.h">
+      <Filter>Src\UI\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\GameClearScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\GameOverScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\WorldSelectScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\EndRollScene.h">
+      <Filter>Src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\StageSetup.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\StageObjectSpawner.h">
+      <Filter>Src\Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\StageID.h">
+      <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

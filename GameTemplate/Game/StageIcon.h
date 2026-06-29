@@ -1,5 +1,5 @@
 #pragma once
-#include "Src/Actor/Stage/IStage.h"
+#include "Src/Actor/Stage/StageID.h"
 
 namespace app
 {

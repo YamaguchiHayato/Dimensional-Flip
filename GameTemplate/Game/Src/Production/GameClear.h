@@ -46,7 +46,7 @@ private:
 
 public:
     // データを受け取る処理。
-    inline void SetUpResultData(const app::StageResultData& data)
+    inline void SetUpResultData(const nsApp::nsStage::StageResultData& data)
     {
         resultData_ = data;
     }
@@ -74,7 +74,7 @@ private:
     FontRender inputPromptFont_;
 
     GameClearState state_ = GameClearState::ShowLogo;
-    app::StageResultData resultData_;
+    nsApp::nsStage:: StageResultData resultData_;
 
     float targetTime_ = 0.0f;
     float disPlayTime = 0.0f;

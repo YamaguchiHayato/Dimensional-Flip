@@ -177,7 +177,7 @@ namespace app
             auto* pScoreUI = ScoreUI::GetInstance();
 
             // 2. データ格納用
-            app::StageResultData finalData;
+            nsApp::nsStage::StageResultData finalData;
 
             // 3. タイム収集
             if (pNumberUI)
@@ -188,7 +188,7 @@ namespace app
                 finalData.baseScore_ = (int) pScoreUI->GetScore();
 
             // 5. StageManagerに送信
-            auto* pStageManager = app::core::StageManager::GetInstance();
+            auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
             if (pStageManager)
                 pStageManager->SetStageResult(finalData);
         }

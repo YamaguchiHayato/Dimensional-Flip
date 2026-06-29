@@ -28,7 +28,7 @@ void InGameScene::Update()
     if (fade && fade->IsFadeOutEnd())
     {
         // 現在のステージIDを確認
-        StageID current = app::core::StageManager::GetInstance()->GetCurrentStageID();
+        StageID current = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
 
         // 全ステージ（StageEX）をクリアした時だけリザルトへ
         if (current == StageID::sStageEX && pGame_->GetNextStageID() == StageID::sInvalid)

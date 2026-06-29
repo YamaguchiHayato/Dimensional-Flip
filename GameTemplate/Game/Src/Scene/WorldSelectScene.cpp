@@ -190,7 +190,7 @@ void WorldSelectScene::Update()
             StageID selectID = dataList[currentIndex_].id;
 
             // ステージ管理クラスに選択されたステージIDをセット。
-            app::core::StageManager::SetNextInitStageID(selectID);
+            nsApp::nsStage::StageManager::SetNextInitStageID(selectID);
 
             // ゲーム画面へ
             SceneManager::GetInstance()->ChangeScene(SceneID::sInGame);

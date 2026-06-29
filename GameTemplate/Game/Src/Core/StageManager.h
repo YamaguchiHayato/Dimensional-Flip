@@ -1,124 +1,73 @@
 #pragma once
-#include "Src/Actor/Stage/IStage.h"
-#include "Src/Actor/Actor.h"
+
+/**
+ * @file   StageManager.h
+ * @brief  ステージの生成・切替・更新を管理するクラス。
+ */
+
 #include "ResultData.h"
-
-namespace StageStartPos
-{
-    const Vector3 stage2(3000.0f, 800.0f, -60.0f);
-}
-
-
+#include "Src/Actor/Actor.h"
+#include "Src/Actor/Stage/Stage.h"
+#include "Src/Actor/Stage/StageID.h"
+#include "Src/Actor/Stage/StageObjectSpawner.h"
+#include "Src/Actor/Stage/StageSetup.h"
 
 class LoadingScene;
 
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsStage
     {
-        class StageManager : public IStage
+        class StageManager : public Actor
         {
         private:
-            IStage* pCurrentStage_ = nullptr;
+            Stage* pCurrentStage_ = nullptr;
             StageID stageCurrentID_ = StageID::sStage1;
             StageID stageRequestID_ = StageID::sInvalid;
 
+            StageObjectSpawner spawner_; //! TSV から Star / Boss / CutIn などを生成
+            StageSetup stageSetup_;      //! ボス戦カメラ・カットイン・Pause など
 
-        private:
             static StageResultData stageResultData_;
 
-
         public:
-            // 初期化処理。
             bool Start() override;
-            // 更新処理。
             void Update() override;
-            // 描画処理。
-            void Render(RenderContext& rc) override {};
-            // ステージの生成処理。
-            IStage* CreateStage(StageID id);
-            // ステージの同期的変更処理。
+            void Render(RenderContext& rc) override;
+
+            Stage* CreateStage(StageID id);
             void ChangeStageSync(StageID newStageID);
 
+            inline void ChangeStage(StageID newStageID) { stageRequestID_ = newStageID; }
 
-        // セッター。
-        public:
-            // ステージの変更処理。
-            inline void ChangeStage(StageID newStageID)
-            {
-                stageRequestID_ = newStageID;
-            }
+            static inline void SetStageResult(const StageResultData& data) { stageResultData_ = data; }
 
-            // リザルトデータを設定。
-            static inline void SetStageResult(const StageResultData& data)
-            {
-                stageResultData_ = data;
-            }
-
-
-        // ゲッター。
-        public:
-            // ステージ開始位置の取得。
-            inline Vector3 GetStageStartPos() const override
-            {
-                if (pCurrentStage_)
-                {
-                    return pCurrentStage_->GetStageStartPos();
-                }
-                return StageStartPos::stage2;
-            }
-
-
-            // 現在のステージIDを取得。
-            // ステージ変更検知で使用。
+            Vector3 GetStageStartPos() const;
             inline StageID GetCurrentStageID() const { return stageCurrentID_; }
+            static inline StageResultData& GetStageResultData() { return stageResultData_; }
 
-            // リザルトデータを取得。
-            static inline StageResultData& GetStageResultData()
-            {
-                return stageResultData_;
-            }
-
-
-        public:
             StageManager() = default;
             virtual ~StageManager();
 
-
         private:
-            // static メンバー。
             static StageManager* pStageManger_;
-
-            // 次に初期化するステージID。
-            // ステージ変更要求があった際、次のフレームでこのIDのステージを初期化する。
             static StageID nextInitStageID_;
 
         public:
-            // シングルトンインスタンスの生成。
             inline static void CreateInstance()
             {
                 if (!pStageManger_)
                     pStageManger_ = NewGO<StageManager>(0, "stagemanager");
             }
 
-            // シングルトンインスタンスの破棄。
             inline static void DeleteInstance()
             {
                 DeleteGO(pStageManger_);
                 pStageManger_ = nullptr;
             }
 
-            // シングルトンインスタンスを取得
-            inline static StageManager* GetInstance()
-            {
-                return pStageManger_;
-            }
-
-            // 次に初期化するステージIDを設定。
-            inline static void SetNextInitStageID(StageID id)
-            {
-                nextInitStageID_ = id;
-            }
+            inline static StageManager* GetInstance() { return pStageManger_; }
+            inline static void SetNextInitStageID(StageID id) { nextInitStageID_ = id; }
         };
-    }
-}
+    } // namespace nsStage
+} // namespace nsApp

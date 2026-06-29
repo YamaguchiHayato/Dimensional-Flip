@@ -52,7 +52,7 @@ namespace app
 
         private:
             StarGetPhase currentPhase_ = StarGetPhase::Num;
-            StageResultData resultData_;
+            nsApp::nsStage::StageResultData resultData_;
 
             SpriteRender stegeClearSprite_; 
 

@@ -59,6 +59,17 @@ namespace app
                     pSoundEngine_->SetVolume(sound, vol);
             }
 
+            void Update()
+            {
+                if (pSoundEngine_)
+                    pSoundEngine_->Update();
+            }
+
+            void ReleaseAllSounds()
+            {
+                if (pSoundEngine_)
+                    pSoundEngine_->ReleaseAllSounds();
+            }
 
         private:
             SoundManager() = default;

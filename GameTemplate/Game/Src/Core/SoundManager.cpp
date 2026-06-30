@@ -12,7 +12,12 @@ namespace app
         {
             if (pInstance_ != nullptr)
             {
-                delete pInstance_->pSoundEngine_;
+                if (pInstance_->pSoundEngine_ != nullptr)
+                {
+                    pInstance_->pSoundEngine_->ReleaseAllSounds();
+                    delete pInstance_->pSoundEngine_;
+                    pInstance_->pSoundEngine_ = nullptr;
+                }
                 delete pInstance_;
                 pInstance_ = nullptr;
             }

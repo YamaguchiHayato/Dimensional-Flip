@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "AttackMarker.h"
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         bool AttackMarker::Start()
         {

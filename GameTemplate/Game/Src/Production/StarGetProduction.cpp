@@ -20,9 +20,9 @@ namespace
     const auto PLAYER_ROTATION_SPEED = 1.2f; // プレイヤー回転速度（度/秒）
 }
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         void StarGetProduction::StartSequence(Player* pPlayer, Star* pStar)
         {

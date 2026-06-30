@@ -28,7 +28,7 @@ namespace nsApp
             /**
              * @brief インゲーム本体 GO を生成する
              */
-            pGame_ = NewGO<app::core::Game>(0, "game");
+            pGame_ = NewGO<Game>(0, "game");
 
             SceneManager::GetInstance()->GetFade()->StartFadeIn();
             return true;

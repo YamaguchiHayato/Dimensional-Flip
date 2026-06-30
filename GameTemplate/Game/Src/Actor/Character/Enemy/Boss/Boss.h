@@ -21,12 +21,18 @@ namespace app
 
     namespace core
     {
-        class Game;
         class InputManager;
         class BattlePhaseManager;
     } 
 }
 
+namespace nsApp
+{
+    namespace nsCore
+    {
+        class Game;
+    }
+}
 
 
 namespace app
@@ -228,7 +234,7 @@ namespace app
              * @brief ゲームインスタンスを取得する。
              * @return ゲームインスタンス
              */
-            inline app::core::Game* GetGameInstance() const
+            inline nsApp::nsCore::Game* GetGameInstance() const
             {
                 return pGame_;
             }
@@ -317,7 +323,7 @@ namespace app
             Player* pPlayer_ = nullptr; //! プレイヤーのインスタンス。
             CollisionObject* pWeeekPoint_ = nullptr; //! 弱点のコリジョン。
             app::core::InputManager* pInputManager_ = nullptr; //! 入力マネージャーのインスタンス。
-            app::core::Game* pGame_ = nullptr;                 //! ゲームインスタンス。
+            nsApp::nsCore::Game* pGame_ = nullptr;                 //! ゲームインスタンス。
             CutInView* pCutInView_ = nullptr;      //! カットインビューのインスタンス。
 
 

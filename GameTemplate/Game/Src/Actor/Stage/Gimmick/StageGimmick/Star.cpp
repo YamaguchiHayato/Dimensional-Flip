@@ -65,7 +65,7 @@ void Star::Update()
     disPlayTimer_ = 0.0f;
     displayDuration_ = 0.8f; // 演出の長さ（秒）
 
-    auto* pProduction = NewGO<app::production::StarGetProduction>(0);
+    auto* pProduction = NewGO<nsApp::nsProduction::StarGetProduction>(0);
     pProduction->StartSequence(m_player, this);
 }
 

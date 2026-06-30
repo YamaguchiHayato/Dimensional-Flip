@@ -3,6 +3,7 @@
 #include "ResultData.h"
 #include "Src/Actor/Character/PlayerForward.h"
 #include "Src/Production/GameClear.h"
+
 /**
  * @file   StarGetProduction.h
  * @brief  スター取得時のカメラ演出とリザルト遷移。
@@ -24,9 +25,9 @@ enum class StarGetPhase
 
 class Star;
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         /**
          * @class StarGetProduction
@@ -67,7 +68,7 @@ namespace app
 
             /**
              * @brief スター上昇フェーズを更新する。
-             * @param deltaTime 
+             * @param deltaTime 前フレームからの経過時間。
              */
             void UpdateFinish(float deltaTime);
 
@@ -79,21 +80,23 @@ namespace app
 
 
         private:
-            Player* pPlayer_ = nullptr; //!< 操作プレイヤー。
-            Star* pStar_ = nullptr;     //!< 取得対象スター。
-            GameClear* pGameClear_ = nullptr; //! < リザルト演出。
+            Player* pPlayer_ = nullptr; //! 操作プレイヤー。
+            Star* pStar_ = nullptr;     //! 取得対象スター。
+            GameClear* pGameClear_ = nullptr; //! < タイム・スコアカウント演出。
 
-            StarGetPhase currentPhase_ = StarGetPhase::Num; //!< 現在の演出フェーズ。
-            nsApp::nsStage::StageResultData resultData_;    //!< ステージ結果データ。
-            
-            SpriteRender stegeClearSprite_; //!< ステージクリア表示用スプライト。
+            StarGetPhase currentPhase_ = StarGetPhase::Num; //! < 現在の演出フェーズ。
+            nsApp::nsStage::StageResultData resultData_;    //! < ステージリザルトデータ。
 
-            float timer_ = 0.0f; //!< フェーズ経過時間。
-            float duration_ = 0.0f; //!< フェーズ継続時間。
-            float initialCameraHeight_ = 0.0f; //!< フェーズ開始時のカメラ高さ。
+            SpriteRender stegeClearSprite_; //! < GameClear スプライト。
 
-            Vector3 starPos_ = Vector3::Zero; //!< スターのワールド座標。
-            Vector3 playerStartPos_ = Vector3::Zero; //!< プレイヤーのフェーズ開始時のワールド座標。
+            float timer_ = 0.0f; //! < フェーズ経過タイマー。
+            float duration_ = 0.0f; //! < フェーズ継続時間。
+            float initialCameraHeight_ = 0.0f; //! < カメラの初期高さ。
+
+            Vector3 starPos_ = Vector3::Zero; //! < 取得対象スターの座標。
+            Vector3 playerStartPos_ = Vector3::Zero; //! < プレイヤーの初期座標。
         };
-    } // namespace production
-} // namespace app
+    } // namespace nsProduction
+} // namespace nsApp
+
+using StarGetProduction = nsApp::nsProduction::StarGetProduction;

@@ -1,41 +1,61 @@
 #pragma once
+
 #include "Src/Actor/Actor.h"
 
-// ボスの攻撃範囲を予測してくれるマーカークラス。
+/**
+ * @file   AttackMarker.h
+ * @brief  ボス攻撃の予兆マーカー。
+ */
 
-
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
+        /**
+         * @class AttackMarker
+         * @brief 攻撃範囲を地面に表示する予兆マーカー。
+         */
         class AttackMarker : public Actor
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             AttackMarker() = default;
             virtual ~AttackMarker() = default;
 
 
-        // サイクル。
         public:
+            /**
+             * @brief 初期化処理。
+             * @return 成功時 true。
+             */
             bool Start() override;
+
+            /**
+             * @brief 更新処理。
+             */
             void Update() override;
+
+            /**
+             * @brief 描画処理。
+             */
             void Render(RenderContext& rc) override;
 
-
-        // セッター。
-        public:
-            // 座標と大きさ。
+            /**
+             * @brief トランスフォームをセットする。
+             * @param position 座標。
+             * @param scale スケール。
+             */
             inline void SetTransform(const Vector3& position, const Vector3& scale)
             {
-                // 座標のセット。
                 position_ = position;
-                position_.y += 5.0f; // 少し浮かせる。
-
-                // 大きさのセット。
+                position_.y += 5.0f;
                 scale_ = scale;
             }
 
-            // 予兆時間。
+            /**
+             * @brief マーカーの回転アニメーションの継続時間をセットする。
+             * @param time 継続時間（秒）。
+             */
             inline void SetDuration(float time)
             {
                 maxDuration_ = time;
@@ -44,23 +64,24 @@ namespace app
 
 
         private:
-            // 回転演出。
+            /**
+             * @brief マーカーの回転アニメーションを更新する。
+             */
             void RotationProduction();
 
 
         private:
-            ModelRender markerRender_;
+            ModelRender markerRender_; //! < マーカーのモデルレンダラー
 
-            Vector3 position_ = Vector3::Zero;
-            Vector3 scale_ = Vector3::One;
+            Vector3 position_ = Vector3::Zero; //! < マーカーの座標。
+            Vector3 scale_ = Vector3::One;     //! < マーカーのスケール。
+            Quaternion rotation_ = Quaternion::Identity; //! < マーカーの回転。
 
-            Quaternion rotation_ = Quaternion::Identity;
-
-
-            float currentAngle_ = 0.0f;
-            float timer_ = 0.0f;
-            float maxDuration_ = 2.0f;
+            float currentAngle_ = 0.0f; //! < マーカーの現在の回転角度。
+            float timer_ = 0.0f;        //! < マーカーの回転アニメーションの経過時間。
+            float maxDuration_ = 2.0f;  //! < マーカーの回転アニメーションの最大継続時間。
         };
+    } // namespace nsProduction
+} // namespace nsApp
 
-    }
-}
+using AttackMarker = nsApp::nsProduction::AttackMarker;

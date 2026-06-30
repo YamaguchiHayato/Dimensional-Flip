@@ -71,7 +71,7 @@ namespace app
 
 
         private:
-            app::production::AttackMarker* pMarker_ = nullptr;
+            AttackMarker* pMarker_ = nullptr;
             Player* pPlayer_ = nullptr;
 
 

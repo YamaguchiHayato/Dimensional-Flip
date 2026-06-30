@@ -30,7 +30,7 @@ namespace app
             render_.SetPosition(currentPos_);
 
             // マーカーを生成する。
-            pMarker_ = NewGO<app::production::AttackMarker>(0);
+            pMarker_ = NewGO<AttackMarker>(0);
             pMarker_->SetTransform(targetPos_, Vector3::One * 0.25);
 
             // 予兆時間をセットする。

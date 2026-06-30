@@ -70,7 +70,7 @@ namespace app
                 currentPos_.y += SPAWN_DEPTH;
                 render_.SetPosition(currentPos_);
 
-                pMarker_ = NewGO<app::production::AttackMarker>(0);
+                pMarker_ = NewGO<AttackMarker>(0);
                 pMarker_->SetTransform(targetPos_, Vector3(0.5f, 0.5f, 0.5f));
                 pMarker_->SetDuration(WARNING_TIME);
             }

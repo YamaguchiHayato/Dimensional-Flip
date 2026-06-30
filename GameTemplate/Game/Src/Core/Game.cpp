@@ -39,9 +39,9 @@ static GameSoundList StageToBgm(StageID id)
     }
 }
 
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
         Game::~Game()
         {
@@ -257,23 +257,19 @@ namespace app
 
         void Game::ChangeDimension(CameraMode mode)
         {
-            // カメラの切り替え。
             if (pCameraManager_)
             {
                 if (mode == CameraMode::mode2D)
                     pCameraManager_->Request2DMode();
-
                 else
                     pCameraManager_->Request3DMode();
             }
 
-            // コリジョンの切り替え。
-            auto& collision = app::collision::CollisionManager::GetInstance();
+            auto& collisionMgr = app::collision::CollisionManager::GetInstance();
             if (mode == CameraMode::mode2D)
-                collision.SetDimension(collision::DimensionMode::dim2D);
-
+                collisionMgr.SetDimension(app::collision::DimensionMode::dim2D);
             else
-                collision.SetDimension(collision::DimensionMode::dim3D);
+                collisionMgr.SetDimension(app::collision::DimensionMode::dim3D);
         }
 
 

@@ -7,16 +7,13 @@
  * @brief  インゲームシーン。Game GO の生成と破棄を担当。
  */
 
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
         class Game;
     }
-}
 
-namespace nsApp
-{
     namespace nsScene
     {
         /**
@@ -45,7 +42,7 @@ namespace nsApp
 
 
         private:
-            app::core::Game* pGame_ = nullptr; //!< インゲーム本体
+            nsCore::Game* pGame_ = nullptr; //!< インゲーム本体
         };
     }
 }

@@ -1,14 +1,8 @@
 #pragma once
 #include "Src/Production/AttackMarker.h"
-
-namespace app{
-    namespace production{
-        class AttackMarker;
-    }
-}
-
 #include "Src/Actor/Character/PlayerForward.h"
 #include "Src/Production/CutIn/CutInView.h"
+
 
 class Star : public IGameObject
 {

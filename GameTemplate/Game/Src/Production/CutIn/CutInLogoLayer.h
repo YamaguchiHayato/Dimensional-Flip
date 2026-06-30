@@ -1,64 +1,84 @@
 #pragma once
 #include "Src/Production/CutIn/CutInBase.h"
 
-namespace app
+namespace nsApp
 {
-    namespace cutIn
+    namespace nsProduction
     {
         class CutInLogoLayer : public CutInBase
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             CutInLogoLayer() = default;
             virtual ~CutInLogoLayer() = default;
 
-            // 初期化処理。
+
+        public:
+            /**
+             * @brief 初期化処理。
+             * @return 成功時 true。
+             */
             bool Start() override;
-            // 更新処理。
+
+            /**
+             * @brief 更新処理。
+             */
             void Update() override;
-            // 描画処理。
+
+            /**
+             * @brief 描画処理。
+             */
             void Render(RenderContext& rc) override;
-            // レイヤーのパスを取得する。
-            // 再起関数。
+
+            /**
+             * @brief レイヤー DDS のパスを組み立てる。
+             * @param layerName ファイル名（拡張子なし）。
+             * @return Assets 配下のフルパス。
+             */
             inline const std::string FindLayerPath(const std::string layerName) const override
             {
                 return CutInBase::FindLayerPath(layerName);
             }
 
+
         private:
-            // 回転処理。
+            /**
+             * @brief ロゴの移動アニメーションを更新する。
+             */
             void Move();
 
-            // ステータスの初期化。
+            /**
+             * @brief ロゴの表示準備を行う。
+             */
             void Preparation();
 
-            // 描画を承認する。
+            /**
+             * @brief ロゴの表示を開始する。
+             */
             inline void CanDrawEmblem()
             {
                 isVisible = true;
-                isAnimating_ = true; // 回転開始。
-                moveTimer_ = 0.0f;   // タイマーリセット。
+                isAnimating_ = true;
+                moveTimer_ = 0.0f;
             }
 
-            // 完了判定。
-            inline bool IsFinished() const
-            {
-                return isVisible && !isAnimating_;
-            }
+            /**
+             * @brief ロゴの表示が終了したかを判定する。
+             * @return 表示が終了していれば true。
+             */
+            inline bool IsFinished() const { return isVisible && !isAnimating_; }
+
 
         private:
-            // 待機用。
-            float delayTimer_ = 0.0f; // 待機時間計測タイマー
-            float delayTime_ = 0.5f;  // 待ち時間。
-            bool isVisible = false;   // 表示フラグ。
+            float delayTimer_ = 0.0f; //! < ロゴ表示までの遅延タイマー。
+            float delayTime_ = 0.5f;  //! < ロゴ表示までの遅延時間。
+            bool isVisible = false;   //! < ロゴが表示されているかどうか。
 
-            // 回転用。
-            float moveTimer_ = 0.0f;  // 計測タイマー。
-            float duration_ = 0.6f;   // 所要時間。
-            bool isAnimating_ = false;// 回転中フラグ。
+            float moveTimer_ = 0.0f; //! < ロゴの移動アニメーションタイマー。
+            float duration_ = 0.6f;  //! < ロゴの移動アニメーションの継続時間。
+            bool isAnimating_ = false; //! < ロゴの移動アニメーション中かどうか。
 
-            Quaternion currentRot_ = Quaternion::Identity; // 現在の回転角。
+            Quaternion currentRot_ = Quaternion::Identity; //! < ロゴの現在の回転。
         };
-
-    }
-}
-
+    } // namespace nsProduction
+} // namespace nsApp

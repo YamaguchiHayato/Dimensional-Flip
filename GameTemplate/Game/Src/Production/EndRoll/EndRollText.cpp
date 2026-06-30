@@ -20,9 +20,11 @@ namespace
     const wchar_t* MY_NAME = L"Hayato Yamaguchi"; // 自分の名前。
 }
 
-namespace app
+
+
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         bool EndRollText::Start()
         {

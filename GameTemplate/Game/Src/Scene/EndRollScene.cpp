@@ -39,7 +39,7 @@ namespace nsApp
             g_camera3D = pCamera_;
 
             // エンドロールの管理クラスを生成。
-            pEndRollManager_ = NewGO<app::production::EndRollManager>(0, "EndRollManager");
+            pEndRollManager_ = NewGO<nsProduction::EndRollManager>(0, "EndRollManager");
 
             return true;
         }

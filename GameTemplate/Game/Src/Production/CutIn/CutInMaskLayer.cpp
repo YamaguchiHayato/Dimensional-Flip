@@ -1,18 +1,19 @@
 #include "stdafx.h"
 
-// カットインレイヤークラス。
-#include "Src/production/CutIn/CutInBase.h"
-#include "Src/production/CutIn/CutInMaskLayer.h"
+#include "Src/Production/CutIn/CutInMaskLayer.h"
 
-struct layerStatus
+namespace
 {
-    static constexpr auto WIDHT = 2000.0f;  // カットイン黒背景の横幅。
-    static constexpr auto HEIGHT = 2000.0f; // カットイン黒背景の縦幅。
-};
+    struct layerStatus
+    {
+        static constexpr auto WIDHT = 2000.0f;
+        static constexpr auto HEIGHT = 2000.0f;
+    };
+} // namespace
 
-namespace app
+namespace nsApp
 {
-    namespace cutIn
+    namespace nsProduction
     {
         bool CutInMaskLayer::Start()
         {
@@ -28,9 +29,10 @@ namespace app
             layer_.Update();
         }
 
+
         void CutInMaskLayer::Render(RenderContext& rc)
         {
             layer_.Draw(rc);
         }
-    }
-}
+    } // namespace nsProduction
+} // namespace nsApp

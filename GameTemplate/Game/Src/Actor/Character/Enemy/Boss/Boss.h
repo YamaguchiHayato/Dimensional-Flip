@@ -318,7 +318,7 @@ namespace app
             CollisionObject* pWeeekPoint_ = nullptr; //! 弱点のコリジョン。
             app::core::InputManager* pInputManager_ = nullptr; //! 入力マネージャーのインスタンス。
             app::core::Game* pGame_ = nullptr;                 //! ゲームインスタンス。
-            app::cutIn::CutInView* pCutInView_ = nullptr;      //! カットインビューのインスタンス。
+            CutInView* pCutInView_ = nullptr;      //! カットインビューのインスタンス。
 
 
         private:

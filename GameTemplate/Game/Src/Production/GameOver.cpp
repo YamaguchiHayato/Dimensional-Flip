@@ -1,10 +1,10 @@
 #include "stdafx.h"
+
 #include "GameOver.h"
 
-
-namespace app
+namespace nsApp
 {
-    namespace direction
+    namespace nsProduction
     {
         bool GameOver::Start()
         {
@@ -12,16 +12,14 @@ namespace app
             return true;
         }
 
-
         void GameOver::Update()
         {
             sprite_.Update();
         }
 
-
         void GameOver::Render(RenderContext& rc)
         {
             sprite_.Draw(rc);
         }
-    }
-}
+    } // namespace nsProduction
+} // namespace nsApp

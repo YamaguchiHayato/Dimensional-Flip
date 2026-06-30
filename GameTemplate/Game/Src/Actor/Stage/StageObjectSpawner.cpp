@@ -103,7 +103,7 @@ namespace nsApp
             /* CutIn の生成。*/
             else if (rec.objectType == "CutIn")
             {
-                auto* cutIn = NewGO<app::cutIn::CutInView>(0, "CutInView");
+                auto* cutIn = NewGO<CutInView>(0, "CutInView");
                 cutIn->SetLifeDuration(rec.param0 > 0.0f ? rec.param0 : 4.0f);
                 spawnedObjects_.push_back(cutIn);
             }

@@ -34,9 +34,9 @@ namespace
     };
 }
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         bool EndRollImage::Start()
         {

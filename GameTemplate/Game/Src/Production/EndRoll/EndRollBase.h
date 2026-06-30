@@ -1,42 +1,56 @@
 #pragma once
 
+/**
+ * @file   EndRollBase.h
+ * @brief  エンドロール構成要素の基底クラス。
+ */
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
+        /**
+         * @class EndRollBase
+         * @brief  EndRollImage / EndRollText 等の共通インターフェース。
+         */
         class EndRollBase : public IGameObject
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             EndRollBase() = default;
             virtual ~EndRollBase() = default;
 
-
         public:
-            // 初期化処理。
+            /**
+             * @brief 初期化処理。
+             * @return 成功時 true。
+             */
             virtual bool Start() = 0;
-                
-            // 更新処理。
+
+            /**
+             * @brief 更新処理。
+             */
             virtual void Update() = 0;
 
-            // 描画処理。
+            /**
+             * @brief 描画処理。
+             * @param rc レンダリングコンテキスト。
+             */
             virtual void Render(RenderContext& rc) = 0;
 
-        // ゲッター。
+
         public:
-            // 終了判定。
-            inline bool IsEnd() const
-            {
-                return isEnd_;
-            }
+            /**
+             * @brief 終了判定。
+             * @return 終了していれば true。
+             */
+            inline bool IsEnd() const { return isEnd_; }
 
 
         protected:
-            // 終了フラグ。
-            bool isEnd_ = false;
-
-            
+            bool isEnd_ = false; //!< 終了フラグ
         };
+    } // namespace nsProduction
+} // namespace nsApp
 
-    }
-}
+using EndRollBase = nsApp::nsProduction::EndRollBase;

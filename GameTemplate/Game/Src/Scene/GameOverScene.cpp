@@ -13,7 +13,7 @@ namespace nsApp
         bool GameOverScene::Start()
         {
             // 　@TODO:  ゲームオーバー中のBGM停止。
-            NewGO<app::direction::GameOver>(0, "gameOver");
+            NewGO<nsProduction::GameOver>(0, "gameOver");
 
             SceneManager::GetInstance()->GetFade()->StartFadeIn();
             return true;

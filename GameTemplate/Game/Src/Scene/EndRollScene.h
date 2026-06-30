@@ -7,16 +7,13 @@ namespace nsK2EngineLow
     class Camera;
 }
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         class EndRollManager;
     }
-}
 
-namespace nsApp
-{
     namespace nsScene
     {
         /**
@@ -44,7 +41,7 @@ namespace nsApp
 
         private:
             // エンドロールの管理クラス。
-            app::production::EndRollManager* pEndRollManager_ = nullptr;
+            nsProduction::EndRollManager* pEndRollManager_ = nullptr;
 
             // カメラ。
             nsK2EngineLow::Camera* pCamera_ = nullptr;

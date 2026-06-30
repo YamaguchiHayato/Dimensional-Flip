@@ -1,37 +1,28 @@
 #include "stdafx.h"
-#include "Src/production/CutIn/CutInView.h"
-#include "Src/production/CutIn/CutInLogoLayer.h"
-#include "Src/production/CutIn/CutInMaskLayer.h"
-#include "Src/production/CutIn/CutInScrollLayer.h"
-#include "Src/production/CutIn/CutInShadowLayer.h"
-#include "Src/production/CutIn/CutInSlideLayer.h"
 
 #include "Src/Core/BattlePhaseManager.h"
 #include "Src/Core/BossUIManager.h"
+#include "Src/Production/CutIn/CutInLogoLayer.h"
+#include "Src/Production/CutIn/CutInMaskLayer.h"
+#include "Src/Production/CutIn/CutInScrollLayer.h"
+#include "Src/Production/CutIn/CutInShadowLayer.h"
+#include "Src/Production/CutIn/CutInSlideLayer.h"
+#include "Src/Production/CutIn/CutInView.h"
 
-namespace app
+namespace nsApp
 {
-    namespace cutIn
+    namespace nsProduction
     {
         CutInView::~CutInView()
         {
-            // 背景レイヤーの破棄。
             if (pMaskLayer_)
                 DeleteGO(pMaskLayer_);
-
-            // スクロールレイヤーの破棄。
             if (pScrollLayer_)
                 DeleteGO(pScrollLayer_);
-
-            // キャラレイヤーの廃棄。
             if (pSlideLayer_)
                 DeleteGO(pSlideLayer_);
-
-            // 影レイヤーの破棄。
             if (pShadowLayer_)
                 DeleteGO(pShadowLayer_);
-
-            // ロゴレイヤーの破棄。
             if (pLogoLayer_)
                 DeleteGO(pLogoLayer_);
         }
@@ -39,19 +30,12 @@ namespace app
 
         bool CutInView::Start()
         {
-            // 各レイヤーの初期化。
-            // カットインの黒背景。
-            pMaskLayer_ = NewGO<app::cutIn::CutInMaskLayer>(0, "MaskLayer");
-            // キャラ背景の雷画像のレイヤー。
-            pScrollLayer_ = NewGO<app::cutIn::CutInScrollLayer>(0, "ScrollLayer");
-            // ボスのカットイン画像。
-            pSlideLayer_ = NewGO<app::cutIn::CutInSlideLayer>(1, "SlideLayer");
-            // ボスの影レイヤー画像。
-            pShadowLayer_ = NewGO<app::cutIn::CutInShadowLayer>(0, "ShadowLayer");
-            // ボスのエンブレムレイヤー。
-            pLogoLayer_ = NewGO<app::cutIn::CutInLogoLayer>(2, "LogoLayer");
+            pMaskLayer_ = NewGO<CutInMaskLayer>(0, "MaskLayer");
+            pScrollLayer_ = NewGO<CutInScrollLayer>(0, "ScrollLayer");
+            pSlideLayer_ = NewGO<CutInSlideLayer>(1, "SlideLayer");
+            pShadowLayer_ = NewGO<CutInShadowLayer>(0, "ShadowLayer");
+            pLogoLayer_ = NewGO<CutInLogoLayer>(2, "LogoLayer");
 
-            // カットインの表示時間。
             SetLifeDuration(5.0);
             return true;
         }
@@ -61,14 +45,9 @@ namespace app
         {
             timer_ += g_gameTime->GetFrameDeltaTime();
 
-            // カットインが終われば。
             if (IsCutInFinished())
-            {
-                // 自身を破棄。
                 DeleteGO(this);
-            }
 
-            // 時間制限が設定されている場合、カウントアップ。
             if (lifeDuration_ > 0.0f)
             {
                 timer_ += 1.0f / 60.0f;
@@ -82,5 +61,5 @@ namespace app
 
             layer_.Update();
         }
-    }
-}
+    } // namespace nsProduction
+} // namespace nsApp

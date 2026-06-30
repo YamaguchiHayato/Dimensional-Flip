@@ -314,7 +314,6 @@
     <ClCompile Include="Src\Parameter\Stage\StageMasterTable.cpp" />
     <ClCompile Include="Src\Parameter\Stage\StageSpawnTable.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
-    <ClCompile Include="Src\Production\CutIn\CutInBase.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInMaskLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInScrollLayer.cpp" />

@@ -62,6 +62,7 @@ namespace nsApp
             bool isButtonB_ = false;                   //! < B ボタンが押されたかどうか。
             bool isRight_ = false;                     //! < 右方向入力中かどうか。
             bool isLeft_ = false;                      //! < 左方向入力中かどうか。
+            bool isTransitionHandled_ = false;         //! < 遷移処理済みフラグ（二重 ChangeScene 防止）
         };
     } // namespace nsScene
 } // namespace nsApp

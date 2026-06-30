@@ -18,7 +18,8 @@ namespace nsApp
             /**
              * @brief タイトル描画用 GO を削除する
              */
-            DeleteGO(pTitleView_);
+            if (pTitleView_)
+                DeleteGO(pTitleView_);
 
             /**
              * @brief メニュー GO を削除する
@@ -231,15 +232,36 @@ namespace nsApp
         void TitleScene::UpdateGameStartFadeState()
         {
             /**
-             * @brief フェードアウト完了後にワールド Select へ遷移する
+             * @brief フェードアウト完了後にタイトル GO を破棄してからワールド Select へ遷移する
              */
             if (pFade_->IsFadeOutEnd())
             {
                 if (nextSceneID_ != -1)
+                {
+                    if (pTitleView_)
+                    {
+                        DeleteGO(pTitleView_);
+                        pTitleView_ = nullptr;
+                    }
+
+                    if (pTitleMenu_)
+                    {
+                        DeleteGO(pTitleMenu_);
+                        pTitleMenu_ = nullptr;
+                    }
+
+                    if (pManualUI_)
+                    {
+                        DeleteGO(pManualUI_);
+                        pManualUI_ = nullptr;
+                    }
+
+                    nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+
                     SceneManager::GetInstance()->ChangeScene((nsScene::SceneID) nextSceneID_);
+                }
             }
         }
-
 
         void TitleScene::UpdateGameEndFadeState()
         {

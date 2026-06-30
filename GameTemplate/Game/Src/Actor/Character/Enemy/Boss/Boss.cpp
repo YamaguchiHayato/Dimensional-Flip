@@ -141,7 +141,7 @@ namespace app
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
-            pCutInView_ = FindGO<app::cutIn::CutInView>("CutInView");
+            pCutInView_ = FindGO<CutInView>("CutInView");
 
             /* 弱点コリジョンの生成。*/
             pWeeekPoint_ = NewGO<CollisionObject>(0);

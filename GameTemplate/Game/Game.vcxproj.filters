@@ -200,9 +200,6 @@
     <ClCompile Include="Src\Camera\FollowStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Production\CutIn\CutInBase.cpp">
-      <Filter>Src\Direction\CutIn</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp">
       <Filter>Src\Direction\CutIn</Filter>
     </ClCompile>

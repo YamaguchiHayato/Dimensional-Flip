@@ -2,7 +2,7 @@
 
 #include "ResultData.h"
 #include "Src/Actor/Character/PlayerForward.h"
-
+#include "Src/Production/GameClear.h"
 /**
  * @file   StarGetProduction.h
  * @brief  スター取得時のカメラ演出とリザルト遷移。
@@ -23,7 +23,6 @@ enum class StarGetPhase
 };
 
 class Star;
-class GameClear;
 
 namespace app
 {

@@ -1,73 +1,76 @@
 #pragma once
 #include "Src/Production/CutIn/CutInBase.h"
 
-
-namespace app
+namespace nsApp
 {
-    namespace cutIn
+    namespace nsProduction
     {
         class CutInSlideLayer;
 
         class CutInShadowLayer : public CutInBase
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             CutInShadowLayer() = default;
             virtual ~CutInShadowLayer() = default;
 
-            // 初期化処理。
+
+        public:
+            /**
+             * @brief 初期化処理。
+             * @return 成功時 true。
+             */
             bool Start() override;
 
-
-            // 更新処理。
+            /**
+             * @brief 更新処理。
+             */
             void Update() override;
 
-
-            // 描画処理。
+            /**
+             * @brief 描画処理。
+             * @param rc 
+             */
             void Render(RenderContext& rc) override;
 
-
-            // パス取得処理。
+            /**
+             * @brief レイヤー DDS のパスを組み立てる。
+             * @param layerName ファイル名（拡張子なし）。
+             * @return Assets 配下のフルパス。
+             */
             inline const std::string FindLayerPath(const std::string layerName) const override
             {
                 return CutInBase::FindLayerPath(layerName);
             }
-        // セッター。
+
+
         public:
-            // 追従ターゲットをセットする。
-            inline void SetTarget(CutInSlideLayer* target)
-            {
-                pTargetLayer_ = target;
-            }
+            /**
+             * @brief ターゲットの CutInSlideLayer をセットする。
+             * @param target ターゲットの CutInSlideLayer。
+             */
+            inline void SetTarget(CutInSlideLayer* target) { pTargetLayer_ = target; }
 
+            /**
+             * @brief オフセットをセットする。
+             * @param offset ターゲットからのオフセット座標。
+             */
+            inline void SetOffSet(const Vector3& offset) { offset_ = offset; }
 
-            // 影用の画像のズレ幅をセットする。
-            inline void SetOffSet(const Vector3& offset)
-            {
-                offset_ = offset;
-            }
+            /**
+             * @brief ターゲットの現在座標を取得する。
+             * @return ターゲットの現在座標。
+             */
+            inline const Vector3& GetCurrentPos() const { return currentPos_; }
 
-
-        // ゲッター。
-        public:
-            inline const Vector3& GetCurrentPos() const
-            {
-                return currentPos_;
-            }
 
         private:
-            // 飛び出し開始位置を取得する。
-
-        private:
-            CutInSlideLayer* pTargetLayer_ = nullptr; // 追従ターゲットレイヤー。
-            Vector3 offset_ = Vector3::Zero;          // 影用の画像のズレ幅。
-            Vector3 currentPos_ = Vector3::Zero;      // 現在の位置。
-
-            // 影としての処理用のパラメータ。
-            Vector3 ejectStartPos_ = Vector3::Zero; // 飛び出し開始位置
-            float ejectTimer_ = 0.0f;               // 経過時間
-            bool isEjecting_ = false;               // 飛び出し済みかどうかのフラグ
+            CutInSlideLayer* pTargetLayer_ = nullptr; //! < ターゲットの CutInSlideLayer。
+            Vector3 offset_ = Vector3::Zero;          //! < ターゲットからのオフセット座標。
+            Vector3 currentPos_ = Vector3::Zero;      //! < ターゲットの現在座標。
+            Vector3 ejectStartPos_ = Vector3::Zero;   //! < ターゲットの飛び出す開始座標。
+            float ejectTimer_ = 0.0f;                 //! < 飛び出すアニメーションのタイマー。
+            bool isEjecting_ = false;                 //! < 飛び出すアニメーション中かどうか。
         };
-
-    }
-}
-
+    } // namespace nsProduction
+} // namespace nsApp

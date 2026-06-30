@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
@@ -59,6 +59,8 @@ namespace nsApp
 
         bool WorldSelectScene::Start()
         {
+            isTransitionHandled_ = false;
+
             pFade_ = SceneManager::GetInstance()->GetFade();
             if (pFade_)
                 pFade_->StartFadeIn();
@@ -175,11 +177,34 @@ namespace nsApp
             }
 
             /**
-             * @brief フェードアウト完了後にシーン遷移する
+             * @brief フェードアウト完了後に GO を破棄してからシーン遷移する
              */
-            if (pFade_ && pFade_->IsFadeOutEnd())
+            if (pFade_ && pFade_->IsFadeOutEnd() && !isTransitionHandled_)
             {
+                isTransitionHandled_ = true;
+
                 nsCore::SoundManager::GetInstance()->StopBGM(GameSoundList_BGM_StageSelect);
+
+                /**
+                 * @brief ワールド Select 用 GO を明示的に削除する
+                 */
+                for (auto* icon : icons_)
+                    DeleteGO(icon);
+                icons_.clear();
+
+                if (pSelectUI_)
+                {
+                    DeleteGO(pSelectUI_);
+                    pSelectUI_ = nullptr;
+                }
+
+                if (pSkyCube_)
+                {
+                    DeleteGO(pSkyCube_);
+                    pSkyCube_ = nullptr;
+                }
+
+                nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
 
                 if (isDecided_)
                 {

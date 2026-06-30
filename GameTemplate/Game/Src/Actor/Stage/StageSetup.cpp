@@ -96,7 +96,7 @@ namespace nsApp
             if (!isCutInPlaying_)
                 return;
 
-            auto* cutIn = FindGO<app::cutIn::CutInView>("CutInView");
+            auto* cutIn = FindGO<CutInView>("CutInView");
 
             // CutInView は終了時に自分で DeleteGO するので nullptr でも終了扱い
             if (cutIn == nullptr || cutIn->IsCutInFinished())

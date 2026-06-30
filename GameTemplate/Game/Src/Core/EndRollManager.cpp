@@ -1,17 +1,15 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
+
 #include "EndRollManager.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
-
-
-#include "Src/Production/Fade.h"
-
 #include "Src/Production/EndRoll/EndRollImage.h"
 #include "Src/Production/EndRoll/EndRollText.h"
+#include "Src/Production/Fade.h"
 
-namespace app
+namespace nsApp
 {
-    namespace production
+    namespace nsProduction
     {
         EndRollManager::~EndRollManager()
         {
@@ -21,42 +19,30 @@ namespace app
                     DeleteGO(component);
             }
             components_.clear();
-
         }
-
 
         bool EndRollManager::Start()
         {
-            // 画像クラスを生成する。
             pImage_ = NewGO<EndRollImage>(0, "Image");
             components_.push_back(pImage_);
 
-            // テキストクラスを生成する。
             pText_ = NewGO<EndRollText>(0, "Text");
             components_.push_back(pText_);
 
-            // フェードクラスを生成する。
             pFade_ = SceneManager::GetInstance()->GetFade();
             pFade_->StartFadeIn();
 
-            // エンディング曲を再生する。
-            app::core::SoundManager::GetInstance()->PlayBGM(GameSoudList_BGM_EndRoll);
+            nsCore::SoundManager::GetInstance()->PlayBGM(GameSoudList_BGM_EndRoll);
 
-            // フラグの初期化。
             isFadeOutStarted_ = false;
-
-            // スキップ用のフォントを初期化。
-            InitSkipFont(); 
-
+            InitSkipFont();
             return true;
         }
-
 
         void EndRollManager::Update()
         {
             if (!isFadeOutStarted_)
                 TrySkip();
-
 
             if (pText_ && pText_->IsEnd())
             {
@@ -64,19 +50,16 @@ namespace app
                 {
                     if (pFade_)
                         pFade_->StartFadeOut();
-
                     isFadeOutStarted_ = true;
                 }
             }
         }
-
 
         void EndRollManager::Render(RenderContext& rc)
         {
             if (!isFadeOutStarted_)
                 skipFont_.Draw(rc);
         }
-
 
         void EndRollManager::InitSkipFont()
         {
@@ -88,7 +71,6 @@ namespace app
             skipFont_.SetShadowParam(true, 2.0f, Vector4::Black);
         }
 
-
         void EndRollManager::TrySkip()
         {
             if (!g_pad[0]->IsTrigger(enButtonA))
@@ -97,15 +79,11 @@ namespace app
                 pText_->Skip();
         }
 
-
         bool EndRollManager::IsEnd() const
         {
-            // 演出が全て終わっているか判定。
             if (isFadeOutStarted_ && pFade_ && pFade_->IsFadeOutEnd())
                 return true;
-
-            // 全て終わっているなら true
             return false;
         }
-    }
-}
+    } // namespace nsProduction
+} // namespace nsApp

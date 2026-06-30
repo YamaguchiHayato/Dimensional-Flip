@@ -13,36 +13,41 @@ namespace
     
 }
 
-bool TitleLogoLayer::Start()
+namespace nsApp
 {
-    // タイトルロゴテキストの初期化。
-    InitTitleLogoText();
+    namespace nsTitle
+    {
 
-    return true;
-}
+        bool TitleLogoLayer::Start()
+        {
+            // タイトルロゴテキストの初期化。
+            InitTitleLogoText();
 
+            return true;
+        }
 
+        void TitleLogoLayer::Render(RenderContext& rc)
+        {
+            if (isVisible_ == false)
+                return;
 
-void TitleLogoLayer::Render(RenderContext& rc)
-{
-    if (isVisible_ == false)
-        return;
+            // タイトルロゴ描画。
+            titleFont_.Draw(rc);
+        }
 
-    // タイトルロゴ描画。
-    titleFont_.Draw(rc);
-}
+        void TitleLogoLayer::InitTitleLogoText()
+        {
+            // 描画するテキスト。
+            titleFont_.SetText(L"Dimension Flip");
+            // 座標をセット。
+            titleFont_.SetPosition(POSITION);
+            // 大きさをセット。
+            titleFont_.SetScale(SCALE);
+            // ベースカラーをセット。
+            titleFont_.SetColor(BASE_COLOR);
+            // 影のパラメータをセット。
+            titleFont_.SetShadowParam(true, 5.0f, SHADOW_COLOR);
+        }
 
-
-void TitleLogoLayer::InitTitleLogoText()
-{
-    // 描画するテキスト。
-    titleFont_.SetText(L"Dimension Flip");
-    // 座標をセット。
-    titleFont_.SetPosition(POSITION);
-    // 大きさをセット。
-    titleFont_.SetScale(SCALE);
-    // ベースカラーをセット。
-    titleFont_.SetColor(BASE_COLOR);
-    // 影のパラメータをセット。
-    titleFont_.SetShadowParam(true, 5.0f, SHADOW_COLOR);
+    }
 }

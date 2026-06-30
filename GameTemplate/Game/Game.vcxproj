@@ -367,6 +367,7 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameVersion.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />

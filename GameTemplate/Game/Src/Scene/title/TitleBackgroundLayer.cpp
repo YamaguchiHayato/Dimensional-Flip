@@ -33,89 +33,90 @@ namespace
     const auto POST_FLIP_DURATION = 0.3f;     // 余韻時間。
 }
 
-
-bool TitleBackgroundLayer::Start()
+namespace nsApp
 {
-    // 回転用画像。
-    std::string backgroundPath = Init("titleBackGround");
-    titleLayerRender_.Init(backgroundPath.c_str(), WIDTH, HEIGHT);
-
-    // 黒背景用画像。
-    std::string blackPath = Init("Black");
-    blackSpriteRender_.Init(blackPath.c_str(), BLACK_WIDTH, BLACK_HEIGHT);
-
-    // 回転パラメータの初期化。
-    InitRotParam();
-
-    return true;
-}
-
-
-void TitleBackgroundLayer::Update()
-{
-    // マニュアルモードじゃないときだけ回転させる
-    if (isManualMode_ == false)
+    namespace nsTitle
     {
-        // 一定周期で回転。
-        Rotation();
 
-        // 通常時の色はデフォルト値。
-        titleLayerRender_.SetMulColor(Vector4::White);
-    }
+        bool TitleBackgroundLayer::Start()
+        {
+            // 回転用画像。
+            std::string backgroundPath = Init("titleBackGround");
+            titleLayerRender_.Init(backgroundPath.c_str(), WIDTH, HEIGHT);
 
-    // マニュアルモード時は回転しない。
-    else
-        titleLayerRender_.SetMulColor({1.0f, 1.0f, 1.0f, 0.3f});
+            // 黒背景用画像。
+            std::string blackPath = Init("Black");
+            blackSpriteRender_.Init(blackPath.c_str(), BLACK_WIDTH, BLACK_HEIGHT);
 
+            // 回転パラメータの初期化。
+            InitRotParam();
 
-    // 画像を更新する。
-    titleLayerRender_.SetRotation(rot_);
-    titleLayerRender_.SetPosition(Vector3::Zero);
+            return true;
+        }
 
-    float scale = 4.5f;
-    titleLayerRender_.SetScale(Vector3(scale, scale, scale)); 
-    titleLayerRender_.Update();
+        void TitleBackgroundLayer::Update()
+        {
+            // マニュアルモードじゃないときだけ回転させる
+            if (isManualMode_ == false)
+            {
+                // 一定周期で回転。
+                Rotation();
 
-    // 背景黒画像の設定。
-    blackSpriteRender_.SetScale(Vector3::One);
-    // 黒背景画像を更新する。
-    blackSpriteRender_.Update();
-}
+                // 通常時の色はデフォルト値。
+                titleLayerRender_.SetMulColor(Vector4::White);
+            }
 
+            // マニュアルモード時は回転しない。
+            else
+                titleLayerRender_.SetMulColor({1.0f, 1.0f, 1.0f, 0.3f});
 
-void TitleBackgroundLayer::Rotation()
-{
-    float angle = -SPEED * g_gameTime->GetFrameDeltaTime();
+            // 画像を更新する。
+            titleLayerRender_.SetRotation(rot_);
+            titleLayerRender_.SetPosition(Vector3::Zero);
 
-    // Y軸回転。
-    Quaternion deltaRot = Quaternion::Identity;
-    deltaRot.SetRotation(Vector3::AxisZ, angle);
+            float scale = 4.5f;
+            titleLayerRender_.SetScale(Vector3(scale, scale, scale));
+            titleLayerRender_.Update();
 
-    // 新しい回転を合成させる。
-    rot_ *= deltaRot;
-    // 回転ベクトルを正規化する。
-    rot_.Normalize();
-}
+            // 背景黒画像の設定。
+            blackSpriteRender_.SetScale(Vector3::One);
+            // 黒背景画像を更新する。
+            blackSpriteRender_.Update();
+        }
 
+        void TitleBackgroundLayer::Rotation()
+        {
+            float angle = -SPEED * g_gameTime->GetFrameDeltaTime();
 
-void TitleBackgroundLayer::Render(RenderContext& rc)
-{
-    // 背景補強用
-    blackSpriteRender_.Draw(rc);
+            // Y軸回転。
+            Quaternion deltaRot = Quaternion::Identity;
+            deltaRot.SetRotation(Vector3::AxisZ, angle);
 
+            // 新しい回転を合成させる。
+            rot_ *= deltaRot;
+            // 回転ベクトルを正規化する。
+            rot_.Normalize();
+        }
 
-    // 回転画像用
-    titleLayerRender_.Draw(rc);
-}
+        void TitleBackgroundLayer::Render(RenderContext& rc)
+        {
+            // 背景補強用
+            blackSpriteRender_.Draw(rc);
 
+            // 回転画像用
+            titleLayerRender_.Draw(rc);
+        }
 
-void TitleBackgroundLayer::InitRotParam()
-{
-    // 変数の初期化。
-    state_ = FlipState::Idle;
+        void TitleBackgroundLayer::InitRotParam()
+        {
+            // 変数の初期化。
+            state_ = FlipState::Idle;
 
-    currentAngle_ = 0.0f;
-    stateTimer_ = 0.0f;
-    startAngle_ = 0.0f;
-    targetAngle_ = 0.0f;
-}
+            currentAngle_ = 0.0f;
+            stateTimer_ = 0.0f;
+            startAngle_ = 0.0f;
+            targetAngle_ = 0.0f;
+        }
+
+    } // namespace nsTitle
+} // namespace nsApp

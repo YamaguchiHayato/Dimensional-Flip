@@ -1,43 +1,71 @@
 #pragma once
 #include "Src/Scene/title/TitleLayerBase.h"
 
-class TitleLogoLayer : public TitleLayerBase
+namespace nsApp
 {
-public:
-    TitleLogoLayer() = default;
-    virtual ~TitleLogoLayer() = default;
-
-
-public:
-    bool Start() override;
-    void Update() override {};
-    void Render(RenderContext& rc) override;
-
-
-private:
-    // タイトルロゴテキストの初期化。
-    void InitTitleLogoText();
-
-
-// セッター。
-public:
-    // 表示フラグをセット。
-    inline void SetVisible(bool isVisble)
+    namespace nsTitle
     {
-        isVisible_ = isVisble;
-    }
+        /**
+         * @class TitleLogoLayer
+         * @brief タイトルロゴの表示レイヤー。
+         */
+        class TitleLogoLayer : public TitleLayerBase
+        {
+        public:
+            /* コンストラクタとデストラクタ。*/
+            TitleLogoLayer() = default;
+            virtual ~TitleLogoLayer() = default;
 
 
-// ゲッター。
-public:
-    // 画像をセット。
-    inline const std::string Init(const std::string layerName) override
-    {
-        return TitleLayerBase::Init(layerName);
-    }
+        public:
+            /**
+             * @brief シーン入場時の初期化。必要な GO を NewGO する。
+             * @return 成功時 true。
+             */
+            bool Start() override;
 
-private:
-    FontRender titleFont_;
+            /**
+             * @brief 毎フレームのシーン更新（遷移判定・入力など）。
+             */
+            void Update() override {};
 
-    bool isVisible_ = true;
-};
+            /**
+             * @brief 毎フレームのシーン描画。
+             * @param rc 
+             */
+            void Render(RenderContext& rc) override;
+
+
+        private:
+            /**
+             * @brief タイトルロゴのテキストを初期化する。
+             */
+            void InitTitleLogoText();
+
+
+        public:
+            /**
+             * @brief タイトルロゴの表示・非表示を設定する。
+             */
+            inline void SetVisible(bool isVisble) { isVisible_ = isVisble; }
+
+
+        public:
+            /**
+             * @brief レイヤーの初期化。レイヤー名を設定する。
+             * @param layerName レイヤーネーム。
+             * @return ファイルパス。
+             */
+            inline const std::string Init(const std::string layerName) override
+            {
+                return TitleLayerBase::Init(layerName);
+            }
+
+
+        private:
+            FontRender titleFont_;
+
+            bool isVisible_ = true;
+        };
+    } // namespace nsScene
+} // namespace nsApp

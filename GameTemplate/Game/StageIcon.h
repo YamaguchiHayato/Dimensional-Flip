@@ -4,10 +4,10 @@
 
 /**
  * @file   StageIcon.h
- * @brief  ワールドSelect用ステージプレビューモデル。
+ * @brief  ワールド Select 用ステージプレビューモデル。
  */
 
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {
@@ -18,6 +18,7 @@ namespace app
         class StageIcon : public IGameObject
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             StageIcon() = default;
             virtual ~StageIcon() = default;
 
@@ -29,12 +30,12 @@ namespace app
             void Init(const char* modelPath, StageID stageID);
 
             /**
-             * @brief シーン更新処理。
+             * @brief プレビューモデルの回転を更新する。
              */
             void Update() override;
 
             /**
-             * @brief シーン描画処理。
+             * @brief プレビューモデルを描画する。
              * @param rc レンダリングコンテキスト。
              */
             void Render(RenderContext& rc) override;
@@ -43,16 +44,18 @@ namespace app
             inline StageID GetStageID() const { return stageID_; }
 
             /**
-             * @brief ワールド座標を設定する（シーンが回転配置を計算）。
-             * @param pos 表示位置。
+             * @brief ワールド座標を設定する。
+             * @param pos WorldSelectScene が計算した配置位置。
              */
             inline void SetPosition(const Vector3& pos) { position_ = pos; }
 
 
         private:
-            ModelRender model_;                   //! < プレビューモデルレンダラー
-            Vector3 position_ = Vector3::Zero;    //! < ワールド座標
-            StageID stageID_ = StageID::sInvalid; //! < このアイコンが表すステージ ID
+            ModelRender model_;                   //!< プレビューモデル
+            Vector3     position_ = Vector3::Zero; //!< ワールド座標
+            StageID     stageID_  = StageID::sInvalid; //!< 対応ステージ ID
         };
     } // namespace nsUI
-} // namespace app
+} // namespace nsApp
+
+using StageIcon = nsApp::nsUI::StageIcon;

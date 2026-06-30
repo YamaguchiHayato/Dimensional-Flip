@@ -1,71 +1,65 @@
 #pragma once
 
-namespace app
+/**
+ * @file   WorldSelectUI.h
+ * @brief  ワールド選択画面の 2D UI。
+ */
+
+namespace nsApp
 {
     namespace nsUI
     {
+        /**
+         * @class WorldSelectUI
+         * @brief ステージ名・操作ガイド・Back/Select 表記を描画する。
+         */
         class WorldSelectUI : public IGameObject
         {
         public:
             WorldSelectUI() = default;
             virtual ~WorldSelectUI() = default;
 
-
-        public:
+            /** @brief フォント・スプライトを初期化する。 */
             void Init();
+
             void Update() override;
+
+            /**
+             * @brief UI を描画する。
+             * @param rc レンダリングコンテキスト。
+             */
             void Render(RenderContext& rc) override;
 
-
-        public:
-            // ステージ名を設定する関数
+            /**
+             * @brief 選択中ステージ名を更新する。
+             * @param name 表示するワイド文字列。
+             */
             void SetStageName(const wchar_t* name);
 
 
         private:
-            // 選択中のステージ名を左上に描画。
+            /**
+             * @brief UI の描画処理。Render() から呼ばれる。
+             */
             void DrawStageName();
-
-            // 「StageSelect」と表記。
             void DrawStageSelectText();
-
-            // スティック操作UIを描画。
             void DrawStickUI();
-
-            // 「Select」と表記。
             void DrawSelectText();
-
-            // BボタンUIを描画。
             void DrawBackButtonUI();
-
-            // 「Back」と表記。
             void DrawBackText();
-
-            // 「Skip」と表記。
             void DrawSkipText();
-
-            // スキップ処理を行う。
             void TrySkip();
 
 
         private:
-            // 左上のステージ名表示用
-            FontRender stageNameText_;
-
-            // 上部に「WorldSelect」と描画する用。
-            FontRender worldSelectTextUI_;
-
-            // 左下にスティック操作用。
-            SpriteRender stickUIRender_;
-
-            // 「Select」と表記する用。
-            FontRender selectTextUI_;
-
-            // 右下にバックボタン用。
-            SpriteRender backButtonRender_;
-
-            // バックテキスト用。
-            FontRender backUIText_;
+            FontRender   stageNameText_;      //!< 左上ステージ名
+            FontRender   worldSelectTextUI_;  //!< 上部タイトル
+            SpriteRender stickUIRender_;      //!< 左下スティック UI
+            FontRender   selectTextUI_;       //!< Select 表記
+            SpriteRender backButtonRender_;   //!< 右下 B ボタン
+            FontRender   backUIText_;         //!< Back 表記
         };
-    }
-}
+    } // namespace nsUI
+} // namespace nsApp
+
+using WorldSelectUI = nsApp::nsUI::WorldSelectUI;

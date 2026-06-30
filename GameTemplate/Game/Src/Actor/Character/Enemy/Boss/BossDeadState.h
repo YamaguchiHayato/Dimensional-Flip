@@ -1,5 +1,6 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
+#include "Src/Production/Fade.h"
 
 namespace app
 {
@@ -9,7 +10,6 @@ namespace app
     }
 } // namespace app
 
-class Fade;
 
 namespace app
 {

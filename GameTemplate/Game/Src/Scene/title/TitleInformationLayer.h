@@ -1,43 +1,65 @@
 #pragma once
 #include "Src/Scene/title/TitleLayerBase.h"
 
-namespace app
+namespace nsApp
 {
-    namespace title
+    namespace nsTitle
     {
         class TitleInformationLayer : public TitleLayerBase
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             TitleInformationLayer() = default;
             virtual ~TitleInformationLayer() = default;
 
 
         public:
-            // 初期化処理。
+            /**
+             * @brief シーン開始時の初期化処理。
+             * @return true: 初期化成功、false: 初期化失敗
+             */
             bool Start() override;
-            // 更新処理。
+
+            /**
+             * @brief シーン更新処理。
+             */
             void Update() override {};
-            // 描画処理。
+
+            /**
+             * @brief シーン描画処理。
+             * @param rc レンダリングコンテキスト。
+             */
             void Render(RenderContext& rc) override;
 
 
         private:
-            // バージョン表記テキストを初期化する。
+            /**
+             * @brief Version表記テキストを初期化する。
+             */
             void InitVersionText();
 
-            // 権利表記テキストを初期化する。
+            /**
+             * @brief 権利表記テキストを初期化する。
+             */
             void InitCopyRightText();
 
 
         // ゲッター。
         public:
-            // 画像をセット。
+            /**
+             * @brief レイヤー名を初期化する。
+             * @param layerName レイヤー名。
+             * @return 初期化後のレイヤー名。
+             */
             inline const std::string Init(const std::string layerName) override
             {
                 return TitleLayerBase::Init(layerName);
             }
 
-            // 表示フラグをセット。
+            /**
+             * @brief レイヤーの表示状態を取得する。
+             * @param isVisble 表示状態。
+             */
             inline void SetVisible(bool isVisble)
             {
                 isVisible_ = isVisble;

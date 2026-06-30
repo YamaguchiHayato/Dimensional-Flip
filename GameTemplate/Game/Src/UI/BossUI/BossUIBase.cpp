@@ -2,7 +2,7 @@
 #include "BossUIBase.h"
 
 
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {
@@ -27,7 +27,5 @@ namespace app
             else
                 transform_.warldMatrix_ = localMatrix_;
         }
-
-
     }
 }

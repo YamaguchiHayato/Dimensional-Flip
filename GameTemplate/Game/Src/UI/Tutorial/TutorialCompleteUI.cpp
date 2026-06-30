@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "TutorialCompleteUI.h"
 
@@ -8,7 +8,7 @@ namespace
     const float DISPLAY_TIME = 1.5f; // 表示し続ける時間
 } // namespace
 
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {

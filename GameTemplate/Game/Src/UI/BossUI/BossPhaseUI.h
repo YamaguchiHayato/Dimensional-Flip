@@ -1,131 +1,152 @@
 #pragma once
+
 #include "Src/UI/BossUI/BossUIBase.h"
 
-namespace app
+/**
+ * @file   BossPhaseUI.h
+ * @brief  ボス戦フェーズ表示・GO 演出 UI。
+ */
+
+namespace nsApp
 {
     namespace nsUI
     {
-        // ボス戦のフェーズの種類。
+        /**
+         * @enum BossPhaseKind
+         * @brief ボス戦フェーズの種類。
+         */
         enum class BossPhaseKind : uint8_t
         {
-            Phase1 = 0, // フェーズ1 : 2D視点。
-            Phase2,     // フェーズ2 : 3D視点。
-            Phase3,     // フェーズ3 : ミックス視点。
-            GO,
+            Phase1 = 0, //!< フェーズ1（2D 視点）
+            Phase2,     //!< フェーズ2（3D 視点）
+            Phase3,     //!< フェーズ3（ミックス視点）
+            GO,         //!< GO 表示用スプライト
             None,
             Num
         };
 
-
-        // ボス戦開始までの演出の進行状態。
+        /**
+         * @enum PhaseAnimState
+         * @brief フェーズ開始演出の進行状態。
+         */
         enum class PhaseAnimState : uint8_t
         {
-            None = 0, // 非表示。
-            Phase,    // フェーズ表示中。
-            Moving,   // 移動中。
-            GO,       // GO表示中。
-            Finish,   // 演出終了。
-            Num       // 状態数。
+            None = 0, //!< 非表示
+            Phase,    //!< フェーズ番号を中央に大表示
+            Moving,   //!< 右下へ移動・縮小
+            GO,       //!< GO 表示中
+            Finish,   //!< 演出終了
+            Num
         };
 
-
+        /**
+         * @class BossPhaseUI
+         * @brief PHASE 表示 → 移動 → GO のシーケンス演出を制御する。
+         */
         class BossPhaseUI : public BossUIBase
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             BossPhaseUI() = default;
             virtual ~BossPhaseUI() = default;
 
-
-        public:
+            /**
+             * @brief フェーズ画像・看板スプライトを読み込む。
+             */
             void Initialize();
-            void Update()override;
+
+            /**
+             * @brief 演出ステートとレイアウトを更新する。
+             */
+            void Update() override;
+
+            /**
+             * @brief フェーズ番号・看板・GO を描画する。
+             * @param rc レンダリングコンテキスト。
+             */
             void Draw(RenderContext& rc) override;
 
+            /**
+             * @brief 現在のフェーズを設定する。
+             * @param phase フェーズ種別。
+             */
+            inline void SetPhase(BossPhaseKind phase) { currentPhase_ = phase; }
 
-        public:
-            // 現在のフェーズをセットする。
-            inline void SetPhase(BossPhaseKind phase)
-            {
-                currentPhase_ = phase;
-            }
-
-            // ボス戦開戦時に表示する画像の描画時間。
+            /**
+             * @brief GO スプライトの表示を開始する。
+             */
             void PlayGOSprite();
 
-            // GOTImerを更新。
+            /**
+             * @brief GO 表示タイマーを更新する。
+             * @param basePos 基準ワールド座標。
+             */
             void UpdateGOTimer(Vector3& basePos);
 
-            // 演出を開始する。
+            /**
+             * @brief フェーズ切り替え演出を開始する。
+             * @param phase 表示するフェーズ。
+             */
             void StartPhaseAninm(BossPhaseKind phase);
 
-            // 演出アニメーションを更新する。
+            /**
+             * @brief 演出ステートマシンを1フレーム進める。
+             */
             void UpdatePhaseAnim();
 
-
-        // 個々の演出ステートを更新する処理。
-        private:
-            // フェーズ表示中の更新。
-            void UpdatePhaseState(float deltaTime);
-
-            // 移動中の更新。
-            void UpdateMovingState(float deltaTime, const Vector3& basePos);
-
-            // GO表示中の更新。
-            void UpdateGOState();
-
-            // 演出終了中の更新。
-            void UpdateFinishState(const Vector3& basePos);
-
-            // ステート後の更新処理。
-            void UpdateAfterState(const Vector3& basePos);
-
-            // フェーズ1用(全て動かす。)
-            void UpdateLayOut();
-
-            // フェーズ数のUIのみを更新。」
-            void UpdateLayOutLater();
-
-        // ゲッター。
-        public:
+            /**
+             * @brief フェーズ演出が再生中かどうか。
+             * @return Phase / Moving / GO 中なら true。
+             */
             inline bool IsPhasePlaying() const
             {
                 return phaseState_ != PhaseAnimState::None && phaseState_ != PhaseAnimState::Finish;
             }
 
-
-        // セッター。
-        public:
-            inline bool ShouldStopActors() const
-            {
-                return phaseState_ == PhaseAnimState::Phase;
-            }
-
+            /**
+             * @brief フェーズ表示中にアクター停止が必要か。
+             * @return Phase ステート中なら true。
+             */
+            inline bool ShouldStopActors() const { return phaseState_ == PhaseAnimState::Phase; }
 
         private:
-            SpriteRender phaseIcons_[(int) BossPhaseKind::Num]; // フェーズ数UI。
-            SpriteRender phaseIconRender_;                      // フェーズアイコンUI。
-  
-           
-            BossPhaseKind currentPhase_ = BossPhaseKind::Phase1; // 現在のフェーズ。
+            void UpdatePhaseState(float deltaTime);
+            void UpdateMovingState(float deltaTime, const Vector3& basePos);
+            void UpdateGOState();
+            void UpdateFinishState(const Vector3& basePos);
+            void UpdateAfterState(const Vector3& basePos);
+            void UpdateLayOut();
+            void UpdateLayOutLater();
 
-
-        // ボス戦開始までの演出用変数群。
         private:
-            float goTimer_ = 0.0f; // GO画像の描画タイマー。
-            bool isGOPlaying_ = false; // GO画像の描画中かどうか。
+            SpriteRender phaseIcons_[(int) BossPhaseKind::Num]; //!< フェーズ数字スプライト。
+            SpriteRender phaseIconRender_;                      //!< 「PHASE」看板。
 
-            Vector3 basePosition_ = Vector3::Zero; // 基準位置。
+            BossPhaseKind currentPhase_ = BossPhaseKind::Phase1; //!< 現在フェーズ。
 
-        // アニメーション用。
-        private:
-            // フェーズ演出の状態管理。
-            PhaseAnimState phaseState_ = PhaseAnimState::None;
-            float animTimer_ = 0.0f;
-            Vector3 currentPosition_ = Vector3::Zero;
-            Vector3 currentScale_ = Vector3::Zero;
-            Vector3 currentNumberOffset_ = Vector3::Zero;
+            float goTimer_ = 0.0f;                 //!< GO 表示残り時間。
+            bool isGOPlaying_ = false;             //!< GO 再生中フラグ。
+            Vector3 basePosition_ = Vector3::Zero; //!< 基準位置（予約）。
+
+            PhaseAnimState phaseState_ = PhaseAnimState::None; //!< 演出ステート。
+            float animTimer_ = 0.0f;                           //!< ステート内タイマー。
+            Vector3 currentPosition_ = Vector3::Zero;          //!< 看板ローカル位置。
+            Vector3 currentScale_ = Vector3::Zero;             //!< 看板スケール。
+            Vector3 currentNumberOffset_ = Vector3::Zero;      //!< 数字のオフセット。
         };
+    } // namespace nsUI
+} // namespace nsApp
 
-    }
-}
+using BossPhaseKind = nsApp::nsUI::BossPhaseKind;
+using PhaseAnimState = nsApp::nsUI::PhaseAnimState;
+using BossPhaseUI = nsApp::nsUI::BossPhaseUI;
 
+namespace app
+{
+    namespace nsUI
+    {
+        using BossPhaseKind = nsApp::nsUI::BossPhaseKind;
+        using PhaseAnimState = nsApp::nsUI::PhaseAnimState;
+        using BossPhaseUI = nsApp::nsUI::BossPhaseUI;
+    } // namespace nsUI
+} // namespace app

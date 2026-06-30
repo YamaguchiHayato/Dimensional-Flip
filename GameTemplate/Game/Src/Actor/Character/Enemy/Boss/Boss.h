@@ -18,12 +18,6 @@ namespace app
         class BossTumbleState;
         class BossDeadState;
     }
-
-    namespace core
-    {
-        class InputManager;
-        class BattlePhaseManager;
-    } 
 }
 
 namespace nsApp
@@ -31,6 +25,8 @@ namespace nsApp
     namespace nsCore
     {
         class Game;
+        class InputManager;       //!< 入力マネージャ（ポインタ用 forward decl）
+        class BattlePhaseManager; //!< ボス戦足場マネージャ（ポインタ用 forward decl）
     }
 }
 
@@ -322,7 +318,7 @@ namespace app
         private:
             Player* pPlayer_ = nullptr; //! プレイヤーのインスタンス。
             CollisionObject* pWeeekPoint_ = nullptr; //! 弱点のコリジョン。
-            app::core::InputManager* pInputManager_ = nullptr; //! 入力マネージャーのインスタンス。
+            nsApp::nsCore::InputManager* pInputManager_ = nullptr; //! 入力マネージャーのインスタンス。
             nsApp::nsCore::Game* pGame_ = nullptr;                 //! ゲームインスタンス。
             CutInView* pCutInView_ = nullptr;      //! カットインビューのインスタンス。
 

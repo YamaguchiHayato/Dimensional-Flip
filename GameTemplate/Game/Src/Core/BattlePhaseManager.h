@@ -1,10 +1,14 @@
 #pragma once
+
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
 #include "Src/Collision/CollisionManager.h"
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/Game.h"
 
-
+/**
+ * @file   BattlePhaseManager.h
+ * @brief  ボス戦フェーズ中の浮遊足場（足場ギミック）を管理するシングルトン。
+ */
 
 namespace app
 {
@@ -14,36 +18,32 @@ namespace app
     }
 } // namespace app
 
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
+        /**
+         * @class BattlePhaseManager
+         * @brief ボス戦用の浮遊足場プールを生成・表示・非表示にする。
+         * @note  カメラモード（2D/3D）に応じて足場パターンを切り替える。
+         */
         class BattlePhaseManager
         {
-        private:
-            BattlePhaseManager() = default;
-            virtual ~BattlePhaseManager() = default;
-
-        private:
-            // コピー&ムーブを禁止する。
-            BattlePhaseManager(const BattlePhaseManager&) = delete;
-            BattlePhaseManager& operator=(const BattlePhaseManager) = delete;
-
-        private:
-            // SingletonInstance。
-            static BattlePhaseManager* pInstance_;
-
         public:
-            // Instanceを取得。
+            /**
+             * @brief シングルトンインスタンスを取得する。
+             * @return BattlePhaseManager のインスタンス。未生成なら new する。
+             */
             inline static BattlePhaseManager* GetInstance()
             {
                 if (pInstance_ == nullptr)
                     pInstance_ = new BattlePhaseManager();
-
                 return pInstance_;
             }
 
-            // Instanceを削除。
+            /**
+             * @brief シングルトンインスタンスを破棄する。
+             */
             inline static void DeleteInstance()
             {
                 if (pInstance_)
@@ -53,64 +53,87 @@ namespace app
                 }
             }
 
-        public:
-            // フェーズを初期化。
+            /**
+             * @brief 足場プールを初期化する。既存足場は全削除してから再生成する。
+             */
             void Init();
 
-            // 更新。
+            /**
+             * @brief 毎フレームの更新処理（予約）。
+             */
             void Update();
 
-            // 足場を出現させる。
+            /**
+             * @brief 現在のカメラモードに応じた足場パターンを出現させる。
+             */
             void ActivateScaffolding();
 
-            // 足場を非表示に。
+            /**
+             * @brief 保持している足場をすべて非表示にする。
+             */
             void DeactivateScaffolding();
 
+            /**
+             * @brief 視点切り替えの間隔（秒）を設定する。
+             * @param interval 切り替え間隔（秒）。
+             */
+            inline void SetChangeInterval(float interval) { changeInterval_ = interval; }
 
-        // セッター。
-        public:
-            // 何秒で切り替わるのかを設定。
-            inline void SetChangeInterval(float interval)
-            {
-                changeInterval_ = interval;
-            }
+            /**
+             * @brief 視点切り替えタイマーの初期値を設定する。
+             * @param timer タイマー初期値（秒）。
+             */
+            inline void SetDimensionTimer(float timer) { dimensionTimer_ = timer; }
 
-            // 視点を切り替える時間を設定。
-            inline void SetDimensionTimer(float timer)
-            {
-                dimensionTimer_ = timer;
-            }  
-
-
-            // ヘルパー。
-        public:
-            // 生成する足場の配列。
+            /**
+             * @brief 指定パターンの座標・スケールで足場を有効化する。
+             * @param pattern 各足場のワールド座標リスト。
+             * @param scale   各足場に適用するスケール。
+             */
             void SpawnPattern(const std::vector<Vector3>& pattern, const Vector3& scale);
 
-            // 保持している足場を全て削除。
+            /**
+             * @brief 保持している足場 GO をすべて削除する。
+             */
             void ClearAllPlatforms();
 
-
         private:
-            // 足場を生成する。
+            /* コンストラクタとデストラクタ。*/
+            BattlePhaseManager() = default;
+            virtual ~BattlePhaseManager() = default;
+
+            BattlePhaseManager(const BattlePhaseManager&) = delete;
+            BattlePhaseManager& operator=(const BattlePhaseManager&) = delete;
+
+            /**
+             * @brief 足場 GO を1つプール用に生成する。
+             */
             void CreatePlatform();
 
-
         private:
-            app::collision::CollisionManager* environmentCollison_ = nullptr;                   // 環境設定用コリジョンマネージャー。
-            CameraManager* environmentCamera_ = nullptr;                                        // 環境設定用カメラマネージャー。
-            std::vector<app::gimmick::FloatingPlatform*> platformsList_;                        // 浮遊プラットフォーム群。
+            static BattlePhaseManager* pInstance_; //!< シングルトンインスタンス。
 
-            Player* pPlayer_ = nullptr; // プレイヤー。
+            CollisionManager* environmentCollison_ = nullptr; //!< 環境コリジョン（予約）。
+            CameraManager* environmentCamera_ = nullptr;                      //!< 環境カメラ（予約）。
+            std::vector<app::gimmick::FloatingPlatform*> platformsList_;      //!< 浮遊足場プール。
 
-        private:
-            float dimensionTimer_ = 0.0f;
-            float changeInterval_ = 15.0f;
+            Player* pPlayer_ = nullptr; //!< プレイヤー参照（予約）。
 
+            float dimensionTimer_ = 0.0f;  //!< 視点切り替えタイマー。
+            float changeInterval_ = 15.0f; //!< 視点切り替え間隔（秒）。
 
-            CameraMode currentCamMode_; // 現在のカメラモード。
-            CameraMode nextCamMode_;    // 次のカメラモード。
+            CameraMode currentCamMode_; //!< 現在のカメラモード（予約）。
+            CameraMode nextCamMode_;    //!< 次のカメラモード（予約）。
         };
+    } // namespace nsCore
+} // namespace nsApp
 
-    } // namespace core
+using BattlePhaseManager = nsApp::nsCore::BattlePhaseManager;
+
+namespace app
+{
+    namespace core
+    {
+        using BattlePhaseManager = nsApp::nsCore::BattlePhaseManager;
+    }
 } // namespace app

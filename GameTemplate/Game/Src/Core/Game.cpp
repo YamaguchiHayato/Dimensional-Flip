@@ -172,7 +172,6 @@ namespace nsApp
             StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
             const auto& master = nsApp::nsSystem::StageMasterTable::Get(stage);
             const bool useFormulaBg = (master.backgroundType == "Scroll");
-//            g_renderingEngine->EnableCompositeBackground(useFormulaBg);
 
 
             // フェードイン開始。
@@ -185,7 +184,6 @@ namespace nsApp
 
             // 数式背景のパララックス更新。
             float cameraX = g_camera3D->GetTarget().x;
-  //          g_renderingEngine->UpdateCompositeBackground(cameraX);
 
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
@@ -265,11 +263,11 @@ namespace nsApp
                     pCameraManager_->Request3DMode();
             }
 
-            auto& collisionMgr = app::collision::CollisionManager::GetInstance();
+            auto& collisionMgr = nsCollision::CollisionManager::GetInstance();
             if (mode == CameraMode::mode2D)
-                collisionMgr.SetDimension(app::collision::DimensionMode::dim2D);
+                collisionMgr.SetDimension(nsCollision::DimensionMode::dim2D);
             else
-                collisionMgr.SetDimension(app::collision::DimensionMode::dim3D);
+                collisionMgr.SetDimension(nsCollision::DimensionMode::dim3D);
         }
 
 

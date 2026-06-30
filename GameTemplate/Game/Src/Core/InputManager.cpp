@@ -1,42 +1,41 @@
 #include "stdafx.h"
-#include "Src/Core/InputManager.h"
-#include "Src/Core/Game.h"
 
-namespace app
+#include "Src/Core/Game.h"
+#include "Src/Core/InputManager.h"
+
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
         InputManager* InputManager::instance_ = nullptr;
 
-
         void InputManager::FlipDimension(CameraManager* pCamera)
         {
-            // 無効化されているなら処理は中断。
+            /**
+             * @brief 無効化中は処理しない
+             */
             if (!isDimensionFlip_)
                 return;
 
-            // カメラの現在のモードを取得。
+            /**
+             * @brief 現在のカメラモードを取得
+             */
             auto currentCamMode = pCamera->GetCurrentCameraMode();
 
-            auto* findGameClass = FindGO<app::core::Game>("game");
-
-            if (!findGameClass)
+            /**
+             * @brief インゲーム本体 GO を検索
+             */
+            auto* pGame = FindGO<Game>("game");
+            if (!pGame)
                 return;
 
-            // 2D⇔3Dの切り替え。
-            // 現在のカメラモードに応じて切り替えを行う。
-            // 2Dモードの場合は3Dへ、3Dモードの場合は2Dへ切り替え。   
+            /**
+             * @brief 2D⇔3D を切り替え
+             */
             if (currentCamMode == CameraMode::mode2D)
-            {
-                // 3Dへ。
-                findGameClass->ChangeDimension(CameraMode::mode3D);
-            }
-
+                pGame->ChangeDimension(CameraMode::mode3D);
             else if (currentCamMode == CameraMode::mode3D)
-            {
-                // 2Dへ。
-                findGameClass->ChangeDimension(CameraMode::mode2D);
-            }
+                pGame->ChangeDimension(CameraMode::mode2D);
         }
-    }
-}
+    } // namespace nsCore
+} // namespace nsApp

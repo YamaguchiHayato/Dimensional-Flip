@@ -21,7 +21,6 @@ class CameraManager;
 class TrackingEnemy;
 
 class NumberUI;
-class ScoreUI;
 class TimerUI;
 class HPbarUI;
 

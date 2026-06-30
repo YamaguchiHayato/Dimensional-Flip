@@ -1,114 +1,174 @@
 #pragma once
-#include <array>     // std::array
+
+#include <algorithm>
+#include <array>
 #include <vector>
-#include <algorithm> // std::remove 
+
 #include "NonCopyable.h"
 
+/**
+ * @file   CollisionManager.h
+ * @brief  2D/3D 次元に応じてコリジョン有効状態を切り替えるシングルトン。
+ */
 
-namespace nsK2Engine{
+namespace nsK2Engine
+{
     class CollisionObject;
 }
 
-
-namespace app
+namespace nsApp
 {
-    namespace collision
+    namespace nsCollision
     {
-        // 現在のモード。
-        enum class DimensionMode : uint8_t {
-            dim2D,
-            dim3D
+        /**
+         * @enum DimensionMode
+         * @brief コリジョン適用の次元モード。
+         */
+        enum class DimensionMode : uint8_t
+        {
+            dim2D, //!< 2D モード
+            dim3D  //!< 3D モード
         };
 
-
-        // 衝突プロパティ。
-        enum class CollisionProperty : uint8_t {
-            AlwaysSolid, // 常に有効
-            SolidOnly2D, // 2Dモード時のみ有効
-            SolidOnly3D  // 3Dモード時のみ有効
+        /**
+         * @enum CollisionProperty
+         * @brief オブジェクトのコリジョン有効条件。
+         */
+        enum class CollisionProperty : uint8_t
+        {
+            AlwaysSolid, //!< 常に有効
+            SolidOnly2D, //!< 2D モード時のみ有効
+            SolidOnly3D  //!< 3D モード時のみ有効
         };
 
-
+        /**
+         * @struct CollisionEntry
+         * @brief 登録済みコリジョンオブジェクトとそのプロパティ。
+         */
         struct CollisionEntry
         {
-            CollisionProperty property_;
-            nsK2Engine::CollisionObject* pObj;
+            CollisionProperty property_;       //!< 有効条件。
+            nsK2Engine::CollisionObject* pObj; //!< 対象オブジェクト。
         };
 
-
+        /**
+         * @struct IDimensionObserver
+         * @brief 次元切り替え通知を受け取るオブザーバーインターフェース。
+         */
         struct IDimensionObserver
         {
             virtual ~IDimensionObserver() = default;
+
+            /**
+             * @brief 次元モードが変更されたときに呼ばれる。
+             * @param mode 新しい次元モード。
+             */
             virtual void IDimensionChanged(DimensionMode mode) = 0;
         };
 
-        // エンジン内蔵のNonCopyableではなく、自作。
+        /**
+         * @class CollisionManager
+         * @brief コリジョン登録と 2D/3D 切り替えを統括するシングルトン。
+         */
         class CollisionManager : public NonCopyable
         {
         public:
-            // シングルトン登録。
+            /**
+             * @brief シングルトンインスタンスを取得する。
+             * @return CollisionManager の参照。未生成なら new する。
+             */
             static CollisionManager& GetInstance()
             {
-                if (!instance) 
+                if (!instance)
                     instance = new CollisionManager();
-
                 return *instance;
             }
 
+            /**
+             * @brief コリジョンオブジェクトを登録する。既登録ならプロパティのみ更新。
+             * @param obj  対象 CollisionObject。
+             * @param prop 有効条件。既定は AlwaysSolid。
+             */
+            void RegisterObject(nsK2Engine::CollisionObject* obj,
+                                CollisionProperty prop = CollisionProperty::AlwaysSolid);
 
-            // オブザーバーへの登録。
-            void RegisterObject(nsK2Engine::CollisionObject* obj,CollisionProperty prop = CollisionProperty::AlwaysSolid);
-
-
-            // オブザーバーの登録解除。
+            /**
+             * @brief コリジョンオブジェクトの登録を解除する。
+             * @param unObj 解除するオブジェクト。
+             */
             inline void UnRegisterObject(nsK2Engine::CollisionObject* unObj)
             {
-                pObserver_.erase(std::remove_if(pObserver_.begin(), pObserver_.end(),[unObj](const CollisionEntry& entry) { return entry.pObj == unObj; }), pObserver_.end());
+                pObserver_.erase(std::remove_if(pObserver_.begin(), pObserver_.end(),
+                                                [unObj](const CollisionEntry& entry) { return entry.pObj == unObj; }),
+                                 pObserver_.end());
             }
 
-
-            // コリジョンのON/OFF/適用する関数。
+            /**
+             * @brief エントリのプロパティに応じてコリジョン ON/OFF を適用する。
+             * @param entry 対象エントリ。
+             */
             void ApplyCollisionState(CollisionEntry& entry);
 
-
-            // 通知。
+            /**
+             * @brief 次元変更オブザーバーを登録する。
+             * @param obs オブザーバー。nullptr は無視。
+             */
             void RegisterObserver(IDimensionObserver* obs);
+
+            /**
+             * @brief 次元変更オブザーバーの登録を解除する。
+             * @param obs 解除するオブジェクト。
+             */
             void UnRegisterObserver(IDimensionObserver* obs);
 
-        // セッター。
-        public:
-            // 次元の設定と通知。
+            /**
+             * @brief 次元モードを変更し、全オブジェクトとオブザーバーに通知する。
+             * @param mode 新しい次元モード。
+             */
             inline void SetDimension(DimensionMode mode)
             {
                 currentMode_ = mode;
                 NotifyObservers();
             }
 
-
-        // ゲッター。
-        public:
-            // 今の次元モードを取得。
-            DimensionMode GetCurrentMode() const
-            {
-                return currentMode_;
-            }
-
+            /**
+             * @brief 現在の次元モードを取得する。
+             */
+            DimensionMode GetCurrentMode() const { return currentMode_; }
 
         private:
-            // オブザーバーへの通知。
+            /* コンストラクタ。*/
+            CollisionManager() = default;
+
+            /**
+             * @brief 登録オブジェクトとオブザーバーへ次元変更を通知する。
+             */
             void NotifyObservers();
 
-            
         private:
-            static CollisionManager* instance;
+            static CollisionManager* instance; //!< シングルトンインスタンス。
 
-        private:
-            CollisionManager() = default;
-            std::vector<CollisionEntry> pObserver_;
-            std::vector<IDimensionObserver*> pDimensionObservers_;
-            DimensionMode currentMode_ = DimensionMode::dim2D;
-            
+            std::vector<CollisionEntry> pObserver_;                //!< 登録コリジョン一覧。
+            std::vector<IDimensionObserver*> pDimensionObservers_; //!< 次元オブザーバー一覧。
+            DimensionMode currentMode_ = DimensionMode::dim2D;     //!< 現在の次元モード。
         };
-    }
-}
+    } // namespace nsCollision
+} // namespace nsApp
 
+using DimensionMode = nsApp::nsCollision::DimensionMode;
+using CollisionProperty = nsApp::nsCollision::CollisionProperty;
+using CollisionEntry = nsApp::nsCollision::CollisionEntry;
+using IDimensionObserver = nsApp::nsCollision::IDimensionObserver;
+using CollisionManager = nsApp::nsCollision::CollisionManager;
+
+namespace app
+{
+    namespace collision
+    {
+        using DimensionMode = nsApp::nsCollision::DimensionMode;
+        using CollisionProperty = nsApp::nsCollision::CollisionProperty;
+        using CollisionEntry = nsApp::nsCollision::CollisionEntry;
+        using IDimensionObserver = nsApp::nsCollision::IDimensionObserver;
+        using CollisionManager = nsApp::nsCollision::CollisionManager;
+    } // namespace collision
+} // namespace app

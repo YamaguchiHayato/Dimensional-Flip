@@ -297,7 +297,6 @@
     <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
     <ClCompile Include="Src\Camera\FollowStrategy.cpp" />
     <ClCompile Include="Src\Collision\CollisionManager.cpp" />
-    <ClCompile Include="Src\Collision\NonCopyable.cpp" />
     <ClCompile Include="Src\Core\CameraManager.cpp" />
     <ClCompile Include="Src\Core\Game.cpp" />
     <ClCompile Include="Src\Core\Job\JobQueue.cpp" />

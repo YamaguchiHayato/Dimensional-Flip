@@ -61,7 +61,7 @@ namespace
     const float OFFSET_Y_NUMBER = -200.0f;
 }
 
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {

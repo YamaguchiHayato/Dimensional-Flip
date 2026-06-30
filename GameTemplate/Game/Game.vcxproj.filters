@@ -296,9 +296,6 @@
     <ClCompile Include="Src\Collision\CollisionManager.cpp">
       <Filter>Src\Direction\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Collision\NonCopyable.cpp">
-      <Filter>Src\Direction\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Actor\Stage\BackGround\FontFormulaBackGround.cpp">
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClCompile>

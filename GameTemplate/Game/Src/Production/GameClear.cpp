@@ -142,7 +142,7 @@ namespace nsApp
 
         void GameClear::CleanUpUI()
         {
-            auto* pTutorialMsg = FindGO<app::nsUI::TutorialMessageUI>("TutorialMessageUI");
+            auto* pTutorialMsg = FindGO<TutorialMessageUI>("TutorialMessageUI");
             if (pTutorialMsg)
                 DeleteGO(pTutorialMsg);
 
@@ -150,11 +150,11 @@ namespace nsApp
             if (pOrangeLogo)
                 DeleteGO(pOrangeLogo);
 
-            auto* pTutorialComp = FindGO<app::nsUI::TutorialCompleteUI>("TutorialCompleteUI");
+            auto* pTutorialComp = FindGO<TutorialCompleteUI>("TutorialCompleteUI");
             if (pTutorialComp)
                 DeleteGO(pTutorialComp);
 
-            auto* pTutorialSeq = FindGO<app::nsUI::TutorialSequencer>("TutorialSequencer");
+            auto* pTutorialSeq = FindGO<TutorialSequencer>("TutorialSequencer");
             if (pTutorialSeq)
                 DeleteGO(pTutorialSeq);
         }

@@ -24,7 +24,7 @@ namespace
 
 }
 
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {

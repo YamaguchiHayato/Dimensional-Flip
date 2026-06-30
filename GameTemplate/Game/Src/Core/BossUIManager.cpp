@@ -1,95 +1,86 @@
 #include "stdafx.h"
-#include "BossUIManager.h"
 
-// 各UIクラス。
+#include "BossUIManager.h"
 #include "Src/UI/BossUI/BossHPbarUI.h"
 
-
-namespace app
+namespace nsApp
 {
     namespace nsUI
     {
         void BossUIManager::Initialize()
         {
-            // 各UIクラスを生成する。
-            // BPbarUIの生成。
+            /**
+             * @brief 各 UI パーツを生成
+             */
             MakeHPbarUI();
-
-            // 攻撃予告UIの生成。
             MakeAttackIndicatorUI();
 
-            // 初期位置を設定。
-            transform_.localPosition_ = Vector3(650, -400.0f, 0.0f);
+            /**
+             * @brief ボス HUD の基準位置（画面右下付近）
+             */
+            transform_.localPosition_ = Vector3(650.0f, -400.0f, 0.0f);
         }
-
 
         void BossUIManager::Update()
         {
-            // 行列更新を行う。
+            /**
+             * @brief 親の行列を更新
+             */
             UpdateMatrix();
 
-            // 各UIクラスの更新を行う。
-            for (auto* bossUIParts : bossUIParts_)
+            /**
+             * @brief 子 UI パーツを更新
+             */
+            for (auto* pPart : bossUIParts_)
             {
-                bossUIParts->Update();
-                bossUIParts->UpdateMatrix();
+                pPart->Update();
+                pPart->UpdateMatrix();
             }
         }
-
 
         void BossUIManager::Draw(RenderContext& rc)
         {
-            // 各UIクラスの描画を行う。
-            for (auto* bossUIParts : bossUIParts_)
-            {
-                bossUIParts->Draw(rc);
-            }
+            /**
+             * @brief 子 UI パーツを描画
+             */
+            for (auto* pPart : bossUIParts_)
+                pPart->Draw(rc);
         }
-
 
         void BossUIManager::OnUpdateHP(float currentHP, float maxHP)
         {
-            auto percent = currentHP / maxHP;
+            /**
+             * @brief HP 割合を HP バーに渡す
+             */
+            const float percent = currentHP / maxHP;
 
-            // HPバーUIに通知。
             if (pBossHPbarUI_)
                 pBossHPbarUI_->SetHPPercent(percent);
         }
 
-
         void BossUIManager::MakeHPbarUI()
         {
-            // HPバーUIの生成。
-            auto hpBar = new BossHPbarUI();
-
-            // 管理配列に追加。
-            // 自信を親として設定。
+            /**
+             * @brief HP バーを生成し、自身を親として登録
+             */
+            auto* hpBar = new app::nsUI::BossHPbarUI();
             hpBar->SetParent(this);
-
             hpBar->Initialize();
 
-            // メンバ変数に設定。
             pBossHPbarUI_ = hpBar;
-            // リストに追加。
             bossUIParts_.push_back(hpBar);
         }
 
-
         void BossUIManager::MakeAttackIndicatorUI()
         {
-            // 攻撃予告UIの生成。
-            pBossAttackIndicatorUI_ = new BossAttackIndicatorUI();
-
-            // 管理配列に追加。
+            /**
+             * @brief 攻撃予告アイコン UI を生成
+             */
+            pBossAttackIndicatorUI_ = new app::nsUI::BossAttackIndicatorUI();
             pBossAttackIndicatorUI_->Initialize();
-
-            // 親に設定。
             pBossAttackIndicatorUI_->SetParent(this);
 
-            // リストに追加。
             bossUIParts_.push_back(pBossAttackIndicatorUI_);
-
         }
-
-    }
-}
+    } // namespace nsUI
+} // namespace nsApp

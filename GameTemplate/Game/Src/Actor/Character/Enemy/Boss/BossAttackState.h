@@ -47,13 +47,13 @@ namespace app
             // 決定した攻撃アイコンをUIマネージャーに通知する関数。
             inline void NotifyAttackIcon()
             {
-                app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(bossUIKind);
+               BossUIManager::GetInstance().OnNotifyAttack(bossUIKind);
             }
 
 
         private:
             app::enemy::Boss* pBoss_ = nullptr;
-            app::collision::CollisionManager* pCollisionManager_ = nullptr;
+            CollisionManager* pCollisionManager_ = nullptr;
 
             std::unique_ptr<app::enemyState::IBossStrategy> currentState_ = nullptr; // 現在の攻撃ステート。
 
@@ -64,7 +64,7 @@ namespace app
         private:
             uint8_t lastAttackType_ = -1; // 最後に実行した攻撃タイプを保存する変数。
 
-            app::nsUI::BossAttackKind bossUIKind = app::nsUI::BossAttackKind::None;
+            BossAttackKind bossUIKind = app::nsUI::BossAttackKind::None;
         };
 
     }

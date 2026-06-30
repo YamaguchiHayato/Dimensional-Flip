@@ -159,10 +159,10 @@ namespace app
                 pCurrentState_->Enter();
 
             /* BattlePhaseManagerの初期化。*/
-            app::core::BattlePhaseManager::GetInstance()->Init();
+            BattlePhaseManager::GetInstance()->Init();
 
             /* InputManagerの次元反転フラグを無効化。*/
-            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(true);
+            InputManager::GetInstance()->SetDimensionFlipFlag(true);
 
             /* HPの初期化。*/
             SetHP(MAX_HP);

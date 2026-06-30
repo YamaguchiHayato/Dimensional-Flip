@@ -1,9 +1,10 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/StageManager.h"
 #include "Src/Parameter/Stage/StageMasterTable.h"
 #include "Src/UI/NumberUI.h"
+#include "Src/UI/Tutorial/TutorialMessageUI.h"
 
 namespace nsApp
 {
@@ -13,11 +14,30 @@ namespace nsApp
         StageID StageManager::nextInitStageID_ = StageID::sTutorialStage;
         StageResultData StageManager::stageResultData_;
 
+        namespace
+        {
+            void SetupTutorialUI(StageID stageId)
+            {
+                auto* pExisting = FindGO<TutorialMessageUI>("TutorialMessageUI");
+
+                if (stageId == StageID::sTutorialStage)
+                {
+                    if (!pExisting)
+                        NewGO<TutorialMessageUI>(0, "TutorialMessageUI");
+                }
+                else if (pExisting)
+                {
+                    DeleteGO(pExisting);
+                }
+            }
+        } // namespace
 
         StageManager::~StageManager()
         {
             if (pStageManger_ == this)
                 pStageManger_ = nullptr;
+
+            SetupTutorialUI(StageID::sInvalid);
 
             spawner_.Clear();
             stageSetup_.OnLeave(stageCurrentID_);
@@ -25,7 +45,6 @@ namespace nsApp
             DeleteGO(pCurrentStage_);
             pCurrentStage_ = nullptr;
         }
-
 
         bool StageManager::Start()
         {
@@ -35,14 +54,12 @@ namespace nsApp
 
             stageCurrentID_ = nextInitStageID_;
 
-            // TSV からオブジェクト生成（Boss / CutIn 含む）
             spawner_.Spawn(stageCurrentID_);
-            // ボス戦ルール適用
+            SetupTutorialUI(stageCurrentID_);
             stageSetup_.OnEnter(stageCurrentID_);
 
             return true;
         }
-
 
         void StageManager::Update()
         {
@@ -52,30 +69,25 @@ namespace nsApp
                 stageRequestID_ = StageID::sInvalid;
             }
 
-            // カットイン終了・BossUI 更新
             stageSetup_.Update();
 
             if (pCurrentStage_ != nullptr)
                 pCurrentStage_->Update();
         }
 
-
         void StageManager::Render(RenderContext& rc)
         {
             if (pCurrentStage_ != nullptr)
                 pCurrentStage_->Render(rc);
 
-            // Boss HP バーなど
             stageSetup_.Render(rc);
         }
-
 
         void StageManager::ChangeStageSync(StageID newStageID)
         {
             if (stageCurrentID_ == newStageID && pCurrentStage_ != nullptr)
                 return;
 
-            // 古いステージのオブジェクトとルールを片付け
             spawner_.Clear();
             stageSetup_.OnLeave(stageCurrentID_);
 
@@ -92,9 +104,8 @@ namespace nsApp
             pCurrentStage_ = pNextStage;
             stageCurrentID_ = newStageID;
 
-            // 新ステージのオブジェクト生成
             spawner_.Spawn(newStageID);
-            // 新ステージのルール適用（ボス戦ならカメラ・Pause）
+            SetupTutorialUI(newStageID);
             stageSetup_.OnEnter(newStageID);
 
             if (auto* pPlayer = FindGO<Player>("player"))
@@ -107,7 +118,6 @@ namespace nsApp
             if (auto* pTimer = FindGO<NumberUI>("numberui"))
                 pTimer->ResetTimer();
         }
-
 
         Stage* StageManager::CreateStage(StageID id)
         {

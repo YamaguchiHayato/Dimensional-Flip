@@ -3,9 +3,9 @@
 
 #include "../../k2Engine/collision/CollisionObject.h"
 
-namespace app
+namespace nsApp
 {
-    namespace collision
+    namespace nsCollision
     {
         // 静的メンバ変数の初期化。
         // SingletonInstance。

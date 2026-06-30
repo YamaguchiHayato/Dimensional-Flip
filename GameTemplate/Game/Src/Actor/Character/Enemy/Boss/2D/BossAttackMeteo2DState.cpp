@@ -19,35 +19,36 @@ namespace app
     {
         void BossAttackMeteo2DState::Enter(app::enemy::Boss* pBoss)
         {
+            /* 初期化。*/
             pBoss_ = pBoss;
             timer_ = 0.0f;
             isAttackSpawned_ = false;
             isFinished_ = false;
 
-            // 攻撃アニメーションを再生する。
+            /* 攻撃アニメーションの再生。*/
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackRoar, false, 0.1f);
 
-            // 攻撃UIを通知する。
+            /* 攻撃タイプを設定。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Meteor);
         }
 
 
         void BossAttackMeteo2DState::Update()
         {
-            // 経過時間を取得する。
+            /* 経過時間を取得。*/
             timer_ += g_gameTime->GetFrameDeltaTime();
 
-            // 一定時間の猶予を与えて、隕石を一斉に生成する。
+            /* 攻撃アニメーションが再生中で、かつ、隕石がまだ生成されていない場合。*/
             if (timer_ >= SPAWN_DELAY && !isAttackSpawned_)
             {
-                // 隕石を生成する。
+                /* 隕石を生成。*/
                 SpawnMeteoLine();
 
-                // 生成フラグをリセット。
+                /* 隕石生成済みフラグを立てる。*/
                 isAttackSpawned_ = true;
             }
 
-            // 隕石を生成後、アニメーションが再生終了していれば、終了判定とする。
+            /* 攻撃アニメーションが終了した場合、状態を終了する。*/
             if (isAttackSpawned_ && !pBoss_->IsPlayingAnimation())
                 isFinished_ = true;
         }
@@ -55,41 +56,42 @@ namespace app
 
         void BossAttackMeteo2DState::Exit()
         {
-            // 次の攻撃までのインターバルをセットする。
+            /* 次の攻撃までのインターバルを設定。*/
             pBoss_->SettNextInterval(3.0f);
         }
 
 
         void BossAttackMeteo2DState::SpawnMeteoLine()
         {
-            // 隕石を生成し始める座標を設定する。
+            /* 生成開始地点を設定。*/
             auto startX = STAGE_LIMIT;
-            // 生成終了座標を設定。
+            /* 生成終了地点を設定。*/
             auto endX = -STAGE_LIMIT;
-            // 隕石の生成間隔を計算。
+            /* 生成間隔を計算。*/
             auto stepX = (startX - endX) / (METEO_COUNT - 1);
 
-            // 隕石の生成ループ。
+            /* 隕石を生成。*/
             for (uint8_t i = 0; i < METEO_COUNT; ++i)
             {
-                // X座標を計算
+                /* 生成座標を計算。*/
                 float spawnX = endX + (stepX * i);
 
-                // 1. 生成時の座標（上空で見える高さ）を設定
+                /* 隕石を上空に設定。*/
                 Vector3 spawnPos(spawnX, METEO_SPAWN_HEIGHT, 0.0f);
 
-                // 2. 着地目標地点（地面）を設定
+                /* 隕石の落下目標地点を設定。*/
                 Vector3 targetPos(spawnX, 0.0f, 0.0f);
 
+                /* 隕石を生成。*/
                 auto meteo = NewGO<app::gimmick::Meteo>(0);
 
-                // 隕石の初期位置を上空にセット（カメラに映る範囲）
+                /* 隕石の座標を設定。*/
                 meteo->SetPosition(spawnPos);
 
-                // 落下目標地点をセット
+                /* 隕石の落下目標地点を設定。*/
                 meteo->SetTargetPos(targetPos);
 
-                // パラメータ設定：(落下速度, FLOAT_DURATION秒間の空中待機)
+                /* 隕石の落下速度と落下までの猶予時間を設定。*/
                 meteo->SetParams(6.0f, FLOAT_DURATION);
             }
         }

@@ -1,52 +1,67 @@
-//
-// @file    UIBase.h。
-// @brief   UIの基底クラス。
-// @details UIの派生クラスにこのクラスを継承させる。
-// @dote    10/06 … クラス作成日。
-//
 #pragma once
-class UIBase : public IGameObject
+
+/**
+ * @file   UIBase.h
+ * @brief  UI 派生クラスの基底 GO。
+ */
+
+namespace nsApp
 {
+    namespace nsUI
+    {
+        /**
+         * @class UIBase
+         * @brief スプライト UI の共通基底。DDS パス組み立てを提供する。
+         */
+        class UIBase : public IGameObject
+        {
+        protected:
+            UIBase() = default;
+            virtual ~UIBase() = default;
 
-protected:
-	UIBase() {};
-	virtual ~UIBase() {};
+            virtual bool Start() = 0;
+            virtual void Update() = 0;
+            virtual void Render(RenderContext& rc) = 0;
 
-    // 初期化処理関数。
-	virtual bool Start() = 0 { return true; };
-    // 更新処理関数。
-	virtual void Update() = 0 {};
-    // 描画処理関数。
-	virtual void Render(RenderContext& rc) = 0 {};
-    // UI用の画像パス初期化関数。
-	virtual const std::string InitUI(const std::string& UIname) 
-	{
-		std::string UIpath = "Assets/UI/" + UIname + ".DDS";
-		return UIpath;
-	};
-	
+            /**
+             * @brief UI 用 DDS パスを組み立てる。
+             * @param UIname Assets/UI/ 以下のファイル名（拡張子なし）。
+             * @return フルパス文字列。
+             */
+            virtual const std::string InitUI(const std::string& UIname) { return "Assets/UI/" + UIname + ".DDS"; }
 
-protected:
-    // UI用のスプライトレンダー。
-	SpriteRender UISprite_; 
+        protected:
+            SpriteRender UISprite_; //!< 派生が使う共通スプライト（任意）。
 
-protected:
-    // UI用の数字列挙型。
-	static enum class enUINumber : uint8_t
-	{
-		enNumber_Zero, /// 0。
-		enNumber_One,  /// 1。
-		enNumber_Two,  /// 2。
-		enNumber_Three,/// 3。
-		enNumber_Four, /// 4。
-		enNumber_Five, /// 5。
-		enNumber_Six,  /// 6。
-		enNumber_Seven,/// 7。
-		enNumber_Eight,/// 8。
-		enNumber_Nine, /// 9。 
-		enNumber_Num,  /// 数。
-	};
+        protected:
+            /**
+             * @enum enUINumber
+             * @brief 数字スプライト用 index（予約）。
+             */
+            enum class enUINumber : uint8_t
+            {
+                enNumber_Zero,
+                enNumber_One,
+                enNumber_Two,
+                enNumber_Three,
+                enNumber_Four,
+                enNumber_Five,
+                enNumber_Six,
+                enNumber_Seven,
+                enNumber_Eight,
+                enNumber_Nine,
+                enNumber_Num,
+            };
+        };
+    } // namespace nsUI
+} // namespace nsApp
 
+using UIBase = nsApp::nsUI::UIBase;
 
-};
-
+namespace app
+{
+    namespace nsUI
+    {
+        using UIBase = nsApp::nsUI::UIBase;
+    } // namespace nsUI
+} // namespace app

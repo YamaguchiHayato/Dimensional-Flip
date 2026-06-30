@@ -1,89 +1,74 @@
 #pragma once
-#include "Src/UI/UIBase.h"
-#include "stdint.h"
+
 #include <string>
 
-namespace app{
-    namespace core{
-        class StageManager;
-    }
-}
+#include "Src/UI/UIBase.h"
+#include "stdint.h"
 
-class NumberUI : public UIBase
+/**
+ * @file   NumberUI.h
+ * @brief  制限時間の数字表示 UI。
+ */
+
+namespace nsApp
 {
-public:
-	NumberUI() = default;
-	virtual ~NumberUI() = default;
-
-
-public:
-	bool Start() override;
-	void Update() override;
-	void Render(RenderContext& rc)override;
-
-
-public:
-    // タイマー更新処理。
-    void UpdateTimer();
-    // 数字UIの初期化。
-    void InitUINumber();
-
-
-// ゲッター。
-public:
-    // UIの初期化。
-	inline virtual const std::string InitUI(const std::string& UIname) override{
-		return UIBase::InitUI(UIname);
-	};
-
-    // タイマー開始フラグのゲッター。
-    inline bool IsTimerStart() const
+    namespace nsUI
     {
-        return isTimerStart_;
-    }
+        /**
+         * @class NumberUI
+         * @brief 残り秒数を表示し、0 で GameOver へ遷移するシングルトン GO。
+         */
+        class NumberUI : public UIBase
+        {
+        public:
+            NumberUI() = default;
+            virtual ~NumberUI() = default;
 
-    // タイムを取得する。
-    inline float GetTimer() const
+            bool Start() override;
+            void Update() override;
+            void Render(RenderContext& rc) override;
+
+            const std::string InitUI(const std::string& UIname) override { return UIBase::InitUI(UIname); }
+
+            /** @brief 残り時間をカウントダウンする。 */
+            void UpdateTimer();
+
+            /** @brief フォントの初期設定。 */
+            void InitUINumber();
+
+            /** @return タイマー開始済みか。 */
+            inline bool IsTimerStart() const { return isTimerStart_; }
+
+            /** @return 残り秒数。 */
+            inline float GetTimer() const { return timer_; }
+
+            /** @brief 各ステージ開始時に 90 秒へリセット。 */
+            inline void ResetTimer() { timer_ = 90.0f; }
+
+            /** @return シングルトンインスタンス。 */
+            inline static NumberUI* GetInstance() { return instance_; }
+
+        private:
+            bool isTimeUIDrawing_ = true; //!< 描画フラグ（予約）。
+            bool isTimerStart_ = false;   //!< タイマー開始フラグ。
+            bool timeUpFlag_ = false;     //!< タイムアップ遷移済みフラグ。
+            float timer_ = 90.0f;         //!< 残り秒数。
+            float colorChange_ = 0.0f;    //!< 色変化用（予約）。
+
+            FontRender timerFont_;  //!< 秒数フォント。
+            wchar_t timerText_[32]; //!< 表示バッファ。
+
+            static NumberUI* instance_; //!< シングルトン。
+        };
+    } // namespace nsUI
+} // namespace nsApp
+
+using NumberUI = nsApp::nsUI::NumberUI;
+
+namespace app
+{
+    namespace nsUI
     {
-        return timer_;
-    }
-
-// セッター。
-public:
-    // タイマーリセット処理。
-    // 各ステージ開始時に呼ぶ。
-    inline void ResetTimer()
-    {
-        timer_ = 90.0f;
-    }
-
-
-private:
-    // タイマーUI描画フラグ。
-	bool isTimeUIDrawing_ = true;
-    // タイマー開始フラグ。
-	bool isTimerStart_ = false;
-    // タイムアップフラグ。
-	bool timeUpFlag_ = false;
-    // タイマー。
-	float timer_ = 90.0f;
-    // 色を変化。
-	float colorChange_ = 0.0f;
-
-
-    FontRender timerFont_;
-    wchar_t timerText_[32];
-
-
-private:
-    static NumberUI* instance_;
-
-
-public:
-    //
-    inline static NumberUI* GetInstance()
-    {
-        return instance_;
-    }
-};
-
+        using NumberUI = nsApp::nsUI::NumberUI;
+    } // namespace nsUI
+} // namespace app

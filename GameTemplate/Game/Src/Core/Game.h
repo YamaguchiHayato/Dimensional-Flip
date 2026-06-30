@@ -20,9 +20,6 @@
 class CameraManager;
 class TrackingEnemy;
 
-class NumberUI;
-class TimerUI;
-class HPbarUI;
 
 namespace nsApp
 {

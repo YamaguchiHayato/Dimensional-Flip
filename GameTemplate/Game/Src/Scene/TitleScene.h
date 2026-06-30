@@ -1,85 +1,122 @@
-#pragma once
+﻿#pragma once
+
 #include "Src/Scene/Scene.h"
 #include "Src/UI/Select/TitleMenu.h"
 #include "Src/UI/Select/ManualUI.h"
 
-class Fade;
-class TitleView;
+/**
+ * @file   TitleScene.h
+ * @brief  タイトル画面シーン。
+ */
 
-namespace app {
-    namespace nsUI {
-        class TitleMenu;
-    }
-}
-
-enum class TitleState
+namespace nsApp
 {
-    Normal,
-    FadingToManual,
-    ManualOpen,
-    FadingToMenu,
-    GameStartFade,
-    GameEndFade,
-};
+    namespace nsProduction { class Fade; }
+    namespace nsTitle      { class TitleView; }
+    namespace nsUI         { class TitleMenu; class ManualUI; }
 
-class TitleScene : public IScene
-{
-public:
-	TitleScene() = default;
-    virtual ~TitleScene();
+    namespace nsScene
+    {
+        /**
+         * @enum TitleState
+         * @brief タイトル画面の内部状態。
+         */
+        enum class TitleState : uint8_t
+        {
+            Normal,          //!< メニュー操作中
+            FadingToManual,  //!< マニュアルへフェードアウト中
+            ManualOpen,      //!< マニュアル表示中
+            FadingToMenu,    //!< メニューへフェードイン中
+            GameStartFade,   //!< ゲーム開始フェード中
+            GameEndFade,     //!< 終了フェード中
+        };
+
+        /**
+         * @class TitleScene
+         * @brief タイトル表示・メニュー・マニュアル・シーン遷移を制御する。
+         */
+        class TitleScene : public IScene
+        {
+        public:
+            /* コンストラクタとデストラクタ。*/
+            TitleScene() = default;
+            virtual ~TitleScene();
 
 
-public:
-	bool Start() override;
-    void Update() override;
+        public:
+            /**
+             * @brief シーン入場時の初期化。必要な GO を NewGO する。
+             * @return 成功時 true。
+             */
+            bool Start() override;
+
+            /**
+             * @brief 毎フレームのシーン更新（遷移判定・入力など）。
+             */
+            void Update() override;
 
 
-private:
-    // 入力処理を待つ。
-    void WaitInputAction();
+        private:
+            /**
+             * @brief タイトル画面の入力待ち状態を更新する。
+             */
+            void WaitInputAction();
+
+            /**
+             * @brief タイトル画面の状態を更新する。
+             */
+            void UpdateTitleState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateNormalState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateFadingToManualState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateManualOpenState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateFadingToMenuState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateGameStartFadeState();
+
+            /**
+             * @brief タイトル画面の状態を更新する（状態ごとの処理）。
+             */
+            void UpdateGameEndFadeState();
 
 
-private:
-    // TitleStateを更新するためのヘルパー関数。
-    void UpdateTitleState();
+        private:
+            nsProduction::Fade* pFade_ = nullptr; //! フェード用 GO。
+            nsTitle::TitleView* pTitleView_ = nullptr; //! タイトルビュー用 GO。
+            nsUI::TitleMenu* pTitleMenu_ = nullptr;    //! タイトルメニュー用 GO。
+            nsUI::ManualUI* pManualUI_ = nullptr;      //! マニュアル UI 用 GO。
 
-    // NormalState時の更新処理。
-    void UpdateNormalState();
+            bool isFadingOut = false; //!< フェードアウト中かどうか。
+            bool isUp_ = false;       //! < 上方向入力中かどうか。
+            bool isDown_ = false;     //!< 下方向入力中かどうか。
+            bool isDecide_ = false;   //!< 決定入力中かどうか。
+            bool isGameEndRequested_ = false; //! < ゲーム終了要求中かどうか。
 
-    // FadingToManual時の更新処理。
-    void UpdateFadingToManualState();
+            int nextSceneID_ = -1; //!< 次のシーン ID。（-1 は未設定）
 
-    // ManualOpen時の更新処理。
-    void UpdateManualOpenState();
+            nsUI::TitleMenuType selectType_; //!< 選択中のメニュータイプ。
+            TitleState titleState_ = TitleState::Normal; //!< タイトル画面の状態。
+        };
+    } // namespace nsScene
+} // namespace nsApp
 
-    // FadingToMenu時の更新処理。
-    void UpdateFadingToMenuState();
-
-    // GameStartFade時の更新処理。
-    void UpdateGameStartFadeState();
-
-    // GameEndFade時の更新処理。
-    void UpdateGameEndFadeState();
-
-private:
-    Fade* pFade_ = nullptr;
-    TitleView* pTitleView_ = nullptr;
-    app::nsUI::TitleMenu* pTitleMenu_ = nullptr;
-    app::nsUI::ManualUI* pManualUI_ = nullptr;
-
-private:
-    // 現在がフェード中かどうかを調べる。    
-    bool isFadingOut = false;
-    // 入力を取得する用変数。
-    bool isUp_;      // 上入力。
-    bool isDown_;    // 下入力。
-    bool isDecide_;  // 決定入力。
-    // ゲーム終了フラグ。
-    bool isGameEndRequested_ = false;
-
-    int nextSceneID_ = -1;
-
-    TitleMenuType selectType_;
-    TitleState titleState_ = TitleState::Normal;
-};
-
+using TitleState = nsApp::nsScene::TitleState;
+using TitleScene = nsApp::nsScene::TitleScene;

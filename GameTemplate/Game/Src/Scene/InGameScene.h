@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Src/Scene/Scene.h"
 
@@ -13,33 +13,41 @@ namespace app
     {
         class Game;
     }
-} // namespace app
+}
 
-/**
- * @class InGameScene
- * @brief  Game オブジェクトのライフサイクルを管理する IScene 実装。
- */
-class InGameScene : public IScene
+namespace nsApp
 {
-public:
-    /* コンストラクタとデストラクタ。*/
-    InGameScene() = default;
-    virtual ~InGameScene();
+    namespace nsScene
+    {
+        /**
+         * @class InGameScene
+         * @brief  Game オブジェクトのライフサイクルを管理する IScene 実装。
+         */
+        class InGameScene : public IScene
+        {
+        public:
+            /* コンストラクタとデストラクタ。*/
+            InGameScene() = default;
+            virtual ~InGameScene();
 
 
-public:
-    /**
-     * @brief シーン開始時の初期化処理。
-     * @return true: 初期化成功、false: 初期化失敗
-     */
-    bool Start() override;
+        public:
+            /**
+             * @brief シーン開始時の初期化処理。
+             * @return true: 初期化成功、false: 初期化失敗
+             */
+            bool Start() override;
 
-    /**
-     * @brief シーン更新処理。
-     */
-    void Update() override;
+            /**
+             * @brief シーン更新処理。
+             */
+            void Update() override;
 
 
-private:
-    app::core::Game* pGame_ = nullptr; //!< インゲーム本体
-};
+        private:
+            app::core::Game* pGame_ = nullptr; //!< インゲーム本体
+        };
+    }
+}
+
+using InGameScene = nsApp::nsScene::InGameScene;

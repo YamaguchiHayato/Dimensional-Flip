@@ -1,14 +1,14 @@
 #pragma once
 #include "Src/Scene/Scene.h"
 
-
-class GameOver;
-
-
-namespace app
+namespace nsApp
 {
-    namespace scene
+    namespace nsScene
     {
+        /**
+         * @class GameOverScene
+         * @brief  ゲームオーバー画面シーン。
+         */
         class GameOverScene : public IScene
         {
         public:
@@ -18,5 +18,7 @@ namespace app
             bool Start() override;
             void Update() override;
         };
-    } 
-} 
+    }
+}
+
+using GameOverScene = nsApp::nsScene::GameOverScene;

@@ -3,22 +3,21 @@
 #include "GameOverScene.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
-#include "Src/Production/GameOver.h"
 #include "Src/Production/Fade.h"
+#include "Src/Production/GameOver.h"
 
-namespace app
+namespace nsApp
 {
-    namespace scene
+    namespace nsScene
     {
         bool GameOverScene::Start()
         {
-            //　@TODO:  ゲームオーバー中のBGM停止。
+            // 　@TODO:  ゲームオーバー中のBGM停止。
             NewGO<app::direction::GameOver>(0, "gameOver");
 
             SceneManager::GetInstance()->GetFade()->StartFadeIn();
             return true;
         }
-
 
         void GameOverScene::Update()
         {
@@ -29,5 +28,5 @@ namespace app
                 SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
             }
         }
-    } 
-} 
+    } // namespace nsScene
+} // namespace nsApp

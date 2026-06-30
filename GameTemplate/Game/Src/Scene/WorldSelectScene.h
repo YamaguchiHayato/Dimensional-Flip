@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 
@@ -10,62 +10,60 @@
  * @brief  ステージ選択シーン。
  */
 
-namespace app
+namespace nsApp
 {
-    namespace nsUI
+    namespace nsProduction { class Fade; }
+    namespace nsUI         { class WorldSelectUI; class StageIcon; }
+
+    namespace nsScene
     {
-        class WorldSelectUI;
-    }
-} 
-
-class Fade;
-
-/**
- * @class WorldSelectScene
- * @brief  SkyCube 背景と StageIcon 回転でステージを選ぶシーン。
- * @note   SetAmbientByIBLTexture は使わず SetAmbient のみ（IBL 漏れ防止）。
- */
-class WorldSelectScene : public IScene
-{
-public:
-    /* コンストラクタとデストラクタ。*/
-    WorldSelectScene() = default;
-    virtual ~WorldSelectScene();
+        /**
+         * @class WorldSelectScene
+         * @brief SkyCube 背景と StageIcon 回転でステージを選ぶ。
+         * @note  SetAmbientByIBLTexture は使わず SetAmbient のみ（IBL 漏れ防止）。
+         */
+        class WorldSelectScene : public IScene
+        {
+        public:
+            /* コンストラクタとデストラクタ。*/
+            WorldSelectScene() = default;
+            virtual ~WorldSelectScene();
 
 
-public:
-    /**
-     * @brief シーン開始時の初期化処理。
-     * @return true: 初期化成功、false: 初期化失敗
-     */
-    bool Start() override;
+        public:
+            /**
+             * @brief シーン入場時の初期化。必要な GO を NewGO する。
+             * @return 成功時 true。
+             */
+            bool Start() override;
 
-    /**
-     * @brief シーン更新処理。
-     */
-    void Update() override;
-
-
-private:
-    /**
-     * @brief 夜空 SkyCube を生成する（背景描画のみ。全局 IBL は設定しない）。
-     */
-    void CreateSkyCube();
+            /**
+             * @brief 毎フレームのシーン更新（遷移判定・入力など）。
+             */
+            void Update() override;
 
 
-private:
-    Fade* pFade_ = nullptr;                         //!< フェード制御
-    app::nsUI::WorldSelectUI* pSelectUI_ = nullptr; //!< ステージ選択 UI
-    SkyCube* pSkyCube_ = nullptr;                   //!< 夜空 SkyCube
+        private:
+            /**
+             * @brief SkyCube 背景を生成する。
+             */
+            void CreateSkyCube();
 
-    std::vector<app::nsUI::StageIcon*> icons_;      //!< ステージプレビュー用 3D アイコン
 
-    int currentIndex_ = 0;                          //!< 選択中インデックス
-    float currentAngle_ = 0.0f;                     //!< 回転補間の現在角
-    float targetAngle_ = 0.0f;                      //!< 回転補間の目標角
+        private:
+            nsProduction::Fade* pFade_ = nullptr; //! フェード用 GO。
+            nsUI::WorldSelectUI* pSelectUI_ = nullptr; //! ステージ選択 UI 用 GO。
+            SkyCube* pSkyCube_ = nullptr;              //! < SkyCube 背景用 GO。
+            std::vector<nsUI::StageIcon*> icons_;      //! < ステージアイコン GO の配列。
+            int currentIndex_ = 0;                     //!< 現在選択中のステージアイコンのインデックス。
+            float currentAngle_ = 0.0f;                //! < 現在の回転角度。
+            float targetAngle_ = 0.0f;                 //! < 目標の回転角度。
+            bool isDecided_ = false;                   //! < ステージが決定されたかどうか。
+            bool isButtonB_ = false;                   //! < B ボタンが押されたかどうか。
+            bool isRight_ = false;                     //! < 右方向入力中かどうか。
+            bool isLeft_ = false;                      //! < 左方向入力中かどうか。
+        };
+    } // namespace nsScene
+} // namespace nsApp
 
-    bool isDecided_ = false;                        //!< A ボタン決定済み
-    bool isButtonB_ = false;                        //!< B ボタンキャンセル済み
-    bool isRight_ = false;                          //!< 右入力済み
-    bool isLeft_ = false;                           //< 左入力済み
-};
+using WorldSelectScene = nsApp::nsScene::WorldSelectScene;

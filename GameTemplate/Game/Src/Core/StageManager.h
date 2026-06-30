@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 /**
  * @file   StageManager.h
@@ -12,7 +12,6 @@
 #include "Src/Actor/Stage/StageObjectSpawner.h"
 #include "Src/Actor/Stage/StageSetup.h"
 
-class LoadingScene;
 
 namespace nsApp
 {

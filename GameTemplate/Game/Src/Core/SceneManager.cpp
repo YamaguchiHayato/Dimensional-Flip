@@ -1,8 +1,7 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
-#include "Src/Production/GameClear.h"
 #include "Src/Scene/EndRollScene.h"
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Scene/GameOverScene.h"
@@ -10,154 +9,199 @@
 #include "Src/Scene/LoadingScene.h"
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/WorldSelectScene.h"
-#include "Src/UI/Select/WorldSelectUI.h"
 
-SceneManager* SceneManager::pSceneManger_ = nullptr;
-
-SceneManager::~SceneManager()
+namespace nsApp
 {
-    if (pCurrentScene_ != nullptr)
+    namespace nsCore
     {
-        delete pCurrentScene_;
-        pCurrentScene_ = nullptr;
-    }
+        SceneManager* SceneManager::pSceneManger_ = nullptr;
 
-    if (pFade_ != nullptr)
-    {
-        DeleteGO(pFade_);
-        pFade_ = nullptr;
-    }
-}
 
-bool SceneManager::Start()
-{
-    pFade_ = NewGO<Fade>(2, "fade");
-    if (pFade_ == nullptr)
-        return false;
-
-    pCurrentScene_ = CreateScene(SceneID::sTitle);
-    if (pCurrentScene_)
-    {
-        pCurrentScene_->Start();
-        currentID_ = SceneID::sTitle;
-        return true;
-    }
-    return false;
-}
-
-void SceneManager::Update()
-{
-    if (isAutoLoadingEnabled_ && pFade_ && pFade_->GetFadeState() == FadeState::Fade_Out)
-    {
-        if (pFade_->GetFadeSprite().GetWipeSize() < 300.0f)
-            ShowLoading();
-    }
-
-    if (requestID_ != SceneID::sInvalid && !isLoadingSceneActive_)
-    {
-        ShowLoading();
-        isLoadingSceneActive_ = true;
-        isSceneControler_ = false;
-        minLoadingTime_ = 0.0f;
-        return;
-    }
-
-    if (isLoadingSceneActive_)
-    {
-        if (!isSceneControler_)
+        SceneManager::~SceneManager()
         {
-            IScene* nextScene = CreateScene(requestID_);
-
-            if (nextScene != nullptr)
+            /**
+             * @brief 現在シーンの C++ オブジェクトを破棄する
+             */
+            if (pCurrentScene_ != nullptr)
             {
-                // インゲーム描画状態を解除
-                if (g_renderingEngine)
-                {
-                    g_renderingEngine->EnableCompositeBackground(false);
-                    g_renderingEngine->SetStageBackGroundRenderer(nullptr);
-                }
-
-                // 旧シーン破棄 → GO 完全削除 → 新シーン開始（全シーン共通）
-                if (pCurrentScene_)
-                {
-                    delete pCurrentScene_;
-                    pCurrentScene_ = nullptr;
-                }
-                nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
-                nextScene->Start();
-
-                pCurrentScene_ = nextScene;
-                currentID_ = requestID_;
+                delete pCurrentScene_;
+                pCurrentScene_ = nullptr;
             }
 
-            isSceneControler_ = true;
+            /**
+             * @brief フェード GO を削除予約する
+             */
+            if (pFade_ != nullptr)
+            {
+                DeleteGO(pFade_);
+                pFade_ = nullptr;
+            }
         }
 
-        float dt = g_gameTime->GetFrameDeltaTime();
-        if (dt > 0.1f)
-            dt = 0.1f;
-
-        minLoadingTime_ += dt;
-
-        if (minLoadingTime_ >= 0.5f)
+        bool SceneManager::Start()
         {
-            requestID_ = SceneID::sInvalid;
-            isLoadingSceneActive_ = false;
-            HideLoading();
+            /**
+             * @brief 全シーン共通のフェード GO を生成する
+             */
+            pFade_ = NewGO<nsProduction::Fade>(2, "fade");
+            if (pFade_ == nullptr)
+                return false;
+
+            /**
+             * @brief 起動シーンとしてタイトルを構築・開始する
+             */
+            pCurrentScene_ = CreateScene(nsScene::SceneID::sTitle);
+            if (pCurrentScene_)
+            {
+                pCurrentScene_->Start();
+                currentID_ = nsScene::SceneID::sTitle;
+                return true;
+            }
+            return false;
         }
-    }
 
-    if (pCurrentScene_ != nullptr)
-        pCurrentScene_->Update();
-}
+        void SceneManager::Update()
+        {
+            /**
+             * @brief フェードアウト途中でロード画面を先出しする
+             */
+            if (isAutoLoadingEnabled_ && pFade_ && pFade_->GetFadeState() == FadeState::Fade_Out)
+            {
+                if (pFade_->GetFadeSprite().GetWipeSize() < 300.0f)
+                    ShowLoading();
+            }
 
-void SceneManager::ShowLoading()
-{
-    if (pLoadingScene_ == nullptr)
-        pLoadingScene_ = NewGO<LoadingScene>(3, "loading");
-}
+            /**
+             * @brief 遷移リクエストを受けたらロード状態へ入る
+             */
+            if (requestID_ != nsScene::SceneID::sInvalid && !isLoadingSceneActive_)
+            {
+                ShowLoading();
+                isLoadingSceneActive_ = true;
+                isSceneControler_ = false;
+                minLoadingTime_ = 0.0f;
+                return;
+            }
 
-void SceneManager::HideLoading()
-{
-    if (pLoadingScene_ != nullptr)
-    {
-        DeleteGO(pLoadingScene_);
-        pLoadingScene_ = nullptr;
-    }
-}
+            if (isLoadingSceneActive_)
+            {
+                /**
+                 * @brief ロード中の初回のみシーン切替を実行する
+                 */
+                if (!isSceneControler_)
+                {
+                    nsScene::IScene* nextScene = CreateScene(requestID_); //! 遷移先シーンのインスタンス
 
-IScene* SceneManager::CreateScene(SceneID id)
-{
-    IScene* newScene = nullptr;
-    switch (id)
-    {
-    case SceneID::sTitle:
-        newScene = new TitleScene();
-        break;
+                    if (nextScene != nullptr)
+                    {
+                        /**
+                         * @brief インゲーム専用の描画状態を解除する
+                         */
+                        if (g_renderingEngine)
+                        {
+                            g_renderingEngine->EnableCompositeBackground(false);
+                            g_renderingEngine->SetStageBackGroundRenderer(nullptr);
+                        }
 
-    case SceneID::sWorldSelect:
-        newScene = new WorldSelectScene();
-        break;
+                        /**
+                         * @brief 旧シーン破棄 → GO 完全削除 → 新シーン開始
+                         */
+                        if (pCurrentScene_)
+                        {
+                            delete pCurrentScene_;
+                            pCurrentScene_ = nullptr;
+                        }
+                        nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+                        nextScene->Start();
 
-    case SceneID::sInGame:
-        newScene = new InGameScene();
-        break;
+                        pCurrentScene_ = nextScene;
+                        currentID_ = requestID_;
+                    }
 
-    case SceneID::sResult:
-        newScene = new GameClearScene();
-        break;
+                    isSceneControler_ = true;
+                }
 
-    case SceneID::sGameOver:
-        newScene = new app::scene::GameOverScene();
-        break;
+                float dt = g_gameTime->GetFrameDeltaTime(); //! フレーム経過時間
+                if (dt > 0.1f)
+                    dt = 0.1f;
 
-    case SceneID::sEndRoll:
-        newScene = new app::production::EndRollScene();
-        break;
+                minLoadingTime_ += dt;
 
-    default:
-        break;
-    }
+                /**
+                 * @brief 最低表示時間を満たしたらロード UI を閉じる
+                 */
+                if (minLoadingTime_ >= 0.5f)
+                {
+                    requestID_ = nsScene::SceneID::sInvalid;
+                    isLoadingSceneActive_ = false;
+                    HideLoading();
+                }
+            }
 
-    return newScene;
-}
+            /**
+             * @brief 現シーンの更新処理を呼ぶ
+             */
+            if (pCurrentScene_ != nullptr)
+                pCurrentScene_->Update();
+        }
+
+
+        void SceneManager::ShowLoading()
+        {
+            /**
+             * @brief 未生成ならロード画面 GO を作る
+             */
+            if (pLoadingScene_ == nullptr)
+                pLoadingScene_ = NewGO<nsScene::LoadingScene>(3, "loading");
+        }
+
+
+        void SceneManager::HideLoading()
+        {
+            /**
+             * @brief ロード画面 GO を削除する
+             */
+            if (pLoadingScene_ != nullptr)
+            {
+                DeleteGO(pLoadingScene_);
+                pLoadingScene_ = nullptr;
+            }
+        }
+
+
+        nsScene::IScene* SceneManager::CreateScene(nsScene::SceneID id)
+        {
+            nsScene::IScene* newScene = nullptr; //! 生成したシーンの返却用
+
+            switch (id)
+            {
+            case nsScene::SceneID::sTitle:
+                newScene = new nsScene::TitleScene();
+                break;
+
+            case nsScene::SceneID::sWorldSelect:
+                newScene = new nsScene::WorldSelectScene();
+                break;
+
+            case nsScene::SceneID::sInGame:
+                newScene = new nsScene::InGameScene();
+                break;
+
+            case nsScene::SceneID::sResult:
+                newScene = new nsScene::GameClearScene();
+                break;
+
+            case nsScene::SceneID::sGameOver:
+                newScene = new nsScene::GameOverScene();
+                break;
+
+           case nsScene::SceneID::sEndRoll:
+                newScene = new nsScene::EndRollScene();
+                break;
+            default:
+                break;
+            }
+            return newScene;
+        }
+    } // namespace nsCore
+} // namespace nsApp

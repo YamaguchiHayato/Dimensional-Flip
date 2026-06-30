@@ -1,70 +1,112 @@
-#pragma once
+﻿#pragma once
+
 #include "GameSoundEngine.h"
 
-namespace app
+/**
+ * @file   SoundManager.h
+ * @brief  BGM / SE の再生を統括するシングルトン。
+ */
+
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
+        /**
+         * @class SoundManager
+         * @brief GameSoundEngine への薄いラッパー。
+         */
         class SoundManager
         {
         public:
-            // シングルトンインスタンスの生成
+            /**
+             * @brief シングルトンのインスタンスを生成する。
+             */
             inline static void CreateInstence()
             {
                 if (pInstance_ == nullptr)
                     pInstance_ = new SoundManager();
             }
 
-            // シングルトンインスタンスの削除
+            /**
+             * @brief シングルトンのインスタンスを破棄する。
+             */
             static void DeleteInstence();
 
-            // シングルトンインスタンスの取得
+            /**
+             * @brief シングルトンのインスタンスを取得する。
+             */
             static SoundManager* GetInstance();
 
-            // サウンドエンジンの初期化。
+            /**
+             * @brief GameSoundEngine を初期化する。
+             */
             void Init();
 
-           // BGMの再生。
-           inline void PlayBGM(GameSoundList bgm, float vol = 1.0f)
+            /**
+             * @brief BGM を再生する。
+             * @param bgm BGMの種類。
+             * @param vol 音量（0.0f～1.0f）。
+             */
+            inline void PlayBGM(GameSoundList bgm, float vol = 1.0f)
             {
                 if (pSoundEngine_)
                     pSoundEngine_->PlayBGM(bgm, vol);
-           }
+            }
 
-           // SEの再生。
-           inline void PlaySE(GameSoundList se, float vol = 1.0f)
-           {
-               if (pSoundEngine_)
-                   pSoundEngine_->PlaySE(se, vol);
-           }
+            /**
+             * @brief SE を再生する。
+             * @param se SEの種類。
+             * @param vol 音量（0.0f～1.0f）。
+             */
+            inline void PlaySE(GameSoundList se, float vol = 1.0f)
+            {
+                if (pSoundEngine_)
+                    pSoundEngine_->PlaySE(se, vol);
+            }
 
-           // BGMの停止
+            /**
+             * @brief BGM を停止する。
+             * @param sound 停止する BGM の種類。
+             */
             inline void StopBGM(GameSoundList sound)
             {
                 if (pSoundEngine_)
                     pSoundEngine_->StopSound(sound);
             }
 
-            // SEの停止。
+            /**
+             * @brief SE を停止する。
+             * @param se 停止する SE の種類。
+             */
             inline void StopSE(GameSoundList se)
             {
                 if (pSoundEngine_)
                     pSoundEngine_->StopSound(se);
             }
 
-            // ボリュームの設定。。
+            /**
+             * @brief 音量を設定する。
+             * @param sound 音量を設定するサウンドの種類。
+             * @param vol 音量（0.0f～1.0f）。
+             */
             inline void SetVolume(GameSoundList sound, float vol)
             {
                 if (pSoundEngine_)
                     pSoundEngine_->SetVolume(sound, vol);
             }
 
+            /**
+             * @brief 毎フレームのサウンド更新処理。
+             */
             void Update()
             {
                 if (pSoundEngine_)
                     pSoundEngine_->Update();
             }
 
+            /**
+             * @brief すべてのサウンドを解放する。
+             */
             void ReleaseAllSounds()
             {
                 if (pSoundEngine_)
@@ -72,16 +114,22 @@ namespace app
             }
 
         private:
+            /* コンストラクタとデストラクタ。*/
             SoundManager() = default;
             virtual ~SoundManager() = default;
 
 
         private:
-            GameSoundEngine* pSoundEngine_ = nullptr;
-
-            static SoundManager* pInstance_;
+            GameSoundEngine* pSoundEngine_ = nullptr; //! < GameSoundEngine のインスタンス。
+            static SoundManager* pInstance_;          //! < SoundManager のシングルトンインスタンス。
         };
+    } // namespace nsCore
+} // namespace nsApp
 
+namespace app
+{
+    namespace core
+    {
+        using SoundManager = nsApp::nsCore::SoundManager;
     }
-}
-
+} // namespace app

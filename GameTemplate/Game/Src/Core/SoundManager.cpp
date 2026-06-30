@@ -1,12 +1,12 @@
 #include "stdafx.h"
+
 #include "SoundManager.h"
 
-namespace app
+namespace nsApp
 {
-    namespace core
+    namespace nsCore
     {
         SoundManager* SoundManager::pInstance_ = nullptr;
-
 
         void SoundManager::DeleteInstence()
         {
@@ -23,7 +23,6 @@ namespace app
             }
         }
 
-
         SoundManager* SoundManager::GetInstance()
         {
             if (pInstance_ == nullptr)
@@ -34,7 +33,6 @@ namespace app
             return pInstance_;
         }
 
-
         void SoundManager::Init()
         {
             if (pSoundEngine_ != nullptr)
@@ -43,5 +41,5 @@ namespace app
             pSoundEngine_ = new GameSoundEngine();
             pSoundEngine_->Init();
         }
-    }
-}
+    } // namespace nsCore
+} // namespace nsApp

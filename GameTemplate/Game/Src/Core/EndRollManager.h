@@ -1,8 +1,8 @@
 #pragma once
 #include "Src/Production/EndRoll/EndRollBase.h"
+#include "Src/Production/Fade.h"
 #include <vector>
 
-class Fade;
 
 namespace app
 {

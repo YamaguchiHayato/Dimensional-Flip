@@ -4,18 +4,13 @@
 #include "Src/Actor/Stage/StageID.h"
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
-
-// ゲーム管理クラス。
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/SceneManager.h"
-
-
-// UIクラス。
+#include "Src/Production/Fade.h"
 #include "Src/UI/HPbarUI.h"
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/TimerUI.h"
-
 #include "IBackGround.h"
 #include "Src/Actor/Character/PlayerForward.h"
 #include "Src/Build/InGameBuildHelper.h"
@@ -23,7 +18,6 @@
 
 class CameraManager;
 class TrackingEnemy;
-class Fade;
 
 // UI。
 class NumberUI;

@@ -1,6 +1,9 @@
 StageId	ObjectType	PosX	PosY	PosZ	Param0	Param1	Param2	GroupId
-Stage1	Thwomp	1150	400	0	1000	-1	-0.5	
+Stage1	Star	    1260	8	    0	    0	    0	    0	
+Stage1	Thwomp	1150	400	0	1000	-1	-0.5
+Stage1	Thwomp	1150	400	0	1000	-1	-0.5
+Stage1	Thwomp	1150	400	0	1000	-1	-0.5
+Stage1	Thwomp	1150	400	0	1000	-1	-0.5
 StageEX	Boss	10	5	0	0	0	0	
 StageEX	DimensionTrigger	0	0	0	0	0	0	
 StageEX	CutIn	0	0	0	4	0	0	
-Stage1	Star	    1260	8	    0	    0	    0	    0	

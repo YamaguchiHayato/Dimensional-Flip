@@ -62,6 +62,13 @@ public:
         requestID_ = newID;
     }
 
+      static void ResetRenderingStateForScene()
+    {
+        if (!g_renderingEngine)
+            return;
+        g_renderingEngine->EnableCompositeBackground(false);
+        g_renderingEngine->SetStageBackGroundRenderer(nullptr);
+    }
 
 private:
     SceneManager() = default;

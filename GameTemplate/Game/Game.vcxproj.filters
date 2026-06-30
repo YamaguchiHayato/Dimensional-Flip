@@ -88,6 +88,36 @@
     <Filter Include="Src\Core\Job">
       <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Actor\Stage\Gimmick\BossGimmick">
+      <UniqueIdentifier>{2d90ecf8-c558-4877-9d4f-4da030cfaf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Stage\Gimmick\StageGimmick">
+      <UniqueIdentifier>{180da92b-45b0-44e5-967e-ccc03a68a51d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\BossUI">
+      <UniqueIdentifier>{8d596041-1819-436e-a0f0-9eb847ad969c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\Tutorial">
+      <UniqueIdentifier>{f04b9c97-e545-4f6e-a13f-1ab0b796f587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy\Boss">
+      <UniqueIdentifier>{21428a0e-2a08-4e30-a3e1-7a0c93d73b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy\Boss\2D">
+      <UniqueIdentifier>{1861d5c0-5c0f-48a3-870d-665bbef75901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy\Boss\3D">
+      <UniqueIdentifier>{c1c317b2-49e1-4a58-8c79-e1cfa398046f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy\Normal">
+      <UniqueIdentifier>{7ea12250-4574-4d46-acbf-d3afd1e6f55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actor\Character\Enemy\Fall">
+      <UniqueIdentifier>{3b928a7e-6e4f-4719-928d-45c51b40ca07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\Select">
+      <UniqueIdentifier>{6bba3a33-6185-46ea-aa05-3922e8d83a31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -200,58 +230,8 @@
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp" />
-    <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp" />
-    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
-    <ClCompile Include="Src\Production\GameOver.cpp" />
-    <ClCompile Include="Src\UI\ButtonActionUI.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp" />
-    <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp" />
-    <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp" />
-    <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp" />
-    <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp" />
-    <ClCompile Include="Src\Production\StarGetProduction.cpp" />
-    <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp" />
-    <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp" />
-    <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
-    <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
-    <ClCompile Include="StageIcon.cpp" />
-    <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
-    <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
-    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp">
       <Filter>Src\Actor\Character\Player</Filter>
     </ClCompile>
@@ -396,9 +376,159 @@
     <ClCompile Include="Src\Core\StageLoadContext.cpp">
       <Filter>Src\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp" />
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\Boss.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDamageState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\Dimensiontrigger.cpp">
+      <Filter>Src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Select\ManualUI.cpp">
+      <Filter>Src\UI\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="StageIcon.cpp">
+      <Filter>Src\UI\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Select\TitleMenu.cpp">
+      <Filter>Src\UI\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp">
+      <Filter>Src\UI\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp">
+      <Filter>Src\Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\EnemyFactory.cpp">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.cpp">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Production\StarGetProduction.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Production\GameOver.cpp">
+      <Filter>Src\Direction</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossAttackState.cpp">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\ButtonActionUI.cpp">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -518,59 +648,9 @@
       <Filter>Src\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Character.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h" />
-    <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h" />
-    <ClInclude Include="Src\Camera\Dimensiontrigger.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h" />
-    <ClInclude Include="Src\Production\GameOver.h" />
-    <ClInclude Include="Src\UI\ButtonActionUI.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h" />
-    <ClInclude Include="Src\UI\BossUI\BossUIBase.h" />
-    <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h" />
-    <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h" />
-    <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h" />
-    <ClInclude Include="Src\Production\StarGetProduction.h" />
-    <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h" />
-    <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h" />
-    <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
-    <ClInclude Include="Src\UI\Select\TitleMenu.h" />
-    <ClInclude Include="StageIcon.h" />
-    <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />
-    <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
-    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h">
       <Filter>Src\Actor\Character\Player</Filter>
@@ -767,9 +847,165 @@
     <ClInclude Include="Src\Core\StageLoadContext.h">
       <Filter>Src\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDeadState.h" />
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\TargetWall.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Wall.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\RotationFool.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\JumpPad.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Block.h">
+      <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FireBall.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\FloatingPlatform.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Meteo.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\RoarWave.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Thunder.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\BossUI\BossUIBase.h">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h">
+      <Filter>Src\UI\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackRoar2DState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackMeteoState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackRoar3DState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\3D\BossAttackSpearState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\Boss.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossAttackState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDamageState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossDeadState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossIdleState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\BossType.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.h">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.h">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.h">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Normal\NormalIdleState.h">
+      <Filter>Src\Actor\Character\Enemy\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemy.h">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.h">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.h">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.h">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.h">
+      <Filter>Src\Actor\Character\Enemy\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\Dimensiontrigger.h">
+      <Filter>Src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Select\ManualUI.h">
+      <Filter>Src\UI\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="StageIcon.h">
+      <Filter>Src\UI\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Select\TitleMenu.h">
+      <Filter>Src\UI\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Select\WorldSelectUI.h">
+      <Filter>Src\UI\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h">
+      <Filter>Src\Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\EnemyFactory.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Stage\Gimmick\BossGimmick\Spear.h">
+      <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\StarGetProduction.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Production\GameOver.h">
+      <Filter>Src\Direction</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.h">
+      <Filter>Src\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\ButtonActionUI.h">
+      <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

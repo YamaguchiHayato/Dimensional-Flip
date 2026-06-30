@@ -119,7 +119,29 @@ namespace nsK2EngineLow
 		/// <param name="gameSoundList">ゲームサウンドリスト</param>
 		void StopSound(GameSoundList gameSoundList)
 		{
-			m_sound[gameSoundList]->Stop();
+			if (m_sound[gameSoundList] != nullptr && !m_sound[gameSoundList]->IsDead())
+				m_sound[gameSoundList]->Stop();
+		}
+
+		/// <summary>
+		/// 全サウンドを停止して GameObject を解放する。
+	   /// </summary>
+		void ReleaseAllSounds()
+		{
+			for (int i = 0; i < GameSoundList_Num; ++i)
+			{
+				if (m_sound[i] != nullptr)
+				{
+					if (!m_sound[i]->IsDead())
+					{
+						m_sound[i]->Stop();
+						DeleteGO(m_sound[i]);
+					}
+					m_sound[i] = nullptr;
+				}
+				m_isPlayingSound[i] = false;
+			}
+			m_nowBGMPlaying = -1;
 		}
 
 		/// <summary>

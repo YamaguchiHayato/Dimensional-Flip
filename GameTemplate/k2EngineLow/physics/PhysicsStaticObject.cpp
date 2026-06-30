@@ -12,9 +12,13 @@ namespace nsK2EngineLow {
 	}
 	PhysicsStaticObject::~PhysicsStaticObject()
 	{
+		m_rigidBody.Release();
 	}
+
 	void PhysicsStaticObject::CreateFromModel(Model& model, const Matrix& worldMatrix, const float restitution)
 	{
+		m_rigidBody.Release();
+
 		m_meshCollider.CreateFromModel(model, worldMatrix);
 		RigidBodyInitData rbInfo;
 		rbInfo.collider = &m_meshCollider;

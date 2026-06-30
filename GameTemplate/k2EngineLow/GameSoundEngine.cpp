@@ -211,6 +211,18 @@ namespace nsK2EngineLow
 	//SEを再生
 	void GameSoundEngine::PlaySE(GameSoundList gameSoundList, float soundVolume)
 	{
+		if (m_sound[gameSoundList] != nullptr)
+		{
+			// ワンショット SE は終了時に自動 DeleteGO されるため、
+			// ポインタだけ残っていることがある。
+			if (!m_sound[gameSoundList]->IsDead())
+			{
+				m_sound[gameSoundList]->Stop();
+				DeleteGO(m_sound[gameSoundList]);
+			}
+			m_sound[gameSoundList] = nullptr;
+		}
+
 		m_sound[gameSoundList] = NewGO<SoundSource>(0);
 		m_sound[gameSoundList]->Init(gameSoundList);
 		m_sound[gameSoundList]->Play(false);
@@ -220,15 +232,20 @@ namespace nsK2EngineLow
 	//更新処理
 	void GameSoundEngine::Update()
 	{
-		//BGMを再生しているときに処理する
-		if (m_nowBGMPlaying != BGM_NO_PLAYING)
+		if (m_nowBGMPlaying != BGM_NO_PLAYING && m_sound[m_nowBGMPlaying] != nullptr)
 		{
-			//今再生しているサウンドインスタンスが削除したら
 			if (m_sound[m_nowBGMPlaying]->IsDead())
 			{
-				//サウンドが再生しているかを判定するフラグをfalseにする
+				m_sound[m_nowBGMPlaying] = nullptr;
 				m_isPlayingSound[m_nowBGMPlaying] = false;
 			}
 		}
-	}
-}
+
+		for (int i = 0; i < GameSoundList_Num; ++i)
+		{
+			if (i == m_nowBGMPlaying)
+				continue;
+			if (m_sound[i] != nullptr && m_sound[i]->IsDead())
+				m_sound[i] = nullptr;
+		}
+	}}

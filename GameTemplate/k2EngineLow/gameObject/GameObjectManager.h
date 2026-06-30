@@ -61,6 +61,24 @@ namespace nsK2EngineLow {
 		/// <param name="rc"></param>
 		void ExecuteRender(RenderContext& rc);
 
+		/**
+		 * @brief 死亡したゲームオブジェクトを削除する。
+		 */
+		void FlushDeadGameObjects()
+		{
+			for (auto& goList : m_gameObjectListArray)
+			{
+				goList.remove_if([&](IGameObject* go)
+					{
+						if (go->IsDead())
+						{
+							delete go;
+							return true;
+						}
+						return false;
+					});
+			}
+		}
 
 		/*!
 		*@brief	ゲームオブジェクトのnew

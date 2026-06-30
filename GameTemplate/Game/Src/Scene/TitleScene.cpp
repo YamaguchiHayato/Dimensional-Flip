@@ -55,6 +55,7 @@ bool TitleScene::Start()
     pManualUI_->Init();
 
     // タイトル画面BGMの再生。
+    app::core::SoundManager::GetInstance()->ReleaseAllSounds();
     app::core::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_Title);
 
     // Fadeオブジェクトの取得。

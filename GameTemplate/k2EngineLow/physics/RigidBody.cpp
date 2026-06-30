@@ -4,6 +4,8 @@
 namespace nsK2EngineLow {
 	void RigidBody::Init(RigidBodyInitData& initData)
 	{
+		Release();
+
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(btVector3(initData.pos.x, initData.pos.y, initData.pos.z));
@@ -38,6 +40,8 @@ namespace nsK2EngineLow {
 	{
 		if (m_rigidBody) {
 			PhysicsWorld::GetInstance()->RemoveRigidBody(*this);
+			m_rigidBody.reset();
+			m_myMotionState.reset();
 		}
 	}
 }

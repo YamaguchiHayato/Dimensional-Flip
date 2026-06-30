@@ -79,61 +79,66 @@ void SceneManager::Update()
     // 3. ロード中の処理
     if (isLoadingSceneActive_)
     {
-        // A. まだ次のシーンを作っていないなら、作る（重い処理）
         if (!isSceneControler_)
         {
             IScene* nextScene = CreateScene(requestID_);
 
             if (nextScene != nullptr)
             {
-                nextScene->Start();
-
-                // 古いシーンを削除
-                if (pCurrentScene_)
+                if (g_renderingEngine)
                 {
-                    delete pCurrentScene_;
+                    g_renderingEngine->EnableCompositeBackground(false);
+                    g_renderingEngine->SetStageBackGroundRenderer(nullptr);
                 }
 
-                // 新しいシーンをセット
+                if (requestID_ == SceneID::sResult)
+                {
+                    nextScene->Start();
+
+                    if (pCurrentScene_)
+                    {
+                        delete pCurrentScene_;
+                        pCurrentScene_ = nullptr;
+                    }
+                }
+                else
+                {
+                    if (pCurrentScene_)
+                    {
+                        delete pCurrentScene_;
+                        pCurrentScene_ = nullptr;
+                    }
+
+                    nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+                    nextScene->Start();
+                }
+
                 pCurrentScene_ = nextScene;
                 currentID_ = requestID_;
             }
 
-            // 生成完了フラグを立てる
             isSceneControler_ = true;
         }
 
-        // B. 待機時間の更新（ここが修正のキモです！）
+        // B. 待機時間の更新
         float dt = g_gameTime->GetFrameDeltaTime();
 
-        // ★重要修正: ロード処理(CreateScene)で止まっていた時間を無視する。
-        // これがないと、ロードにかかった時間(例:1.0秒)がそのまま足されてしまい、
-        // 待機時間(0.5秒)を一瞬で超えて即座に消えてしまいます。
         if (dt > 0.1f)
-        {
             dt = 0.1f;
-        }
 
-        minLoadingTime_ += dt; // 補正した時間を足す
+        minLoadingTime_ += dt;
 
-        // C. 指定時間が経過したらロード画面を消す
-        // 点滅を見せたい場合は 0.5f ～ 1.0f くらいで調整してください
         if (minLoadingTime_ >= 0.5f)
         {
-            // リクエスト情報をクリア
             requestID_ = SceneID::sInvalid;
             isLoadingSceneActive_ = false;
-
-            // ロード画面を非表示にする
             HideLoading();
         }
     }
 
     // 4. 現在のシーンの更新
     if (pCurrentScene_ != nullptr)
-    {
         pCurrentScene_->Update();
-    }
 }
 
 

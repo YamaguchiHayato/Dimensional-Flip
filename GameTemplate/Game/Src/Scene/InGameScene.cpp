@@ -9,6 +9,7 @@
 InGameScene::~InGameScene()
 {
     // Gameオブジェクトの削除。
+    SceneManager::ResetRenderingStateForScene();
     DeleteGO(pGame_);
 }
 

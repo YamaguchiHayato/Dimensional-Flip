@@ -236,8 +236,6 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossDeadState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossTumbleState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\BossType.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\Boss\IBossStrategy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemy.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyFallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />

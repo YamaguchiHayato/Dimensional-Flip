@@ -4,14 +4,13 @@
 #include "Src/Actor/Character/Enemy/EnemyFactory.h"
 #include "Src/Actor/Character/Enemy/Thwomp.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/Actor/Stage/Gimmick/StageGimmick/JumpPad.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Camera/Dimensiontrigger.h"
 #include "Src/Core/BossUIManager.h"
 #include "Src/Parameter/Stage/StageSpawnTable.h"
 #include "Src/Production/CutIn/CutInView.h"
-#include "Src/WallActor.h"
 #include "StageObjectSpawner.h"
+#include "Src/Actor/Stage/Gimmick/StageGimmick/RotationFool.h"
 
 namespace nsApp
 {
@@ -52,15 +51,6 @@ namespace nsApp
                 star->SetStarPosition(pos);
                 spawnedObjects_.push_back(star);
             }
-
-            /* ジャンプパッドの生成。*/
-            else if (rec.objectType == "JumpPad")
-            {
-                auto* pad = NewGO<JumpPad>(0, "jumppad");
-                pad->SetJumpPadPosition(pos);
-                spawnedObjects_.push_back(pad);
-            }
-
             /* DimensionTrigger の生成。*/
             else if (rec.objectType == "DimensionTrigger")
             {
@@ -68,15 +58,6 @@ namespace nsApp
                 trigger->SetTriggerPos(pos);
                 spawnedObjects_.push_back(trigger);
             }
-
-            /* 壁の生成。*/
-            else if (rec.objectType == "Wall")
-            {
-                auto* wall = NewGO<WallActor>(0, "wall");
-                wall->SetWallPos(pos);
-                spawnedObjects_.push_back(wall);
-            }
-
             /* 敵の生成。*/
             else if (rec.objectType == "NormalEnemy")
             {
@@ -92,11 +73,12 @@ namespace nsApp
             /* Thwomp の生成。*/
             else if (rec.objectType == "Thwomp")
             {
-                auto* thwomp = NewGO<app::enemy::Thwomp>(0, "thwomp");
-                thwomp->SetPos(pos);
-                thwomp->SetTriggerPos(Vector3(rec.param0, 0.0f, 0.0f));
-                thwomp->InitMoveDir(Vector3(rec.param1, rec.param2, 0.0f));
-                spawnedObjects_.push_back(thwomp);
+                auto* player = FindGO<Player>("player");
+                auto enemies = app::enemy::EnemyFactory::CreateEnemy(EnemyType::type_Thwomp, pos, player);
+
+                for (auto* enemy : enemies)
+                    if (enemy)
+                        spawnedObjects_.push_back(enemy);
             }
 
             /* Boss の生成。*/

@@ -45,6 +45,13 @@ namespace app
     {
         Game::~Game()
         {
+            if (g_renderingEngine)
+            {
+                g_renderingEngine->EnableCompositeBackground(false);
+                g_renderingEngine->SetStageBackGroundRenderer(nullptr);
+            }
+
+
             nsApp::nsJob::JobQueue::GetInstance().Shutdown();
 
             // ステージ背景を削除。
@@ -149,6 +156,7 @@ namespace app
             pPlayer_->SetPlayerPos(Vector3(0.0f, 20.0f, 0.0f));
 
             // 物理デバッグワイヤーフレーム表示有効化。
+            PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
             pFade_ = SceneManager::GetInstance()->GetFade();
 
             return true;
@@ -157,6 +165,8 @@ namespace app
 
         void Game::Update()
         {
+            app::core::SoundManager::GetInstance()->Update();
+
             nsApp::nsJob::JobQueue::GetInstance().PumpMain();
 
             StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
@@ -224,6 +234,7 @@ namespace app
                 state_ = SceneTransitionState::FadeOut;
             }
         }
+
 
         void Game::RefreshStageBackGround(StageID stageID)
         {
@@ -409,9 +420,10 @@ namespace app
             HPbarCreateInstance();
         }
 
+
         void Game::PlayerCreateInstance()
         {
-            pPlayer_ = NewGO<Player>(0, "player");
+            pPlayer_ = NewGO<Player>(1, "player");
         }
 
         void Game::TimerCreateInstance()

@@ -31,6 +31,12 @@ namespace nsApp
              */
             void Clear();
 
+            /**
+             * @brief 生成済みのオブジェクトを登録解除する。
+             * @param obj 登録解除するオブジェクト。
+             */
+            void Unregister(IGameObject* obj);
+
 
         private:
             /**

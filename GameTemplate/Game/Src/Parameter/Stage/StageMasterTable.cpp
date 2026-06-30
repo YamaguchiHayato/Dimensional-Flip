@@ -37,8 +37,7 @@ namespace nsApp
                 StageMasterRecord record;
                 record.stageID = stageID;
                 record.modelPath = table.GetString(rowIndex, "ModelPath");
-                record.playerStartPosition =
-                    Vector3(row.F("StartX", 0.0f), row.F("StartY", 20.0f), row.F("StartZ", 0.0f));
+                record.playerStartPosition = Vector3(row.F("StartX", 0.0f), row.F("StartY", 20.0f), row.F("StartZ", 0.0f));
                 record.scale = Vector3(row.F("ScaleX", 1.0f), row.F("ScaleY", 1.0f), row.F("ScaleZ", 1.0f));
                 record.position = Vector3(row.F("PosX", 0.0f), row.F("PosY", 0.0f), row.F("PosZ", 0.0f));
                 record.rotY = row.F("RotY", 0.0f);
@@ -50,10 +49,12 @@ namespace nsApp
 
         bool StageMasterTable::LoadTSVFile(const char* filePath)
         {
-            return Base::Load(
+            return Base::Load
+            (
                 filePath, "StageId", [](const std::string& key) { return ParseStageId(key); },
                 [](const TSVTable& table, int rowIndex, nsStage::StageID stageID)
-                { return CreateFromRow(table, rowIndex, stageID); });
+                { return CreateFromRow(table, rowIndex, stageID); }
+            );
         }
 
 

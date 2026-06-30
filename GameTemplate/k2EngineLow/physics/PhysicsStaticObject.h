@@ -71,21 +71,18 @@ namespace nsK2EngineLow {
 
 		void SetPosition(const Vector3& pos)
 		{
-			// ライトボディの取得。
 			btCollisionObject* body = m_rigidBody.GetBody();
 			if (!body)
 				return;
 
-			// 位置設定。
-			auto& btTrans = m_rigidBody.GetBody()->getWorldTransform();
-			btVector3 btPos;
-			btPos = btVector3(pos.x, pos.y, pos.z);
-			btTrans.setOrigin(btPos);
-
-			// Active化して乗っている判定を付ける。
+			btTransform trans = body->getWorldTransform();
+			trans.setOrigin(btVector3(pos.x, pos.y, pos.z));
+			body->setWorldTransform(trans);
 			body->activate(true);
-		}
 
+			if (auto* world = PhysicsWorld::GetInstance()->GetDynamicWorld())
+				world->updateSingleAabb(body);
+		}
 
 		// 動く設定を有効にする処理。
 		void SetKinematic(bool isKinematic)

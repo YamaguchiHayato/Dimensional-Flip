@@ -241,7 +241,6 @@
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyIdleState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyLandState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Fall\FallEnemyRIseState.cpp" />
-    <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalChaseState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalCrushedState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Normal\NormalEnemy.cpp" />

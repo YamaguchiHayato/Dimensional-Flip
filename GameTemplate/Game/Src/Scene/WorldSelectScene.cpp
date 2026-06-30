@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
@@ -31,7 +31,7 @@ namespace
         // ステージモデル、ステージID、字幕をセット。
         {"Assets/stage/Stage1/Stage1.tkm", StageID::sStage1, L"Stage1"},
         {"Assets/stage/tutorialStage.tkm", StageID::sTutorialStage, L"Tutorial Stage"},
-        {"Assets/stage/StageEX/StageEX.tkm", StageID::sStageEX, L"Boss Stage"},
+        {"Assets/stage/WorldSelect/BossStage.tkm", StageID::sStageEX, L"Boss Stage"},
     };
 } 
 
@@ -70,18 +70,25 @@ bool WorldSelectScene::Start()
 
     if (g_camera3D)
     {
-        // 正面から見る視点にする。
         g_camera3D->SetPosition({0.0f, 20.0f, -40.0f});
-
-        // カメラの注視点は中心に固定する。
         g_camera3D->SetTarget({0.0f, 0.0f, 0.0f});
     }
 
-    // ステージセレクト画面のBGMを再生する。
     app::core::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_StageSelect);
 
+    // ① 描画状態を先にリセット
+    if (g_renderingEngine)
+    {
+        g_renderingEngine->EnableCompositeBackground(false);
+        g_renderingEngine->SetStageBackGroundRenderer(nullptr);
 
-    // アイコンを生成
+        /* IBLなしのWorldSelectScene用のライティング。*/
+        g_renderingEngine->SetAmbient(Vector3(0.4f, 0.40f, 0.5f));
+    }
+
+    CreateSkyCube();
+
+    // ③ その後に ModelRender を持つオブジェクト
     for (const auto& data : dataList)
     {
         auto* icon = NewGO<app::nsUI::StageIcon>(0, "StageIcon");
@@ -89,14 +96,9 @@ bool WorldSelectScene::Start()
         icons_.push_back(icon);
     }
 
-    // UIの生成と初期化。
     pSelectUI_ = NewGO<app::nsUI::WorldSelectUI>(1, "WorldSelectUI");
     pSelectUI_->Init();
 
-    // ステージセレクト画面用のステージ背景を生成する。
-    CreateSkyCube();
-
-    g_renderingEngine->EnableCompositeBackground(false);
     return true;
 }
 
@@ -207,16 +209,8 @@ void WorldSelectScene::Update()
 
 void WorldSelectScene::CreateSkyCube()
 {
-    // SkyCubeの生成。
     pSkyCube_ = NewGO<SkyCube>(0, "skycube");
-
-    // SkyCubeの大きさを設定。
     pSkyCube_->SetScale(Vector3::One * 100.0f);
 
-    // IBLテクスチャを設定。
-    g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(), 1.0f);
-
-    // SkyCubeのタイプを設定。
-    pSkyCube_->SetType(EnSkyCubeType::enSkyCubeType_Night);
-    g_renderingEngine->SetDirectionLight(0, g_vec3Zero, g_vec3Zero);
+    pSkyCube_->SetType(EnSkyCubeType::enSkyCubeType_Night);                           // 先にタイプ
 }

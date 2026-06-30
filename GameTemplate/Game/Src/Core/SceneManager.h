@@ -1,68 +1,106 @@
 #pragma once
+
 #include "Src/Scene/Scene.h"
 
-// フェード処理の列挙型
-// ロードシーンはステージの描画を待つため細分化。
+/**
+ * @file   SceneManager.h
+ * @brief  シーン遷移・ロード画面・フェードを統括するマネージャ。
+ */
+
+/**
+ * @enum SceneTransitionState
+ * @brief Game 内ステージ遷移用（SceneManager とは別系統）。
+ */
 enum class SceneTransitionState : uint8_t
 {
-    None,            // 通常状態。
-    FadeOut,         // フェードアウト中。
-    Load,            // ロード準備。
-    Load_Render,     // ローディング画面の準備。
-    Load_Wait,       // 同期ロード実行。
-    Load_WaitFinish, // ロード完了待ち。
-    FadeIn,          // フェードイン中。
-    FadeIn_Wait,     // フェードイン完了待ち。
+    None,
+    FadeOut,
+    Load,
+    Load_Render,
+    Load_Wait,
+    Load_WaitFinish,
+    FadeIn,
+    FadeIn_Wait,
 };
 
 class Fade;
 class LoadingScene;
+
+/**
+ * @class SceneManager
+ * @brief 全シーンの生成・破棄・遷移タイミングを管理するシングルトン。
+ */
 class SceneManager : public IScene
 {
 private:
-    IScene* pCurrentScene_ = nullptr;
-    SceneID currentID_ = SceneID::sTitle;
-    SceneID requestID_ = SceneID::sInvalid;
-    SceneID targetID = SceneID::sInvalid;
+    IScene* pCurrentScene_ = nullptr;       //! < 現在のシーン。>
+    SceneID currentID_ = SceneID::sTitle;   //! < 現在のシーン ID。>
+    SceneID requestID_ = SceneID::sInvalid; //! < 遷移リクエストされたシーン ID。>
+    SceneID targetID = SceneID::sInvalid;   //! < 遷移先のシーン ID。>
+    static SceneManager* pSceneManger_;     //! < シングルトンインスタンス。>
+    Fade* pFade_ = nullptr;                 //!< フェード制御。>
+    LoadingScene* pLoadingScene_ = nullptr; //!< ロード画面。>
+
+
+private:
+    bool isLoadingSceneActive_ = false;     //< ロード画面がアクティブか。>
+    bool isSceneControler_ = false;         //!< シーン遷移中の制御中か。>
+    bool isAutoLoadingEnabled_ = true;      //!< フェードアウト中の自動ロード表示を有効にするか。>
+    float minLoadingTime_ = 0.0f;           //!< ロード画面の最低表示時間（秒）
+
 
 public:
-    // 初期化処理。
+    /**
+     * @brief シーンマネージャを初期化する。
+     * @return true で初期化成功。
+     */
     bool Start() override;
-    // 更新処理。
+
+    /**
+     * @brief シーンマネージャを更新する。
+     */
     void Update() override;
-    // 描画処理。
+
+    /**
+     * @brief シーンマネージャを終了する。
+     * @param id 終了するシーン ID。
+     * @return true で終了成功。
+     */
     IScene* CreateScene(SceneID id);
 
-
-public:
-    // ロード画面の表示。
+    /**
+     * @brief ロード画面を表示する。
+     */
     void ShowLoading();
 
-    // ロード画面の非表示。
+    /**
+     * @brief ロード画面を非表示にする。
+     */
     void HideLoading();
 
-    // 自動ロード画面表示の有効・無効を切り替えるセッター
-    void SetEnableAutoLoading(bool enable)
-    {
-        isAutoLoadingEnabled_ = enable;
-    }
+    /**
+     * @brief フェードアウト中の自動ロード表示を有効/無効にする。
+     * @param enable true で有効。
+     */
+    void SetEnableAutoLoading(bool enable) { isAutoLoadingEnabled_ = enable; }
 
+    /**
+     * @brief ロード画面の最低表示時間を設定する。
+     * @param newID 遷移先シーン ID。
+     */
+    inline void ChangeSceneInternal(SceneID newID) { requestID_ = newID; }
 
-// セッター。
-public:
-    // FadeSceneから呼ばれる内部用のシーン変更
-    inline void ChangeSceneInternal(SceneID newID)
-    {
-        requestID_ = newID;
-    }
+    /**
+     * @brief シーン遷移をリクエストする。
+     * @param newID 遷移先シーン ID。
+     */
+    inline void ChangeScene(SceneID newID) { requestID_ = newID; }
 
-    // シーンの変更処理。
-    inline void ChangeScene(SceneID newID)
-    {
-        requestID_ = newID;
-    }
-
-      static void ResetRenderingStateForScene()
+    /**
+     * @brief シーン退場時に描画エンジンのインゲーム専用状態を解除する。
+     * @details 数式背景（Composite）とステージ背景コールバックを解除。
+     */
+    static void ResetRenderingStateForScene()
     {
         if (!g_renderingEngine)
             return;
@@ -71,55 +109,51 @@ public:
     }
 
 private:
+    /* コンストラクタとデストラクタ。*/
     SceneManager() = default;
     virtual ~SceneManager();
 
 
-private:
-    static SceneManager* pSceneManger_;
-    Fade* pFade_ = nullptr;
-    LoadingScene* pLoadingScene_ = nullptr;
-
 public:
-    // シングルトンインスタンスの生成。
+    /**
+     * @brief シングルトンインスタンスを生成する。
+     */
     inline static void CreateInstance()
     {
         if (!pSceneManger_)
             pSceneManger_ = new SceneManager();
     }
 
-    // Fadeシーンの生成管理。
+    /**
+     * @brief フェード制御を取得する。
+     * @return フェード制御のポインタ。
+     */
     inline Fade* GetFade()
     {
         return pFade_;
     }
 
-    // ターゲットシーンIDの取得。
+    /**
+     * @brief 遷移先のシーン ID を取得する。
+     * @return 遷移先のシーン ID。
+     */
     SceneID GetTargetSceneID() const
     {
         return targetID;
     }
 
-    // シングルトンインスタンスを取得
-    inline static SceneManager* GetInstance()
-    {
-        return pSceneManger_;
-    }
+    /**
+     * @brief シングルトンインスタンスを取得する。
+     * @return シングルトンインスタンスのポインタ。
+     */
+    inline static SceneManager* GetInstance() { return pSceneManger_; }
 
-    // シーンの解放処理。
+    /**
+     * @brief シングルトンインスタンスを削除する。
+     */
     inline static void DeleteInstance()
     {
         delete pSceneManger_;
         pSceneManger_ = nullptr;
     }
-
-
-private:
-    bool isLoadingSceneActive_ = false;
-    bool isSceneControler_ = false;
-    bool isAutoLoadingEnabled_ = true;
-
-
-    float minLoadingTime_ = 0.0f; // 最小ローディング時間。
-    
 };

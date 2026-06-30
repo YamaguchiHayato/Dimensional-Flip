@@ -230,8 +230,6 @@
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Actor\Character\Enemy\IEnemyState.cpp" />
-    <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp" />
     <ClCompile Include="Src\Actor\Character\Player\Player.cpp">
       <Filter>Src\Actor\Character\Player</Filter>
     </ClCompile>
@@ -529,6 +527,9 @@
     <ClCompile Include="Src\UI\ButtonActionUI.cpp">
       <Filter>Src\UI\BossUI</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp">
+      <Filter>Src\Scene\title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -648,9 +649,7 @@
       <Filter>Src\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Character.h" />
-    <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h" />
     <ClInclude Include="ResultData.h" />
-    <ClInclude Include="Src\Scene\title\TitleInformationLayer.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="Src\Actor\Character\Player\Player.h">
       <Filter>Src\Actor\Character\Player</Filter>
@@ -1005,6 +1004,12 @@
     </ClInclude>
     <ClInclude Include="Src\UI\ButtonActionUI.h">
       <Filter>Src\UI\BossUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\title\TitleInformationLayer.h">
+      <Filter>Src\Scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Actor\Character\Enemy\IEnemyState.h">
+      <Filter>Src\Actor\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,15 @@
 #pragma once
 
+/**
+ * @file   StageObjectSpawner.h
+ * @brief  StageSpawn.tsv に基づくステージオブジェクト生成。
+ */
+
+#include <algorithm>
 #include <vector>
 
 #include "Src/Actor/Stage/StageID.h"
+#include "gameObject/IGameObject.h"
 
 namespace nsApp
 {
@@ -22,29 +29,31 @@ namespace nsApp
         public:
             /**
              * @brief StageID に応じたオブジェクトを生成する。
-             * @param stageId 生成するステージID。
+             * @param stageId 生成するステージ ID。
              */
             void Spawn(StageID stageId);
 
             /**
-             * @brief 生成済みのオブジェクトを削除する。
+             * @brief 生成済みオブジェクトを DeleteGO し、リストを空にする。
+             * @note  自己削除済み GO は Unregister 済みであること。
              */
             void Clear();
 
             /**
-             * @brief 生成済みのオブジェクトを登録解除する。
-             * @param obj 登録解除するオブジェクト。
+             * @brief 生成済みリストからポインタを除去する（DeleteGO は呼ばない）。
+             * @param obj リストから外すオブジェクト。
              */
             void Unregister(IGameObject* obj);
 
-
         private:
             /**
-             * @brief StageSpawnRecord に基づき、1つのオブジェクトを生成する。
-             * @param rec 生成するオブジェクトの情報を持つ StageSpawnRecord。
+             * @brief StageSpawnRecord に基づき、1 オブジェクトを生成する。
+             * @param rec TSV 1 行分のレコード。
              */
             void SpawnOne(const nsSystem::StageSpawnRecord& rec);
-            std::vector<IGameObject*> spawnedObjects_;
+
+
+            std::vector<IGameObject*> spawnedObjects_; //!< Spawn で登録した GO 一覧
         };
     } // namespace nsStage
 } // namespace nsApp

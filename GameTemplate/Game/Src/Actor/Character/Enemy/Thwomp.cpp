@@ -1,7 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Thwomp.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Core/StageManager.h"
 #include <algorithm>
 
 
@@ -133,6 +134,9 @@ namespace app
             // 削除判定。
             if (pos_.x <= triggerPos_.x - 1000.0f || pos_.y < -1500.0f)
             {
+                if (auto* pStageMgr = nsApp::nsStage::StageManager::GetInstance())
+                    pStageMgr->UnregisterSpawnedObject(this);
+
                 DeleteGO(this);
                 return;
             }

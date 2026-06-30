@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  *@brief	CGameObjectのマネージャー。
  */
 
@@ -66,17 +66,24 @@ namespace nsK2EngineLow {
 		 */
 		void FlushDeadGameObjects()
 		{
-			for (auto& goList : m_gameObjectListArray)
+			for (int pass = 0; pass < 16; ++pass)
 			{
-				goList.remove_if([&](IGameObject* go)
-					{
-						if (go->IsDead())
+				size_t deletedCount = 0;
+				for (auto& goList : m_gameObjectListArray)
+				{
+					goList.remove_if([&](IGameObject* go)
 						{
-							delete go;
-							return true;
-						}
-						return false;
-					});
+							if (go->IsDead())
+							{
+								delete go;
+								++deletedCount;
+								return true;
+							}
+							return false;
+						});
+				}
+				if (deletedCount == 0)
+					break;
 			}
 		}
 

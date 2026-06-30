@@ -39,6 +39,15 @@ namespace nsApp
         }
 
 
+        void StageObjectSpawner::Unregister(IGameObject* obj)
+        {
+            /* spawnedObjects_ から obj を削除する。*/
+            auto it = std::find(spawnedObjects_.begin(), spawnedObjects_.end(), obj);
+            if (it != spawnedObjects_.end())
+                spawnedObjects_.erase(it);
+        }
+
+
         void StageObjectSpawner::SpawnOne(const nsSystem::StageSpawnRecord& rec)
         {
             /* 位置を設定。*/

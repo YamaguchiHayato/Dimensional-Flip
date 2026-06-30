@@ -24,11 +24,16 @@ GameClearScene::~GameClearScene()
 
 bool GameClearScene::Start()
 {
+    if (g_renderingEngine)
+    {
+        g_renderingEngine->EnableCompositeBackground(false);
+        g_renderingEngine->SetStageBackGroundRenderer(nullptr);
+    }
+
     // 背景クラスの生成。
     pSkyCube_ = NewGO<SkyCube>(0, "SkyCube");
     pSkyCube_->SetScale(Vector3::One * 1000.0f);
     pSkyCube_->SetType(EnSkyCubeType::enSkyCubeType_Wild);
-    g_renderingEngine->SetAmbientByIBLTexture(pSkyCube_->GetTextureFilePath(),1.0f);
 
     // カメラをセット。
     g_camera3D->SetPosition(Vector3::Zero);
@@ -51,9 +56,6 @@ void GameClearScene::Update()
     if (pGameClear_ && pGameClear_->IsFinished())
     {
         if (g_pad[0]->IsTrigger(enButtonA))
-        {
-            // 演出が終わっていて、かつボタンが押されていたら。
             SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
-        }
     }
 }

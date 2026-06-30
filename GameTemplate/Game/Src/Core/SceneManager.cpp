@@ -1,19 +1,18 @@
 #include "stdafx.h"
-#include "Src/Production/Fade.h"
 
-#include "Src/Scene/TitleScene.h"
-#include "Src/Scene/InGameScene.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Production/Fade.h"
 #include "Src/Production/GameClear.h"
+#include "Src/Scene/EndRollScene.h"
 #include "Src/Scene/GameClearScene.h"
 #include "Src/Scene/GameOverScene.h"
-#include "Src/Scene/WorldSelectScene.h"
+#include "Src/Scene/InGameScene.h"
 #include "Src/Scene/LoadingScene.h"
-#include "Src/Scene/EndRollScene.h"
+#include "Src/Scene/TitleScene.h"
+#include "Src/Scene/WorldSelectScene.h"
 #include "Src/UI/Select/WorldSelectUI.h"
 
 SceneManager* SceneManager::pSceneManger_ = nullptr;
-
 
 SceneManager::~SceneManager()
 {
@@ -30,53 +29,39 @@ SceneManager::~SceneManager()
     }
 }
 
-
 bool SceneManager::Start()
 {
-    // フェードシーンの生成。
     pFade_ = NewGO<Fade>(2, "fade");
     if (pFade_ == nullptr)
-    {
         return false;
-    }
-    // 最初のシーンを生成。
+
     pCurrentScene_ = CreateScene(SceneID::sTitle);
     if (pCurrentScene_)
     {
         pCurrentScene_->Start();
-        // シーンの初期値を設定する。
         currentID_ = SceneID::sTitle;
         return true;
     }
     return false;
-} 
-
+}
 
 void SceneManager::Update()
 {
     if (isAutoLoadingEnabled_ && pFade_ && pFade_->GetFadeState() == FadeState::Fade_Out)
     {
         if (pFade_->GetFadeSprite().GetWipeSize() < 300.0f)
-        {
             ShowLoading();
-        }
     }
 
-    // 2. シーン遷移リクエストがあった場合の初期化処理
     if (requestID_ != SceneID::sInvalid && !isLoadingSceneActive_)
     {
-        // ロード画面を表示
         ShowLoading();
-
-        // フラグとタイマーのリセット
         isLoadingSceneActive_ = true;
         isSceneControler_ = false;
         minLoadingTime_ = 0.0f;
-
-        return; // ロード画面を描画するために一旦リターン
+        return;
     }
 
-    // 3. ロード中の処理
     if (isLoadingSceneActive_)
     {
         if (!isSceneControler_)
@@ -85,33 +70,21 @@ void SceneManager::Update()
 
             if (nextScene != nullptr)
             {
+                // インゲーム描画状態を解除
                 if (g_renderingEngine)
                 {
                     g_renderingEngine->EnableCompositeBackground(false);
                     g_renderingEngine->SetStageBackGroundRenderer(nullptr);
                 }
 
-                if (requestID_ == SceneID::sResult)
+                // 旧シーン破棄 → GO 完全削除 → 新シーン開始（全シーン共通）
+                if (pCurrentScene_)
                 {
-                    nextScene->Start();
-
-                    if (pCurrentScene_)
-                    {
-                        delete pCurrentScene_;
-                        pCurrentScene_ = nullptr;
-                    }
+                    delete pCurrentScene_;
+                    pCurrentScene_ = nullptr;
                 }
-                else
-                {
-                    if (pCurrentScene_)
-                    {
-                        delete pCurrentScene_;
-                        pCurrentScene_ = nullptr;
-                    }
-
-                    nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
-                    nextScene->Start();
-                }
+                nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+                nextScene->Start();
 
                 pCurrentScene_ = nextScene;
                 currentID_ = requestID_;
@@ -120,9 +93,7 @@ void SceneManager::Update()
             isSceneControler_ = true;
         }
 
-        // B. 待機時間の更新
         float dt = g_gameTime->GetFrameDeltaTime();
-
         if (dt > 0.1f)
             dt = 0.1f;
 
@@ -136,21 +107,15 @@ void SceneManager::Update()
         }
     }
 
-    // 4. 現在のシーンの更新
     if (pCurrentScene_ != nullptr)
         pCurrentScene_->Update();
 }
 
-
 void SceneManager::ShowLoading()
 {
     if (pLoadingScene_ == nullptr)
-    {
-        // 優先度3（Fadeより手前）で生成
         pLoadingScene_ = NewGO<LoadingScene>(3, "loading");
-    }
 }
-
 
 void SceneManager::HideLoading()
 {
@@ -161,41 +126,38 @@ void SceneManager::HideLoading()
     }
 }
 
-
-
 IScene* SceneManager::CreateScene(SceneID id)
 {
     IScene* newScene = nullptr;
     switch (id)
     {
-        // ケース: タイトルシーン。
-        case SceneID::sTitle:
-             newScene= new TitleScene();
-             break;
+    case SceneID::sTitle:
+        newScene = new TitleScene();
+        break;
 
-        case SceneID::sWorldSelect:
-             newScene = new WorldSelectScene();
-             break;
+    case SceneID::sWorldSelect:
+        newScene = new WorldSelectScene();
+        break;
 
-        case SceneID::sInGame:
-             newScene = new InGameScene();
-             break;
+    case SceneID::sInGame:
+        newScene = new InGameScene();
+        break;
 
-        case SceneID::sResult:
-             newScene = new GameClearScene();
-             break
-                 ;
-        case SceneID::sGameOver:
-             newScene = new app::scene::GameOverScene();
-             break;
+    case SceneID::sResult:
+        newScene = new GameClearScene();
+        break;
 
-        case SceneID::sEndRoll:
-             newScene = new app::production::EndRollScene();
-             break;
+    case SceneID::sGameOver:
+        newScene = new app::scene::GameOverScene();
+        break;
 
-        default:
-             break;
+    case SceneID::sEndRoll:
+        newScene = new app::production::EndRollScene();
+        break;
+
+    default:
+        break;
     }
 
     return newScene;
- }
+}

@@ -1,26 +1,48 @@
 #pragma once
+
 #include "Src/Production/GameClear.h"
 #include "Src/Scene/Scene.h"
 
-namespace app {
-    namespace stage {
+/**
+ * @file   GameClearScene.h
+ * @brief  ステージクリア後のリザルトシーン。
+ */
+
+namespace app
+{
+    namespace stage
+    {
         class BackGround;
     }
-}
+} // namespace app
 
+/**
+ * @class GameClearScene
+ * @brief  GameClear 演出と StageResultData 表示を行う。
+ * @note   SetAmbientByIBLTexture は使わない（ModelRender 一斉 ReInit 回避）。
+ */
 class GameClearScene : public IScene
 {
 public:
+    /* コンストラクタとデストラクタ。*/
     GameClearScene() = default;
     virtual ~GameClearScene();
 
 
 public:
-    bool Start()override;
-    void Update()override;
+    /**
+     * @brief シーン開始時の初期化処理。
+     * @return true: 初期化成功、false: 初期化失敗
+     */ 
+    bool Start() override;
+
+    /**
+     * @brief シーン更新処理。
+     */
+    void Update() override;
 
 
 private:
-    GameClear* pGameClear_ = nullptr;
-    SkyCube* pSkyCube_ = nullptr;
+    GameClear* pGameClear_ = nullptr; //!< リザルト UI 演出
+    SkyCube* pSkyCube_ = nullptr;     //!< 背景用（任意。2D のみなら削除可）
 };

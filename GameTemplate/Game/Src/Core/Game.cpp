@@ -172,7 +172,7 @@ namespace app
             StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
             const auto& master = nsApp::nsSystem::StageMasterTable::Get(stage);
             const bool useFormulaBg = (master.backgroundType == "Scroll");
-            g_renderingEngine->EnableCompositeBackground(useFormulaBg);
+//            g_renderingEngine->EnableCompositeBackground(useFormulaBg);
 
 
             // フェードイン開始。
@@ -185,7 +185,7 @@ namespace app
 
             // 数式背景のパララックス更新。
             float cameraX = g_camera3D->GetTarget().x;
-            g_renderingEngine->UpdateCompositeBackground(cameraX);
+  //          g_renderingEngine->UpdateCompositeBackground(cameraX);
 
             // 遷移処理を毎フレーム更新。
             UpdateTransition();

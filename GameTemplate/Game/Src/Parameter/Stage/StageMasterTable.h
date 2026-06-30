@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Src/Parameter/ParameterSystemTableBase.h"
 #include "StageMasterRecord.h"

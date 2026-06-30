@@ -133,7 +133,7 @@ namespace app
             // 暗転するまで今の見た目をキープします
             if (timer_ >= 1.0f && currentPhase_ == StarGetPhase::Finish)
             {
-                auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("Normal");
+                auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("BackGround");
                 if (pBG)
                     pBG->ClearOverride();
 

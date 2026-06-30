@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 // キャラクター。
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
@@ -23,46 +23,42 @@
 
 namespace
 {
-    // 生成範囲。
-    const auto RANGE = 20.0f;
+    const auto RANGE = 20.0f;                           //! 生成範囲。
+    const float WEEKE_POINT_RADIUS = 2.5f;              //! 弱点コリジョンの半径。
+    const auto WEAK_POINT_HEIGHT = 22.0f;               //! 弱点の高さ。
+    const float STAGE_LIMIT_X = 35.0f;                  //! ステージのX軸制限。
+    const auto MAX_HP = 3.0f;                           //! 最大HP。
+    const float WEAK_POINT_BONE_OFFSET_Y = 4.0f;        //! 弱点ボーンのオフセット値。
+    const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f); //! スケール。
 
-    // コリジョンの半径。
-    const float WEEKE_POINT_RADIUS = 2.5f;
-
-    // コリジョンの高さ。
-    const auto WEAK_POINT_HEIGHT = 22.0f;
-
-    // ステージのX方向の制限。
-    const float STAGE_LIMIT_X = 35.0f;
-
-    // 最大HP
-    const auto MAX_HP = 3.0f;
-
-    const Vector3 SCALE = Vector3(0.15f, 0.15f, 0.15f);
-
-    const float WEAK_POINT_BONE_OFFSET_Y = 4.0f;
-
-    // エフェクトｗセットするための構造体。
+    /**
+     * @brief エフェクトIDとパスのペアを管理する構造体。 
+     * @brief エフェクトリソースの構造体。
+     * @detail エフェクトIDとパスのペアを管理する構造体です。エフェクトの種類ごとにIDと対応するパスを保持します。
+     */
     struct EffectResource
     {
-        app::enemyStatus::EffectID effectID;
+        app::enemyStatus::EffectID effectID; 
         const char16_t* path;
     };
 
-    // エフェクトリスト。
+    /**
+     * @brief エフェクトリソースの配列。
+     */
     const EffectResource resources[] =
     {
-        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"},      // FireBall
-        { app::enemyStatus::effect_ShockWave, u"Assets/effect/shockWave.efk"},// ShockWave
-        { app::enemyStatus::effect_thunder, u"Assets/effect/thunder.efk"},    // thunder
+        { app::enemyStatus::effect_FireBall, u"Assets/effect/fire.efk"},      //! FireBall。
+        { app::enemyStatus::effect_ShockWave, u"Assets/effect/shockWave.efk"},//! ShockWave。
+        { app::enemyStatus::effect_thunder, u"Assets/effect/thunder.efk"},    //! thunder。
     };
 }
 
 
-// 足場の生成座標を管理する構造体。
 namespace ScaffoldingPosList
 {
-
+    /**
+     * @brief 足場のパターンを定義する2次元ベクトルの配列。
+     */
     const std::vector<std::vector<Vector3>> SCAFFOLDING_PATTERNS =
     {
         // --- パターンA: スタンダードな階段 ---
@@ -103,17 +99,19 @@ namespace app
     {
         Boss::~Boss()
         {
-            // メモリ解放。
+            /* ステーの解放。*/
             for (uint8_t i = 0; i < app::enemyStatus::BossState::state_Num; ++i)
             {
+                /* ステートが存在しない場合は解放する。*/
                 if (pStateList_[i])
                 {
+                    /* ステートの解放。*/
                     delete pStateList_[i];
                     pStateList_[i] = nullptr;
                 }
             }
 
-            // InputManagerの次元反転フラグを元に戻す。
+            /* InputManagerの次元反転フラグを有効化。*/ 
             pInputManager_ = app::core::InputManager::GetInstance();
             if (pInputManager_)
                 pInputManager_->SetDimensionFlipFlag(true);
@@ -122,72 +120,59 @@ namespace app
 
         bool Boss::Start()
         {
-            // ステートの登録。
-            // 待機ステート。
+            /* ステートの登録。*/
             RegisterState<app::enemyState::BossIdleState>(app::enemyStatus::state_Idle);
-            // 攻撃ステート。
             RegisterState<app::enemyState::BossAttackState>(app::enemyStatus::state_Attack);
-            // 疲労ステート。
             RegisterState<app::enemyState::BossTumbleState>(app::enemyStatus::state_Tumble);
-            // ダメージステート。
             RegisterState<app::enemyState::BossDamageState>(app::enemyStatus::state_Hit);
-            // 死亡ステート。
             RegisterState<app::enemyState::BossDeadState>(app::enemyStatus::state_Dead);
 
-
-            // アニメーションをセットする。
+            /* アニメーションの登録。*/
             SetAnimation();
 
-            // リストに登録したエフェクトをまとめてセットする。
+            /* エフェクトの登録。*/
             for (const auto& res : resources)
-            {
-                // IDとパスをセット。
                 EffectEngine::GetInstance()->ResistEffect(res.effectID, res.path);
-            }
 
-            // モデルをセットする。
+            /* モデルの初期化。*/
             render_.Init("Assets/modelData/enemy/boss.tkm", animClips_, app::enemyStatus::BossAnimation::bossAnim_Num, enModelUpAxisZ);
             render_.SetPosition(pos_);
             render_.SetScale(SCALE);
-
-
             rot_.AddRotationDegY(-90.0f);
             render_.SetRotation(rot_);
             pPlayer_ = FindGO<Player>("player");
             pCutInView_ = FindGO<app::cutIn::CutInView>("CutInView");
 
-
+            /* 弱点コリジョンの生成。*/
             pWeeekPoint_ = NewGO<CollisionObject>(0);
             pWeeekPoint_->CreateSphere(pos_ + Vector3(0.0f, 300.0f, 50.0f), Quaternion::Identity, WEEKE_POINT_RADIUS);
             pWeeekPoint_->SetIsEnableAutoDelete(false);
             pWeeekPoint_->SetIsEnable(false);
-
             weakPointBoneID_ = render_.FindBoneID(L"mixamorig:Head");
-            // デフォルト値を使用。
+
+            /* 弱点の高さを設定。*/
             SetWeakPointHeight(22.0f, false);
 
-            // 初期ステートの登録。
+            /* ステートの初期化。*/
             pCurrentState_ = pStateList_[app::enemyStatus::state_Idle];
             if (pCurrentState_)
                 pCurrentState_->Enter();
 
-            // フェーズマネージャの初期化。
+            /* BattlePhaseManagerの初期化。*/
             app::core::BattlePhaseManager::GetInstance()->Init();
 
-            // InputManagerの次元反転フラグを無効化。
+            /* InputManagerの次元反転フラグを無効化。*/
             app::core::InputManager::GetInstance()->SetDimensionFlipFlag(true);
 
-            // HPを初期化。
+            /* HPの初期化。*/
             SetHP(MAX_HP);
 
-            // ボーンの名前をデバッグ出力。
             for (int i = 0; i < render_.GetNumBones(); ++i)
             {
-                // i番目のボーンを取得
+                /* ボーンを取得。*/
                 auto* bone = render_.GetBone(i);
                 if (bone)
                 {
-                    // 名前を出力
                     OutputDebugStringW(bone->GetName());
                     OutputDebugStringW(L"\n");
                 }
@@ -199,10 +184,10 @@ namespace app
 
         void Boss::Update()
         {
-            // ステートが存在することを確認。
+            /* ステートが存在するかチェック。*/
             _ASSERT(pCurrentState_ != nullptr);
 
-            // ステートの更新処理。
+            /* ステートの更新。*/
             uint8_t request;
             if (pCurrentState_->RequestID(request))
             {
@@ -212,39 +197,43 @@ namespace app
             }
             pCurrentState_->Update();
 
-            // カメラのClamp制限。
+            /* カメラをクランプ。*/
             AddClamp();
 
-            // 回転。
+            /* 回転処理。*/
             Rotaition();
 
-            // モデル本体の更新。
+            /* モデルの更新。*/
             render_.SetRotation(rot_);
             render_.SetScale(SCALE);
             render_.SetPosition(pos_);
             render_.Update();
 
-            // ボーン位置にコリジョンを合わせる。
+            /* 弱点コリジョンの座標を更新。*/
             if (pWeeekPoint_)
                 pWeeekPoint_->SetPosition(GetWeakPoint());
 
-            // UIにHPの情報を通知。
+            /* HPの更新。*/
             app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(GetHP()), MAX_HP);
         }
 
 
         void Boss::Render(RenderContext& rc)
         {
+            /* モデルの描画。*/
             render_.Draw(rc);
         }
 
 
         void Boss::Rotaition()
         {
+            /* 移動速度がほぼゼロでない場合に回転処理を行う。*/
             Vector3 dir = moveSpeed_;
 
+            /* 移動方向がほぼゼロでない場合に回転を更新する。*/
             if (fabsf(dir.x) >= 0.001f || fabsf(dir.z) >= 0.001f)
             {
+                /* 移動方向に基づいてY軸の回転を設定する。*/
                 rot_.SetRotationYFromDirectionXZ(dir);
                 render_.SetRotation(rot_);
             }
@@ -253,22 +242,23 @@ namespace app
 
         void Boss::AddClamp()
         {
+            /* プレイヤーとカメラマネージャが存在するかチェック。*/
             if (!pPlayer_ || !pPlayer_->GetCameraManager())
                 return;
 
+            /* 現在のカメラモードを取得する。*/
             auto currentMode = pPlayer_->GetCameraManager()->GetCurrentCameraMode();
 
-            // 2DモードのときだけZ軸を固定し、X軸を制限する
+            /* 2Dモードの場合、Z座標を固定し、X座標をステージの制限内にクランプする。*/
             if (currentMode == CameraMode::mode2D)
             {
-                // 座標を固定。
+                /* Z座標を固定し、X座標をステージの制限内にクランプする。*/
                 pos_.z = 0.0f;
                 moveSpeed_.z = 0.0f;
 
-                // カメラ範囲を超えないように制限。
+                /* X座標をステージの制限内にクランプする。*/
                 if (pos_.x < -STAGE_LIMIT_X)
                     pos_.x = -STAGE_LIMIT_X;
-
                 if (pos_.x > STAGE_LIMIT_X)
                     pos_.x = STAGE_LIMIT_X;
             }
@@ -317,20 +307,19 @@ namespace app
 
         Vector3 Boss::RandomStagePos()
         {
-            RANGE; // 生成範囲。
+            /* 範囲。*/
+            RANGE;
 
-            // 1. ランダムな角度 (0 ～ 360度)
+            /* ランダムな角度を生成 (0 ～ 360度) */
             float angle = static_cast<float>(rand() % 360) * (3.14159265f / 180.0f);
 
-            // 2. ランダムな距離 (0 ～ 半径)
+            /* ランダムな距離を生成 (0 ～ RANGE) */
             float distance = static_cast<float>(rand() % static_cast<int>(RANGE));
 
-            // 3. 角度と距離から座標を計算 (円の中に配置)
+            /* ランダムな座標を計算 */
             Vector3 pos = Vector3::Zero;
             pos.x = cosf(angle) * distance;
             pos.z = sinf(angle) * distance;
-
-            // Y座標は地面の高さ 
             pos.y = 0.0f;
 
             return pos;
@@ -339,33 +328,43 @@ namespace app
 
         Vector3 Boss::GetRandomAttackPos()
         {
+            /* ランダムな角度を生成 (0 ～ 360度) */
             float angle = static_cast<float>(rand() % 360) * (3.14159265f / 180.0f);
+
+            /* ランダムな距離を生成 (0 ～ RANGE) */
             float distance = static_cast<float>(rand() % static_cast<int>(RANGE));
+
+            /* ランダムな座標を計算 */
             Vector3 pos = Vector3::Zero;
+
+            /* ランダムな座標を計算 */
             pos.x = cosf(angle) * distance;
             pos.z = sinf(angle) * distance;
             pos.y = 0.0f;
+
             return pos;
         }
 
 
         Vector3 Boss::GetWeakPoint() const
         {
+            /* マニュアル。*/
             if (isManualOverride_)
                 return pos_ + Vector3(0.0f, manualWeakHeight_, 0.0f);
 
-            // ボーン追従モード
+            /* ボーンが存在するかチェック。*/
             else
             {
-                // ボーンのワールド行列を取得
+                /* ボーンのワールド行列を取得。*/
                 const Matrix& mat = render_.GetBone(weakPointBoneID_)->GetWorldMatrix();
 
+                /* ボーンのワールド座標を取得。*/
                 Vector3 bonePos;
                 bonePos.x = mat.m[3][0];
                 bonePos.y = mat.m[3][1];
                 bonePos.z = mat.m[3][2];
 
-                // オフセットを加算して返す
+                /* 弱点のオフセットを加算して返す。*/
                 return bonePos + Vector3(0.0f, WEAK_POINT_BONE_OFFSET_Y, 0.0f);
             }
         }

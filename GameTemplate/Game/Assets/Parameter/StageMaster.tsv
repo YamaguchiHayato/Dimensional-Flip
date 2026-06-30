@@ -1,6 +1,6 @@
 StageId	ModelPath	StartX	StartY	StartZ	ScaleX	ScaleY	ScaleZ	PosX	PosY	PosZ	RotY	BackgroundType
 Tutorial	Assets/stage/tutorialStage.tkm	0	20	0	1	1	1	0	0	0	0	Scroll
-Stage1	Assets/stage/Stage1/Stage1.tkm	0	20	0	1	1	1	0	0	0	0	Scroll
+Stage1	Assets/stage/stage1/Stage1.tkm	0	20	0	1	1	1	0	0	0	0	Scroll
 Stage2	Assets/stage/Stage2/stage2.tkm	98.077	140	-60	1	1	1	0	0	0	0	Scroll
 Stage3	Assets/stage/Stage3/stage3.tkm	0	0	0	1	1	1	0	0	0	0	Scroll
 StageEX	Assets/stage/StageEX/stageEX.tkm	0	20	0	1	1	1	0	0	0	-90	Boss

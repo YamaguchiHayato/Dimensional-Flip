@@ -15,7 +15,11 @@ namespace app
         class BossAttackState : public IEnemyState
         {
         public:
-            BossAttackState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
+            /**
+             * @brief コンストラクタ。
+             * @param pBoss ボスのインスタンスへのポインタ。
+             */
+            BossAttackState(app::enemy::Boss* pBoss);
             virtual ~BossAttackState() = default;
 
 

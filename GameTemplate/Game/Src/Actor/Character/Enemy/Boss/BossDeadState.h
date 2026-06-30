@@ -1,11 +1,13 @@
 #pragma once
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 
-namespace app{
-    namespace enemy{
+namespace app
+{
+    namespace enemy
+    {
         class Boss;
     }
-}
+} // namespace app
 
 class Fade;
 
@@ -13,33 +15,43 @@ namespace app
 {
     namespace enemyState
     {
+        /**
+         * @class BossDeadState
+         * @brief ボス撃破後の死亡ステート。フェードと BGM 停止を行う。
+         */
         class BossDeadState : public IEnemyState
         {
         public:
-            BossDeadState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {};
+            /**
+             * @brief コンストラクタ。
+             * @param[in] pBoss 制御対象のボス。
+             */
+            BossDeadState(app::enemy::Boss* pBoss) : pBoss_(pBoss) {}
+
             virtual ~BossDeadState() = default;
 
-
         public:
-            // 初期化処理。
+            /** @brief 死亡アニメーションと演出開始。 */
             void Enter() override;
-            // 更新処理。
+
+            /** @brief フェード・クリア演出の更新。 */
             void Update() override;
-            // ステート終了処理。
+
+            /** @brief 終了処理。 */
             void Exit() override;
-            // 次のステートへ遷移要求をする処理。
+
+            /**
+             * @brief 遷移要求（通常は死亡で固定）。
+             * @param[out] request 遷移先ステート ID。
+             * @return 遷移する場合 true。
+             */
             bool RequestID(uint8_t& request) override;
 
-
         private:
-            app::enemy::Boss* pBoss_ = nullptr;
-            Fade* pFade_ = nullptr;
+            app::enemy::Boss* pBoss_ = nullptr; ///< ボスへのポインタ。
+            Fade* pFade_ = nullptr;             ///< フェード UI。
 
-
-        private:
-            bool isFadeStarted_ = false;
+            bool isFadeStarted_ = false; ///< フェード開始済みか。
         };
-
-    }
-}
-
+    } // namespace enemyState
+} // namespace app

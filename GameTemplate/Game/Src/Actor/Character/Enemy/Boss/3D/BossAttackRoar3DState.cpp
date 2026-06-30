@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BossAttackRoar3DState.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
@@ -10,20 +10,11 @@
 
 namespace
 {
-    // 攻撃が発生するまでの時間。
-    const auto ROAR_DURATION = 3.0f;
-
-    // 攻撃が発生するタイミング。
-    const auto SPAWN_TIMING = 1.0f;
-
-    // 奇数推奨
-    const int WAVE_COUNT = 5;
-
-    // 広がる角度
-    const float SPREAD_ANGLE = 15.0f;
-
-    // 咆哮波の速度。
-    const float WAVE_SPEED = 10.0f;
+    const auto ROAR_DURATION = 3.0f;  //! 咆哮の持続時間。
+    const auto SPAWN_TIMING = 1.0f;   //! 咆哮波のスポーンタイミング。
+    const int WAVE_COUNT = 5;         //! 咆哮波の数。
+    const float SPREAD_ANGLE = 15.0f; //! 咆哮波の拡散角度。
+    const float WAVE_SPEED = 10.0f;   //! 咆哮波の速度。
 }
 
 namespace app
@@ -32,34 +23,38 @@ namespace app
     {
         void BossAttackRoar3DState::Enter(app::enemy::Boss* pBoss)
         {
+            /* ボスのポインタを保持。*/
             pBoss_ = pBoss;
 
+            /* タイマーをリセット。*/
             pBoss_->SetMoveSpeed(Vector3::Zero);
 
-            // 咆哮モーション
+            /* アニメーションを再生。*/
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackRoar, false, 0.1f);
 
-            // 攻撃タイプの設定。
+            /* 攻撃のタイプを設定。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Roar3D);
 
-            // 咆哮SEの再生。
+            /* SEを再生。*/
             app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Roar, 2.0f);
 
-            // UIを設定。
+            /* 攻撃のUIを設定。*/
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
 
-            // Playerの方向を向くように計算。
+            /* 角度を更新。*/
             UpdateLookAtPlayer();
         }
 
 
         void BossAttackRoar3DState::Update()
         {
+            /* タイマーを取得。*/
             timer_ += g_gameTime->GetFrameDeltaTime();
 
-            // 一定時間経過後に攻撃を発生。
+            /* プレイヤーの方向を向く。*/
             if (timer_ >= SPAWN_TIMING && !isAttackSpawned_)
             {
+                /* 咆哮波を生成。*/
                 CreateRoarWave();
                 isAttackSpawned_ = true;
             }
@@ -68,50 +63,55 @@ namespace app
 
         void BossAttackRoar3DState::Exit()
         {
-            // 咆哮後の隙は長め
+            /* タイマーをリセット。*/
             auto interval = 4.0f + (static_cast<float>(rand() % 21) / 10.0f);
             pBoss_->SettNextInterval(interval);
 
-            // ステートを抜ける際に攻撃UIを削除。
+            /* 攻撃のUIを設定。*/
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
         }
 
 
         bool BossAttackRoar3DState::IsFinished() const
         {
+            /* 咆哮の持続時間を超えたら終了。*/
             return timer_ >= ROAR_DURATION;
         }
 
 
         void BossAttackRoar3DState::CreateRoarWave()
         {
-            // ボスの向きを取得する。
+            /* 座標を取得。*/
             bossPosition_ = pBoss_->GetPos();
-            // ボスの角度を取得する。
+
+            /* ボスの前方方向を取得。*/
             bossAngle_ = pBoss_->GetRot();
-            // ボスの正面方向を計算する。
+
+            /* ボスの前方方向を計算。*/
             forwardDirection_ = Vector3::Front;
-            // ボスの正面方向をワールド座標に変換する。
+
+            /* ボスの回転を適用。*/
             bossAngle_.Apply(forwardDirection_);
 
+            /* 咆哮波を生成。*/
             for (int i = 0; i < WAVE_COUNT; ++i)
             {
-                // 咆哮波のスポーン位置を計算する。
+                /* 咆哮波の角度を計算。*/
                 angleOffset_ = (i - (WAVE_COUNT / 2)) * SPREAD_ANGLE;
                 sqredAngle_.SetRotationDegY(angleOffset_);
-
                 moveDirection_ = forwardDirection_;
-                // 発射ベクトルを計算する。
+
+                /* 角度を適用。*/
                 sqredAngle_.Apply(moveDirection_);
 
-                // 生成。
+                /* 咆哮波を生成。*/
                 pRoarWave_ = NewGO<app::gimmick::RoarWave>(0);
 
-                // ボスの少し前からスポーンさせる。
+                /* 咆哮波のスポーン位置を計算。*/
                 spawnPosition_ = bossPosition_ + (moveDirection_ * 5.0f);
                 spawnPosition_.y = 0.0f;
 
-                // 咆哮波のパラメータをセット。
+                /* 咆哮波のパラメータを設定。*/
                 pRoarWave_->SetParam(spawnPosition_, moveDirection_, WAVE_SPEED);
             }
         }
@@ -119,13 +119,14 @@ namespace app
 
         void BossAttackRoar3DState::UpdateLookAtPlayer()
         {
+            /* プレイヤーのポインタを取得。*/
             if (auto* pPlayer = pBoss_->GetPlayer())
             {
-                // プレイヤーの位置を取得する。
+                /* プレイヤーの方向を計算。*/
                 toPlayer_ = pPlayer->GetPlayerPos() - pBoss_->GetPos();
                 toPlayer_.y = 0.0f;
 
-                // ベクトルの長さを考慮して回転する。
+                /* プレイヤーの方向が有効な場合、ボスの回転を更新。*/
                 if (toPlayer_.LengthSq() > 0.001f)
                 {
                     lookAtPlayerAngle_.SetRotationYFromDirectionXZ(toPlayer_);

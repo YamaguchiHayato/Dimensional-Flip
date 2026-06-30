@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BossAttackRoar2DState.h"
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"

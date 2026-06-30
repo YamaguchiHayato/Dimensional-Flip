@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "BossAttackSpearState.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
@@ -10,19 +10,12 @@
 
 namespace
 {
-    const float SPAWN_TIME = 0.5f;
-
-    // 壁の生成範囲
-    const float STAGE_WIDTH_HALF = 35.0f; // 横幅の半分
-    const float WALL_HEIGHT = 25.0f;      // 壁の高さ
-
-    // 槍の間隔
-    const float GRID_SIZE = 5.0f;
-
-    // 出現位置（Z軸の奥と手前）
-    const float SPAWN_Z_DIST = 80.0f;
-
-    const float SAFE_GAP_Z = 7.0f;
+    const float SPAWN_TIME = 0.5f;        //! 攻撃の生成タイミング。
+    const float STAGE_WIDTH_HALF = 35.0f; //! 横幅の半分。
+    const float WALL_HEIGHT = 25.0f;      //! 壁の高さ。
+    const float GRID_SIZE = 5.0f;         //! グリッドの間隔。
+    const float SPAWN_Z_DIST = 80.0f;     //! 攻撃の生成Z座標。
+    const float SAFE_GAP_Z = 7.0f;        //! 攻撃の停止Z座標。
 } 
 
 namespace app
@@ -31,27 +24,31 @@ namespace app
     {
         void BossAttackSpearState::Enter(app::enemy::Boss* pBoss)
         {
+            /* 初期化。*/
             pBoss_ = pBoss;
             timer_ = 0.0f;
             isAttackSpawned_ = false;
 
-            // アニメーションの再生。
+            /* 攻撃アニメーションの再生。*/
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_AttackCast, true, 0.1f);
 
-            // 攻撃のタイプをセット。
+            /* 攻撃タイプの設定。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Spear);
 
-            // 攻撃UIをセット。
+            /* 攻撃UIの設定。*/
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Spear);
         }
 
 
         void BossAttackSpearState::Update()
         {
+            /* タイマーを取得。*/
             timer_ += g_gameTime->GetFrameDeltaTime();
 
+            /* 攻撃の生成タイミングになったら攻撃を生成。*/
             if (timer_ >= SPAWN_TIME && !isAttackSpawned_)
             {
+                /* 攻撃の生成フラグを立てる。*/
                 isAttackSpawned_ = true;
                 CreateSpearAttack();
             }
@@ -60,37 +57,41 @@ namespace app
 
         void BossAttackSpearState::Exit()
         {
-            // 攻撃のインターバル時間をセット。
+            /* 攻撃の生成フラグをリセット。*/
             pBoss_->SettNextInterval(3.0f);
 
-            // 攻撃UIをセット。
+            /* 攻撃UIの設定。*/
             app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Spear);
         }
 
 
         void BossAttackSpearState::CreateSpearAttack()
         {
-            // SEの再生。
+            /* 攻撃SEの再生。*/
             app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Spear, 2.0);
 
+            /* 攻撃の生成位置を決定。*/
             centerX_ = 0.0f;
             if (auto* pPlayer = pBoss_->GetPlayer())
                 centerX_ = pPlayer->GetPlayerPos().x;
 
+            /* 攻撃の生成位置をランダムにずらす。*/
             randomOffset_ = (static_cast<float>(rand() % 200) / 10.0f) - 10.0f;
             centerX_ += randomOffset_;
 
+            /* 攻撃の生成範囲を決定。*/
             startX_ = centerX_ - 25.0f;
             endX_ = centerX_ + 25.0f;
             pattern_ = rand() % 3;
 
-            // グリッド状に生成
+            /* 攻撃の生成。*/
             for (float x = startX_; x <= endX_; x += GRID_SIZE)
             {
-                // ステージ外ならスキップ
+                // --- 生成範囲の制限: ステージの端を超えないようにする。 ---
                 if (x < -STAGE_WIDTH_HALF || x > STAGE_WIDTH_HALF)
                     continue;
 
+                // --- 生成範囲の制限: プレイヤーの位置を避ける。 ---
                 for (float y = 2.0f; y <= WALL_HEIGHT; y += GRID_SIZE)
                 {
                     // --- パターン判定: 奥の壁を出すか？ ---

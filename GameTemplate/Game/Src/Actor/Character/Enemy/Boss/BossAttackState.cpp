@@ -57,6 +57,9 @@ namespace app
 {
     namespace enemyState
     {
+        BossAttackState::BossAttackState(app::enemy::Boss* pBoss): pBoss_(pBoss) {}
+
+
         void BossAttackState::Enter()
         {
             

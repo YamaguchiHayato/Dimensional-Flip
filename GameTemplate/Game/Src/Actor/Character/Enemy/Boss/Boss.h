@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 #include <vector>
@@ -36,69 +36,111 @@ namespace app
         class Boss : public IEnemy
         {
         public:
+            /* コンストラクタとデストラクタ。*/
             Boss() = default;
             virtual ~Boss();
 
 
         public:
-            // 初期化処理。
+            /**
+             * @brief 初期化処理。
+             * @return 初期化が成功したらtrue、失敗したらfalseを返す。
+             */
             bool Start() override;
-            // 更新処理。
+
+            /**
+             * @brief 更新処理。
+             */
             void Update() override;
-            // 描画処理。
+
+            /**
+             * @brief 描画処理。
+             * @param rc レンダリングコンテキスト。
+             */
             void Render(RenderContext& rc) override;
 
 
         public:
-            // どのアニメーションを再生するか設定する。
+            /**
+             * @brief アニメーションをロードする。
+             * @param animation Animation。
+             * @param isLoop ループ設定。
+             * @param interPolate 補間値。
+             */
             inline void LoadAnimation(app::enemyStatus::BossAnimation animation, bool isLoop, float interPolate)
             {
-                // セットしたアニメーションのLoop設定をAnimationClipに適応させる
                 animClips_[animation].SetLoopFlag(isLoop);
-
                 render_.PlayAnimation(animation, interPolate);
             }
 
 
         // セッター。
         public:
-            // 座標。
+            /**
+             * @brief 座標をセットする。
+             * @param pos 座標。
+             */
             inline void SetPos(const Vector3& pos) override { pos_ = pos; }
 
-            // 回転。
+            /**
+             * @brief 回転をセットする。
+             * @param rot 回転。
+             */
             inline void SetRot(const Quaternion& rot) { rot_ = rot; }
 
-            // 大きさをセット。
+            /**
+             * @brief スケールをセットする。
+             * @param scale スケール。
+             */
             inline void SetScale(const Vector3& scale) {}
 
-            // 踏みつけて倒せるかどうかをセット。
+            /**
+             * @brief 弱点コリジョンをセットする。
+             * @param enable 有効化するかどうか。
+             */
             inline void SetStompable(bool enable) {}
 
-            // ボスの攻撃タイプをセットする。
+            /**
+             * @brief 攻撃タイプをセットする
+             * @param type 攻撃タイプ
+             */
             inline void SetAttackType(app::enemyStatus::AttackType type)
             {
                 currentAttackType_ = type;
             }
 
-            // 待機時間をセット。
+            /**
+             * @brief 次の待機時間をセットする。
+             * @param interVal 待機時間
+             */
             inline void SettNextInterval(float interVal)
             {
                 nextInterval_ = interVal;
             } 
 
-            // 移動速度をセット。
+            /**
+             * @brief 移動速度をセットする。
+             * @param moveSpeed 移動速度
+             */
             inline void SetMoveSpeed(const Vector3& moveSpeed)
             {
                 moveSpeed_ = moveSpeed;
             }
 
-            // HPをセット。
+            /**
+             * @brief HPをセットする。
+             * @param hp HP
+             */
             inline void SetHP(const float hp)
             {
                 bossHP_ = hp;
             }
 
-            // ステートから弱点コリジョンの高さを上書き。
+            /**
+             * @brief 弱点の高さをセットする。
+             * @param height 弱点の高さ。
+             * @param overrideBone ボーンの高さを上書きするかどうか
+             */
             inline void SetWeakPointHeight(float height, bool overrideBone)
             {
                 manualWeakHeight_ = height;
@@ -106,81 +148,123 @@ namespace app
             }
 
 
-        // ゲッター。
         public:
-            // 座標。
+            /**
+             * @brief 座標を取得する。
+             * @return 座標。
+             */
             inline Vector3 GetPos() const
             {
                 return pos_;
             }
 
-            // 回転。
+            /**
+             * @brief 回転軸を取得する。
+             * @return　回転軸。
+             */
             inline Quaternion GetRot() const
             {
                 return rot_;
             }
 
-            // 待機時間。
+            /**
+             * @brief 移動速度を取得する。
+             * @return 移動速度。
+             */
             inline float GetNextInterval() const
             {
                 return nextInterval_;
             }
 
-            // アニメーションが再生中か。
+            /**
+             * @brief アニメーションが再生中かどうかを取得する。
+             * @return 再生中ならtrue、再生中でなければfalse。
+             */
             inline bool IsPlayingAnimation() const
             {
                 return render_.IsPlayingAnimation();
             }
 
-            // プレイヤーを取得。
+            /**
+             * @brief プレイヤーのインスタンスを取得する。
+             * @return プレイヤーのインスタンス。
+             */
             inline Player* GetPlayer() const
             {
                 return pPlayer_;
             }
 
-            // 攻撃タイプ。
+            /**
+             * @brief 現在の攻撃タイプを取得する。
+             * @return 現在の攻撃タイプ。
+             */
             inline app::enemyStatus::AttackType GetAttackType() const
             {
                 return currentAttackType_;
             }
 
-            // 疲労状態に入るか。
+            /**
+             * @brief 攻撃回数が3回以上かどうかを取得する。
+             * @return 3回以上ならtrue、3回未満ならfalse。
+             */
             inline bool IsTired() const
             {
                return attackCount_ >= 3;
             }
 
-            // 攻撃クラスの座標計算を取得。
+            /**
+             * @brief 攻撃座標をランダムに取得する。
+             * @return ランダムな攻撃座標。
+             */
             Vector3 GetRandomAttackPos();
 
-            // 弱点ベクトルのワールド座標を取得する。
+            /**
+             * @brief 弱点の座標を取得する。
+             * @return 弱点の座標。
+             */
             Vector3 GetWeakPoint() const;
 
-            // ゲームクラスを取得。
+            /**
+             * @brief ゲームインスタンスを取得する。
+             * @return ゲームインスタンス
+             */
             inline app::core::Game* GetGameInstance() const
             {
                 return pGame_;
             }
 
-            // HPを取得。
+            /**
+             * @brief ボスのHPを取得する。
+             * @return ボスのHP
+             */
             inline uint8_t GetHP() const
             {
                 return bossHP_;
             }
 
-            // ボスの現在のステートを取得。
+            /**
+             * @brief 現在のステートを取得する。
+             * @return 現在のステート
+             */
             inline app::enemyState::IEnemyState* GetCurrentState() const
             {
                 return pCurrentState_;
             }
 
-            // 現在のボスステートリストを取得。
+            /**
+             * @brief ステートリストを取得する。
+             * @return ステートリスト。
+             */
             inline app::enemyState::IEnemyState** GetStateList()
             {
                 return pStateList_;
             }
 
-            // モデルをセット。
+            /**
+             * @brief モデルパスを初期化する。
+             * @param enemyName 敵の名前。
+             * @return モデルパス。
+             */
             inline const virtual std::string InitModel(const std::string& enemyName) override
             {
                 std::string enemyPath = "Assets/modelData/" + enemyName + ".tkm";
@@ -188,71 +272,75 @@ namespace app
             };
 
 
-        // ヘルパー。
         public:
-            // 攻撃回数を加算数する。
+            /**
+             * @brief 攻撃回数を加算する。
+             */
             inline void AddAttackCount()
             {
                 attackCount_++;
             }
 
-            // 攻撃回数をリセットする。
+            /**
+             * @brief 攻撃回数をリセットする。
+             */
             inline void ResetAttackCount()
             {
                 attackCount_ = 0;
             }
 
-            // カメラの範囲外にボスモデルが行かないようにクランプ。
+            /**
+             * @brief 弱点のボーンIDをセットする。
+             */
             inline void AddClamp();
 
 
         private:
-            // アニメーションをセット。
+            /**
+             * @brief アニメーションをセットする。
+             */
             void SetAnimation();
 
-            // 回転処理。
+            /**
+             * @brief ボスの回転を更新する。
+             */
             void Rotaition();
 
-            // 座標をランダムに計算するヘルパー関数。
+            /**
+             * @brief ボスの座標をランダムに取得する。
+             * @return ランダムなボスの座標。
+             */
             Vector3 RandomStagePos();
 
 
         private:
-            Player* pPlayer_ = nullptr;
-            CollisionObject* pWeeekPoint_ = nullptr;
-            app::core::InputManager* pInputManager_ = nullptr;
-            app::core::Game* pGame_ = nullptr;
-            app::cutIn::CutInView* pCutInView_ = nullptr;
+            Player* pPlayer_ = nullptr; //! プレイヤーのインスタンス。
+            CollisionObject* pWeeekPoint_ = nullptr; //! 弱点のコリジョン。
+            app::core::InputManager* pInputManager_ = nullptr; //! 入力マネージャーのインスタンス。
+            app::core::Game* pGame_ = nullptr;                 //! ゲームインスタンス。
+            app::cutIn::CutInView* pCutInView_ = nullptr;      //! カットインビューのインスタンス。
 
 
         private:
-            app::enemyStatus::AttackType currentAttackType_ = app::enemyStatus::AttackType::Meteor;
-            AnimationClip animClips_[app::enemyStatus::BossAnimation::bossAnim_Num];
-
-            ModelRender render_;
-
-            Vector3 pos_ = Vector3::Zero;
-            Vector3 moveSpeed_ = Vector3::Zero;
-            Quaternion rot_ = Quaternion::Identity;
-
-            uint8_t state_ = app::enemyStatus::bossAnim_Idle;
-            uint8_t attackCount_ = 0;
-            uint8_t bossHP_ = 0;
-
-
-            bool isAttackSpawned_ = false; // 攻撃オブジェクトが生成済みかチェック。
-            bool isCutInActive;
-            bool isPhasePlaying;
-            bool canBeAttacked_ = true;    // ダメージを受け付けるかどうか。
-            bool isManualOverride_ = false;
-            bool isFadeStart_ = false;
-
-            float stateTimer_ = 0.0f;
-            float nextInterval_ = 3.0f;
-            float manualWeakHeight_ = 22.0f;
-
-            // @ uint8_tだと負数が扱えないためint型で定義。
-            int weakPointBoneID_ = -1;
+            app::enemyStatus::AttackType currentAttackType_ =app::enemyStatus::AttackType::Meteor;                                //! 現在の攻撃タイプ。
+            AnimationClip animClips_[app::enemyStatus::BossAnimation::bossAnim_Num]; //! アニメーションの種類。
+            ModelRender render_;                                                     //! モデルレンダラー。
+            Vector3 pos_ = Vector3::Zero;                                            //! ボスの座標。
+            Vector3 moveSpeed_ = Vector3::Zero;                                      //! ボスの移動速度。
+            Quaternion rot_ = Quaternion::Identity;                                  //! ボスの回転。
+            uint8_t state_ = app::enemyStatus::bossAnim_Idle;                        //! 現在のステート。
+            uint8_t attackCount_ = 0;                                                //! 攻撃回数。
+            uint8_t bossHP_ = 0;                                                     //! ボスのHP。
+            bool isAttackSpawned_ = false;                                           //! 攻撃オブジェクトが生成済みかチェック。
+            bool isCutInActive;                                                      //! カットインがアクティブかどうか。
+            bool isPhasePlaying;                                                     //! フェーズが再生中かどうか。
+            bool canBeAttacked_ = true;                                              //! ダメージを受け付けるかどうか。
+            bool isManualOverride_ = false;                                          //! 弱点の高さを手動で上書きするかどうか。
+            bool isFadeStart_ = false;      //! フェードアウトが開始されたかどうか。
+            float stateTimer_ = 0.0f;  //! < ステートのタイマー。
+            float nextInterval_ = 3.0f;     //! < 次の待機時間。
+            float manualWeakHeight_ = 22.0f; //! < 弱点の高さを手動で上書きする値。
+            int weakPointBoneID_ = -1;       //! 弱点のボーンID。
 
 
         // ステート用変数群。

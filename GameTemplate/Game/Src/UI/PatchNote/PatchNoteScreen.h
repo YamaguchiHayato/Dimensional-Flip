@@ -102,7 +102,8 @@ namespace nsApp
             PatchNoteCloseHintUI closeHint_; //!< B + Back
 
             std::vector<PatchNoteEntry> entries_; //! < パッチノートのエントリリスト
-            bool isOpen_ = false;                 //! < パッチノート画面が開いているか
+            bool isOpen_ = false;                 //! < パッチノート画面が開いているか]
+            int lastContentIndex_ = -1; //!< 本文の二重更新防止
         };
     } // namespace nsUI
 } // namespace nsApp

@@ -90,6 +90,18 @@ namespace nsApp
                     pBossPhaseUI_->StartPhaseAninm(static_cast<app::nsUI::BossPhaseKind>(stateID));
             }
 
+
+            void Shutdown()
+            {
+                for (auto* p : bossUIParts_)
+                    delete p;
+
+                bossUIParts_.clear();
+                pBossHPbarUI_ = nullptr;
+                pBossAttackIndicatorUI_ = nullptr;
+            }
+
+
         private:
             /* コンストラクタとデストラクタ。*/
             BossUIManager() = default;

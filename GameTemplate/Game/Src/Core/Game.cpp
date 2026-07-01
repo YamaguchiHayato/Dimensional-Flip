@@ -45,56 +45,51 @@ namespace nsApp
     {
         Game::~Game()
         {
-            if (g_renderingEngine)
-            {
-                g_renderingEngine->EnableCompositeBackground(false);
-                g_renderingEngine->SetStageBackGroundRenderer(nullptr);
-            }
+            // SceneManager がシーン切替前に Renderer を外すので、ここでは触らない
 
-
-            nsApp::nsJob::JobQueue::GetInstance().Shutdown();
-
-            // ステージ背景を削除。
             if (pBackGrounds_)
             {
                 DeleteGO(pBackGrounds_);
                 pBackGrounds_ = nullptr;
             }
 
-            // Playerを削除。
             if (pPlayer_)
             {
                 DeleteGO(pPlayer_);
                 pPlayer_ = nullptr;
             }
 
-            // CameraManagerを削除。
             if (pCameraManager_)
             {
                 DeleteGO(pCameraManager_);
                 pCameraManager_ = nullptr;
             }
 
-            // 制限時間UIを削除。
             if (pTimerUI_)
+            {
                 DeleteGO(pTimerUI_);
+                pTimerUI_ = nullptr;
+            }
             if (pNumberUI_)
+            {
                 DeleteGO(pNumberUI_);
-
-            // スコアUIを削除。
+                pNumberUI_ = nullptr;
+            }
             if (pScoreUI_)
+            {
                 DeleteGO(pScoreUI_);
-
-            // HPバーUIを削除。
+                pScoreUI_ = nullptr;
+            }
             if (pHpbarUI_)
+            {
                 DeleteGO(pHpbarUI_);
+                pHpbarUI_ = nullptr;
+            }
 
-            // ステージを削除。
             nsApp::nsStage::StageManager::DeleteInstance();
-            // 音を削除。
-            SoundManager::DeleteInstence();
-        }
 
+            // Flush は呼ばない（SceneManager 側でまとめて行う）
+        }
 
         bool Game::Start()
         {

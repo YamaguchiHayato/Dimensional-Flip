@@ -118,6 +118,15 @@
     <Filter Include="Src\Camera\Core\Job">
       <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\UI\Framework">
+      <UniqueIdentifier>{25f60d1c-6792-48c8-acba-68cd0428b4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\PatchNote">
+      <UniqueIdentifier>{263d436e-9146-4cd6-b3a4-6c7e8bcc421a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\UI\Setting">
+      <UniqueIdentifier>{f00f9a91-db2c-49fa-a2cb-17ff49d7e526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -524,6 +533,46 @@
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
+    <ClCompile Include="Src\UI\Framework\Transform.cpp">
+      <Filter>Src\UI\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Framework\UITransform.cpp">
+      <Filter>Src\UI\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Framework\UIImage.cpp">
+      <Filter>Src\UI\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Framework\UIElement.cpp">
+      <Filter>Src\UI\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteCloseHintUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteContentUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteListItemUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteListUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteOverLayerUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteScreen.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNotesDimUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteTitleBarUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\PatchNoteWindowUI.cpp">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\PatchNote\TitlePatchNoteHintUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -1010,6 +1059,49 @@
       <Filter>Src\Actor\Stage\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="GameVersion.h" />
+    <ClInclude Include="Src\UI\Framework\Transform.h">
+      <Filter>Src\UI\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Framework\UITransform.h">
+      <Filter>Src\UI\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Framework\UIImage.h">
+      <Filter>Src\UI\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Framework\UIElement.h">
+      <Filter>Src\UI\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteCloseHintUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteContentUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteListItemUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteListUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteOverLayerUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteScreen.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNotesDimUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteTitleBarUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteTypes.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\PatchNoteWindowUI.h">
+      <Filter>Src\UI\PatchNote</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\PatchNote\TitlePatchNoteHintUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

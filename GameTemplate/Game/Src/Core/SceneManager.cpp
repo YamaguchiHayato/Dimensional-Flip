@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
@@ -9,6 +9,46 @@
 #include "Src/Scene/LoadingScene.h"
 #include "Src/Scene/TitleScene.h"
 #include "Src/Scene/WorldSelectScene.h"
+#include "Src/Core/StageManager.h"
+
+namespace
+{
+    void DestroyNamedGO(const char* name)
+    {
+        if (auto* go = FindGO<IGameObject>(name))
+            DeleteGO(go);
+    }
+
+    // シーン delete + Flush の「後」だけ呼ぶ
+    void CleanupOrphanGameObjects()
+    {
+        SceneManager::ResetRenderingStateForScene();
+
+        DestroyNamedGO("skycube");
+        DestroyNamedGO("SkyCube");
+        DestroyNamedGO("WorldSelectUI");
+        DestroyNamedGO("player");
+        DestroyNamedGO("timerui");
+        DestroyNamedGO("numberui");
+        DestroyNamedGO("scoreui");
+        DestroyNamedGO("hpbarui");
+        DestroyNamedGO("cameramanager");
+        DestroyNamedGO("BackGround");
+        DestroyNamedGO("EndRollManager");
+        DestroyNamedGO("boss");
+        DestroyNamedGO("game");
+        DestroyNamedGO("stagemanager");
+        DestroyNamedGO("stage");
+        DestroyNamedGO("dimensiontrigger");
+        DestroyNamedGO("CutInView");
+
+        QueryGOs<IGameObject>("StageIcon", [](IGameObject* go) { DeleteGO(go); return true;});
+
+        // StageManager::DeleteInstance();  ← 削除
+
+        nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+    }
+} // namespace
 
 namespace nsApp
 {
@@ -108,11 +148,16 @@ namespace nsApp
                          */
                         if (pCurrentScene_)
                         {
-                            delete pCurrentScene_;
+                            delete pCurrentScene_; 
                             pCurrentScene_ = nullptr;
                         }
-                        nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+                        nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects(); 
+
+                        CleanupOrphanGameObjects(); 
+
                         nextScene->Start();
+                        nsK2EngineLow::GameObjectManager::GetInstance()->FlushDeadGameObjects();
+
 
                         pCurrentScene_ = nextScene;
                         currentID_ = requestID_;

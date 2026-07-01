@@ -62,6 +62,13 @@ namespace nsApp
             InitFromAssetDef(UIImageAsset::ButtonB);
         }
 
+
+        void UIImage::InitButtonMenu()
+        {
+            InitFromAssetDef(UIImageAsset::ButtonMenu);
+        }
+
+
         void UIImage::Update()
         {
             if (!isInitialized_ || !isVisible_)

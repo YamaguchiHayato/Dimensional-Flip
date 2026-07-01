@@ -12,6 +12,7 @@ namespace nsApp
             /**
              * @brief 各 UI パーツを生成
              */
+            Shutdown(); // 先頭に追加
             MakeHPbarUI();
             MakeAttackIndicatorUI();
 

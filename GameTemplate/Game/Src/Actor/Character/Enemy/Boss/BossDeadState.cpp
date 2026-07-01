@@ -5,6 +5,7 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Core/BossUIManager.h"
 
 namespace app
 {
@@ -12,6 +13,8 @@ namespace app
     {
         void BossDeadState::Enter()
         {
+            nsApp::nsUI::BossUIManager::GetInstance().Shutdown();
+
             // 死亡アニメーションを再生する。
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Dead, false, 0.2f);
 
@@ -42,8 +45,11 @@ namespace app
             }
 
             // フェードを確認する処理。
-            if (pFade_ && pFade_->IsFadeOutEnd())
+            if (!isSceneChangeRequested_ && pFade_ && pFade_->IsFadeOutEnd())
+            {
+                isSceneChangeRequested_ = true;
                 SceneManager::GetInstance()->ChangeScene(SceneID::sEndRoll);
+            }
         }
 
 

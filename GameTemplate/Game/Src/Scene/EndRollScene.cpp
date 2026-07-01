@@ -5,6 +5,8 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
 
+
+
 namespace nsApp
 {
     namespace nsScene
@@ -24,6 +26,8 @@ namespace nsApp
                 pCamera_ = nullptr;
             }
         }
+
+
 
         bool EndRollScene::Start()
         {

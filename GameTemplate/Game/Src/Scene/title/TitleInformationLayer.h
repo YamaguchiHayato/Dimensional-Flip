@@ -1,5 +1,7 @@
 #pragma once
 #include "Src/Scene/title/TitleLayerBase.h"
+#include "Src/UI/PatchNote/TitlePatchNoteHintUI.h"
+
 
 namespace nsApp
 {
@@ -63,18 +65,17 @@ namespace nsApp
             inline void SetVisible(bool isVisble)
             {
                 isVisible_ = isVisble;
+                patchNoteHint_.SetVisible(isVisble);
             }
 
 
         private:
-            // Version表記用(随時更新します)。
-            FontRender versionText_;
+            nsUI::TitlePatchNoteHintUI patchNoteHint_; //! パッチノート操作ヒントUI。
 
-            // 権利表記用
-            FontRender copyRightText_;
+            FontRender versionText_; //! Ver 表記テキスト。
+            FontRender copyRightText_; //! 権利表記テキスト。
 
-            bool isVisible_ = true;
-
+            bool isVisible_ = true; //! < レイヤーの表示状態。
         };
     }
 }

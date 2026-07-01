@@ -52,6 +52,7 @@ namespace app
             Fade* pFade_ = nullptr;             ///< フェード UI。
 
             bool isFadeStarted_ = false; ///< フェード開始済みか。
+            bool isSceneChangeRequested_ = false;
         };
     } // namespace enemyState
 } // namespace app

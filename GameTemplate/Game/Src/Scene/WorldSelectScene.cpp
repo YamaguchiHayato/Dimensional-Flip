@@ -19,7 +19,7 @@ namespace
     };
 
     std::vector<StageData> dataList = {
-        {"Assets/stage/Stage1/Stage1.tkm", StageID::sStage1, L"Stage1"},
+        {"Assets/stage/WorldSelect/FirstStage.tkm", StageID::sStage1, L"Stage1"},
         {"Assets/stage/tutorialStage.tkm", StageID::sTutorialStage, L"Tutorial Stage"},
         {"Assets/stage/WorldSelect/BossStage.tkm", StageID::sStageEX, L"Boss Stage"},
     };

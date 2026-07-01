@@ -45,16 +45,10 @@ namespace nsApp
         {
             entries_.clear();
 
-            //! v2.0.0 — 最新（isNew = true で NEW バッジ用。未実装なら見た目だけ）
-            entries_.push_back({L"v2.0.0",
-                                L"UI Framework",
-                                L"UI Framework",
-                                L"* UI redesign\n"
-                                L"- Added Transform (parent-child layout)\n"
-                                L"- Added UITransform (pivot and anchor)\n"
-                                L"- Added UIImage (shared DDS sprite UI)\n"
-                                L"- Added UIElement (UI tree node)",
-                                true});
+            //! v2.1.0 — パッチノート機能（最新）
+            entries_.push_back(
+                {L"v2.1.0", L"PatchNote", L"Patch Note", L"- Title hint added\n- Open with Start\n- B to close", true});
+
 
             //! v1.5.0 — PatchNote用の画像の用意。
             entries_.push_back({L"v1.5.0", L"UI assets",
@@ -90,6 +84,8 @@ namespace nsApp
         void PatchNoteScreen::Open()
         {
             /* パッチノート画面を開く。*/
+            lastContentIndex_ = -1;
+            RefreshContentFromSelection();
             isOpen_ = true;
             overlay_.SetVisible(true);
             window_.SetVisible(true);
@@ -147,29 +143,38 @@ namespace nsApp
 
         bool PatchNoteScreen::UpdateInput(bool isUp, bool isDown)
         {
-            /* パッチノート画面の入力処理。*/
+            /* パッチノート画面の入力処理。B ボタンで閉じる要求なら true を返す。*/
             if (!isOpen_)
                 return false;
 
-            /* リストの選択を更新し、選択が変わった場合は内容を更新する。*/
+            /* ゲームパッドが接続されていない場合は入力を受け付けない。*/
+            if (g_pad[0] == nullptr)
+                return false;
+
+            /* リストの入力処理。選択が変わった場合は内容 UI を更新する。*/
             if (list_.UpdateInput(isUp, isDown))
                 RefreshContentFromSelection();
 
+            /* B ボタンで閉じる要求を返す。*/
             if (g_pad[0]->IsTrigger(enButtonB))
                 return true;
 
             return false;
         }
 
-
         void PatchNoteScreen::RefreshContentFromSelection()
         {
-            /* 選択中のパッチノートエントリに基づいて内容 UI を更新する。*/
+            /* 選択中のリストアイテムに基づいて内容 UI を更新する。*/
             const int index = list_.GetSelectedIndex();
             if (index < 0 || index >= (int) entries_.size())
                 return;
 
-            /* 選択中のエントリの内容を設定する。*/
+            /* 選択中のインデックスが前回と同じ場合は更新しない。*/
+            if (index == lastContentIndex_)
+                return;
+
+            /* 選択中のエントリに基づいて内容 UI を更新する。*/
+            lastContentIndex_ = index;
             content_.SetFromEntry(entries_[(size_t) index]);
         }
     } // namespace nsUI

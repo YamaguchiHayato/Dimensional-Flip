@@ -39,6 +39,7 @@ namespace nsApp
             const UIImageAssetDef PatchNoteListSelect = {"Assets/UI/patcNote/select.DDS", 360.0f, 56.0f};
             const UIImageAssetDef PatchNoteListUnselect = {"Assets/UI/patcNote/unselect.DDS", 360.0f, 56.0f};
             const UIImageAssetDef PatchNoteBadge = {"Assets/UI/patcNote/badge.DDS", 96.0f, 96.0f};
+            const UIImageAssetDef ButtonMenu = {"Assets/UI/patcNote/Menu.DDS", 1920.0f, 1080.0f};
 
             //! 共通 UI
             const UIImageAssetDef ButtonB = {"Assets/UI/button/ButtonB.DDS", 1280.0f, 706.0f};
@@ -86,6 +87,7 @@ namespace nsApp
             void InitPatchNoteBadge();
             void InitDimOverlay();
             void InitButtonB();
+            void InitButtonMenu();
 
             /**
              * @brief UIImage を更新する。Transform の更新を行う。

@@ -24,6 +24,9 @@ namespace nsApp
              */
             InitVersionText();
             InitCopyRightText();
+
+            patchNoteHint_.Init(nullptr);
+            patchNoteHint_.SetVisible(isVisible_);
             return true;
         }
 
@@ -31,6 +34,10 @@ namespace nsApp
         {
             if (isVisible_ == false)
                 return;
+
+            patchNoteHint_.Update();
+            patchNoteHint_.Draw(rc);
+
 
             /**
              * @brief Ver とコピーライトを描画する

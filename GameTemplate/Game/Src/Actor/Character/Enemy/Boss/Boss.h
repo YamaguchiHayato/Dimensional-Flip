@@ -211,7 +211,8 @@ namespace app
              */
             inline bool IsTired() const
             {
-               return attackCount_ >= 3;
+//               return attackCount_ >= 3;
+               return attackCount_ >= 1;
             }
 
             /**

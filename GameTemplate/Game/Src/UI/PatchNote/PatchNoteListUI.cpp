@@ -141,25 +141,32 @@ namespace nsApp
             if (!isUp && !isDown)
                 return false;
 
+            const int prevIndex = selectedIndex_;
+
             if (isUp)
             {
                 selectedIndex_--;
                 if (selectedIndex_ < 0)
                     selectedIndex_ = itemCount_ - 1;
             }
-            else if (isDown) //!< if → else if に変更
+            else if (isDown)
             {
                 selectedIndex_++;
                 if (selectedIndex_ >= itemCount_)
                     selectedIndex_ = 0;
             }
-            nsCore::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_CursorMove, 2.0f);
+
+            //! 変わっていなければ何もしない
+            if (prevIndex == selectedIndex_)
+                return false;
+
 
             RefreshSelection();
             ClampScrollToSelection();
             LayoutItems();
             return true;
         }
+
 
         void PatchNoteListUI::RefreshSelection()
         {

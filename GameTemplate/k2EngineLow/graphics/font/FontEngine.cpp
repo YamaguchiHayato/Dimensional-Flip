@@ -53,7 +53,7 @@ namespace nsK2EngineLow {
 			d3dDevice,
 			re,
 //			L"Assets/font/myfile.spritefont",
-			L"Assets/font/MyFont",
+			L"Assets/font/GameFont",
 			cpuHandle,
 			gpuHandle);
 

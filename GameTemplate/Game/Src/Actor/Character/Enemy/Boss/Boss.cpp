@@ -242,6 +242,10 @@ namespace app
 
         void Boss::AddClamp()
         {
+            pPlayer_ = FindGO<Player>("player");
+            if (pPlayer_ == nullptr)
+                return;
+
             /* プレイヤーとカメラマネージャが存在するかチェック。*/
             if (!pPlayer_ || !pPlayer_->GetCameraManager())
                 return;

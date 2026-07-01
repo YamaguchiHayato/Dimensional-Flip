@@ -4,15 +4,13 @@
 
 namespace
 {
-    constexpr float kTextPaddingX = 28.0f;  //!< 枠左端からの余白。
-    constexpr float kBarHalfWidth = 180.0f; //!< バー半幅（360 / 2）。
-    constexpr float kTextOffsetY = 6.0f;    //!< バー中心からの微調整（+で上）。
+    constexpr float kTextPaddingX = 28.0f;
+    constexpr float kBarHalfWidth = 180.0f;
+    constexpr float kTextOffsetY = 6.0f;
+    constexpr float kLineScaleMul = 0.40f;
 
-    constexpr float kLineScaleMul = 0.40f; //!< 横1行用フォント倍率。
-
-    //! オレンジ／グレー両方で読みやすい色
-    const Vector4 kTextColor = {1.0f, 0.97f, 0.90f, 1.0f};     //!< 薄いクリーム白。
-    const Vector4 kShadowColor = {0.12f, 0.08f, 0.06f, 0.85f}; //!< 濃い茶の影。
+    const Vector4 kTextColor = {1.0f, 0.97f, 0.90f, 1.0f};
+    const Vector4 kShadowColor = {0.12f, 0.08f, 0.06f, 0.85f};
 } // namespace
 
 namespace nsApp
@@ -22,106 +20,91 @@ namespace nsApp
         void PatchNoteListItemUI::Init(UITransform* parent, const Vector3& localPos, float barScale)
         {
             barScale_ = barScale;
+            isSelected_ = false;
+            isVisible_ = false;
 
-            background_.InitPatchNoteListUnselect();
-            background_.GetTransform().SetParent(parent);
-            background_.GetTransform().SetLocalPosition(localPos);
-            background_.GetTransform().SetLocalScale({barScale_, barScale_, 1.0f});
-            background_.GetTransform().SetPivot({0.5f, 0.5f});
+            auto setupBackground = [&](UIImage& bg, void (UIImage::*initFn)())
+            {
+                (bg.*initFn)();
+                bg.GetTransform().SetParent(parent);
+                bg.GetTransform().SetLocalPosition(localPos);
+                bg.GetTransform().SetLocalScale({barScale_, barScale_, 1.0f});
+                bg.GetTransform().SetPivot({0.5f, 0.5f});
+                bg.SetVisible(false);
+            };
 
-            //! 横1行・左寄せ
+            setupBackground(selectBackground_, &UIImage::InitPatchNoteListSelect);
+            setupBackground(unselectBackground_, &UIImage::InitPatchNoteListUnselect);
+
             lineFont_.SetScale(kLineScaleMul * barScale_);
             lineFont_.SetPivot({0.0f, 0.5f});
             lineFont_.SetColor(kTextColor);
             lineFont_.SetShadowParam(true, 2.5f, kShadowColor);
 
-            loadedSelectArt_ = false;
-            RefreshBackground();
+            ApplyBackgroundVisibility();
         }
-
 
         void PatchNoteListItemUI::SetBarPosition(const Vector3& localPos)
         {
-            background_.GetTransform().SetLocalPosition(localPos);
+            selectBackground_.GetTransform().SetLocalPosition(localPos);
+            unselectBackground_.GetTransform().SetLocalPosition(localPos);
         }
-
 
         void PatchNoteListItemUI::Update()
         {
             if (!isVisible_)
                 return;
 
-            background_.Update();
+            selectBackground_.Update();
+            unselectBackground_.Update();
 
-            const Vector3 bgPos = background_.GetTransform().GetWorldPosition();
+            const Vector3 bgPos = unselectBackground_.GetTransform().GetWorldPosition();
             const float textX = bgPos.x - kBarHalfWidth * barScale_ + kTextPaddingX * barScale_;
 
-            //! バー中央付近に横1行で配置
             lineFont_.SetPosition(textX, bgPos.y + kTextOffsetY * barScale_, 0.0f);
         }
-
 
         void PatchNoteListItemUI::Draw(RenderContext& rc)
         {
             if (!isVisible_)
                 return;
 
-            background_.Draw(rc);
+            selectBackground_.Draw(rc);
+            unselectBackground_.Draw(rc);
             lineFont_.Draw(rc);
         }
-
 
         void PatchNoteListItemUI::SetVisible(bool visible)
         {
             isVisible_ = visible;
-            background_.SetVisible(visible);
+            ApplyBackgroundVisibility();
         }
-
 
         void PatchNoteListItemUI::SetSelected(bool selected)
         {
-            isSelected_ = selected;
-            RefreshBackground();
-        }
+            if (isSelected_ == selected)
+                return;
 
+            isSelected_ = selected;
+            ApplyBackgroundVisibility();
+        }
 
         void PatchNoteListItemUI::SetEntry(const PatchNoteEntry& entry)
         {
-            //! ver とタイトルを横1行に連結（改行なし）
             std::wstring line = entry.version;
             if (!entry.listTitle.empty())
             {
                 line += L"  ";
                 line += entry.listTitle;
             }
-
             lineFont_.SetText(line.c_str());
         }
 
-
-        void PatchNoteListItemUI::RefreshBackground()
+        void PatchNoteListItemUI::ApplyBackgroundVisibility()
         {
-            //! 同じ見た目なら Init しない（スティック移動時の再初期化を防ぐ）
-            if (isSelected_ == loadedSelectArt_)
-                return;
-
-            loadedSelectArt_ = isSelected_;
-
-            const Vector3 pos = background_.GetTransform().GetLocalPosition();
-            Transform* parent = background_.GetTransform().GetParent();
-            const Vector3 scale = background_.GetTransform().GetLocalScale();
-
-            if (isSelected_)
-                background_.InitPatchNoteListSelect();
-            else
-                background_.InitPatchNoteListUnselect();
-
-            background_.GetTransform().SetParent(parent);
-            background_.GetTransform().SetLocalPosition(pos);
-            background_.GetTransform().SetLocalScale(scale);
-            background_.GetTransform().SetPivot({0.5f, 0.5f});
+            const bool show = isVisible_;
+            selectBackground_.SetVisible(show && isSelected_);
+            unselectBackground_.SetVisible(show && !isSelected_);
         }
-
-
     } // namespace nsUI
 } // namespace nsApp

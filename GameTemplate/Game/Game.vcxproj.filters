@@ -130,6 +130,15 @@
     <Filter Include="Src\Framework">
       <UniqueIdentifier>{a9379f74-7239-4e5d-8015-7f7af7265b9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Presentation">
+      <UniqueIdentifier>{402b41cc-8373-4940-8367-1bf279cb9afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Presentation\Data">
+      <UniqueIdentifier>{434aebbe-8aa7-4995-823d-a1dbbe6c9166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Framework\Components">
+      <UniqueIdentifier>{1c852bb8-6983-4bc0-8a5c-aa3b150f18a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -581,6 +590,12 @@
     </ClCompile>
     <ClCompile Include="Src\Framework\Entity.cpp">
       <Filter>Src\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\Data\BossHubData.cpp">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Framework\Components\HealthComponent.cpp">
+      <Filter>Src\Framework\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1122,6 +1137,15 @@
     </ClInclude>
     <ClInclude Include="Src\Framework\EntityHost.h">
       <Filter>Src\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\Data\IBossHubData.h">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\Data\BossHubData.h">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Framework\Components\HealthComponent.h">
+      <Filter>Src\Framework\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

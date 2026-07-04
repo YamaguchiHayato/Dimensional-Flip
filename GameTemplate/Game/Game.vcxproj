@@ -304,6 +304,7 @@
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Core\StageLoadContext.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
+    <ClCompile Include="Src\Framework\Components\HealthComponent.cpp" />
     <ClCompile Include="Src\Framework\Entity.cpp" />
     <ClCompile Include="Src\Framework\TransformNode.cpp" />
     <ClCompile Include="Src\Parameter\ParameterSystem.cpp" />
@@ -314,6 +315,7 @@
     <ClCompile Include="Src\Parameter\Stage\ScrollBackGroundLayerTable.cpp" />
     <ClCompile Include="Src\Parameter\Stage\StageMasterTable.cpp" />
     <ClCompile Include="Src\Parameter\Stage\StageSpawnTable.cpp" />
+    <ClCompile Include="Src\Presentation\Data\BossHubData.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInMaskLayer.cpp" />
@@ -476,6 +478,7 @@
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Core\StageLoadContext.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
+    <ClInclude Include="Src\Framework\Components\HealthComponent.h" />
     <ClInclude Include="Src\Framework\Entity.h" />
     <ClInclude Include="Src\Framework\EntityHost.h" />
     <ClInclude Include="Src\Framework\IComponent.h" />
@@ -492,6 +495,8 @@
     <ClInclude Include="Src\Parameter\Stage\StageMasterTable.h" />
     <ClInclude Include="Src\Parameter\Stage\StageSpawnRecord.h" />
     <ClInclude Include="Src\Parameter\Stage\StageSpawnTable.h" />
+    <ClInclude Include="Src\Presentation\Data\BossHubData.h" />
+    <ClInclude Include="Src\Presentation\Data\IBossHubData.h" />
     <ClInclude Include="Src\Production\AttackMarker.h" />
     <ClInclude Include="Src\Production\CutIn\CutInBase.h" />
     <ClInclude Include="Src\Production\CutIn\CutInLogoLayer.h" />

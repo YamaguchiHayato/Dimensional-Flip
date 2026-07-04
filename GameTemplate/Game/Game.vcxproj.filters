@@ -127,6 +127,9 @@
     <Filter Include="Src\UI\Setting">
       <UniqueIdentifier>{f00f9a91-db2c-49fa-a2cb-17ff49d7e526}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Framework">
+      <UniqueIdentifier>{a9379f74-7239-4e5d-8015-7f7af7265b9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -573,6 +576,12 @@
       <Filter>Src\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\TitlePatchNoteHintUI.cpp" />
+    <ClCompile Include="Src\Framework\TransformNode.cpp">
+      <Filter>Src\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Framework\Entity.cpp">
+      <Filter>Src\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -1102,6 +1111,18 @@
       <Filter>Src\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\TitlePatchNoteHintUI.h" />
+    <ClInclude Include="Src\Framework\TransformNode.h">
+      <Filter>Src\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Framework\Entity.h">
+      <Filter>Src\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Framework\IComponent.h">
+      <Filter>Src\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Framework\EntityHost.h">
+      <Filter>Src\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

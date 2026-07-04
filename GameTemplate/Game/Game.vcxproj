@@ -304,6 +304,8 @@
     <ClCompile Include="Src\Core\SoundManager.cpp" />
     <ClCompile Include="Src\Core\StageLoadContext.cpp" />
     <ClCompile Include="Src\Core\StageManager.cpp" />
+    <ClCompile Include="Src\Framework\Entity.cpp" />
+    <ClCompile Include="Src\Framework\TransformNode.cpp" />
     <ClCompile Include="Src\Parameter\ParameterSystem.cpp" />
     <ClCompile Include="Src\Parameter\Player\PlayerAirParameterTable.cpp" />
     <ClCompile Include="Src\Parameter\Player\PlayerMoveParameterTable.cpp" />
@@ -474,6 +476,10 @@
     <ClInclude Include="Src\Core\SoundManager.h" />
     <ClInclude Include="Src\Core\StageLoadContext.h" />
     <ClInclude Include="Src\Core\StageManager.h" />
+    <ClInclude Include="Src\Framework\Entity.h" />
+    <ClInclude Include="Src\Framework\EntityHost.h" />
+    <ClInclude Include="Src\Framework\IComponent.h" />
+    <ClInclude Include="Src\Framework\TransformNode.h" />
     <ClInclude Include="Src\Parameter\ParameterSystem.h" />
     <ClInclude Include="Src\Parameter\ParameterSystemTableBase.h" />
     <ClInclude Include="Src\Parameter\Player\PlayerAirParameterTable.h" />

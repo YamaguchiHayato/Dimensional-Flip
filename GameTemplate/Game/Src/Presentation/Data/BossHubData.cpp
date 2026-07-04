@@ -1,7 +1,7 @@
-#include "stdafx.h"
-
+﻿#include "stdafx.h"
 #include "BossHubData.h"
 #include "Src/Core/BossUIManager.h"
+#include "Src/Presentation/UI/Screens/BossHubScreen.h"
 
 namespace nsApp
 {
@@ -12,11 +12,9 @@ namespace nsApp
             currentHp_ = currentHp;
             maxHp_ = maxHp;
 
-            /*
-             * F2 までの暫定: 既存 BossUIManager へ中継
-             * F2 で BossHudScreen::Bind(this) に置き換えてこの行を削除
-             */
-            app::nsUI::BossUIManager::GetInstance().OnUpdateHP(currentHp_, maxHp_);
+            /* 新しいUIへ反映する。*/
+            if (pScreen_ != nullptr)
+                pScreen_->SyncFromDataSource();
         }
     } // namespace nsPresentation
 } // namespace nsApp

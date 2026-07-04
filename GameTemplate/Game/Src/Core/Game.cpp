@@ -112,6 +112,7 @@ namespace nsApp
                     buildHelper_.Update();
                 if (!buildHelper_.IsLoadSuccess())
                     OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
+
             }
 
             // 背景は共通ヘルパーで1本化

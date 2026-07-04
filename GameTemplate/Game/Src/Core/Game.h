@@ -1,4 +1,5 @@
-﻿#pragma once
+#pragma once
+
 #include <DirectXTK/Inc/Audio.h>
 #include <memory>
 
@@ -15,19 +16,23 @@
 #include "Src/UI/NumberUI.h"
 #include "Src/UI/ScoreUI.h"
 #include "Src/UI/TimerUI.h"
+#include "Src/UI/UIBase.h"
 #include "stdint.h"
 
 class CameraManager;
 class TrackingEnemy;
 
-
 namespace nsApp
 {
-    class InGameBuildHelper;
-}
+    namespace nsUI
+    {
+        class BossHudScreenHost;
+    }
+    namespace nsPresentation
+    {
+        class BossHudData;
+    }
 
-namespace nsApp
-{
     namespace nsCore
     {
         /**
@@ -37,119 +42,100 @@ namespace nsApp
         class Game : public IGameObject
         {
         public:
-            /* コンストラクタとデストラクタ。*/
+            /* コンストラクタとデストラクタ。 */
             Game() = default;
             virtual ~Game();
 
-
-        public:
             /**
-             * @brief デストラクタ。各種 GO を削除する。
+             * @brief ゲームを開始する。
+             * @return ゲーム開始に成功した場合は true、失敗した場合は false。
              */
             bool Start();
 
             /**
-             * @brief 初期化処理。プレイヤー・UI・ステージ遷移の初期化を行う。
+             * @brief ゲームを更新する。
              */
             void Update();
 
             /**
-             * @brief 毎フレームの更新。プレイヤー・UI・ステージ遷移の更新を行う。
-             * @param nextStageID 次ステージ ID。遷移中でなければ sInvalid。
+             * @brief ゲームを描画する。
+             * @param nextStageID 次のステージ ID。
              */
             void RequestStageTransition(nsStage::StageID nextStageID);
 
             /**
-             * @brief ステージ遷移を要求する。遷移中でなければ次ステージ ID を保存し、フェードアウトを開始する。
-             * @param stageID 
+             * @brief ステージの背景をリフレッシュする。
+             * @param stageID ステージ ID。
              */
             void RefreshStageBackGround(nsStage::StageID stageID);
 
             /**
-             * @brief ステージ遷移中の背景を更新する。遷移中でなければ何もしない。
+             * @brief ステージ遷移中かどうかを取得する。
+             * @return ステージ遷移中の場合は true、そうでない場合は false。
              */
             inline bool IsStageTransitioning() const { return state_ != SceneTransitionState::None; }
 
             /**
-             * @brief ステージ遷移中かどうかを返す。
+             * @brief 次のステージ ID を取得する。
+             * @return 次のステージ ID。遷移中でない場合は sInvalid。
              */
             inline nsApp::nsStage::StageID GetNextStageID() const { return nextStageID_; }
 
             /**
-             * @brief 次ステージ ID を取得する。遷移中でなければ sInvalid。
-             * @param mode カメラの状態。
+             * @brief カメラの次元を変更する。
+             * @param mode カメラモード。2D か 3D かを指定する。
              */
             void ChangeDimension(CameraMode mode);
 
+            /**
+             * @brief ボス HUD 用 ScreenHost を取得する。
+             * @return BossHudScreenHost。未生成なら nullptr。
+             */
+            nsUI::BossHudScreenHost* GetBossHudScreenHost() { return buildHelper_.GetBossHudScreenHost(); }
+
+            /**
+             * @brief ボス HUD 用 HP データを取得する。
+             * @return BossHudData へのポインタ。
+             */
+            nsPresentation::BossHudData* GetBossHudData() { return buildHelper_.GetBossHudData(); }
+
 
         private:
-            /**
-             * @brief プレイヤーのインスタンスを取得する。
-             */
+            /* ステージ遷移の状態を表す列挙型。 */
             void PlayerCreateInstance();
-
-            /**
-             * @brief プレイヤーのインスタンスを生成する。
-             */
             void UICreateInstance();
-
-            /**
-             * @brief UI のインスタンスを生成する。
-             */
             void TimerCreateInstance();
-
-            /**
-             * @brief ステージ遷移中の更新処理。フェードアウト完了後に次ステージをロードする。
-             */
             void NumberCreateInstance();
-
-            /**
-             * @brief ステージ遷移中の更新処理。フェードアウト完了後に次ステージをロードする。
-             */
             void ScoreCreateInstance();
-
-            /**
-             * @brief スコア UI のインスタンスを生成する。
-             */
             void HPbarCreateInstance();
-
-            /**
-             * @brief HPバー UI のインスタンスを生成する。
-             */
             void UpdateTransition();
 
 
         private:
-            InGameBuildHelper buildHelper_; //! 生成補助クラス。
+            InGameBuildHelper buildHelper_;
 
-            TimerUI* pTimerUI_ = nullptr; //! タイマー。
-            NumberUI* pNumberUI_ = nullptr; //! スコア UI。
-            ScoreUI* pScoreUI_ = nullptr;//! スコア。
-            HPbarUI* pHpbarUI_ = nullptr;   //! HPBar UI。
-            Fade* pFade_ = nullptr;//! フェード。
-            Player* pPlayer_ = nullptr;     //! !  プレイヤー。
-            CameraManager* pCameraManager_; //!  カメラマネージャ。
-            nsStage::nsBackGround::IBackGround* pBackGrounds_ = nullptr; //! ステージ。
-            nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr; //! 音源。
+            TimerUI* pTimerUI_ = nullptr;
+            NumberUI* pNumberUI_ = nullptr;
+            ScoreUI* pScoreUI_ = nullptr;
+            HPbarUI* pHpbarUI_ = nullptr;
+            Fade* pFade_ = nullptr;
+            Player* pPlayer_ = nullptr;
+            CameraManager* pCameraManager_;
+            nsStage::nsBackGround::IBackGround* pBackGrounds_ = nullptr;
+            nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
 
+            SceneTransitionState state_ = SceneTransitionState::None;
+            nsApp::nsStage::StageID nextStageID_ = nsApp::nsStage::StageID::sInvalid;
+            Stopwatch stageClearTimer_;
 
-        private:
-            SceneTransitionState state_ = SceneTransitionState::None; //! 遷移フロー。
-            nsApp::nsStage::StageID nextStageID_ = nsApp::nsStage::StageID::sInvalid; //! ID。
-            Stopwatch stageClearTimer_;//! ステージクリア時のタイマー。
+            uint8_t currentStageNum_ = -1;
 
-            uint8_t currentStageNum_ = -1; //! 今のステージ数。
+            bool m_isFadeInEnd = false;
+            bool m_hasAppliedStageBgm_ = false;
 
-            bool m_isFadeInEnd = false;//! フェードしたか。
-            bool m_hasAppliedStageBgm_ = false; //! フェードアウトしたか。
-
-        private:
-            /**
-             * @brief ステージロードの段階を表す列挙型。
-             */
             enum class StageLoadPhase : uint8_t
             {
-                Idle,  
+                Idle,
                 Worker,
                 Main,
             };
@@ -164,7 +150,6 @@ namespace nsApp
 
 using Game = nsApp::nsCore::Game;
 
-// 後方互換（段階的に削除可）
 namespace app
 {
     namespace core

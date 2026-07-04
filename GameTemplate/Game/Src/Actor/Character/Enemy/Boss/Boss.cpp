@@ -11,7 +11,7 @@
 
 // データクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossType.h"
-
+#include "Src/Core/Game.h"
 
 // ステートクラス。
 #include "Src/Actor/Character/Enemy/Boss/BossIdleState.h"
@@ -214,7 +214,11 @@ namespace app
                 pWeeekPoint_->SetPosition(GetWeakPoint());
 
             /* HPの更新。*/
-            app::nsUI::BossUIManager::GetInstance().OnUpdateHP(static_cast<float>(GetHP()), MAX_HP);
+            if (auto* pGame = FindGO<Game>("game"))
+            {
+                if (auto* pData = pGame->GetBossHudData())
+                    pData->SetHp(static_cast<float>(GetHP()), MAX_HP);
+            }
         }
 
 

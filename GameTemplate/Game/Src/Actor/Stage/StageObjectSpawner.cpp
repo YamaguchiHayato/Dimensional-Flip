@@ -96,7 +96,6 @@ namespace nsApp
                 // 名前 "boss" 固定 → SideCameraStrategy がボスカメラに切替
                 auto* boss = NewGO<app::enemy::Boss>(0, "boss");
                 boss->SetPos(pos);
-                app::nsUI::BossUIManager::GetInstance().Initialize();
                 spawnedObjects_.push_back(boss);
             }
 

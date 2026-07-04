@@ -9,6 +9,11 @@
 
 namespace nsApp
 {
+    namespace nsUI
+    {
+        class BossHudScreen;
+    } 
+
     namespace nsPresentation
     {
         /**
@@ -26,6 +31,15 @@ namespace nsApp
             void SetHp(float currentHp, float maxHp) override;
 
             /**
+             * @brief HUD スクリーンを設定する。
+             * @param pScreen HUD スクリーン。nullptr 可。
+             */
+            void SetScreen(nsUI::BossHudScreen* pScreen)
+            {
+                pScreen_ = pScreen;
+            }
+
+            /**
              * @brief 現在のHPを取得する。
              * @return 現在のHP。
              */
@@ -41,6 +55,7 @@ namespace nsApp
         private:
             float currentHp_ = 0.0f;
             float maxHp_ = 0.0f;
+            nsUI::BossHudScreen* pScreen_ = nullptr;
         };
     } // namespace nsPresentation
 } // namespace nsApp

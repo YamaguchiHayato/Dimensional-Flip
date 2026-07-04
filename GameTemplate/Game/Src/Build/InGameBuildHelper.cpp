@@ -3,6 +3,8 @@
 #include "InGameBuildHelper.h"
 #include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
 #include "Src/Parameter/Stage/StageMasterTable.h"
+#include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
+#include "Src/Presentation/UI/Screens/BossHubScreen.h"
 
 namespace nsApp
 {
@@ -27,6 +29,7 @@ namespace nsApp
         buildFunctions_.clear();
         buildFunctions_.push_back([this]() { BuildParameters(); });
         buildFunctions_.push_back([this]() { FinishBuild(); });
+        buildFunctions_.push_back([this]() { BuildBossHudUi(); });
     }
 
 
@@ -88,6 +91,28 @@ namespace nsApp
     void InGameBuildHelper::FinishBuild()
     {
         isFinished_ = true;
+    }
+
+
+    void InGameBuildHelper::BuildBossHudUi()
+    {
+        /* 二重生成防止。*/
+        if (pBossHudHost_ != nullptr)
+            return;
+
+        /* ボス HUD スクリーンホストを生成。*/
+        pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
+
+        if (pBossHudHost_ != nullptr)
+            return;
+
+        /* ボス HUD スクリーンを取得して、非表示にする。*/
+        if (auto* pScreen = pBossHudHost_->GetBossHudScreen())
+        {
+            pScreen->SetVisible(false);
+            bossHudData_.SetScreen(pScreen);
+            pScreen->Bind(&bossHudData_);
+        }
     }
 
 

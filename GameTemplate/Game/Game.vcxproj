@@ -316,6 +316,13 @@
     <ClCompile Include="Src\Parameter\Stage\StageMasterTable.cpp" />
     <ClCompile Include="Src\Parameter\Stage\StageSpawnTable.cpp" />
     <ClCompile Include="Src\Presentation\Data\BossHubData.cpp" />
+    <ClCompile Include="Src\Presentation\UI\BossHudUiNames.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\BossHpBarLogic.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Core\UIScreen.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Core\UIScreenHost.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\BossHubScreen.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\BossHubScreenHost.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInMaskLayer.cpp" />
@@ -497,6 +504,13 @@
     <ClInclude Include="Src\Parameter\Stage\StageSpawnTable.h" />
     <ClInclude Include="Src\Presentation\Data\BossHubData.h" />
     <ClInclude Include="Src\Presentation\Data\IBossHubData.h" />
+    <ClInclude Include="Src\Presentation\UI\BossHudUiNames.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\BossHpBarLogic.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
+    <ClInclude Include="Src\Presentation\UI\Core\UIScreen.h" />
+    <ClInclude Include="Src\Presentation\UI\Core\UIScreenHost.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\BossHubScreen.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\BossHubScreenHost.h" />
     <ClInclude Include="Src\Production\AttackMarker.h" />
     <ClInclude Include="Src\Production\CutIn\CutInBase.h" />
     <ClInclude Include="Src\Production\CutIn\CutInLogoLayer.h" />

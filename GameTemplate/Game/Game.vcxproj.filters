@@ -314,9 +314,6 @@
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp">
       <Filter>Src\Camera\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Core\BossUIManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Core\EndRollManager.cpp">
       <Filter>Src\Camera\Core</Filter>
     </ClCompile>
@@ -435,9 +432,6 @@
       <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp">
-      <Filter>Src\UI\BossUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\UI\BossUI\BossHPbarUI.cpp">
       <Filter>Src\UI\BossUI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp">
@@ -836,9 +830,6 @@
     <ClInclude Include="Src\Core\BattlePhaseManager.h">
       <Filter>Src\Camera\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Core\BossUIManager.h">
-      <Filter>Src\Camera\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Core\EndRollManager.h">
       <Filter>Src\Camera\Core</Filter>
     </ClInclude>
@@ -978,9 +969,6 @@
       <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h">
-      <Filter>Src\UI\BossUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\UI\BossUI\BossHPbarUI.h">
       <Filter>Src\UI\BossUI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\BossUI\BossUIBase.h">

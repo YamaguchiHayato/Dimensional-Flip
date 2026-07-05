@@ -2,7 +2,6 @@
 #include "BossAttackMeteoState.h"
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/SoundManager.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Meteo.h"
 
@@ -30,9 +29,6 @@ namespace app
 
             /* 攻撃タイプのセット。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Meteor);
-
-            /* UIの表示。*/
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Meteor);
         }
 
 
@@ -56,9 +52,6 @@ namespace app
             /* インターバルを設定。*/
             auto interval = 2.0f + (static_cast<float>(rand() % 16) / 10.0f);
             pBoss_->SettNextInterval(interval);
-
-            /* 攻撃タイプのリセット。*/
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Meteor);
 
             /* 隕石の生成SEを停止。*/
             app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_SpawnBlock);

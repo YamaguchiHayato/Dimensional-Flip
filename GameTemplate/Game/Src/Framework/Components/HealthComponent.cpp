@@ -1,56 +1,49 @@
 #include "stdafx.h"
 
+#include <algorithm>
+
 #include "HealthComponent.h"
-#include "Src/Presentation/Data/IBossHubData.h"
 
 namespace nsApp
 {
     namespace nsFramework
     {
-        void HealthComponent::Initialize(float maxHp, nsPresentation::IBossHudData* pHudData)
+        void HealthComponent::Initialize(float maxHp, float currentHp)
         {
-            /* 初期化。*/
             maxHp_ = maxHp;
-            currentHp_ = maxHp;
-            pHudData_ = pHudData;
-
-            /* 初期 HP を UI へ反映する */
-            NotifyHud();
+            currentHp_ = (currentHp < 0.0f) ? maxHp : currentHp;
+            NotifyHpChanged();
         }
 
 
         void HealthComponent::SetCurrentHp(float hp)
         {
-            /* 現在のHPのデータをセットする。*/
-            currentHp_ = hp;
-
-            /* 0 未満にはしない */
-            if (currentHp_ < 0.0f)
-                currentHp_ = 0.0f;
-
-            /* 最大 HP を超えない */
-            if (currentHp_ > maxHp_)
-                currentHp_ = maxHp_;
-
-            
-            NotifyHud();
+            /* C++14: std::clamp の代わりに min/max */
+            currentHp_ = (std::max)(0.0f, (std::min)(hp, maxHp_));
+            NotifyHpChanged();
         }
 
 
-        void HealthComponent::ApplyDamage(float damage)
+        void HealthComponent::TakeDamage(float amount)
         {
-            /* ダメージ量が 0 以下なら何もしない */
-            if (damage <= 0.0f)
+            if (amount <= 0.0f)
                 return;
 
-            SetCurrentHp(currentHp_ - damage);
+            currentHp_ = (std::max)(0.0f, currentHp_ - amount);
+            NotifyHpChanged();
         }
 
 
-        void HealthComponent::NotifyHud() const
+        void HealthComponent::SetOnHpChanged(HpChangedCallback callback)
         {
-            if (pHudData_ != nullptr)
-                pHudData_->SetHp(currentHp_, maxHp_);
+            onHpChanged_ = std::move(callback);
+        }
+
+
+        void HealthComponent::NotifyHpChanged()
+        {
+            if (onHpChanged_)
+                onHpChanged_(currentHp_, maxHp_);
         }
     } // namespace nsFramework
 } // namespace nsApp

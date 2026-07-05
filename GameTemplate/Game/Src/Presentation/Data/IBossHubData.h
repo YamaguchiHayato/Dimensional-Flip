@@ -1,42 +1,38 @@
 #pragma once
 
-/**
- * @file   IBossHudData.h
- * @brief  ボス HUD 向け HP データの受け渡しインターフェース。
- * @note   UI は Boss を Find しない。この interface 経由で値だけ受け取る。
- */
-
 namespace nsApp
 {
     namespace nsPresentation
     {
         /**
          * @class IBossHudData
-         * @brief ボス HP 表示用データソース。
+         * @brief ボス HUD Screen が参照する HP データのインターフェース。
+         *
+         * 表示/非表示は Screen 側（BossHudScreen::SetVisible）が担当する。
+         * この IF は HP 比率の取得のみを提供する。
          */
         class IBossHudData
         {
         public:
-            virtual ~IBossHudData() = default;
+            virtual ~IBossHudData() {}
 
             /**
-             * @brief 現在 HP と最大 HP を UI 側へ通知する。
-             * @param currentHp 現在 HP。
-             * @param maxHp     最大 HP。
+             * @brief 現在 HP の割合を返す。
+             * @return 0.0f〜1.0f。データ未設定時は 0.0f。
              */
-            virtual void SetHp(float currentHp, float maxHp) = 0;
+            virtual float GetHpRatio() const = 0;
 
             /**
-             * @brief 現在 HP を取得する。
-             * @return 現在 HP。
-             */
-            virtual float GetCurrentHp() const = 0;
-
-            /**
-             * @brief 最大 HP を取得する。
-             * @return 最大 HP。
+             * @brief 最大HPを取得。
+             * @return 最大HP。
              */
             virtual float GetMaxHp() const = 0;
+
+            /**
+             * @brief 現在HPを取得。
+             * @return　現在HP。
+             */
+            virtual float GetCurrentHp() const = 0;
         };
     } // namespace nsPresentation
 } // namespace nsApp

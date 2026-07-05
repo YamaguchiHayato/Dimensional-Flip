@@ -10,7 +10,6 @@
 #include "Src/Actor/Character/Status.h"
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/Game.h"
 #include "Src/Core/InputManager.h"

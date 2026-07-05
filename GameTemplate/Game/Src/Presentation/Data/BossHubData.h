@@ -1,61 +1,61 @@
 #pragma once
 
 #include "IBossHubData.h"
-/**
- * @file   BossHudData.h
- * @brief  ボス HUD 用 HP データの具体実装。
- * @note   F2 まで BossUIManager へ中継する。F2 で BossHudScreen に差し替える。
- */
-
 namespace nsApp
 {
+    namespace nsFramework
+    {
+        class HealthComponent;
+    }
     namespace nsUI
     {
         class BossHudScreen;
-    } 
+    }
 
     namespace nsPresentation
     {
-        /**
-         * @class BossHudData
-         * @brief IBossHudData の実装。HP 値を保持し UI へ通知する。
-         */
         class BossHudData : public IBossHudData
         {
         public:
             /**
-             * @brief HP 値を設定する。
-             * @param currentHp 現在のHP。
-             * @param maxHp 最大HP。
+             * @brief UIをセット。
+             * @param pScreen BossのUI。
              */
-            void SetHp(float currentHp, float maxHp) override;
+            void SetScreen(nsUI::BossHudScreen* pScreen);
 
             /**
-             * @brief HUD スクリーンを設定する。
-             * @param pScreen HUD スクリーン。nullptr 可。
+             * @brief 
+             * @param pHealth 
              */
-            void SetScreen(nsUI::BossHudScreen* pScreen)
-            {
-                pScreen_ = pScreen;
-            }
+            void SetHealthComponent(nsFramework::HealthComponent* pHealth);
 
             /**
-             * @brief 現在のHPを取得する。
-             * @return 現在のHP。
+             * @brief 現在のHPを取得。
+             * @return 
              */
-            float GetCurrentHp() const override { return currentHp_; }
+            float GetCurrentHp() const override;
 
             /**
-             * @brief 最大HPを取得する。
-             * @return 最大HP。
+             * @brief 最大HPを取得。
+             * @return 
              */
-            float GetMaxHp() const override { return maxHp_; }
+            float GetMaxHp() const override;
+
+            /**
+             * @brief HPの割合を取得。
+             * @return 
+             */
+            float GetHpRatio() const override;
+
+            /**
+             * @brief 
+             */
+            void SyncFromHealthComponent();
 
 
         private:
-            float currentHp_ = 0.0f;
-            float maxHp_ = 0.0f;
             nsUI::BossHudScreen* pScreen_ = nullptr;
+            nsFramework::HealthComponent* pHealth_ = nullptr;
         };
     } // namespace nsPresentation
 } // namespace nsApp

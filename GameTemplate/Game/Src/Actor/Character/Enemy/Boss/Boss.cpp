@@ -6,7 +6,6 @@
 
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
-#include "Src/Core/BossUIManager.h"
 #include  "Src/Core/InputManager.h"
 
 // データクラス。
@@ -212,13 +211,6 @@ namespace app
             /* 弱点コリジョンの座標を更新。*/
             if (pWeeekPoint_)
                 pWeeekPoint_->SetPosition(GetWeakPoint());
-
-            /* HPの更新。*/
-            if (auto* pGame = FindGO<Game>("game"))
-            {
-                if (auto* pData = pGame->GetBossHudData())
-                    pData->SetHp(static_cast<float>(GetHP()), MAX_HP);
-            }
         }
 
 

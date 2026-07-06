@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "Src/Presentation/UI/Components/UISpriteView.h"
+#include "UISpriteView.h"
 
 namespace nsApp
 {

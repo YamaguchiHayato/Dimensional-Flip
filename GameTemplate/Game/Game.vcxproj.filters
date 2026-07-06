@@ -22,9 +22,6 @@
     <Filter Include="Src\Camera">
       <UniqueIdentifier>{f015fa04-0e76-45a7-be36-9db1855e1a67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\UI">
-      <UniqueIdentifier>{a190ba3a-ba59-46a2-a54a-a57bec26176e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Actor\Stage\Gimmick">
       <UniqueIdentifier>{3295a3f4-8986-410a-abff-65e8b9a3183e}</UniqueIdentifier>
     </Filter>
@@ -79,20 +76,11 @@
     <Filter Include="Src\Actor\Stage\Terrain">
       <UniqueIdentifier>{53d53cc3-9f50-447a-a0fd-08435f2626bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\UI\EndRoll">
-      <UniqueIdentifier>{89ac0712-122e-4343-a880-e63a06cd0a43}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Actor\Stage\Gimmick\BossGimmick">
       <UniqueIdentifier>{2d90ecf8-c558-4877-9d4f-4da030cfaf7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Actor\Stage\Gimmick\StageGimmick">
       <UniqueIdentifier>{180da92b-45b0-44e5-967e-ccc03a68a51d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\UI\BossUI">
-      <UniqueIdentifier>{8d596041-1819-436e-a0f0-9eb847ad969c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\UI\Tutorial">
-      <UniqueIdentifier>{f04b9c97-e545-4f6e-a13f-1ab0b796f587}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Actor\Character\Enemy\Boss">
       <UniqueIdentifier>{21428a0e-2a08-4e30-a3e1-7a0c93d73b07}</UniqueIdentifier>
@@ -109,23 +97,11 @@
     <Filter Include="Src\Actor\Character\Enemy\Fall">
       <UniqueIdentifier>{3b928a7e-6e4f-4719-928d-45c51b40ca07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\UI\Select">
-      <UniqueIdentifier>{6bba3a33-6185-46ea-aa05-3922e8d83a31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Camera\Core">
       <UniqueIdentifier>{b45da247-dcac-4cbc-b999-1d9dc826fb3d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Camera\Core\Job">
       <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\UI\Framework">
-      <UniqueIdentifier>{25f60d1c-6792-48c8-acba-68cd0428b4ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\UI\PatchNote">
-      <UniqueIdentifier>{263d436e-9146-4cd6-b3a4-6c7e8bcc421a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\UI\Setting">
-      <UniqueIdentifier>{f00f9a91-db2c-49fa-a2cb-17ff49d7e526}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Framework">
       <UniqueIdentifier>{a9379f74-7239-4e5d-8015-7f7af7265b9b}</UniqueIdentifier>
@@ -151,6 +127,33 @@
     <Filter Include="Src\Presentation\UI\Screens">
       <UniqueIdentifier>{de6c77ab-37bc-4e38-8dc0-5ed2a85ce712}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Presentation\UI\Logic">
+      <UniqueIdentifier>{38e4c0ce-bc43-4985-aaf3-53d10ddf28d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI">
+      <UniqueIdentifier>{a190ba3a-ba59-46a2-a54a-a57bec26176e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\EndRoll">
+      <UniqueIdentifier>{89ac0712-122e-4343-a880-e63a06cd0a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\BossUI">
+      <UniqueIdentifier>{8d596041-1819-436e-a0f0-9eb847ad969c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\Tutorial">
+      <UniqueIdentifier>{f04b9c97-e545-4f6e-a13f-1ab0b796f587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\Select">
+      <UniqueIdentifier>{6bba3a33-6185-46ea-aa05-3922e8d83a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\Framework">
+      <UniqueIdentifier>{25f60d1c-6792-48c8-acba-68cd0428b4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\PatchNote">
+      <UniqueIdentifier>{263d436e-9146-4cd6-b3a4-6c7e8bcc421a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\StateMachine\UI\Setting">
+      <UniqueIdentifier>{f00f9a91-db2c-49fa-a2cb-17ff49d7e526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -171,19 +174,19 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\UIBase.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\TimerUI.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\NumberUI.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\ScoreUI.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\HPbarUI.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\Scene\Scene.cpp">
       <Filter>Src\Scene</Filter>
@@ -366,13 +369,13 @@
       <Filter>Src\Parameter\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\Production\AttackMarker.cpp">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Src\Production\EndRoll\EndRollImage.cpp">
-      <Filter>Src\UI\EndRoll</Filter>
+      <Filter>Src\StateMachine\UI\EndRoll</Filter>
     </ClCompile>
     <ClCompile Include="Src\Production\EndRoll\EndRollText.cpp">
-      <Filter>Src\UI\EndRoll</Filter>
+      <Filter>Src\StateMachine\UI\EndRoll</Filter>
     </ClCompile>
     <ClCompile Include="Src\Scene\GameClearScene.cpp">
       <Filter>Src\Scene</Filter>
@@ -432,22 +435,22 @@
       <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\BossUI\BossAttackIndicatorUI.cpp">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\BossUI\BossUIBase.cpp">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\BossUI\BossPhaseUI.cpp">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Tutorial\TutorialCompleteUI.cpp">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Tutorial\TutorialMessageUI.cpp">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Tutorial\TutorialSequencer.cpp">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp">
       <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
@@ -516,16 +519,16 @@
       <Filter>Src\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Select\ManualUI.cpp">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClCompile>
     <ClCompile Include="StageIcon.cpp">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Character\Player\Character2DRender.cpp">
       <Filter>Src\Actor\Character\Player</Filter>
@@ -546,49 +549,49 @@
       <Filter>Src\Actor\Character\Enemy\Boss</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\ButtonActionUI.cpp">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClCompile>
     <ClCompile Include="Src\Scene\title\TitleInformationLayer.cpp">
       <Filter>Src\Scene\title</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Framework\Transform.cpp">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Framework\UITransform.cpp">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Framework\UIImage.cpp">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\Framework\UIElement.cpp">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteCloseHintUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteContentUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteListItemUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteListUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteOverLayerUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteScreen.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNotesDimUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteTitleBarUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\PatchNoteWindowUI.cpp">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClCompile>
     <ClCompile Include="Src\UI\PatchNote\TitlePatchNoteHintUI.cpp" />
     <ClCompile Include="Src\Framework\TransformNode.cpp">
@@ -624,6 +627,36 @@
     <ClCompile Include="Src\Presentation\UI\BossHudUiNames.cpp">
       <Filter>Src\Presentation\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Presentation\Data\GameplayHubUiNames.cpp">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Screens\GameplayHudScreen.cpp">
+      <Filter>Src\Presentation\UI\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Screens\GameplayHudScreenHost.cpp">
+      <Filter>Src\Presentation\UI\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\Data\GameplayHudData.cpp">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Logic\PlayerHpBarLogic.cpp">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Logic\ScoreDisplayLogic.cpp">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Logic\TImeDisplayLogic.cpp">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="UITimerView.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\UIPlayerHpBarView.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\UIScoreView.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -644,19 +677,19 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\UIBase.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\TimerUI.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\NumberUI.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\ScoreUI.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\HPbarUI.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\Scene.h">
       <Filter>Src\Scene</Filter>
@@ -894,16 +927,16 @@
       <Filter>Src\Parameter\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Production\AttackMarker.h">
-      <Filter>Src\UI</Filter>
+      <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\Production\EndRoll\EndRollBase.h">
-      <Filter>Src\UI\EndRoll</Filter>
+      <Filter>Src\StateMachine\UI\EndRoll</Filter>
     </ClInclude>
     <ClInclude Include="Src\Production\EndRoll\EndRollImage.h">
-      <Filter>Src\UI\EndRoll</Filter>
+      <Filter>Src\StateMachine\UI\EndRoll</Filter>
     </ClInclude>
     <ClInclude Include="Src\Production\EndRoll\EndRollText.h">
-      <Filter>Src\UI\EndRoll</Filter>
+      <Filter>Src\StateMachine\UI\EndRoll</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\GameClearScene.h">
       <Filter>Src\Scene</Filter>
@@ -969,22 +1002,22 @@
       <Filter>Src\Actor\Stage\Gimmick\BossGimmick</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\BossUI\BossAttackIndicatorUI.h">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\BossUI\BossUIBase.h">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\BossUI\BossPhaseUI.h">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Tutorial\TutorialCompleteUI.h">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Tutorial\TutorialMessageUI.h">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Tutorial\TutorialSequencer.h">
-      <Filter>Src\UI\Tutorial</Filter>
+      <Filter>Src\StateMachine\UI\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h">
       <Filter>Src\Actor\Character\Enemy\Boss\2D</Filter>
@@ -1059,16 +1092,16 @@
       <Filter>Src\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Select\ManualUI.h">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClInclude>
     <ClInclude Include="StageIcon.h">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Select\TitleMenu.h">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h">
-      <Filter>Src\UI\Select</Filter>
+      <Filter>Src\StateMachine\UI\Select</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Character\Player\Character2DRender.h">
       <Filter>Src\Actor\Character\Player</Filter>
@@ -1089,7 +1122,7 @@
       <Filter>Src\Actor\Character\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\ButtonActionUI.h">
-      <Filter>Src\UI\BossUI</Filter>
+      <Filter>Src\StateMachine\UI\BossUI</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\title\TitleInformationLayer.h">
       <Filter>Src\Scene\title</Filter>
@@ -1105,46 +1138,46 @@
     </ClInclude>
     <ClInclude Include="GameVersion.h" />
     <ClInclude Include="Src\UI\Framework\Transform.h">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Framework\UITransform.h">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Framework\UIImage.h">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\Framework\UIElement.h">
-      <Filter>Src\UI\Framework</Filter>
+      <Filter>Src\StateMachine\UI\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteCloseHintUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteContentUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteListItemUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteListUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteOverLayerUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteScreen.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNotesDimUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteTitleBarUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteTypes.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\PatchNoteWindowUI.h">
-      <Filter>Src\UI\PatchNote</Filter>
+      <Filter>Src\StateMachine\UI\PatchNote</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\PatchNote\TitlePatchNoteHintUI.h" />
     <ClInclude Include="Src\Framework\TransformNode.h">
@@ -1188,6 +1221,39 @@
     </ClInclude>
     <ClInclude Include="Src\Presentation\UI\BossHudUiNames.h">
       <Filter>Src\Presentation\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\Data\IGameplayHubData.h">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\Data\GameplayHubUiNames.h">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Screens\GameplayHudScreen.h">
+      <Filter>Src\Presentation\UI\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Screens\GameplayHudScreenHost.h">
+      <Filter>Src\Presentation\UI\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\Data\GameplayHudData.h">
+      <Filter>Src\Presentation\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Logic\TImeDisplayLogic.h">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Logic\PlayerHpBarLogic.h">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Logic\ScoreDisplayLogic.h">
+      <Filter>Src\Presentation\UI\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\UIPlayerHpBarView.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\UIScoreView.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\UITimerView.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

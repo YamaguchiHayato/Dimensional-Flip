@@ -315,13 +315,22 @@
     <ClCompile Include="Src\Parameter\Stage\StageMasterTable.cpp" />
     <ClCompile Include="Src\Parameter\Stage\StageSpawnTable.cpp" />
     <ClCompile Include="Src\Presentation\Data\BossHubData.cpp" />
+    <ClCompile Include="Src\Presentation\Data\GameplayHubUiNames.cpp" />
+    <ClCompile Include="Src\Presentation\Data\GameplayHudData.cpp" />
     <ClCompile Include="Src\Presentation\UI\BossHudUiNames.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\BossHpBarLogic.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\UIPlayerHpBarView.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\UIScoreView.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
     <ClCompile Include="Src\Presentation\UI\Core\UIScreen.cpp" />
     <ClCompile Include="Src\Presentation\UI\Core\UIScreenHost.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Logic\PlayerHpBarLogic.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Logic\ScoreDisplayLogic.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Logic\TImeDisplayLogic.cpp" />
     <ClCompile Include="Src\Presentation\UI\Screens\BossHubScreen.cpp" />
     <ClCompile Include="Src\Presentation\UI\Screens\BossHubScreenHost.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\GameplayHudScreen.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\GameplayHudScreenHost.cpp" />
     <ClCompile Include="Src\Production\AttackMarker.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInLogoLayer.cpp" />
     <ClCompile Include="Src\Production\CutIn\CutInMaskLayer.cpp" />
@@ -386,6 +395,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="UITimerView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameVersion.h" />
@@ -500,14 +510,25 @@
     <ClInclude Include="Src\Parameter\Stage\StageSpawnRecord.h" />
     <ClInclude Include="Src\Parameter\Stage\StageSpawnTable.h" />
     <ClInclude Include="Src\Presentation\Data\BossHubData.h" />
+    <ClInclude Include="Src\Presentation\Data\GameplayHubUiNames.h" />
+    <ClInclude Include="Src\Presentation\Data\GameplayHudData.h" />
     <ClInclude Include="Src\Presentation\Data\IBossHubData.h" />
+    <ClInclude Include="Src\Presentation\Data\IGameplayHubData.h" />
     <ClInclude Include="Src\Presentation\UI\BossHudUiNames.h" />
     <ClInclude Include="Src\Presentation\UI\Components\BossHpBarLogic.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\UIPlayerHpBarView.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\UIScoreView.h" />
     <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\UITimerView.h" />
     <ClInclude Include="Src\Presentation\UI\Core\UIScreen.h" />
     <ClInclude Include="Src\Presentation\UI\Core\UIScreenHost.h" />
+    <ClInclude Include="Src\Presentation\UI\Logic\PlayerHpBarLogic.h" />
+    <ClInclude Include="Src\Presentation\UI\Logic\ScoreDisplayLogic.h" />
+    <ClInclude Include="Src\Presentation\UI\Logic\TImeDisplayLogic.h" />
     <ClInclude Include="Src\Presentation\UI\Screens\BossHubScreen.h" />
     <ClInclude Include="Src\Presentation\UI\Screens\BossHubScreenHost.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\GameplayHudScreen.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\GameplayHudScreenHost.h" />
     <ClInclude Include="Src\Production\AttackMarker.h" />
     <ClInclude Include="Src\Production\CutIn\CutInBase.h" />
     <ClInclude Include="Src\Production\CutIn\CutInLogoLayer.h" />

@@ -600,9 +600,6 @@
     <ClCompile Include="Src\Presentation\UI\Components\BossHpBarLogic.cpp">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Presentation\UI\Core\UIScreen.cpp">
       <Filter>Src\Presentation\UI\Core</Filter>
     </ClCompile>
@@ -639,12 +636,6 @@
     <ClCompile Include="Src\Presentation\UI\Logic\TImeDisplayLogic.cpp">
       <Filter>Src\Presentation\UI\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Presentation\UI\Components\UIPlayerHpBarView.cpp">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Presentation\UI\Components\UIScoreView.cpp">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Presentation\UI\Components\UITextView.cpp">
       <Filter>Src\Presentation\UI\Core</Filter>
     </ClCompile>
@@ -660,12 +651,19 @@
     <ClCompile Include="Src\Presentation\UI\Widget\UIPanel.cpp">
       <Filter>Src\Presentation\UI\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Presentation\UI\Components\UITimerView.cpp">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Presentation\UI\Widget\UIWidgetImage.cpp">
       <Filter>Src\Presentation\UI\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\GameplayHpHudComponent.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -1198,9 +1196,6 @@
     <ClInclude Include="Src\Presentation\UI\Components\BossHpBarLogic.h">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Presentation\UI\Core\UIScreen.h">
       <Filter>Src\Presentation\UI\Core</Filter>
     </ClInclude>
@@ -1243,12 +1238,6 @@
     <ClInclude Include="Src\Presentation\UI\Logic\ScoreDisplayLogic.h">
       <Filter>Src\Presentation\UI\Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Presentation\UI\Components\UIPlayerHpBarView.h">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Presentation\UI\Components\UIScoreView.h">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Presentation\UI\Components\UITextView.h">
       <Filter>Src\Presentation\UI\Core</Filter>
     </ClInclude>
@@ -1270,15 +1259,22 @@
     <ClInclude Include="Src\Presentation\UI\Widget\UIWidget.h">
       <Filter>Src\Presentation\UI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Presentation\UI\Components\UITimerView.h">
-      <Filter>Src\Presentation\UI\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Presentation\UI\Widget\UIWidgetImage.h">
       <Filter>Src\Presentation\UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Src\Presentation\UI\Widget\UIWidgetElement.h">
       <Filter>Src\Presentation\UI\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\GameplayHpHudComponent.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

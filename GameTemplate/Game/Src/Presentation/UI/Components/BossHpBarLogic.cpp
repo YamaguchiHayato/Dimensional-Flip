@@ -18,6 +18,7 @@ namespace nsApp
             pDamageBar_ = pDamageBar;
         }
 
+
         void BossHpBarLogic::SetHpPercent(float percent)
         {
             /* 0～1 にクランプする */
@@ -28,6 +29,7 @@ namespace nsApp
 
             currentPercent_ = percent;
         }
+
 
         void BossHpBarLogic::OnUpdate(float deltaTime)
         {

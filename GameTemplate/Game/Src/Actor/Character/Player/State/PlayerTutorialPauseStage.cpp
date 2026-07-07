@@ -113,12 +113,19 @@ namespace nsApp
              * @brief 旧 ScoreUI::Activate 相当。
              *        チュートリアル終了後にスコア表示を戻す。
              */
-            if (pGameplayHudHost_)
+            if (pPlayer_ != nullptr)
+                pPlayer_->SetTutorialDone(true);
+
+            nsUI::GameplayHudScreenHost* pHost = pGameplayHudHost_;
+            if (pHost == nullptr)
+                pHost = FindGO<nsUI::GameplayHudScreenHost>("GameplayHudScreenHost");
+
+            if (pHost != nullptr)
             {
-                if (auto* pScreen = pGameplayHudHost_->GetGameplayHudScreen())
+                if (auto* pScreen = pHost->GetGameplayHudScreen())
                     pScreen->SetScoreVisible(true);
-                pGameplayHudHost_ = nullptr;
             }
+            pGameplayHudHost_ = nullptr;
 
             /* TutorialUIクラスを削除する。*/
             if (pTutorialSequencer_)

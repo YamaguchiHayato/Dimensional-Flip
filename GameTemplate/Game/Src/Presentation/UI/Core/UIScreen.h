@@ -37,7 +37,7 @@ namespace nsApp
              * @brief 毎フレーム描画。
              * @param rc レンダリングコンテキスト。
              */
-            void Draw(RenderContext& rc);
+            virtual void Draw(RenderContext& rc);
 
             /**
              * @brief 表示 / 非表示を切り替える。

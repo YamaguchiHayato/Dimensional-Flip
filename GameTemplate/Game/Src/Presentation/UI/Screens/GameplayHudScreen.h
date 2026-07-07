@@ -1,12 +1,15 @@
 #pragma once
 
-#include "Src/Presentation/UI/Components/UIPlayerHpBarView.h"
-#include "Src/Presentation/UI/Components/UIScoreView.h"
-#include "Src/Presentation/UI/Components/UITimerView.h"
 #include "Src/Presentation/UI/Core/UIScreen.h"
 #include "Src/Presentation/UI/Logic/PlayerHpBarLogic.h"
 #include "Src/Presentation/UI/Logic/ScoreDisplayLogic.h"
 #include "Src/Presentation/UI/Logic/TImeDisplayLogic.h"
+#include "Src/Presentation/UI/Widget/UICanvas.h"
+
+/**
+ * @file   GameplayHudScreen.h
+ * @brief  Timer / Score / HP を UICanvas + Entity ツリーで描画する Screen。
+ */
 
 namespace nsApp
 {
@@ -14,16 +17,22 @@ namespace nsApp
     {
         class IGameplayHudData;
         class GameplayHudData;
+    } // namespace nsPresentation
+
+    namespace nsFramework
+    {
+        class Entity;
     }
 
     namespace nsUI
     {
+        class GameplayTimerHudComponent;
+        class GameplayScoreHudComponent;
+        class GameplayHpHudComponent;
+
         /**
          * @class GameplayHudScreen
-         * @brief Timer / Score / HP をまとめて描画する Screen（新式 HUD）。
-         *
-         * UIScreen::Draw() は Entity ツリー用なので、
-         * View 直描画は DrawHud() を Host から呼ぶ。
+         * @brief Timer / Score / HP を UICanvas + Entity ツリーで描画する Screen。
          */
         class GameplayHudScreen : public UIScreen
         {
@@ -31,34 +40,29 @@ namespace nsApp
             /**
              * @brief コンストラクタ。
              */
-            GameplayHudScreen();
+            GameplayHudScreen() = default;
 
             /**
-             * @brief GameplayHudScreen のコンストラクタ。
+             * @brief HUD データソースを設定する。
              * @param pDataSource HUD データソース。
              */
             void SetDataSource(nsPresentation::IGameplayHudData* pDataSource);
 
             /**
-             * @brief HUD データソースを設定する。
+             * @brief HUD データソースからロジックを同期する。
              */
             void SyncFromDataSource();
 
             /**
-             * @brief HUD データソースからロジックを同期する。
+             * @brief Entity ツリーを構築する。
              */
             void Build() override;
 
             /**
-             * @brief UIScreen::Build() の実装。ルート Entity だけ作る。
+             * @brief HUD を描画する。
              * @param rc 描画コンテキスト。
              */
-            void DrawHud(RenderContext& rc);
-
-            /**
-             * @brief HUD を描画する。Host::Render から呼ぶ。
-             */
-            void SetupLayout();
+            void Draw(RenderContext& rc) override;
 
             /**
              * @brief HUD データソースを接続する。
@@ -68,20 +72,31 @@ namespace nsApp
 
             /**
              * @brief スコア部分だけ表示/非表示（チュートリアル用）。
+             * @param visible true で表示。
              */
             void SetScoreVisible(bool visible);
 
 
         private:
-            nsPresentation::IGameplayHudData* pDataSource_ = nullptr; 
+            /**
+             * @brief 描画可能かどうかを判定する。
+             * @return 描画可能なら true。
+             */
+            bool CanDrawHud() const;
 
-            TimerDisplayLogic timerLogic_;
-            ScoreDisplayLogic scoreLogic_;
-            PlayerHpBarLogic hpBarLogic_;
+        private:
+            nsPresentation::IGameplayHudData* pDataSource_ = nullptr; //! HUD データソース。
 
-            UITimerView timerView_;
-            UIScoreView scoreView_;
-            UIPlayerHpBarView hpBarView_;
+            UICanvas canvas_; //! < HUD のルート Canvas。
+            nsFramework::Entity* pScorePanelEntity_ = nullptr; //! < スコアパネルの Entity。
+
+            GameplayTimerHudComponent* pTimerComponent_ = nullptr; //! < タイマー表示の Component。
+            GameplayScoreHudComponent* pScoreComponent_ = nullptr; //! < スコア表示の Component。
+            GameplayHpHudComponent* pHpComponent_ = nullptr;       //! < HP 表示の Component。
+
+            TimerDisplayLogic timerLogic_; //! < タイマー表示のロジック。
+            ScoreDisplayLogic scoreLogic_; //! < スコア表示のロジック。
+            PlayerHpBarLogic hpBarLogic_;  //! < HP バー表示のロジック。
         };
     } // namespace nsUI
 } // namespace nsApp

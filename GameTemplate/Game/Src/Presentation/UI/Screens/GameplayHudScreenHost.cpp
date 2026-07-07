@@ -19,7 +19,6 @@ namespace nsApp
             if (pScreen == nullptr || pGame == nullptr)
                 return true;
 
-            /* Game 内の GameplayHudData と Screen を接続 */
             if (auto* pData = pGame->GetGameplayHudData())
                 pScreen->ConnectToData(pData);
 
@@ -30,18 +29,6 @@ namespace nsApp
         GameplayHudScreen* GameplayHudScreenHost::GetGameplayHudScreen()
         {
             return dynamic_cast<GameplayHudScreen*>(screen_.get());
-        }
-
-
-        void GameplayHudScreenHost::Render(RenderContext& rc)
-        {
-            auto* pScreen = GetGameplayHudScreen();
-            if (pScreen == nullptr)
-                return;
-
-            /* UIScreenHost::Render は screen_->Draw() だが、
-               View 直描画なので DrawHud を直接呼ぶ */
-            pScreen->DrawHud(rc);
         }
 
 

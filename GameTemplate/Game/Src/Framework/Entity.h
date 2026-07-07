@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -87,10 +87,27 @@ namespace nsApp
              */
             void Draw(struct RenderContext& rc);
 
+            /**
+             * @brief 子 Entity を生成して追加する。
+             * @return 追加した子 Entity 参照。
+             */
+            Entity& CreateChild();
+
+            /**
+             * @brief 子 Entity を取得する。
+             * @return 子 Entity 参照。
+             */
+            size_t GetChildCount() const
+            {
+                return children_.size();
+            }
+
+
         private:
-            TransformNode transform_;
-            std::vector<std::unique_ptr<IComponent>> components_;
-            bool isEnabled_ = true;
+            TransformNode transform_; //! < Transform。親 Transform はコンストラクタで設定する。
+            std::vector<std::unique_ptr<IComponent>> components_; //! < Component 一覧。
+            std::vector<std::unique_ptr<Entity>> children_; //!< 子 Entity 一覧。
+            bool isEnabled_ = true;                               //! < 有効フラグ。false なら Update / Draw を止める。
         };
     } // namespace nsFramework
 } // namespace nsApp

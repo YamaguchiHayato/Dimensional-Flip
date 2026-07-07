@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "UITransform.h"
 #include "UIImage.h"
 
 /**

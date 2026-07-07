@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
-
-#include "UIElement.h"
+#include "Src/UI/Framework/UIElement.h"
 
 namespace nsApp
 {

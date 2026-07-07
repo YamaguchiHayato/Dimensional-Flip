@@ -1,21 +1,57 @@
 #include "stdafx.h"
 
-#include "GameplayHudUiNames.h"
-#include "UITimerView.h"
+#include "Src/Presentation/UI/Components/UITimerView.h"
+#include "Src/Presentation/UI/Logic/TImeDisplayLogic.h"
+
+namespace
+{
+    // 旧 NumberUI
+    const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+    const Vector4 RED(1.0f, 0.0f, 0.0f, 1.0f);
+    const float TIMER_SCALE = 2.0f;
+    const float WARNING_TIME = 30.0f;
+
+    // 旧 TimerUI（背景バー）
+    const auto TIMER_BAR_WIDTH = 1210.0f;
+    const auto TIMER_BAR_HEIGHT = 720.0f;
+    const Vector3 TIMER_BAR_POS{-870.0f, 360.0f, 0.0f};
+    const Vector3 TIMER_BAR_SCALE(0.25f, 0.25f, 0.25f);
+    const char* kTimerBarPath = "Assets/UI/progressBar/Time.DDS";
+} // namespace
+
 
 namespace nsApp
 {
     namespace nsUI
     {
-        UITimerView::UITimerView() : posX_(0.0f), posY_(0.0f), digitSpacing_(24.0f), isColonVisible_(false)
+        UITimerView::UITimerView()
+            : posX_(0.0f), posY_(0.0f), digitSpacing_(24.0f), cachedSeconds_(0), timerBarInitialized_(false)
         {
-            colonView_.SetUiName(FetchUIName(GameplayHudUiId::TimerColon));
+            InitFont();
+            InitTimerBar();
+        }
+
+        void UITimerView::InitFont()
+        {
+            timerFont_.SetScale(TIMER_SCALE);
+            timerFont_.SetColor(WHITE);
+        }
+
+        void UITimerView::InitTimerBar()
+        {
+            // 旧 TimerUI::Start と同じ
+            timerBar_.Init(kTimerBarPath, TIMER_BAR_WIDTH, TIMER_BAR_HEIGHT);
+            timerBar_.SetPosition(TIMER_BAR_POS);
+            timerBar_.SetScale(TIMER_BAR_SCALE);
+            timerBar_.Update();
+            timerBarInitialized_ = true;
         }
 
         void UITimerView::SetPosition(float x, float y)
         {
             posX_ = x;
             posY_ = y;
+            timerFont_.SetPosition(Vector3(posX_, posY_, 0.0f));
         }
 
         void UITimerView::SetDigitSpacing(float spacing)
@@ -25,61 +61,29 @@ namespace nsApp
 
         void UITimerView::ApplyLogic(const TimerDisplayLogic& logic)
         {
-            float offsetX = 0.0f;
-            isColonVisible_ = false;
+            cachedSeconds_ = logic.GetSeconds();
 
-            for (int i = 0; i < TimerDisplayLogic::kMaxDigits; ++i)
+            swprintf_s(timerText_, L"%02d", cachedSeconds_);
+            timerFont_.SetText(timerText_);
+            timerFont_.SetColor(cachedSeconds_ <= static_cast<int>(WARNING_TIME) ? RED : WHITE);
+            timerFont_.SetPosition(Vector3(posX_, posY_, 0.0f));
+
+            // 背景バーも毎フレーム更新（旧 TimerUI::Update と同じ）
+            if (timerBarInitialized_)
             {
-                const int digit = logic.GetDigit(i);
-                digitViews_[i].SetUiName(FetchUIName(GetTimerDigitId(digit)));
-                digitViews_[i].SetPosition(posX_ + offsetX, posY_);
-                offsetX += digitSpacing_;
-
-                if (logic.NeedsColonAfter(i))
-                {
-                    colonView_.SetPosition(posX_ + offsetX, posY_);
-                    isColonVisible_ = true;
-                    offsetX += digitSpacing_;
-                }
+                timerBar_.SetPosition(TIMER_BAR_POS);
+                timerBar_.SetScale(TIMER_BAR_SCALE);
+                timerBar_.Update();
             }
         }
 
         void UITimerView::Draw(RenderContext& rc)
         {
-            for (int i = 0; i < TimerDisplayLogic::kMaxDigits; ++i)
-                digitViews_[i].Draw(rc);
+            // 背景 → 数字の順（旧 TimerUI + NumberUI）
+            if (timerBarInitialized_)
+                timerBar_.Draw(rc);
 
-            if (isColonVisible_)
-                colonView_.Draw(rc);
+            timerFont_.Draw(rc);
         }
-
-        GameplayHudUiId UITimerView::GetTimerDigitId(int digit) const
-        {
-            switch (digit)
-            {
-            case 0:
-                return GameplayHudUiId::TimerDigit0;
-            case 1:
-                return GameplayHudUiId::TimerDigit1;
-            case 2:
-                return GameplayHudUiId::TimerDigit2;
-            case 3:
-                return GameplayHudUiId::TimerDigit3;
-            case 4:
-                return GameplayHudUiId::TimerDigit4;
-            case 5:
-                return GameplayHudUiId::TimerDigit5;
-            case 6:
-                return GameplayHudUiId::TimerDigit6;
-            case 7:
-                return GameplayHudUiId::TimerDigit7;
-            case 8:
-                return GameplayHudUiId::TimerDigit8;
-            case 9:
-                return GameplayHudUiId::TimerDigit9;
-            default:
-                return GameplayHudUiId::TimerDigit0;
-            }
-        }
-    } // namespace nsUI
-} // namespace nsApp
+    } /* namespace nsUI */
+} /* namespace nsApp */

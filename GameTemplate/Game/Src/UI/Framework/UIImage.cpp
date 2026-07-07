@@ -1,6 +1,5 @@
 #include "stdafx.h"
-
-#include "UIImage.h"
+#include "Src/UI/Framework/UIImage.h"
 
 namespace nsApp
 {
@@ -13,41 +12,49 @@ namespace nsApp
             isInitialized_ = true;
         }
 
+
         void UIImage::InitFromUIAsset(const std::string& uiName, float width, float height)
         {
             const std::string path = "Assets/UI/" + uiName + ".DDS";
             Init(path.c_str(), width, height);
         }
 
+
         void UIImage::InitFromAssetDef(const UIImageAssetDef& assetDef)
         {
             Init(assetDef.path, assetDef.width, assetDef.height);
         }
+
 
         void UIImage::InitPatchNoteWindow()
         {
             InitFromAssetDef(UIImageAsset::PatchNoteWindow);
         }
 
+
         void UIImage::InitPatchNoteBanner()
         {
             InitFromAssetDef(UIImageAsset::PatchNoteBanner);
         }
+
 
         void UIImage::InitPatchNoteListSelect()
         {
             InitFromAssetDef(UIImageAsset::PatchNoteListSelect);
         }
 
+
         void UIImage::InitPatchNoteListUnselect()
         {
             InitFromAssetDef(UIImageAsset::PatchNoteListUnselect);
         }
 
+
         void UIImage::InitPatchNoteBadge()
         {
             InitFromAssetDef(UIImageAsset::PatchNoteBadge);
         }
+
 
         void UIImage::InitDimOverlay()
         {
@@ -56,6 +63,7 @@ namespace nsApp
             GetTransform().SetLocalScale({4.0f, 4.0f, 1.0f});
             SetColor({0.0f, 0.0f, 0.0f, 0.65f});
         }
+
 
         void UIImage::InitButtonB()
         {
@@ -78,6 +86,7 @@ namespace nsApp
             sprite_.Update();
         }
 
+
         void UIImage::Draw(RenderContext& rc)
         {
             if (!isInitialized_ || !isVisible_)
@@ -85,6 +94,7 @@ namespace nsApp
 
             sprite_.Draw(rc);
         }
+
 
         void UIImage::SetColor(const Vector4& color)
         {

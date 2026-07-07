@@ -103,8 +103,7 @@ namespace nsApp
                     stateCommand_.Emplace<nsApp::nsState::PlayerRunState>(enState_Run, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerJumpState>(enState_Jump, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerFallState>(enState_Fall, this);
-                    stateCommand_.Emplace<nsApp::nsState::PlayerTutorialPauseStage>(enState_TutorialPause, this);
-
+                    stateCommand_.Emplace<nsApp::nsState::PlayerTutorialPauseStage>(enState_TutorialPause, static_cast<Player*>(this));
                     /** @brief 初期ステート開始。 */
                     stateMachine_.Start(enState_Idle);
 

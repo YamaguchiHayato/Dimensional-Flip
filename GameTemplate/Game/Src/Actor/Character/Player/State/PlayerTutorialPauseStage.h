@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Src/Actor/Character/IState.h"
-#include "Src/Actor/Character/PlayerForward.h"
-#include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"
 
 /**
  * @file   PlayerTutorialPauseStage.h
@@ -11,9 +9,20 @@
 
 namespace nsApp
 {
+    namespace nsActor
+    {
+        namespace nsCharacter
+        {
+            namespace nsPlayer
+            {
+                class Player;
+            } // namespace nsPlayer
+        } // namespace nsCharacter
+    } // namespace nsActor
+
     namespace nsUI
     {
-        class ScoreUI;
+        class GameplayHudScreenHost;
         class TutorialMessageUI;
         class TutorialSequencer;
         class TutorialCompleteUI;
@@ -28,9 +37,19 @@ namespace nsApp
         class PlayerTutorialPauseStage : public IState
         {
         public:
-            /* コンストラクタとデストラクタ。*/
-            explicit PlayerTutorialPauseStage(Player* pPlayer) : pPlayer_(pPlayer) {}
-            virtual ~PlayerTutorialPauseStage() = default;
+            /**
+             * @brief コンストラクタ。
+             * @param pPlayer 所属するプレイヤーへのポインタ。
+             *
+             * @note PlayerForward.h の typedef ではなく完全修飾名を使う（C2665 対策）。
+             *       実装は .cpp 側に置く（Emplace / make_unique 用）。
+             */
+            explicit PlayerTutorialPauseStage(nsApp::nsActor::nsCharacter::nsPlayer::Player* pPlayer);
+
+            /**
+             * @brief デストラクタ。
+             */
+            ~PlayerTutorialPauseStage() override;
 
 
         public:
@@ -56,7 +75,6 @@ namespace nsApp
              */
             bool RequestID(uint8_t& request) override;
 
-
         private:
             /**
              * @brief チュートリアル中のアニメーション更新処理。
@@ -80,21 +98,20 @@ namespace nsApp
 
 
         private:
-            Player* pPlayer_ = nullptr; //! < 所属するプレイヤー。
-            nsUI::TutorialMessageUI* pTutorialMessageUI_ = nullptr; //! < チュートリアルメッセージ UI。
-            nsUI::TutorialSequencer* pTutorialSequencer_ = nullptr; //! < チュートリアルシーケンサー。
-            nsUI::TutorialCompleteUI* pTutorialCompleteUI_ = nullptr; //! < チュートリアル完了 UI。
-            nsUI::GameplayHudScreenHost* pGameplayHudHost_ = nullptr; //! < ゲームプレイ HUD スクリーンホスト。
-
+            nsApp::nsActor::nsCharacter::nsPlayer::Player* pPlayer_ = nullptr; //! < 所属するプレイヤー。
+            nsUI::TutorialMessageUI* pTutorialMessageUI_ = nullptr;            //! < チュートリアルメッセージ UI。
+            nsUI::TutorialSequencer* pTutorialSequencer_ = nullptr;            //! < チュートリアルシーケンサー。
+            nsUI::TutorialCompleteUI* pTutorialCompleteUI_ = nullptr;          //! < チュートリアル完了 UI。
+            nsUI::GameplayHudScreenHost* pGameplayHudHost_ = nullptr;          //! < ゲームプレイ HUD スクリーンホスト。
 
         private:
-            bool isButtonPressed_ = false; //! < ボタンが押されたかどうか。
-            bool isVisible_ = false;       //! < チュートリアルメッセージが表示されているかどうか。
-            bool isGround_ = false;        //! < プレイヤーが地面にいるかどうか。
-            float currentTime_ = 0.0f;     //! < 現在の時間。
-            float tutorialTimer_ = 0.0f;   //! < チュートリアルのタイマー。
-            float speedRate_ = 1.0f;       //! < 移動速度の倍率。
-            Vector3 tutorialStick = Vector3::Zero; //! < チュートリアル中のスティック入力。
+            bool isButtonPressed_ = false;          //! < ボタンが押されたかどうか。
+            bool isVisible_ = false;                //! < チュートリアルメッセージが表示されているかどうか。
+            bool isGround_ = false;                 //! < プレイヤーが地面にいるかどうか。
+            float currentTime_ = 0.0f;              //! < 現在の時間。
+            float tutorialTimer_ = 0.0f;            //! < チュートリアルのタイマー。
+            float speedRate_ = 1.0f;                //! < 移動速度の倍率。
+            Vector3 tutorialStick_ = Vector3::Zero; //! < チュートリアル中のスティック入力。
         };
     } // namespace nsState
 } // namespace nsApp

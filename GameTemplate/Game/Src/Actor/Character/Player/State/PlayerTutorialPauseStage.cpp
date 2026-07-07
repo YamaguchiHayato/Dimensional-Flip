@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PlayerTutorialPauseStage.h"
 #include "Src/Actor/Character/Player/Component/PlayerStateMachine.h"
@@ -7,12 +7,11 @@
 
 using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
-#include "Src/Core/Game.h"
-#include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"
-#include "Src/Presentation/UI/Screens/GameplayHudScreen.h"
-
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Core/Game.h"
 #include "Src/Core/InputManager.h"
+#include "Src/Presentation/UI/Screens/GameplayHudScreen.h"
+#include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"
 #include "Src/UI/Tutorial/TutorialCompleteUI.h"
 #include "Src/UI/Tutorial/TutorialMessageUI.h"
 #include "Src/UI/Tutorial/TutorialSequencer.h"
@@ -23,14 +22,39 @@ namespace nsApp
     {
         static bool isMoveTutorialDone_ = false;
 
+        /**
+         * @brief コンストラクタ。
+         * @param pPlayer 所属するプレイヤーへのポインタ。
+         */
+        PlayerTutorialPauseStage::PlayerTutorialPauseStage(nsApp::nsActor::nsCharacter::nsPlayer::Player* pPlayer)
+            : pPlayer_(pPlayer)
+        {
+        }
+
+        /**
+         * @brief デストラクタ。
+         */
+        PlayerTutorialPauseStage::~PlayerTutorialPauseStage() = default;
+
+
         void PlayerTutorialPauseStage::Enter()
         {
             /* 入力管理クラスから入力を貰う。*/
             InputManager::GetInstance()->SetDimensionFlipFlag(true);
 
-            /* ゲームプレイ HUD スクリーンを非表示にする。*/
             if (pPlayer_ && pPlayer_->GetCameraManager())
                 pPlayer_->GetCameraManager()->SetButtonActionControl(true);
+
+            /**
+             * @brief 旧 ScoreUI::Deactivate 相当。
+             *        チュートリアル中はスコアだけ非表示（Timer / HP は表示したまま）。
+             */
+            pGameplayHudHost_ = FindGO<nsUI::GameplayHudScreenHost>("GameplayHudScreenHost");
+            if (pGameplayHudHost_)
+            {
+                if (auto* pScreen = pGameplayHudHost_->GetGameplayHudScreen())
+                    pScreen->SetScoreVisible(false);
+            }
 
             /* TutorialUIクラスを生成する。*/
             pTutorialSequencer_ = NewGO<TutorialSequencer>(0, "TutorialSequencer");
@@ -51,15 +75,15 @@ namespace nsApp
         void PlayerTutorialPauseStage::Update()
         {
             /* 入力管理クラスから入力を貰う。*/
-            tutorialStick = {g_pad[0]->GetLStickXF(), 0.0f, g_pad[0]->GetLStickYF()};
-            pPlayer_->SetKeyDirection(tutorialStick);
+            tutorialStick_ = {g_pad[0]->GetLStickXF(), 0.0f, g_pad[0]->GetLStickYF()};
+            pPlayer_->SetKeyDirection(tutorialStick_);
 
             /* 移動速度を調整する。*/
             if (!pPlayer_->GetCharacterController().IsOnGround())
                 speedRate_ = 0.7f;
 
             /* 移動処理を行う。*/
-            pPlayer_->CalculateMovement(tutorialStick);
+            pPlayer_->CalculateMovement(tutorialStick_);
 
             /* ジャンプ処理を行う。*/
             JumpUpdatingProcessAtTutorial();
@@ -73,6 +97,10 @@ namespace nsApp
             /* 視点切替更新処理を行う。*/
             ViewpointChangeUpdatingProcessAtTutorial();
 
+            /* チュートリアルシーケンサーの進行を更新する。*/
+            if (pTutorialSequencer_)
+                pTutorialSequencer_->Update();
+
             /* チュートリアルメッセージの更新処理を行う。*/
             if (pPlayer_ && pPlayer_->GetCameraManager())
                 pPlayer_->GetCameraManager()->Update();
@@ -81,11 +109,14 @@ namespace nsApp
 
         void PlayerTutorialPauseStage::Exit()
         {
-            /* 入力管理クラスから入力を貰う。*/
+            /**
+             * @brief 旧 ScoreUI::Activate 相当。
+             *        チュートリアル終了後にスコア表示を戻す。
+             */
             if (pGameplayHudHost_)
             {
                 if (auto* pScreen = pGameplayHudHost_->GetGameplayHudScreen())
-                    pScreen->SetVisible(true);
+                    pScreen->SetScoreVisible(true);
                 pGameplayHudHost_ = nullptr;
             }
 
@@ -230,6 +261,7 @@ namespace nsApp
                     pWall->SwitchMode();
             }
         }
+
 
         void PlayerTutorialPauseStage::TutorialTextChange()
         {

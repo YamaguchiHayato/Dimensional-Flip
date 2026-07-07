@@ -3,7 +3,7 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/StageManager.h"
 #include "Src/Parameter/Stage/StageMasterTable.h"
-#include "Src/UI/NumberUI.h"
+#include "Src/Core/Game.h"
 #include "Src/UI/Tutorial/TutorialMessageUI.h"
 
 namespace nsApp
@@ -139,9 +139,8 @@ namespace nsApp
                 pPlayer->SetRespwanPos(startPos);
             }
 
-            /* NumberUIのタイマーをリセットする。*/
-            if (auto* pTimer = FindGO<NumberUI>("numberui"))
-                pTimer->ResetTimer();
+            if (auto* pGame = FindGO<nsCore::Game>("game"))
+                pGame->ResetStageTimer(); 
         }
 
 

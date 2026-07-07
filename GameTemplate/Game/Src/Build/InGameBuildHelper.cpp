@@ -5,6 +5,9 @@
 #include "Src/Parameter/Stage/StageMasterTable.h"
 #include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
 #include "Src/Presentation/UI/Screens/BossHubScreen.h"
+#include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"   
+#include "Src/Presentation/UI/Screens/GameplayHudScreen.h"       
+
 
 namespace nsApp
 {
@@ -25,11 +28,125 @@ namespace nsApp
 
     void InGameBuildHelper::InitializeBuildFunctions()
     {
-        /* ビルド関数のリストを初期化。*/
         buildFunctions_.clear();
         buildFunctions_.push_back([this]() { BuildParameters(); });
-        buildFunctions_.push_back([this]() { FinishBuild(); });
         buildFunctions_.push_back([this]() { BuildBossHudUi(); });
+        buildFunctions_.push_back([this]() { BuildGameplayHudUiStep(); });
+        buildFunctions_.push_back([this]() { FinishBuild(); });           
+    }
+
+
+    void InGameBuildHelper::BuildParameters()
+    {
+        /* パラメータシステムをロード。*/
+        isLoadSuccess_ = parameterSystem_.LoadAll();
+        if (!isLoadSuccess_)
+            OutputDebugStringA("InGameBuildHelper::BuildParameters - LoadAll failed.\n");
+    }
+
+
+    void InGameBuildHelper::BuildBackGroundStep()
+    {
+        /* ステージ背景を生成。*/
+        pBackGround_ = CreateBackGround(stageID_);
+        if (pBackGround_ == nullptr)
+            OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
+    }
+
+
+    void InGameBuildHelper::FinishBuild()
+    {
+        isFinished_ = true;
+    }
+
+
+    void InGameBuildHelper::BuildBossHudUi()
+    {
+        /* 二重生成防止 */
+        if (pBossHudHost_ != nullptr)
+            return;
+
+        /* BossHudScreenHost を生成。*/
+        pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
+        if (pBossHudHost_ == nullptr) 
+            return;
+
+        /* BossHudScreenHost から BossHudScreen を取得し、初期状態では非表示にする。*/
+        if (auto* pScreen = pBossHudHost_->GetBossHudScreen())
+        {
+            /* 初期状態では非表示にする。*/
+            pScreen->SetVisible(false);
+
+            /* BossHudData と Screen を接続する。*/
+            bossHudData_.SetScreen(pScreen);
+
+            /* BossHudData と Screen を接続する。*/
+            pScreen->Bind(&bossHudData_);
+        }
+    }
+
+
+    float InGameBuildHelper::GetProgress() const
+    {
+        /* ビルド関数が空の場合、進捗は 0 または 1 とする。*/
+        if (buildFunctions_.empty())
+            return isFinished_ ? 1.0f : 0.0f;
+
+        /* 現在のビルド関数のインデックスを進捗として計算。*/
+        float progress = static_cast<float>(currentBuildIndex_) / static_cast<float>(buildFunctions_.size());
+        if (progress < 0.0f)
+            return 0.0f;
+        if (progress > 1.0f)
+            return 1.0f;
+        return progress;
+    }
+
+
+    void InGameBuildHelper::BuildGameplayHudUiStep()
+    {
+        /* 二重生成防止 */
+        if (pGameplayHudScreenHost_ != nullptr)
+            return;
+
+        /* GameplayHudScreenHost を生成。*/
+        pGameplayHudScreenHost_ = NewGO<nsUI::GameplayHudScreenHost>(1, "GameplayHudScreenHost");
+        if (pGameplayHudScreenHost_ == nullptr)
+            return;
+
+        /* Host::Start 内でも接続するが、念のためここでも */
+        ConnectGameplayHudData();
+    }
+
+
+    void InGameBuildHelper::ConnectGameplayHudData()
+    {
+        /* 二重接続防止 */
+        if (pGameplayHudScreenHost_ == nullptr)
+            return;
+
+        /* GameplayHudScreenHost から GameplayHudScreen を取得。*/
+        auto* pScreen = pGameplayHudScreenHost_->GetGameplayHudScreen();
+        if (pScreen == nullptr)
+            return;
+
+        /* Game 内の GameplayHudData と Screen を接続 */
+        pScreen->ConnectToData(&gameplayHudData_);
+    }
+
+
+    void InGameBuildHelper::DestroyGameplayHud()
+    {
+        /* 二重破棄防止 */
+        if (pGameplayHudScreenHost_ != nullptr)
+        {
+            /* Host を破棄する。*/
+            DeleteGO(pGameplayHudScreenHost_);
+            pGameplayHudScreenHost_ = nullptr;
+        }
+
+        /* 念のため、FindGO で探して破棄する。*/
+        else if (auto* pHud = FindGO<nsUI::GameplayHudScreenHost>("GameplayHudScreenHost"))
+            DeleteGO(pHud);
     }
 
 
@@ -52,80 +169,25 @@ namespace nsApp
     }
 
 
-    void InGameBuildHelper::BuildParameters()
-    {
-        isLoadSuccess_ = parameterSystem_.LoadAll();
-        if (!isLoadSuccess_)
-            OutputDebugStringA("InGameBuildHelper::BuildParameters - LoadAll failed.\n");
-    }
-
-    void InGameBuildHelper::BuildBackGroundStep()
-    {
-        /* ステージ背景を生成。*/
-        pBackGround_ = CreateBackGround(stageID_);
-        if (pBackGround_ == nullptr)
-            OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
-    }
-
-
-
     nsStage::nsBackGround::IBackGround* InGameBuildHelper::CreateBackGround(nsStage::StageID stageID)
     {
+        /* ステージマスターテーブルからステージ情報を取得。*/
         const auto& master = nsSystem::StageMasterTable::Get(stageID);
         if (master.stageID == nsStage::StageID::sInvalid)
             return nullptr;
 
+        /* スクロール背景またはボス背景以外は生成しない。*/
         if (master.backgroundType != "Scroll" && master.backgroundType != "Boss")
             return nullptr;
 
+        /* スクロール背景のステージIDを設定。*/
         nsStage::nsScrollBackGround::ScrollStageBackGround::SetPendingStageID(stageID);
 
+        /* スクロール背景を生成。*/
         auto* bg = NewGO<nsStage::nsScrollBackGround::ScrollStageBackGround>(0, "BackGround");
         if (bg != nullptr)
             bg->SetStageID(stageID);
 
         return bg;
-    }
-
-
-    void InGameBuildHelper::FinishBuild()
-    {
-        isFinished_ = true;
-    }
-
-
-    void InGameBuildHelper::BuildBossHudUi()
-    {
-        /* 二重生成防止。*/
-        if (pBossHudHost_ != nullptr)
-            return;
-
-        /* ボス HUD スクリーンホストを生成。*/
-        pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
-
-        if (pBossHudHost_ != nullptr)
-            return;
-
-        /* ボス HUD スクリーンを取得して、非表示にする。*/
-        if (auto* pScreen = pBossHudHost_->GetBossHudScreen())
-        {
-            pScreen->SetVisible(false);
-            bossHudData_.SetScreen(pScreen);
-            pScreen->Bind(&bossHudData_);
-        }
-    }
-
-
-    float InGameBuildHelper::GetProgress() const
-    {
-        if (buildFunctions_.empty())
-            return isFinished_ ? 1.0f : 0.0f;
-
-        float progress = static_cast<float>(currentBuildIndex_) / static_cast<float>(buildFunctions_.size());
-        if (progress < 0.0f)
-            return 0.0f;
-        if (progress > 1.0f)
-            return 1.0f;
-        return progress;
     }
 } // namespace nsApp

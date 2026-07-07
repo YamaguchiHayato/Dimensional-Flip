@@ -12,6 +12,7 @@
 #include "Src/Actor/Stage/StageID.h"
 #include "Src/Parameter/ParameterSystem.h"
 #include "Src/Presentation/Data/BossHubData.h"
+#include "Src/Presentation/Data/GameplayHudData.h"
 
 
 namespace nsApp
@@ -19,6 +20,7 @@ namespace nsApp
     namespace nsUI
     {
         class BossHudScreenHost;
+        class GameplayHudScreenHost;
     }
 
     class InGameBuildHelper
@@ -84,6 +86,28 @@ namespace nsApp
          */
         nsPresentation::BossHudData* GetBossHudData() { return &bossHudData_; }
 
+        /**
+         * @brief ゲームプレイ HUD スクリーンホストを取得する。
+         * @return ゲームプレイ HUD スクリーンホスト。初期化が完了していない場合は nullptr。
+         */
+        nsUI::GameplayHudScreenHost* GetGameplayHudScreenHost() const { return pGameplayHudScreenHost_; }
+
+        /**
+         * @brief ゲームプレイ HUD データを取得する。
+         * @return ゲームプレイ HUD データ。初期化が完了していない場合は nullptr。
+         */
+        nsPresentation::GameplayHudData* GetGameplayHudData() { return &gameplayHudData_; }
+
+        /**
+         * @brief ゲームプレイ HUD データとスクリーンを接続する。
+         */
+        void ConnectGameplayHudData();
+
+        /**
+         * @brief ゲームプレイ HUD を破棄する。
+         */
+        void DestroyGameplayHud();
+
 
     private:
         using BuildFunction = std::function<void()>; //! ビルド関数の型定義。
@@ -97,17 +121,21 @@ namespace nsApp
         void BuildBackGroundStep();
         void FinishBuild();
         void BuildBossHudUi();
+        void BuildGameplayHudUiStep();
 
 
     private:
-        nsSystem::ParameterSystem parameterSystem_;
-        std::vector<BuildFunction> buildFunctions_;
-        nsStage::nsBackGround::IBackGround* pBackGround_ = nullptr;
-        nsStage::StageID stageID_ = nsStage::StageID::sInvalid;
-        nsUI::BossHudScreenHost* pBossHudHost_ = nullptr;
-        nsPresentation::BossHudData bossHudData_;
-        bool isFinished_ = false;
-        bool isLoadSuccess_ = true;
-        int currentBuildIndex_ = 0;
+        nsSystem::ParameterSystem parameterSystem_; //! パラメータシステム。
+        std::vector<BuildFunction> buildFunctions_; //! < ビルド関数のリスト。
+        nsStage::nsBackGround::IBackGround* pBackGround_ = nullptr; //! < 生成された背景。
+        nsStage::StageID stageID_ = nsStage::StageID::sInvalid;     //! < ステージ ID。
+        nsUI::BossHudScreenHost* pBossHudHost_ = nullptr;           //! < 生成されたボス HUD スクリーンホスト。
+        nsPresentation::BossHudData bossHudData_;                   //! < ボス HUD データ。
+        nsPresentation::GameplayHudData gameplayHudData_;           //! < ゲームプレイ HUD データ。
+        nsUI::GameplayHudScreenHost* pGameplayHudScreenHost_ = nullptr;//! < 生成されたゲームプレイ HUD スクリーンホスト。
+
+        bool isFinished_ = false; //! < 初期化が完了したかどうか。
+        bool isLoadSuccess_ = true; //! < 初期化が成功したかどうか。
+        int currentBuildIndex_ = 0; //! < 現在のビルド関数のインデックス。
     };
 } // namespace nsApp

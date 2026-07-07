@@ -7,7 +7,7 @@ namespace nsApp
 {
     namespace nsPresentation
     {
-        GameplayHudData::GameplayHudData() : pScreen_(nullptr), timerSeconds_(0), score_(0), playerHpRatio_(1.0f) {}
+        GameplayHudData::GameplayHudData() : pScreen_(nullptr), timerSeconds_(90), score_(0), playerHpRatio_(1.0f) {}
 
 
         void GameplayHudData::SetScreen(nsUI::GameplayHudScreen* pScreen)

@@ -17,7 +17,6 @@
 #include "Src/Core/SoundManager.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "Src/Production/Fade.h"
-#include "Src/UI/ScoreUI.h"
 
 #include "Src/Parameter/Player/PlayerStatusParameterTable.h"
 #include "Src/Parameter/Player/PlayerMoveParameterTable.h"

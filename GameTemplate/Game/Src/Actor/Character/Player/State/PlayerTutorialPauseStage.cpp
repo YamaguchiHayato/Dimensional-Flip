@@ -7,9 +7,12 @@
 
 using nsApp::nsActor::nsCharacter::nsPlayer::EnPlayerState;
 
+#include "Src/Core/Game.h"
+#include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"
+#include "Src/Presentation/UI/Screens/GameplayHudScreen.h"
+
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/InputManager.h"
-#include "Src/UI/ScoreUI.h"
 #include "Src/UI/Tutorial/TutorialCompleteUI.h"
 #include "Src/UI/Tutorial/TutorialMessageUI.h"
 #include "Src/UI/Tutorial/TutorialSequencer.h"
@@ -22,17 +25,23 @@ namespace nsApp
 
         void PlayerTutorialPauseStage::Enter()
         {
+            /* 入力管理クラスから入力を貰う。*/
             InputManager::GetInstance()->SetDimensionFlipFlag(true);
+
+            /* ゲームプレイ HUD スクリーンを非表示にする。*/
             if (pPlayer_ && pPlayer_->GetCameraManager())
                 pPlayer_->GetCameraManager()->SetButtonActionControl(true);
-            pScoreUI_ = FindGO<ScoreUI>("scoreui");
-            if (pScoreUI_)
-                pScoreUI_->Deactivate();
+
+            /* TutorialUIクラスを生成する。*/
             pTutorialSequencer_ = NewGO<TutorialSequencer>(0, "TutorialSequencer");
             pTutorialMessageUI_ = FindGO<TutorialMessageUI>("TutorialMessageUI");
             pTutorialCompleteUI_ = NewGO<TutorialCompleteUI>(0, "TutorialCompleteUI");
+
+            /* TutorialUIクラスのメッセージを更新する。*/
             if (pTutorialCompleteUI_ == nullptr)
                 pTutorialCompleteUI_ = NewGO<TutorialCompleteUI>(0, "TutorialCompleteUI");
+
+            /* TutorialUIクラスのメッセージを更新する。*/
             TutorialTextChange();
             if (pTutorialSequencer_)
                 pTutorialSequencer_->RefreshMessageList();
@@ -41,32 +50,46 @@ namespace nsApp
 
         void PlayerTutorialPauseStage::Update()
         {
-            Vector3 stickL = {g_pad[0]->GetLStickXF(), 0.0f, g_pad[0]->GetLStickYF()};
-            pPlayer_->SetKeyDirection(stickL);
+            /* 入力管理クラスから入力を貰う。*/
+            tutorialStick = {g_pad[0]->GetLStickXF(), 0.0f, g_pad[0]->GetLStickYF()};
+            pPlayer_->SetKeyDirection(tutorialStick);
 
-            float speedRate = 1.0f;
-
+            /* 移動速度を調整する。*/
             if (!pPlayer_->GetCharacterController().IsOnGround())
-                speedRate = 0.7f;
+                speedRate_ = 0.7f;
 
-            pPlayer_->CalculateMovement(stickL);
+            /* 移動処理を行う。*/
+            pPlayer_->CalculateMovement(tutorialStick);
 
+            /* ジャンプ処理を行う。*/
             JumpUpdatingProcessAtTutorial();
+
+            /* 移動処理を適用する。*/
             pPlayer_->ApplyMovement();
+
+            /* アニメーション更新処理を行う。*/
             AnimationUpdatingProcess();
+
+            /* 視点切替更新処理を行う。*/
             ViewpointChangeUpdatingProcessAtTutorial();
 
+            /* チュートリアルメッセージの更新処理を行う。*/
             if (pPlayer_ && pPlayer_->GetCameraManager())
                 pPlayer_->GetCameraManager()->Update();
         }
 
+
         void PlayerTutorialPauseStage::Exit()
         {
-            if (pScoreUI_)
+            /* 入力管理クラスから入力を貰う。*/
+            if (pGameplayHudHost_)
             {
-                pScoreUI_->Activate();
-                pScoreUI_ = nullptr;
+                if (auto* pScreen = pGameplayHudHost_->GetGameplayHudScreen())
+                    pScreen->SetVisible(true);
+                pGameplayHudHost_ = nullptr;
             }
+
+            /* TutorialUIクラスを削除する。*/
             if (pTutorialSequencer_)
             {
                 DeleteGO(pTutorialSequencer_);
@@ -74,8 +97,10 @@ namespace nsApp
             }
         }
 
+
         bool PlayerTutorialPauseStage::RequestID(uint8_t& request)
         {
+            /* チュートリアルがすべて終了した場合、ステートを Idle に変更する。*/
             if (pTutorialSequencer_ && pTutorialSequencer_->IsAllFinished())
             {
                 request = EnPlayerState::enState_Idle;
@@ -85,26 +110,35 @@ namespace nsApp
             return false;
         }
 
+
         void PlayerTutorialPauseStage::AnimationUpdatingProcess()
         {
+            /* プレイヤーのアニメーションを更新する。*/
             if (!pPlayer_->GetCharacterController().IsOnGround())
             {
+                /* 空中にいる場合は、ジャンプアニメーションを再生する。*/
                 const Vector3& stick = pPlayer_->GetKeyDirection();
 
+                /* 左右の入力に応じて、ジャンプ中のアニメーションを切り替える。*/
                 if (stick.x < -0.01f)
                     pPlayer_->SetCurrentIndex(1);
+
+                /* 左右の入力に応じて、ジャンプ中のアニメーションを切り替える。*/
                 else if (stick.x > 0.01f)
                     pPlayer_->SetCurrentIndex(5);
 
                 return;
             }
 
+            /* 地上にいる場合は、移動アニメーションを再生する。*/
             currentTime_ += g_gameTime->GetFrameDeltaTime();
             if (currentTime_ >= 0.4f)
                 currentTime_ = 0.0f;
 
+            /* 左右の入力に応じて、移動中のアニメーションを切り替える。*/
             const Vector3& stick = pPlayer_->GetKeyDirection();
 
+            /* 左右の入力に応じて、移動中のアニメーションを切り替える。*/
             if (fabsf(stick.x) > 0.1f || fabsf(stick.z) > 0.1f)
             {
                 if (stick.x < 0.0f)
@@ -139,48 +173,57 @@ namespace nsApp
             }
         }
 
+
         void PlayerTutorialPauseStage::JumpUpdatingProcessAtTutorial()
         {
+            /* ジャンプ処理を行う。*/
             Vector3& speed = pPlayer_->GetMoveSpeed();
-            bool isGround = pPlayer_->GetCharacterController().IsOnGround();
+            isGround_ = pPlayer_->GetCharacterController().IsOnGround();
 
-            if (isGround)
+            /* ジャンプボタンが押された場合、ジャンプ処理を行う。*/
+            if (isGround_)
             {
+                /* 地上にいる場合は、ジャンプ処理を行う。*/
                 if (speed.y < 0.0f)
                     speed.y = 0.0f;
 
+                /* ジャンプボタンが押された場合、ジャンプ処理を行う。*/
                 if (g_pad[0]->IsTrigger(enButtonA))
                 {
                     speed.y = pPlayer_->GetJumpPower();
-
                     nsCore::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Player_Jump);
-
                     pPlayer_->SetCurrentIndex(pPlayer_->GetKeyDirection().x < 0 ? 0 : 4);
                 }
             }
             else
             {
+                /* 空中にいる場合は、落下処理を行う。*/
                 if (speed.y > 0.0f)
                 {
+                    /* 上昇中の場合は、ジャンプボタンが押されているかどうかで落下速度を調整する。*/
                     if (!g_pad[0]->IsPress(enButtonA))
                         speed.y -= 8.0f * 2.0f;
                     else
                         speed.y -= 8.0f;
                 }
-                else
-                {
-                    speed.y -= 8.0f * 1.2f;
-                }
 
+                /* 落下中の場合は、落下速度を調整する。*/
+                else
+                    speed.y -= 8.0f * 1.2f;
+
+                /* 落下速度の上限を設定する。*/
                 if (speed.y < -200.0f)
                     speed.y = -200.0f;
             }
         }
 
+
         void PlayerTutorialPauseStage::ViewpointChangeUpdatingProcessAtTutorial()
         {
+            /* 視点切替処理を行う。*/
             auto* pWall = FindGO<app::stage::Wall>("wall");
 
+            /* 視点切替ボタンが押された場合、視点切替処理を行う。*/
             if (pPlayer_->TryFlipDimension(true))
             {
                 if (pWall)

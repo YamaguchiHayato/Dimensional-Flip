@@ -12,10 +12,6 @@
 #include "Src/Core/Job/JobHandle.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
-#include "Src/UI/HPbarUI.h"
-#include "Src/UI/NumberUI.h"
-#include "Src/UI/ScoreUI.h"
-#include "Src/UI/TimerUI.h"
 #include "Src/UI/UIBase.h"
 #include "stdint.h"
 
@@ -27,6 +23,7 @@ namespace nsApp
     namespace nsUI
     {
         class BossHudScreenHost;
+        class GameplayHudScreenHost; 
     }
     namespace nsPresentation
     {
@@ -46,6 +43,8 @@ namespace nsApp
             Game() = default;
             virtual ~Game();
 
+
+        public:
             /**
              * @brief ゲームを開始する。
              * @return ゲーム開始に成功した場合は true、失敗した場合は false。
@@ -57,6 +56,8 @@ namespace nsApp
              */
             void Update();
 
+
+        public: 
             /**
              * @brief ゲームを描画する。
              * @param nextStageID 次のステージ ID。
@@ -99,25 +100,44 @@ namespace nsApp
              */
             nsPresentation::BossHudData* GetBossHudData() { return buildHelper_.GetBossHudData(); }
 
+            /**
+             * @brief ゲームプレイ HUD 用 ScreenHost を取得する。
+             * @return GameplayHudScreenHost。未生成なら nullptr。
+             */
+            nsUI::GameplayHudScreenHost* GetGameplayHudScreenHost() { return buildHelper_.GetGameplayHudScreenHost(); }
+
+            /**
+             * @brief ゲームプレイ HUD 用データを取得する。
+             * @return GameplayHudData へのポインタ。
+             */
+            nsPresentation::GameplayHudData* GetGameplayHudData() { return buildHelper_.GetGameplayHudData(); }
+
+            /**
+             * @brief ステージタイマーをリセットする。
+             */
+            void ResetStageTimer();
+
+            /**
+             * @brief ステージタイマーを更新する。
+             */
+            void UpdateStageTimer();
+
 
         private:
-            /* ステージ遷移の状態を表す列挙型。 */
+            /**
+             * @brief プレイヤーのインスタンスを生成する。
+             */
             void PlayerCreateInstance();
-            void UICreateInstance();
-            void TimerCreateInstance();
-            void NumberCreateInstance();
-            void ScoreCreateInstance();
-            void HPbarCreateInstance();
+
+            /**
+             * @brief ステージ遷移の状態を更新する。
+             */
             void UpdateTransition();
 
 
         private:
             InGameBuildHelper buildHelper_;
 
-            TimerUI* pTimerUI_ = nullptr;
-            NumberUI* pNumberUI_ = nullptr;
-            ScoreUI* pScoreUI_ = nullptr;
-            HPbarUI* pHpbarUI_ = nullptr;
             Fade* pFade_ = nullptr;
             Player* pPlayer_ = nullptr;
             CameraManager* pCameraManager_;
@@ -132,6 +152,9 @@ namespace nsApp
 
             bool m_isFadeInEnd = false;
             bool m_hasAppliedStageBgm_ = false;
+            float stageTimer_ = 90.0f;
+            bool timeUpFlag_ = false;
+
 
             enum class StageLoadPhase : uint8_t
             {

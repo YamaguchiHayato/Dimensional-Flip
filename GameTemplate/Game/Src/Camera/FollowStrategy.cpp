@@ -3,7 +3,6 @@
 #include "FollowStrategy.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/Core/BossUIManager.h"
 
 namespace
 {

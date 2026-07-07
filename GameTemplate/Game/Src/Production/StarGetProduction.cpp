@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "StarGetProduction.h"
 
 #include "Src/Actor/Character/Player/Player.h"
@@ -11,9 +11,7 @@
 #include "Src/Core/StageManager.h"
 
 #include "Src/Actor/Stage/BackGround/ScrollStageBackGround.h"
-#include "Src/UI/NumberUI.h"
-#include "Src/UI/ScoreUI.h"
-
+#include "Src/Core/Game.h"
 
 namespace
 {
@@ -26,20 +24,20 @@ namespace nsApp
     {
         void StarGetProduction::StartSequence(Player* pPlayer, Star* pStar)
         {
+            /* 初期化。*/
             pPlayer_ = pPlayer;
             pStar_ = pStar;
             starPos_ = pStar_->GetStarPosition();
             playerStartPos_ = pPlayer_->GetPlayerPos();
             initialCameraHeight_ = g_camera3D->GetHeight();
-
             pPlayer_->SetPaused(true);
 
-            // 1. 演出開始時にスターの座標で背景を固定する
+            /* Scroll背景を固定する。*/
             auto* pBG = FindGO<nsApp::nsStage::nsScrollBackGround::ScrollStageBackGround>("BackGround");
             if (pBG)
                 pBG->SetOverrideTrackingPosition(starPos_);
 
-            // 2. カメラのプレイヤー追従を停止させる
+            /* カメラの追従を止める。*/
             auto* pCamMgr = FindGO<CameraManager>("cameramanager");
             if (pCamMgr)
                 pCamMgr->SetTracking(false);
@@ -172,22 +170,18 @@ namespace nsApp
 
         void StarGetProduction::CollectAndSendResultData()
         {
-            // 1. UIインスタンスを取得
-            auto* pNumberUI = NumberUI::GetInstance();
-            auto* pScoreUI = ScoreUI::GetInstance();
-
-            // 2. データ格納用
             nsApp::nsStage::StageResultData finalData;
 
-            // 3. タイム収集
-            if (pNumberUI)
-                finalData.clearTime_ = pNumberUI->GetTimer();
+            auto* pGame = FindGO<nsCore::Game>("game");
+            if (pGame != nullptr)
+            {
+                if (auto* pHudData = pGame->GetGameplayHudData())
+                {
+                    finalData.clearTime_ = static_cast<float>(pHudData->GetTimerSeconds());
+                    finalData.baseScore_ = pHudData->GetScore();
+                }
+            }
 
-            // 4. スコア収集
-            if (pScoreUI)
-                finalData.baseScore_ = (int) pScoreUI->GetScore();
-
-            // 5. StageManagerに送信
             auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
             if (pStageManager)
                 pStageManager->SetStageResult(finalData);
@@ -220,7 +214,5 @@ namespace nsApp
                 pPlayer_->SetCurrentIndex(0);
             }
         }
-
-
     } // namespace production
 } // namespace app

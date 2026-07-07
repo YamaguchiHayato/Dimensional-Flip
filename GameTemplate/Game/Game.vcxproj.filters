@@ -176,18 +176,6 @@
     <ClCompile Include="Src\UI\UIBase.cpp">
       <Filter>Src\StateMachine\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Src\UI\TimerUI.cpp">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\UI\NumberUI.cpp">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\UI\ScoreUI.cpp">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\UI\HPbarUI.cpp">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Scene\Scene.cpp">
       <Filter>Src\Scene</Filter>
     </ClCompile>
@@ -677,18 +665,6 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\UI\UIBase.h">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\UI\TimerUI.h">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\UI\NumberUI.h">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\UI\ScoreUI.h">
-      <Filter>Src\StateMachine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\UI\HPbarUI.h">
       <Filter>Src\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene\Scene.h">

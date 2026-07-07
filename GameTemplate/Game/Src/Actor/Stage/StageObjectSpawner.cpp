@@ -6,7 +6,6 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Camera/Dimensiontrigger.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Parameter/Stage/StageSpawnTable.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "StageObjectSpawner.h"

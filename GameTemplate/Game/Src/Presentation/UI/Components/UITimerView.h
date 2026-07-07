@@ -8,53 +8,68 @@ namespace nsApp
 
         /**
          * @class UITimerView
-         * @brief TimerDisplayLogic の結果を描画する View。
+         * @brief タイマー残り秒数を Font で描画する View。
          *
-         * Phase A: Logic の結果を保持するだけ（Draw は空）。
-         * Phase B: UISpriteView で BossHudScreen と同型の描画を追加する。
-         *
-         * @note .h では TimerDisplayLogic を include しない（前方宣言のみ）。
-         *       完全型が必要な処理は .cpp 側で行う。
+         * 旧 NumberUI と同じく FontRender + "%02d" 表示。
+         * GameplayHubUiNames の桁スプライトは使わない。
          */
         class UITimerView
         {
         public:
             /**
-             * @brief コンストラクタ。
+             * @brief UITimerView のコンストラクタ。
              */
             UITimerView();
 
             /**
-             * @brief 描画位置を設定する。
-             * @param x X座標。
-             * @param y Y座標。
+             * @brief UITimerView のデストラクタ。
+             * @param x X 座標。
+             * @param y Y 座標。
              */
             void SetPosition(float x, float y);
 
             /**
-             * @brief 桁間隔を設定する。
-             * @param spacing 桁間隔（ピクセル）。
+             * @brief UITimerView のデストラクタ。
+             * @param spacing 桁間隔。
              */
             void SetDigitSpacing(float spacing);
 
             /**
-             * @brief TimerDisplayLogic の結果を適用する。
-             * @param logic TimerDisplayLogic の参照。
+             * @brief UITimerView のデストラクタ。
+             * @param logic タイマー表示ロジック。
              */
             void ApplyLogic(const TimerDisplayLogic& logic);
 
             /**
-             * @brief 描画する。
+             * @brief UITimerView の描画。
              * @param rc 描画コンテキスト。
              */
             void Draw(RenderContext& rc);
 
 
         private:
-            float posX_; //! x座標。
-            float posY_; //! y座標。
-            float digitSpacing_; //! 桁間隔（ピクセル）。
-            int cachedSeconds_;  //! TimerDisplayLogic から適用された残り秒数のキャッシュ。
+            /**
+             * @brief UITimerView のフォントを初期化する。
+             */
+            void InitFont();
+
+            /**
+             * @brief 旧 TimerUI の背景バーを初期化する。
+             */
+            void InitTimerBar();
+
+
+        private:
+            float posX_; //! < X 座標。
+            float posY_;         //! < Y 座標。
+            float digitSpacing_; // 未使用（将来スプライト化したとき用）
+            bool timerBarInitialized_;
+
+
+            SpriteRender timerBar_; 
+            FontRender timerFont_; //! < タイマー用フォントレンダラー。
+            wchar_t timerText_[8]; //! < タイマー表示用テキストバッファ。
+            int cachedSeconds_;    //! < キャッシュされた秒数。前回描画時の秒数を保持しておく。
         };
     } /* namespace nsUI */
 } /* namespace nsApp */

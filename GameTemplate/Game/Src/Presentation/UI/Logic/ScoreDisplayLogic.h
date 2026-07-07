@@ -37,6 +37,11 @@ namespace nsApp
              */
             int GetDigit(int index) const;
 
+            /**
+             * @brief 設定済みスコアを返す。
+             */
+            int GetScore() const { return score_; }
+
 
         private:
             /**

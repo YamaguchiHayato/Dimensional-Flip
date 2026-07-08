@@ -7,7 +7,7 @@
 #include "Src/Presentation/UI/Screens/BossHubScreen.h"
 #include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"   
 #include "Src/Presentation/UI/Screens/GameplayHudScreen.h"       
-
+#include "Src/UI/Pause/PauseMenuUI.h"
 
 namespace nsApp
 {
@@ -25,16 +25,15 @@ namespace nsApp
         InitializeBuildFunctions();
     }
 
-
     void InGameBuildHelper::InitializeBuildFunctions()
     {
         buildFunctions_.clear();
         buildFunctions_.push_back([this]() { BuildParameters(); });
         buildFunctions_.push_back([this]() { BuildBossHudUi(); });
         buildFunctions_.push_back([this]() { BuildGameplayHudUiStep(); });
-        buildFunctions_.push_back([this]() { FinishBuild(); });           
+        buildFunctions_.push_back([this]() { BuildPauseMenuUiStep(); });
+        buildFunctions_.push_back([this]() { FinishBuild(); });
     }
-
 
     void InGameBuildHelper::BuildParameters()
     {
@@ -44,7 +43,6 @@ namespace nsApp
             OutputDebugStringA("InGameBuildHelper::BuildParameters - LoadAll failed.\n");
     }
 
-
     void InGameBuildHelper::BuildBackGroundStep()
     {
         /* ステージ背景を生成。*/
@@ -53,12 +51,10 @@ namespace nsApp
             OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
     }
 
-
     void InGameBuildHelper::FinishBuild()
     {
         isFinished_ = true;
     }
-
 
     void InGameBuildHelper::BuildBossHudUi()
     {
@@ -73,7 +69,6 @@ namespace nsApp
         /* BossHudScreenHost を生成する（接続は ConnectBossHudData で行う）。 */
         pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
     }
-
 
     float InGameBuildHelper::GetProgress() const
     {
@@ -90,7 +85,6 @@ namespace nsApp
         return progress;
     }
 
-
     void InGameBuildHelper::BuildGameplayHudUiStep()
     {
         /* 二重生成防止 */
@@ -106,6 +100,26 @@ namespace nsApp
         ConnectGameplayHudData();
     }
 
+    void InGameBuildHelper::BuildPauseMenuUiStep()
+    {
+        /* 二重生成防止 */
+        if (pPauseMenuUI_ != nullptr)
+            return;
+
+        /* PauseMenuUI を生成。*/
+        pPauseMenuUI_ = NewGO<nsUI::PauseMenuUI>(1, "PauseMenuUI");
+    }
+
+    void InGameBuildHelper::DestroyPauseMenuUi()
+    {
+        if (pPauseMenuUI_ != nullptr)
+        {
+            delete pPauseMenuUI_;
+            pPauseMenuUI_ = nullptr;
+        }
+        else if (auto* pPause = FindGO<nsUI::PauseMenuUI>("PauseMenuUI"))
+            delete pPause;
+    }
 
     void InGameBuildHelper::ConnectGameplayHudData()
     {
@@ -121,7 +135,6 @@ namespace nsApp
         /* Game 内の GameplayHudData と Screen を接続 */
         pScreen->ConnectToData(&gameplayHudData_);
     }
-
 
     void InGameBuildHelper::ConnectBossHudData()
     {
@@ -154,16 +167,14 @@ namespace nsApp
         /* 二重破棄防止 */
         if (pGameplayHudScreenHost_ != nullptr)
         {
-            /* Host を破棄する。*/
             DeleteGO(pGameplayHudScreenHost_);
             pGameplayHudScreenHost_ = nullptr;
         }
 
-        /* 念のため、FindGO で探して破棄する。*/
+        /* 念のため、FindGO で探して破棄する */
         else if (auto* pHud = FindGO<nsUI::GameplayHudScreenHost>("GameplayHudScreenHost"))
             DeleteGO(pHud);
     }
-
 
     void InGameBuildHelper::ExecuteNextBuildFunction()
     {

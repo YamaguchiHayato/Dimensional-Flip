@@ -21,6 +21,7 @@ namespace nsApp
     {
         class BossHudScreenHost;
         class GameplayHudScreenHost;
+        class PauseMenuUI; 
     }
 
     class InGameBuildHelper
@@ -99,6 +100,12 @@ namespace nsApp
         nsPresentation::GameplayHudData* GetGameplayHudData() { return &gameplayHudData_; }
 
         /**
+         * @brief ポーズメニュー UI を取得する。
+         * @return ポーズメニュー UI。初期化が完了していない場合は nullptr。
+         */
+        nsUI::PauseMenuUI* GetPauseMenuUI() const { return pPauseMenuUI_; }
+
+        /**
          * @brief ゲームプレイ HUD データとスクリーンを接続する。
          */
         void ConnectGameplayHudData();
@@ -112,6 +119,11 @@ namespace nsApp
          * @brief ゲームプレイ HUD を破棄する。
          */
         void DestroyGameplayHud();
+
+        /**
+         * @brief ボス HUD を破棄する。
+         */
+        void DestroyPauseMenuUi();
 
 
     private:
@@ -127,17 +139,18 @@ namespace nsApp
         void FinishBuild();
         void BuildBossHudUi();
         void BuildGameplayHudUiStep();
-
+        void BuildPauseMenuUiStep();
 
     private:
-        nsSystem::ParameterSystem parameterSystem_; //! パラメータシステム。
         std::vector<BuildFunction> buildFunctions_; //! < ビルド関数のリスト。
+        nsUI::BossHudScreenHost* pBossHudHost_ = nullptr;           //! < 生成されたボス HUD スクリーンホスト。
+        nsUI::GameplayHudScreenHost* pGameplayHudScreenHost_ = nullptr;//! < 生成されたゲームプレイ HUD スクリーンホスト。
+        nsUI::PauseMenuUI* pPauseMenuUI_ = nullptr;
+        nsPresentation::BossHudData bossHudData_;         //! < ボス HUD データ。
+        nsPresentation::GameplayHudData gameplayHudData_; //! < ゲームプレイ HUD データ。
+        nsSystem::ParameterSystem parameterSystem_;       //! パラメータシステム。
         nsStage::nsBackGround::IBackGround* pBackGround_ = nullptr; //! < 生成された背景。
         nsStage::StageID stageID_ = nsStage::StageID::sInvalid;     //! < ステージ ID。
-        nsUI::BossHudScreenHost* pBossHudHost_ = nullptr;           //! < 生成されたボス HUD スクリーンホスト。
-        nsPresentation::BossHudData bossHudData_;                   //! < ボス HUD データ。
-        nsPresentation::GameplayHudData gameplayHudData_;           //! < ゲームプレイ HUD データ。
-        nsUI::GameplayHudScreenHost* pGameplayHudScreenHost_ = nullptr;//! < 生成されたゲームプレイ HUD スクリーンホスト。
 
         bool isFinished_ = false; //! < 初期化が完了したかどうか。
         bool isLoadSuccess_ = true; //! < 初期化が成功したかどうか。

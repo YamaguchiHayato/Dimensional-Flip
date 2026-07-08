@@ -384,6 +384,8 @@
     <ClCompile Include="Src\UI\PatchNote\PatchNoteTitleBarUI.cpp" />
     <ClCompile Include="Src\UI\PatchNote\PatchNoteWindowUI.cpp" />
     <ClCompile Include="Src\UI\PatchNote\TitlePatchNoteHintUI.cpp" />
+    <ClCompile Include="Src\UI\Pause\PauseController.cpp" />
+    <ClCompile Include="Src\UI\Pause\PauseMenuUI.cpp" />
     <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
@@ -599,6 +601,8 @@
     <ClInclude Include="Src\UI\PatchNote\PatchNoteTypes.h" />
     <ClInclude Include="Src\UI\PatchNote\PatchNoteWindowUI.h" />
     <ClInclude Include="Src\UI\PatchNote\TitlePatchNoteHintUI.h" />
+    <ClInclude Include="Src\UI\Pause\PauseController.h" />
+    <ClInclude Include="Src\UI\Pause\PauseMenuUI.h" />
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />

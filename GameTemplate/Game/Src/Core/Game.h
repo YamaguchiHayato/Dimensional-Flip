@@ -13,6 +13,7 @@
 #include "Src/Core/SceneManager.h"
 #include "Src/Production/Fade.h"
 #include "Src/UI/UIBase.h"
+#include "Src/UI/Pause/PauseController.h"
 #include "stdint.h"
 
 class CameraManager;
@@ -143,7 +144,7 @@ namespace nsApp
             CameraManager* pCameraManager_;
             nsStage::nsBackGround::IBackGround* pBackGrounds_ = nullptr;
             nsK2EngineLow::GameSoundEngine* pSoundEngine_ = nullptr;
-
+            nsCore::PauseController pauseController_;
             SceneTransitionState state_ = SceneTransitionState::None;
             nsApp::nsStage::StageID nextStageID_ = nsApp::nsStage::StageID::sInvalid;
             Stopwatch stageClearTimer_;

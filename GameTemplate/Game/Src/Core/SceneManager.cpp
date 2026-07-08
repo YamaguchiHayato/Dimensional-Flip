@@ -46,7 +46,7 @@ namespace
         DestroyNamedGO("gameOver");                 //! gameOverを削除。。
         DestroyNamedGO("gameClear");                //! gameClearを削除。。
         DestroyNamedGO("stage_clear_logo");         //! stage_clear_logoを削除。。
-
+        DestroyNamedGO("PauseMenuUI");              //! PauseMenuUIを削除。。
 
         QueryGOs<IGameObject>("StageIcon", [](IGameObject* go) { DeleteGO(go); return true;});
 

@@ -157,6 +157,9 @@
     <Filter Include="Src\Core\Job">
       <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\UI\Pause">
+      <UniqueIdentifier>{9040fb6a-e7a3-4b70-8b29-d06f3feb7da5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -663,12 +666,20 @@
     <ClCompile Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.cpp">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.cpp">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClCompile>
     <ClCompile Include="Src\Presentation\UI\Components\BossStatusHudComponent.cpp">
       <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp">
+      <Filter>Src\Presentation\UI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Pause\PauseController.cpp">
+      <Filter>Src\UI\Pause</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\UI\Pause\PauseMenuUI.cpp">
+      <Filter>Src\UI\Pause</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1280,7 +1291,6 @@
     <ClInclude Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.h">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
     <ClInclude Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.h">
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClInclude>
@@ -1289,6 +1299,15 @@
     </ClInclude>
     <ClInclude Include="Src\Presentation\UI\BossAttackHudHelper.h">
       <Filter>Src\Presentation\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h">
+      <Filter>Src\Presentation\UI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Pause\PauseMenuUI.h">
+      <Filter>Src\UI\Pause</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\UI\Pause\PauseController.h">
+      <Filter>Src\UI\Pause</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

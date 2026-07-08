@@ -41,8 +41,8 @@ namespace nsApp
     {
         Game::~Game()
         {
-            // SceneManager がシーン切替前に Renderer を外すので、ここでは触らない
             buildHelper_.DestroyGameplayHud();
+            buildHelper_.DestroyPauseMenuUi(); 
 
             if (pBackGrounds_)
             {
@@ -63,6 +63,7 @@ namespace nsApp
             }
 
             nsApp::nsStage::StageManager::DeleteInstance();
+
         }
 
 
@@ -109,6 +110,7 @@ namespace nsApp
 
             buildHelper_.ConnectGameplayHudData();
             buildHelper_.ConnectBossHudData();
+            pauseController_.Initialize(buildHelper_.GetPauseMenuUI());
 
             if (auto* pHubData = buildHelper_.GetGameplayHudData())
             {
@@ -168,6 +170,23 @@ namespace nsApp
 
             // 遷移処理を毎フレーム更新。
             UpdateTransition();
+
+            // ポーズ処理を毎フレーム更新。
+            const auto pauseAction = pauseController_.Update(this);
+            if (pauseController_.IsPaused())
+            {
+                if (pPlayer_)
+                    pPlayer_->SetPaused(true);
+
+                if (pauseAction == nsCore::PauseAction::BackToTitle)
+                    SceneManager::GetInstance()->ChangeScene(SceneID::sTitle);
+
+                return;
+            }
+            else
+                if (pPlayer_ && !nsApp::nsStage::StageSetup::ShouldKeepPlayerPaused())
+                    pPlayer_->SetPaused(false);
+
 
             if (state_ != SceneTransitionState::None)
                 return;

@@ -57,6 +57,7 @@ namespace nsApp
             }
         }
 
+
         bool WorldSelectScene::Start()
         {
             isTransitionHandled_ = false;
@@ -70,9 +71,20 @@ namespace nsApp
              */
             if (g_camera3D)
             {
+                using nsK2EngineLow::Camera;
+
+                g_camera3D->SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Perspective);
+                g_camera3D->SetViewAngle(Math::DegToRad(60.0f));
+                g_camera3D->SetAspect(16.0f / 9.0f);
+                g_camera3D->SetNear(1.0f);
+                g_camera3D->SetFar(10000.0f);
+
                 g_camera3D->SetPosition({0.0f, 20.0f, -40.0f});
                 g_camera3D->SetTarget({0.0f, 0.0f, 0.0f});
+                g_camera3D->SetUp({0.0f, 1.0f, 0.0f});
+                g_camera3D->Update();
             }
+
 
             nsCore::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_StageSelect);
 
@@ -213,15 +225,22 @@ namespace nsApp
                     nsStage::StageManager::SetNextInitStageID(selectID);
                     SceneManager::GetInstance()->ChangeScene(nsScene::SceneID::sInGame);
                 }
+
                 else if (isButtonB_)
-                {
                     SceneManager::GetInstance()->ChangeScene(nsScene::SceneID::sTitle);
-                }
             }
         }
 
         void WorldSelectScene::CreateSkyCube()
         {
+            /**
+             * @brief 前シーンの SkyCube 残骸を消してから生成する
+             */
+            if (auto* old = FindGO<SkyCube>("skycube"))
+                DeleteGO(old);
+            if (auto* old = FindGO<SkyCube>("SkyCube"))
+                DeleteGO(old);
+
             /**
              * @brief 夜空 SkyCube を背景表示専用で生成する
              */

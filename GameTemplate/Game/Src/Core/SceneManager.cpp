@@ -24,25 +24,29 @@ namespace
     {
         SceneManager::ResetRenderingStateForScene();
 
-        DestroyNamedGO("skycube");
-        DestroyNamedGO("SkyCube");
-        DestroyNamedGO("WorldSelectUI");
-        DestroyNamedGO("player");
-        DestroyNamedGO("timerui");
-        DestroyNamedGO("numberui");
-        DestroyNamedGO("scoreui");
-        DestroyNamedGO("hpbarui");
-        DestroyNamedGO("cameramanager");
-        DestroyNamedGO("BackGround");
-        DestroyNamedGO("EndRollManager");
-        DestroyNamedGO("boss");
-        DestroyNamedGO("game");
-        DestroyNamedGO("stagemanager");
-        DestroyNamedGO("stage");
-        DestroyNamedGO("dimensiontrigger");
-        DestroyNamedGO("CutInView");
-        DestroyNamedGO("GameplayHudScreenHost");
-        DestroyNamedGO("BossHudScreenHost");
+        DestroyNamedGO("skycube");                  //! SkyCubeを削除。。
+        DestroyNamedGO("SkyCube");                  //! SkyCubeを削除。。
+        DestroyNamedGO("WorldSelectUI");            //! WorldSelectUIを削除。。
+        DestroyNamedGO("player");                   //! playerを削除。。
+        DestroyNamedGO("timerui");                  //! timeruiを削除。。
+        DestroyNamedGO("numberui");                 //! numberuiを削除。。
+        DestroyNamedGO("scoreui");                  //! scoreuiを削除。。
+        DestroyNamedGO("hpbarui");                  //! hpbaruiを削除。。
+        DestroyNamedGO("cameramanager");            //! cameramanagerを削除。。
+        DestroyNamedGO("BackGround");               //! BackGroundを削除。。
+        DestroyNamedGO("EndRollManager");           //! EndRollManagerを削除。。
+        DestroyNamedGO("boss");                     //! bossを削除。。
+        DestroyNamedGO("game");                     //! gameを削除。。
+        DestroyNamedGO("stagemanager");             //! stagemanagerを削除。。
+        DestroyNamedGO("stage");                    //! stageを削除。。
+        DestroyNamedGO("dimensiontrigger");         //! dimensiontriggerを削除。。
+        DestroyNamedGO("CutInView");                //! CutInViewを削除。。
+        DestroyNamedGO("GameplayHudScreenHost");    //! GameplayHudScreenHostを削除。。
+        DestroyNamedGO("BossHudScreenHost");        //! BossHudScreenHostを削除。。
+        DestroyNamedGO("gameOver");                 //! gameOverを削除。。
+        DestroyNamedGO("gameClear");                //! gameClearを削除。。
+        DestroyNamedGO("stage_clear_logo");         //! stage_clear_logoを削除。。
+
 
         QueryGOs<IGameObject>("StageIcon", [](IGameObject* go) { DeleteGO(go); return true;});
 

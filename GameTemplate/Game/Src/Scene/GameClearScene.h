@@ -41,6 +41,8 @@ namespace nsApp
         private:
             GameClear* pGameClear_ = nullptr; //!< リザルト UI 演出
             SkyCube* pSkyCube_ = nullptr;     //!< 背景用（任意。2D のみなら削除可）
+
+            bool isTransitionRequested_ = false; //! < ステージ遷移リクエスト済みかどうかのフラグ >
         };
     }
 }

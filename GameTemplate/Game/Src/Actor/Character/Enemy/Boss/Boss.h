@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 #include <vector>

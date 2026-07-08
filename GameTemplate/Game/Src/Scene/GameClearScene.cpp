@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
@@ -63,16 +63,25 @@ namespace nsApp
             return true;
         }
 
+
         void GameClearScene::Update()
         {
-            /**
-             * @brief 演出終了後 A ボタンでタイトルへ戻る
-             */
-            if (pGameClear_ && pGameClear_->IsFinished())
+            /** @brief リザルト演出が終了していない場合は、次の処理を行わない。*/
+            if (!pGameClear_ || !pGameClear_->IsFinished())
+                return;
+
+            /** @brief A ボタンが押された場合、フェードアウトを開始してシーン遷移をリクエストする。*/
+            if (!isTransitionRequested_ && g_pad[0]->IsTrigger(enButtonA))
             {
-                if (g_pad[0]->IsTrigger(enButtonA))
-                    SceneManager::GetInstance()->ChangeScene(nsScene::SceneID::sTitle);
+                isTransitionRequested_ = true;
+                SceneManager::GetInstance()->GetFade()->StartFadeOut();
+                return;
             }
+
+            /** @brief フェードアウトが終了した場合、タイトルシーンに遷移する。*/
+            auto* pFade = SceneManager::GetInstance()->GetFade();
+            if (isTransitionRequested_ && pFade && pFade->IsFadeOutEnd())
+                SceneManager::GetInstance()->ChangeScene(nsScene::SceneID::sTitle);
         }
     } // namespace nsScene
 } // namespace nsApp

@@ -26,6 +26,10 @@ namespace nsApp
 
         void BossHudScreen::Draw(RenderContext& rc)
         {
+            /* 描画可能かチェック。 */
+            if (!IsVisible())
+                return;
+
             /* 描画をブロックする場合は描画しない。 */
             if (IsDrawBlocked())
                 return;

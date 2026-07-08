@@ -2,6 +2,7 @@
 
 #include "BossAttackFireBallState.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -31,6 +32,9 @@ namespace app
 
             /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
             pBoss_->SetAttackType(app::enemyStatus::AttackType::FireBall);
+
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::FireBall);
         }
 
 
@@ -65,6 +69,8 @@ namespace app
             /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
             pBoss_->SetAttackType(app::enemyStatus::AttackType::FireBall);
 
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::FireBall);
         }
 
 

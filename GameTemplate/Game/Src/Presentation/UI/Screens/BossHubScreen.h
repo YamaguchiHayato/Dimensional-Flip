@@ -52,6 +52,14 @@ namespace nsApp
 
 
         private:
+            /**
+             * @brief 描画をブロックするかを判定する。
+             * @return 描画をブロックする場合は true、描画可能な場合は false。
+             */
+            bool IsDrawBlocked() const;
+
+
+        private:
             nsPresentation::IBossHudData* pHudData_ = nullptr; //! データソース。nullptr 可。
             BossStatusHudComponent* pStatusComponent_ = nullptr; //! ボスステータス HUD Component。nullptr 可。
             BossAttackIndicatorHudComponent* pAttackComponent_ = nullptr; //! ボス攻撃予告 HUD Component。nullptr 可。

@@ -72,12 +72,14 @@ namespace nsApp
 
         float BossHudData::GetMaxHp() const
         {
+            /* Boss の最大 HP を返す。 */
             return BOSS_MAX_HP;
         }
 
 
         float BossHudData::GetHpRatio() const
         {
+            /* HP の割合を計算して返す。 */
             const float maxHp = GetMaxHp();
             if (maxHp <= 0.0f)
                 return 0.0f;

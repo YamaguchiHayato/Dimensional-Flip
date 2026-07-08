@@ -1,27 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "BossStatusHudComponent.h"
-#include "Src/Presentation/UI/BossHudUiNames.h"
-
-namespace
-{
-    const float ICON_W = 350.0f;
-    const float ICON_H = 250.0f;
-    const float FRAME_W = 600.0f;
-    const float FRAME_H = 600.0f;
-    const float BAR_W = 520.0f;
-    const float BAR_H = 95.0f;
-    const float DMG_W = 550.0f;
-    const float DMG_H = 445.0f;
-
-    /* 旧 BossUIManager と同じ基準位置（画面座標）。 */
-    const Vector3 BASE_POS(650.0f, -400.0f, 0.0f);
-    const Vector3 ICON_POS(320.0f, -400.0f, 0.0f);    /* BASE + (-330, 0, 0) */
-    const Vector3 CURRENT_POS(370.0f, -400.0f, 0.0f); /* BASE + (-280, 0, 0) */
-
-    const float DAMAGE_BAR_LERP_SPEED = 0.005f;
-} // namespace
-
 
 namespace nsApp
 {
@@ -29,80 +8,107 @@ namespace nsApp
     {
         void BossStatusHudComponent::SetHpPercent(float percent)
         {
-            /* 0〜1 にクランプする。 */
+            /* パーセントを 0.0f から 1.0f の範囲に制限する。*/
             if (percent < 0.0f)
                 percent = 0.0f;
             if (percent > 1.0f)
                 percent = 1.0f;
 
+            /* 現在 HP パーセントを更新する。*/
             currentPercent_ = percent;
         }
 
 
         void BossStatusHudComponent::OnBuild()
         {
-            /* ボスアイコン。 */
-            bossIcon_.Init(FetchUIName("bossIcon").c_str(), ICON_W, ICON_H);
+            /* スプライトのパスを取得する。*/
+            /* ボスアイコン。*/
+            bossIcon_.Init(pathBossIcon_, iconW_, iconH_);
             bossIcon_.SetPivot({0.5f, 0.5f});
 
-            /* HP 枠。 */
-            hpFrame_.Init(FetchUIName("hpBar_flame").c_str(), FRAME_W, FRAME_H);
+            /* HP フレーム。*/
+            hpFrame_.Init(pathHpFrame_, frameW_, frameH_);
             hpFrame_.SetPivot({0.5f, 0.5f});
 
-            /* 現在 HP バー。 */
-            hpCurrent_.Init(FetchUIName("hpBar_current").c_str(), BAR_W, BAR_H);
-            hpCurrent_.SetPivot({0.5f, 0.5f});
-
-            /* ダメージバー。 */
-            hpDamage_.Init(FetchUIName("hpBar_damage").c_str(), DMG_W, DMG_H);
+            /* 現在 HP とダメージ HP。*/
+            hpCurrent_.Init(pathHpCurrent_, barW_, barH_);
+            hpCurrent_.SetPivot({0.0f, 0.5f});
+            hpDamage_.Init(pathHpDamage_, dmgW_, dmgH_);
             hpDamage_.SetPivot({0.5f, 0.5f});
 
+            /* ビルド完了フラグを立てる。*/
             isBuilt_ = true;
-        }
 
+            /* スプライトをリフレッシュする。*/
+            RefreshSprites();
+        }
 
         void BossStatusHudComponent::OnUpdate(float deltaTime)
         {
+            /* ダメージバーの減少速度を設定する。*/
             (void) deltaTime;
 
-            /* ダメージバーを current へゆっくり追従させる。 */
+            /* ダメージバーのパーセントを更新する。*/
             if (damagePercent_ > currentPercent_)
             {
-                damagePercent_ -= DAMAGE_BAR_LERP_SPEED;
+                /* ダメージバーのパーセントを減少させる。*/
+                damagePercent_ -= damageBarLerpSpeed_;
+
+                /* ダメージバーのパーセントが現在 HP パーセントを下回らないようにする。*/
                 if (damagePercent_ < currentPercent_)
                     damagePercent_ = currentPercent_;
             }
             else
+                /* ダメージバーのパーセントが現在 HP パーセントを下回った場合、現在 HP パーセントに合わせる。*/
                 damagePercent_ = currentPercent_;
+
+            /* スプライトをリフレッシュする。*/
+            RefreshSprites();
+        }
+
+
+        void BossStatusHudComponent::RefreshSprites()
+        {
+            /* ビルドが完了していない場合、スプライトの更新を行わない。*/
+            if (!isBuilt_)
+                return;
+
+            /* ダメージ HP のスプライトを更新する。*/
+            hpDamage_.SetPosition(basePos_);
+            hpDamage_.SetScale(Vector3::One);
+            hpDamage_.Update();
+
+            /* 現在 HP のスプライトを更新する。*/
+            hpCurrent_.SetPosition(currentPos_);
+            hpCurrent_.SetScale(Vector3(currentPercent_, 1.0f, 1.0f));
+            hpCurrent_.Update();
+
+            /* HP フレームのスプライトを更新する。*/
+            hpFrame_.SetPosition(basePos_);
+            hpFrame_.SetScale(Vector3::One);
+            hpFrame_.Update();
+
+            /* ボスアイコンのスプライトを更新する。*/
+            bossIcon_.SetPosition(iconPos_);
+            bossIcon_.SetScale(Vector3::One);
+            bossIcon_.Update();
         }
 
 
         void BossStatusHudComponent::OnDraw(RenderContext& rc, const Matrix& ownerWorld)
         {
+            /* ownerWorld は使用しないが、関数シグネチャの一部として受け取る。*/
             (void) ownerWorld;
 
+            /* ビルドが完了していない場合、描画を行わない。*/
             if (!isBuilt_)
                 return;
 
-            bossIcon_.SetPosition(ICON_POS);
-            bossIcon_.SetScale(Vector3::One);
-            bossIcon_.Update();
-            bossIcon_.Draw(rc);
-
-            hpFrame_.SetPosition(BASE_POS);
-            hpFrame_.SetScale(Vector3::One);
-            hpFrame_.Update();
-            hpFrame_.Draw(rc);
-
-            hpCurrent_.SetPosition(CURRENT_POS);
-            hpCurrent_.SetScale(Vector3(currentPercent_, 1.0f, 1.0f));
-            hpCurrent_.Update();
-            hpCurrent_.Draw(rc);
-
-            hpDamage_.SetPosition(BASE_POS);
-            hpDamage_.SetScale(Vector3(damagePercent_, 1.0f, 1.0f));
-            hpDamage_.Update();
+            /* スプライトを描画する。*/
             hpDamage_.Draw(rc);
+            hpCurrent_.Draw(rc);
+            hpFrame_.Draw(rc);
+            bossIcon_.Draw(rc);
         }
     } // namespace nsUI
 } // namespace nsApp

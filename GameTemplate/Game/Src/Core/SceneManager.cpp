@@ -41,6 +41,8 @@ namespace
         DestroyNamedGO("stage");
         DestroyNamedGO("dimensiontrigger");
         DestroyNamedGO("CutInView");
+        DestroyNamedGO("GameplayHudScreenHost");
+        DestroyNamedGO("BossHudScreenHost");
 
         QueryGOs<IGameObject>("StageIcon", [](IGameObject* go) { DeleteGO(go); return true;});
 

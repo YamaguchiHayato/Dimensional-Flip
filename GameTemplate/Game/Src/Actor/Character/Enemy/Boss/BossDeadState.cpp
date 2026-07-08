@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "BossDeadState.h"
-
 #include "Src/Production/Fade.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/SoundManager.h"
-#include "Src/Core/BossUIManager.h"
+#include "Src/Core/Game.h"
+#include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
 
 namespace app
 {
@@ -13,7 +13,15 @@ namespace app
     {
         void BossDeadState::Enter()
         {
-            nsApp::nsUI::BossUIManager::GetInstance().Shutdown();
+            /* ボス HUD を非表示にする */
+            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            {
+                if (auto* pHost = pGame->GetBossHudScreenHost())
+                {
+                    if (auto* pScreen = pHost->GetBossHudScreen())
+                        pScreen->SetVisible(false);
+                }
+            }
 
             // 死亡アニメーションを再生する。
             pBoss_->LoadAnimation(app::enemyStatus::BossAnimation::bossAnim_Dead, false, 0.2f);

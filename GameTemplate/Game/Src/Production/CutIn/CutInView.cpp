@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "Src/Core/BattlePhaseManager.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Production/CutIn/CutInLogoLayer.h"
 #include "Src/Production/CutIn/CutInMaskLayer.h"
 #include "Src/Production/CutIn/CutInScrollLayer.h"

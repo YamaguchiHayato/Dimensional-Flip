@@ -34,7 +34,8 @@ namespace app
             FireBall, ///< 火の玉（2D）
             Jump,     ///< ジャンプ攻撃（2D）
             Roar2D,   ///< 咆哮（2D）
-            Num       ///< 総数
+            Tumbler,  ///< 転倒（疲労）← 旧 BossUIManager::OnNotifyAttack(Tumbler) 相当
+            Num       ///< 非表示（旧 OnNotifyAttack(None) 相当）
         };
 
         /**

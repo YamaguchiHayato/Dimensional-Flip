@@ -10,7 +10,6 @@
 
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/SoundManager.h"
 
 // UI。
@@ -18,6 +17,7 @@
 
 // gimmick。
 #include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -59,10 +59,6 @@ namespace app
             }
 
 
-
-            // アイコンを描画するように通知。
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Tumbler);
-
             // 足場を生成する。
             app::core::BattlePhaseManager::GetInstance()->ActivateScaffolding();
 
@@ -71,6 +67,12 @@ namespace app
 
             // Seを一度だけ再生するフラグをリセット。
             isSePlayed_ = true;
+
+            /*
+             * アイコンを描画するように通知。
+             * 旧: BossUIManager::OnNotifyAttack(Tumbler)
+             */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Tumbler);
         }
 
 
@@ -115,10 +117,13 @@ namespace app
             // 復帰時に足場を消す。
             app::core::BattlePhaseManager::GetInstance()->DeactivateScaffolding();
 
-            // アイコンを消すように通知。
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::None);
-
             pBoss_->SetWeakPointHeight(22.0f, false);
+
+            /*
+             * アイコンを消すように通知。
+             * 旧: BossUIManager::OnNotifyAttack(None)
+             */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Num);
         }
 
 

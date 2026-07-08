@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "Thwomp.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/SoundManager.h"
@@ -32,6 +32,8 @@ namespace app
     {
         Thwomp::~Thwomp()
         {
+            app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Rotation);
+
             if (pCollisionObject_ != nullptr)
             {
                 DeleteGO(pCollisionObject_);
@@ -195,19 +197,23 @@ namespace app
                 break;
             }
 
+
             case MoveState::state_Waiting:
             {
-                // モデルを停止(落下後の余韻)。
                 waitTimer_ += deltaTime;
 
-                // 
                 if (waitTimer_ >= stopTimer_)
                 {
-                    app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Rotation, true);
+                    if (!hasPlayedRotationSE_)
+                    {
+                        app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Rotation, 1.0f);
+                        hasPlayedRotationSE_ = true;
+                    }
                     moveState_ = MoveState::state_Moving;
                 }
                 break;
             }
+
 
             case MoveState::state_Moving:
             {

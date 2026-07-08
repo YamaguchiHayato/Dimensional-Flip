@@ -5,6 +5,7 @@
 #include "Src/Actor/Character/Player/Player.h"
 
 #include "Src/Core/SoundManager.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -36,6 +37,12 @@ namespace app
             /* プレイヤーの位置に応じて、ボスの向きを変える。*/ 
             faceAngle_.SetRotationDegY(180.0f);
             pBoss_->SetRot(faceAngle_);
+
+            /* 攻撃タイプをジャンプ攻撃に設定。*/
+            pBoss_->SetAttackType(app::enemyStatus::AttackType::Jump);
+
+            /* 攻撃タイプのセット。*/
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Jump);
         }
 
 
@@ -50,6 +57,10 @@ namespace app
         {
             /* ジャンプ攻撃終了時の処理。*/
             pBoss_->SettNextInterval(2.5f);
+
+            /* 攻撃タイプのリセット。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Jump);
+
         }
 
 

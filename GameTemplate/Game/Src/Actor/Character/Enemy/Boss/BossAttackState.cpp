@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BossAttackState.h"
 
 
@@ -13,7 +13,6 @@
  
 // コア。
 #include "Src/Core/BattlePhaseManager.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Collision/CollisionManager.h"
 #include "Src/Core/Game.h"
 
@@ -28,6 +27,8 @@
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackFireBallState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackRoar2DState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackMeteo2DState.h"
+
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -104,8 +105,8 @@ namespace app
                 currentState_.reset(); // メモリ解放
             }
 
-            // 攻撃ステートを抜ける場合はアイコンを消す。
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::None);
+            /* 攻撃タイプの再抽選を行うため、リセット。*/
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Num);
         }
 
 
@@ -160,19 +161,16 @@ namespace app
             // 隕石攻撃ステート。
             case app::enemyStatus::Attack3DType::type_Meteor:
                 currentState_ = std::make_unique<BossAttackMeteoState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Meteor);
                 break;
 
             // 槍攻撃ステート。
             case app::enemyStatus::Attack3DType::type_Spear:
                 currentState_ = std::make_unique<BossAttackSpearState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Spear);
                 break;
 
             // 咆哮攻撃ステート。
             case app::enemyStatus::Attack3DType::type_3DRoar:
                 currentState_ = std::make_unique<BossAttackRoar3DState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Roar);
                 break;
 
             default:
@@ -209,28 +207,21 @@ namespace app
             {
             case app::enemyStatus::Attack2DType::type_Jump:
                 currentState_ = std::make_unique<BossAttackJumpState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Jump);
                 break;
 
             case app::enemyStatus::Attack2DType::type_FireBall:
                 currentState_ = std::make_unique<BossAttackFireBallState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::FireBall);
                 break;
 
             case app::enemyStatus::Attack2DType::type_2DRoar:
                 currentState_ = std::make_unique<BossAttackRoar2DState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Roar);
                 break;
 
 
             case app::enemyStatus::Attack2DType::type_2DMeteor:
                 currentState_ = std::make_unique<BossAttackMeteo2DState>();
-                SetUpAttackIcon(app::nsUI::BossAttackKind::Roar);
                 break;
             }
-
-            // UIManagerに通知。
-            NotifyAttackIcon();
         }
     } 
 } 

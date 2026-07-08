@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Game.h"
 #include "GameSoundEngine.h"
@@ -6,10 +6,6 @@
 #include "Src/Scene/LoadingScene.h"
 #include "Src/production/Fade.h"
 // UI。
-#include "Src/UI/HPbarUI.h"
-#include "Src/UI/NumberUI.h"
-#include "Src/UI/ScoreUI.h"
-#include "Src/UI/TimerUI.h"
 #include "Src/UI/UIBase.h"
 
 // マネージャー。
@@ -46,6 +42,7 @@ namespace nsApp
         Game::~Game()
         {
             // SceneManager がシーン切替前に Renderer を外すので、ここでは触らない
+            buildHelper_.DestroyGameplayHud();
 
             if (pBackGrounds_)
             {
@@ -65,31 +62,9 @@ namespace nsApp
                 pCameraManager_ = nullptr;
             }
 
-            if (pTimerUI_)
-            {
-                DeleteGO(pTimerUI_);
-                pTimerUI_ = nullptr;
-            }
-            if (pNumberUI_)
-            {
-                DeleteGO(pNumberUI_);
-                pNumberUI_ = nullptr;
-            }
-            if (pScoreUI_)
-            {
-                DeleteGO(pScoreUI_);
-                pScoreUI_ = nullptr;
-            }
-            if (pHpbarUI_)
-            {
-                DeleteGO(pHpbarUI_);
-                pHpbarUI_ = nullptr;
-            }
-
             nsApp::nsStage::StageManager::DeleteInstance();
-
-            // Flush は呼ばない（SceneManager 側でまとめて行う）
         }
+
 
         bool Game::Start()
         {
@@ -102,14 +77,18 @@ namespace nsApp
             // ステージ情報が必要なため、Build より先に StageManager を生成する。
             nsApp::nsStage::StageManager::CreateInstance();
 
-                
             const StageID startStageID = nsApp::nsStage::StageManager::GetInstance()->GetNextInitStageID();
 
             // TSV 読み込みとステージ背景生成（InGameBuildHelper）。
             {
+                /* InGameBuildHelperクラスを初期化。*/
                 buildHelper_.Initialize(startStageID);
+
+                /* InGameBuildHelperの初期化が完了するまでループ。*/
                 while (!buildHelper_.IsFinished())
                     buildHelper_.Update();
+
+                /* 初期化が失敗した場合はデバッグ出力。*/
                 if (!buildHelper_.IsLoadSuccess())
                     OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
             }
@@ -128,8 +107,15 @@ namespace nsApp
             app::core::SoundManager::CreateInstence();
             app::core::SoundManager::GetInstance()->Init();
 
-            // UIの生成。
-            UICreateInstance();
+            buildHelper_.ConnectGameplayHudData();
+            buildHelper_.ConnectBossHudData();
+
+            if (auto* pHubData = buildHelper_.GetGameplayHudData())
+            {
+                pHubData->SetTimerSeconds(static_cast<int>(stageTimer_));
+                pHubData->SetScore(0);
+                pHubData->SetPlayerHpRatio(1.0f);
+            }
 
             // Playerの生成。
             PlayerCreateInstance();
@@ -189,6 +175,27 @@ namespace nsApp
             if (!pFade_->IsFadeInEnd())
                 return;
 
+            UpdateStageTimer();
+
+            if (auto* pHudData = buildHelper_.GetGameplayHudData())
+            {
+                int score = 0;
+                if (pPlayer_ != nullptr)
+                    score = pPlayer_->GetScore();
+
+                float hpRatio = 1.0f;
+                if (pPlayer_ != nullptr)
+                {
+                    const int maxHp = pPlayer_->GetMaxHP();
+                    if (maxHp > 0)
+                        hpRatio = static_cast<float>(pPlayer_->GetHP()) / maxHp;
+                }
+
+                pHudData->SetTimerSeconds(static_cast<int>(stageTimer_));
+                pHudData->SetScore(score);
+                pHudData->SetPlayerHpRatio(hpRatio);
+            }
+
             if (state_ == SceneTransitionState::None && !m_hasAppliedStageBgm_)
             {
                 const StageID stage = nsApp::nsStage::StageManager::GetInstance()->GetCurrentStageID();
@@ -198,10 +205,8 @@ namespace nsApp
 
             // ケースをNoneの状態でのみ、ゲームのメインロジックを実行。
             if (state_ == SceneTransitionState::None)
-            {
-                // ステージマネージャーの更新。
                 nsApp::nsStage::StageManager::GetInstance()->Update();
-            }
+
 
             // プレイヤーのHPが0以下ならゲームオーバーへ遷移。
             if (pPlayer_ && pPlayer_->GetHP() <= 0)
@@ -220,9 +225,7 @@ namespace nsApp
                 nextStageID_ = nextStageID;
                 m_hasAppliedStageBgm_ = false;
 
-                if (pNumberUI_)
-                    pNumberUI_->ResetTimer();
-
+                ResetStageTimer();
                 // フェードアウト開始。
                 state_ = SceneTransitionState::FadeOut;
             }
@@ -313,11 +316,7 @@ namespace nsApp
                 // --- Phase 1: Worker Job を投げる（1回だけ）---
                 if (stageLoadPhase_ == StageLoadPhase::Idle)
                 {
-                    stageLoadWorkerJobId_ =
-                        jobQueue
-                            .EnqueueWorker([targetStageID]()
-                                           { nsApp::nsStage::StageLoadContext::PrepareOnWorker(targetStageID); })
-                            .GetId();
+                    stageLoadWorkerJobId_ = jobQueue.EnqueueWorker([targetStageID]() { nsApp::nsStage::StageLoadContext::PrepareOnWorker(targetStageID); }).GetId();
 
                     stageLoadPhase_ = StageLoadPhase::Worker;
                     break;
@@ -379,7 +378,7 @@ namespace nsApp
                     pPlayer_->SetPaused(false);
 
                 pFade_->StartFadeIn();
-                pNumberUI_->ResetTimer();
+                ResetStageTimer();
                 state_ = SceneTransitionState::FadeIn_Wait;
                 break;
             }
@@ -401,12 +400,33 @@ namespace nsApp
         }
 
 
-        void Game::UICreateInstance()
+        void Game::ResetStageTimer()
         {
-            TimerCreateInstance();
-            NumberCreateInstance();
-            ScoreCreateInstance();
-            HPbarCreateInstance();
+            stageTimer_ = 90.0f;
+            timeUpFlag_ = false;
+
+            if (auto* pHudData = buildHelper_.GetGameplayHudData())
+               pHudData->SetTimerSeconds(static_cast<int>(stageTimer_));
+        }
+
+
+        void Game::UpdateStageTimer()
+        {
+            auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
+            if (pStageManager && pStageManager->GetCurrentStageID() == StageID::sStageEX)
+                return;
+            if (timeUpFlag_)
+                return;
+            if (stageTimer_ > 0.0f)
+            {
+                stageTimer_ -= g_gameTime->GetFrameDeltaTime();
+                if (stageTimer_ <= 0.0f)
+                {
+                    stageTimer_ = 0.0f;
+                    timeUpFlag_ = true;
+                    SceneManager::GetInstance()->ChangeScene(SceneID::sGameOver);
+                }
+            }
         }
 
 
@@ -414,26 +434,5 @@ namespace nsApp
         {
             pPlayer_ = NewGO<Player>(1, "player");
         }
-
-        void Game::TimerCreateInstance()
-        {
-            pTimerUI_ = NewGO<TimerUI>(0, "timerui");
-        }
-
-        void Game::NumberCreateInstance()
-        {
-            pNumberUI_ = NewGO<NumberUI>(0, "numberui");
-        }
-
-        void Game::ScoreCreateInstance()
-        {
-            pScoreUI_ = NewGO<ScoreUI>(0, "scoreui");
-        }
-
-        void Game::HPbarCreateInstance()
-        {
-            pHpbarUI_ = NewGO<HPbarUI>(0, "hpbarui");
-        }
-
     } // namespace core
 } // namespace app

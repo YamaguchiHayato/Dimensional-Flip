@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Src/Actor/Character/Enemy/IEnemy.h"
 #include "Src/Actor/Character/Enemy/IEnemyState.h"
 #include <vector>
@@ -211,8 +211,7 @@ namespace app
              */
             inline bool IsTired() const
             {
-//               return attackCount_ >= 3;
-               return attackCount_ >= 1;
+                return attackCount_ >= 3;
             }
 
             /**

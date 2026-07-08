@@ -6,11 +6,12 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/Star.h"
 #include "Src/Camera/Dimensiontrigger.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Parameter/Stage/StageSpawnTable.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "StageObjectSpawner.h"
+#include "Src/Core/Game.h"
 #include "Src/Actor/Stage/Gimmick/StageGimmick/RotationFool.h"
+#include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
 
 namespace nsApp
 {
@@ -53,6 +54,7 @@ namespace nsApp
             /* 位置を設定。*/
             const Vector3 pos(rec.posX, rec.posY, rec.posZ);
 
+
             /* オブジェクトタイプに応じて生成。*/
             if (rec.objectType == "Star")
             {
@@ -60,6 +62,8 @@ namespace nsApp
                 star->SetStarPosition(pos);
                 spawnedObjects_.push_back(star);
             }
+
+
             /* DimensionTrigger の生成。*/
             else if (rec.objectType == "DimensionTrigger")
             {
@@ -67,7 +71,9 @@ namespace nsApp
                 trigger->SetTriggerPos(pos);
                 spawnedObjects_.push_back(trigger);
             }
-            /* 敵の生成。*/
+
+
+            /* 通常敵 の生成。*/
             else if (rec.objectType == "NormalEnemy")
             {
                 auto* player = FindGO<Player>("player");
@@ -79,7 +85,8 @@ namespace nsApp
                 }
             }
 
-            /* Thwomp の生成。*/
+
+            /* 回転敵 の生成。*/
             else if (rec.objectType == "Thwomp")
             {
                 auto* player = FindGO<Player>("player");
@@ -90,15 +97,38 @@ namespace nsApp
                         spawnedObjects_.push_back(enemy);
             }
 
+
             /* Boss の生成。*/
             else if (rec.objectType == "Boss")
             {
-                // 名前 "boss" 固定 → SideCameraStrategy がボスカメラに切替
+                /* Boss の生成。*/
                 auto* boss = NewGO<app::enemy::Boss>(0, "boss");
                 boss->SetPos(pos);
-                app::nsUI::BossUIManager::GetInstance().Initialize();
                 spawnedObjects_.push_back(boss);
+
+                /* BossHudData へ登録（接続は Host::Start / StageSetup が担当） */
+                if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+                {
+                    if (auto* pData = pGame->GetBossHudData())
+                    {
+                        /* Host::Start 済みならその場で再接続 */
+                        if (auto* pHost = pGame->GetBossHudScreenHost())
+                        {
+                            if (auto* pUiScreen = pHost->GetScreen())
+                            {
+                                auto* pScreen = static_cast<nsApp::nsUI::BossHudScreen*>(pUiScreen);
+                                pData->SetScreen(pScreen);
+                                pScreen->Bind(pData);
+                                pUiScreen->SetVisible(true);
+                            }
+                        }
+
+                        /* 最後に SetBoss（内部で SyncToScreen） */
+                        pData->SetBoss(boss);
+                    }
+                }
             }
+
 
             /* CutIn の生成。*/
             else if (rec.objectType == "CutIn")

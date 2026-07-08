@@ -10,7 +10,6 @@
 #include "Src/Actor/Character/Status.h"
 #include "Src/Camera/ICameraStrategy.h"
 #include "Src/Camera/SideCameraStrategy.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/Game.h"
 #include "Src/Core/InputManager.h"
@@ -18,7 +17,6 @@
 #include "Src/Core/SoundManager.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "Src/Production/Fade.h"
-#include "Src/UI/ScoreUI.h"
 
 #include "Src/Parameter/Player/PlayerStatusParameterTable.h"
 #include "Src/Parameter/Player/PlayerMoveParameterTable.h"
@@ -105,8 +103,7 @@ namespace nsApp
                     stateCommand_.Emplace<nsApp::nsState::PlayerRunState>(enState_Run, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerJumpState>(enState_Jump, this);
                     stateCommand_.Emplace<nsApp::nsState::PlayerFallState>(enState_Fall, this);
-                    stateCommand_.Emplace<nsApp::nsState::PlayerTutorialPauseStage>(enState_TutorialPause, this);
-
+                    stateCommand_.Emplace<nsApp::nsState::PlayerTutorialPauseStage>(enState_TutorialPause, static_cast<Player*>(this));
                     /** @brief 初期ステート開始。 */
                     stateMachine_.Start(enState_Idle);
 

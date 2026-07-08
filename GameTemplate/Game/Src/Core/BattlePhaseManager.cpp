@@ -5,7 +5,6 @@
 #include "Src/Actor/Character/Enemy/Boss/BossAttackState.h"
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/FloatingPlatform.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/Game.h"
 
 namespace

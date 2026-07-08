@@ -2,11 +2,9 @@
 #include "BossAttackRoar3DState.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
-
 #include "Src/Actor/Stage/Gimmick/BossGimmick/RoarWave.h"
-
 #include "Src/Core/SoundManager.h"
-#include "Src/Core/BossUIManager.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -38,11 +36,11 @@ namespace app
             /* SEを再生。*/
             app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Roar, 2.0f);
 
-            /* 攻撃のUIを設定。*/
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
-
             /* 角度を更新。*/
             UpdateLookAtPlayer();
+
+            /* 攻撃のUIを設定。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar3D);
         }
 
 
@@ -67,8 +65,8 @@ namespace app
             auto interval = 4.0f + (static_cast<float>(rand() % 21) / 10.0f);
             pBoss_->SettNextInterval(interval);
 
-            /* 攻撃のUIを設定。*/
-            app::nsUI::BossUIManager::GetInstance().OnNotifyAttack(app::nsUI::BossAttackKind::Roar);
+             /* 攻撃のUIを設定。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar3D);
         }
 
 

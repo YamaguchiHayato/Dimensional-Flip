@@ -2,6 +2,7 @@
 
 #include "BossAttackFireBallState.h"
 #include "Src/Actor/Character/Player/Player.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -28,6 +29,12 @@ namespace app
 
             /* 移動速度を0にする。*/
             pBoss_->SetMoveSpeed(Vector3::Zero);
+
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            pBoss_->SetAttackType(app::enemyStatus::AttackType::FireBall);
+
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::FireBall);
         }
 
 
@@ -58,6 +65,12 @@ namespace app
 
             /* 次の攻撃までのインターバルを設定。*/
             pBoss_->SettNextInterval(2.5f);
+
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            pBoss_->SetAttackType(app::enemyStatus::AttackType::FireBall);
+
+            /* 攻撃種類 UI へ fireBall アイコンを通知（委譲経路）。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::FireBall);
         }
 
 

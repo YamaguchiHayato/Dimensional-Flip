@@ -1,28 +1,64 @@
 #include "stdafx.h"
 
+#include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
-#include "Src/Core/BossUIManager.h"
 #include "Src/Core/CameraManager.h"
+#include "Src/Core/Game.h"
 #include "Src/Parameter/Stage/StageMasterTable.h"
+#include "Src/Presentation/UI/Screens/BossHubScreen.h"
+#include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "StageSetup.h"
 
 namespace
 {
-    // 旧 StageEX.cpp と同じ値
     const Vector3 BOSS_PLAYER_LIMIT_MIN(-38.0f, -10.0f, -26.0f);
     const Vector3 BOSS_PLAYER_LIMIT_MAX(38.0f, 500.0f, 26.0f);
     const Vector3 BOSS_CAMERA_LIMIT_MIN(-450.0f, -100.0f, -2000.0f);
     const Vector3 BOSS_CAMERA_LIMIT_MAX(450.0f, 500.0f, 500.0f);
+
+    void SetBossHudVisible(bool visible)
+    {
+        if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+        {
+            if (auto* pHost = pGame->GetBossHudScreenHost())
+            {
+                if (auto* pScreen = pHost->GetScreen())
+                    pScreen->SetVisible(visible);
+            }
+        }
+    }
+
+    void ReconnectBossHud()
+    {
+        if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+        {
+            auto* pData = pGame->GetBossHudData();
+            auto* pHost = pGame->GetBossHudScreenHost();
+            if (pData == nullptr || pHost == nullptr)
+                return;
+
+            auto* pUiScreen = pHost->GetScreen();
+            if (pUiScreen == nullptr)
+                return;
+
+            auto* pScreen = static_cast<nsApp::nsUI::BossHudScreen*>(pUiScreen);
+            pData->SetScreen(pScreen);
+            pScreen->Bind(pData);
+
+            if (auto* pBoss = FindGO<app::enemy::Boss>("boss"))
+                pData->SetBoss(pBoss);
+
+            pUiScreen->SetVisible(true);
+        }
+    }
 } // namespace
 
 namespace nsApp
 {
     namespace nsStage
     {
-        // 静的フラグ（Game.cpp から参照するため）
         static bool s_keepPlayerPaused = false;
-
 
         bool StageSetup::ShouldKeepPlayerPaused()
         {
@@ -34,7 +70,6 @@ namespace nsApp
         {
             const auto& master = nsSystem::StageMasterTable::Get(stageId);
 
-            // BackgroundType が Boss でなければ何もしない
             if (master.backgroundType != "Boss")
             {
                 isBossStage_ = false;
@@ -47,22 +82,20 @@ namespace nsApp
             isCutInPlaying_ = true;
             s_keepPlayerPaused = true;
 
+            SetBossHudVisible(true);
+
             Player* player = FindGO<Player>("player");
             if (player == nullptr)
                 return;
 
-            // --- 旧 StageEX::Start() のカメラ設定 ---
             CameraManager* cam = player->GetCameraManager();
             if (cam != nullptr)
             {
-                cam->Request2DMode(); // 2D サイドカメラ（Boss 検出で BossCamera に切替）
+                cam->Request2DMode();
                 cam->SetCameraRange(BOSS_CAMERA_LIMIT_MIN, BOSS_CAMERA_LIMIT_MAX);
             }
 
-            // --- プレイヤー移動制限 ---
             player->SetMoveLimit(BOSS_PLAYER_LIMIT_MIN, BOSS_PLAYER_LIMIT_MAX);
-
-            // --- カットイン中は動かさない ---
             player->SetPaused(true);
         }
 
@@ -74,13 +107,17 @@ namespace nsApp
             if (!isBossStage_)
                 return;
 
-            // ボスステージを出るときは制限を戻す
+            /* ボスステージ終了時の処理。 */
+            SetBossHudVisible(true);
+
             if (Player* player = FindGO<Player>("player"))
                 player->ReleaseMoveLimit();
 
             isBossStage_ = false;
             isCutInPlaying_ = false;
             s_keepPlayerPaused = false;
+
+            SetBossHudVisible(false);
         }
 
 
@@ -89,24 +126,28 @@ namespace nsApp
             if (!isBossStage_)
                 return;
 
-            // 旧 StageEX::Update() にあった Boss UI 更新
-            app::nsUI::BossUIManager::GetInstance().Update();
+            /* 旧 BossUIManager::Update() 相当（カットイン中も更新） */
+            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            {
+                if (auto* pHost = pGame->GetBossHudScreenHost())
+                    pHost->Update();
+            }
 
-            // カットイン終了待ち
             if (!isCutInPlaying_)
                 return;
 
             auto* cutIn = FindGO<CutInView>("CutInView");
 
-            // CutInView は終了時に自分で DeleteGO するので nullptr でも終了扱い
             if (cutIn == nullptr || cutIn->IsCutInFinished())
             {
                 isCutInPlaying_ = false;
                 s_keepPlayerPaused = false;
 
+                ReconnectBossHud();
+                SetBossHudVisible(true);
+
                 if (Player* player = FindGO<Player>("player"))
                 {
-                    // 旧 StageEX: カットイン後に開始位置へ
                     const auto& master = nsSystem::StageMasterTable::Get(StageID::sStageEX);
                     player->SetPlayerPos(master.playerStartPosition);
                     player->SetRespwanPos(master.playerStartPosition);
@@ -121,8 +162,12 @@ namespace nsApp
             if (!isBossStage_)
                 return;
 
-            // 旧 StageEX::Render() にあった Boss UI 描画
-            app::nsUI::BossUIManager::GetInstance().Draw(rc);
+            /* 旧 StageEX::Render() — カットイン中も描画（Draw 側でカットイン判定） */
+            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            {
+                if (auto* pHost = FindGO<nsUI::BossHudScreenHost>("BossHudScreenHost"))
+                    pHost->Render(rc);
+            }
         }
     } // namespace nsStage
 } // namespace nsApp

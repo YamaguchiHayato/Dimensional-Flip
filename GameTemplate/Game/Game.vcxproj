@@ -318,7 +318,9 @@
     <ClCompile Include="Src\Presentation\Data\GameplayHubUiNames.cpp" />
     <ClCompile Include="Src\Presentation\Data\GameplayHudData.cpp" />
     <ClCompile Include="Src\Presentation\UI\BossHudUiNames.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\BossHpBarLogic.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\BossStatusHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\GameplayHpHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.cpp" />
@@ -516,8 +518,11 @@
     <ClInclude Include="Src\Presentation\Data\GameplayHudData.h" />
     <ClInclude Include="Src\Presentation\Data\IBossHubData.h" />
     <ClInclude Include="Src\Presentation\Data\IGameplayHubData.h" />
+    <ClInclude Include="Src\Presentation\UI\BossAttackHudHelper.h" />
     <ClInclude Include="Src\Presentation\UI\BossHudUiNames.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\BossHpBarLogic.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\BossStatusHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\GameplayHpHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.h" />

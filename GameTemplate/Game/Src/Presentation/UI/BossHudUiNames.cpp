@@ -11,16 +11,26 @@ namespace nsApp
         namespace
         {
             /*
-             * BossHPbarUI と同じキー → 同じパス
-             * パスが違う場合は Assets 内の .DDS を探して差し替える
+             * 旧 BossUIBase::FetchUIName と同じ Assets/UI/BossUI/*.DDS。
+             * キー名は BossAttackIndicatorHudComponent / BossStatusHudComponent と一致させる。
              */
             const std::unordered_map<std::string, const char*> kBossHudUiTable = {
-                {"bossIcon", "Assets/UI/Boss/bossIcon.DDS"},
-                {"hpBar_flame", "Assets/UI/Boss/hpBar_flame.DDS"},
-                {"hpBar_current", "Assets/UI/Boss/hpBar_current.DDS"},
-                {"hpBar_damage", "Assets/UI/Boss/hpBar_damage.DDS"},
+                /* HP */
+                {"bossIcon", "Assets/UI/BossUI/bossIcon.DDS"},
+                {"hpBar_flame", "Assets/UI/BossUI/hpBar_flame.DDS"},
+                {"hpBar_current", "Assets/UI/BossUI/hpBar_current.DDS"},
+                {"hpBar_damage", "Assets/UI/BossUI/hpBar_damage.DDS"},
+
+                /* 攻撃アイコン */
+                {"fireBall", "Assets/UI/BossUI/fireBall.DDS"},
+                {"jumpIcon", "Assets/UI/BossUI/jumpIcon.DDS"},
+                {"meteorIcon", "Assets/UI/BossUI/meteorIcon.DDS"},
+                {"roarIcon", "Assets/UI/BossUI/roarIcon.DDS"},
+                {"spearIcon", "Assets/UI/BossUI/spearIcon.DDS"},
+                {"tumblerIcon", "Assets/UI/BossUI/tumblerIcon.DDS"},
             };
         } // namespace
+
 
         std::string FetchUIName(const char* uiName)
         {

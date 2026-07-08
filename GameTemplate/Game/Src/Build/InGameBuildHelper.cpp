@@ -62,27 +62,16 @@ namespace nsApp
 
     void InGameBuildHelper::BuildBossHudUi()
     {
-        /* 二重生成防止 */
+        /* 既存 Host が死んでいれば作り直す。 */
+        if (pBossHudHost_ != nullptr && FindGO<nsUI::BossHudScreenHost>("BossHudScreenHost") == nullptr)
+            pBossHudHost_ = nullptr;
+
+        /* 二重生成防止。 */
         if (pBossHudHost_ != nullptr)
             return;
 
-        /* BossHudScreenHost を生成。*/
+        /* BossHudScreenHost を生成する（接続は ConnectBossHudData で行う）。 */
         pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
-        if (pBossHudHost_ == nullptr) 
-            return;
-
-        /* BossHudScreenHost から BossHudScreen を取得し、初期状態では非表示にする。*/
-        if (auto* pScreen = pBossHudHost_->GetBossHudScreen())
-        {
-            /* 初期状態では非表示にする。*/
-            pScreen->SetVisible(false);
-
-            /* BossHudData と Screen を接続する。*/
-            bossHudData_.SetScreen(pScreen);
-
-            /* BossHudData と Screen を接続する。*/
-            pScreen->Bind(&bossHudData_);
-        }
     }
 
 
@@ -131,6 +120,32 @@ namespace nsApp
 
         /* Game 内の GameplayHudData と Screen を接続 */
         pScreen->ConnectToData(&gameplayHudData_);
+    }
+
+
+    void InGameBuildHelper::ConnectBossHudData()
+    {
+        /* 念のため FindGO で取り直す。 */
+        if (pBossHudHost_ == nullptr)
+            pBossHudHost_ = FindGO<nsUI::BossHudScreenHost>("BossHudScreenHost");
+
+        /* 二重接続防止 */
+        if (pBossHudHost_ == nullptr)
+            return;
+
+        auto* pUiScreen = pBossHudHost_->GetScreen();
+        if (pUiScreen == nullptr)
+            return;
+
+        auto* pScreen = static_cast<nsUI::BossHudScreen*>(pUiScreen);
+
+        /* ボスステージ開始時だけ表示。 */
+        const bool isBossStage = (stageID_ == nsStage::StageID::sStageEX);
+        pScreen->SetVisible(isBossStage);
+
+        /* BossHudData と Screen を接続する。 */
+        bossHudData_.SetScreen(pScreen);
+        pScreen->Bind(&bossHudData_);
     }
 
 

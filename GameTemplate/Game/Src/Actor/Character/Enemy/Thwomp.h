@@ -108,7 +108,7 @@ namespace app
             float slopeEnterY_ = 0.0f;      // 斜面に入ったときのY座標
             bool isActive_ = false;
             bool isRespawning_ = false;
-
+            bool hasPlayedRotationSE_ = false;
 
         // モデルの動きを管理する変数群。
         private:

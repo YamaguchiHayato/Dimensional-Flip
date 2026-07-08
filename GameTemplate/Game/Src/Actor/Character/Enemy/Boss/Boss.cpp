@@ -211,6 +211,13 @@ namespace app
             /* 弱点コリジョンの座標を更新。*/
             if (pWeeekPoint_)
                 pWeeekPoint_->SetPosition(GetWeakPoint());
+
+
+            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            {
+                if (auto* pData = pGame->GetBossHudData())
+                    pData->SyncToScreen();
+            }
         }
 
 

@@ -3,6 +3,7 @@
 
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Meteo.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -30,6 +31,9 @@ namespace app
 
             /* 攻撃タイプを設定。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Meteor);
+
+            /* 攻撃UI表示。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Meteor);
         }
 
 

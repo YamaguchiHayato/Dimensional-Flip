@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BossAttackState.h"
 
 
@@ -27,6 +27,8 @@
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackFireBallState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackRoar2DState.h"
 #include "Src/Actor/Character/Enemy/Boss/2D/BossAttackMeteo2DState.h"
+
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -102,6 +104,9 @@ namespace app
                 currentState_->Exit();
                 currentState_.reset(); // メモリ解放
             }
+
+            /* 攻撃タイプの再抽選を行うため、リセット。*/
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Num);
         }
 
 

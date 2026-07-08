@@ -1,6 +1,7 @@
-#include "stdafx.h"
-#include "Src/Actor/Character/Player/Player.h"  
+﻿#include "stdafx.h"
+
 #include "GameplayHudScreen.h"
+#include "Src/Actor/Character/Player/Player.h"
 #include "Src/Core/Game.h"
 #include "Src/Core/SceneManager.h"
 #include "Src/Core/StageManager.h"
@@ -10,6 +11,32 @@
 #include "Src/Presentation/UI/Components/GameplayScoreHudComponent.h"
 #include "Src/Presentation/UI/Components/GameplayTimerHudComponent.h"
 #include "Src/Presentation/UI/Widget/UIPanel.h"
+#include "Src/Actor/Stage/StageSetup.h"
+
+namespace
+{
+    /**
+     * @brief 現在ステージがボス戦かどうか。
+     * @return ボス戦なら true。
+     */
+    bool IsBossStage()
+    {
+        auto* pStageManager = nsApp::nsStage::StageManager::GetInstance();
+        if (pStageManager == nullptr)
+            return false;
+
+        return pStageManager->GetCurrentStageID() == nsApp::nsStage::StageID::sStageEX;
+    }
+
+    /**
+     * @brief ボス戦のカットインが再生中かどうか。
+     * @return 再生中なら true。
+     */
+    bool IsBossCutInPlaying()
+    {
+        return nsApp::nsStage::StageSetup::ShouldKeepPlayerPaused();
+    }
+} // namespace
 
 namespace nsApp
 {
@@ -32,7 +59,6 @@ namespace nsApp
             pHpComponent_ = &root.AddComponent<GameplayHpHudComponent>();
             pHpComponent_->SetHeartPosition(-900.0f, 500.0f);
 
-            /** @brief Timer/HP と同じ root 直下。子 Entity + SetEnabled は使わない。 */
             pScoreComponent_ = &root.AddComponent<GameplayScoreHudComponent>();
             pScoreComponent_->SetNumberPosition(625.0f, 550.0f);
 
@@ -55,8 +81,9 @@ namespace nsApp
 
         void GameplayHudScreen::SetScoreVisible(bool visible)
         {
-            if (pScorePanelEntity_ != nullptr)
-                pScorePanelEntity_->SetEnabled(visible);
+            /* スコア Component へ直接委譲する。 */
+            if (pScoreComponent_ != nullptr)
+                pScoreComponent_->SetVisible(visible);
         }
 
 
@@ -90,30 +117,48 @@ namespace nsApp
             if (FindGO<nsCore::Game>("game") == nullptr)
                 return false;
 
-            auto* pStageManager = nsStage::StageManager::GetInstance();
-            if (pStageManager && pStageManager->GetCurrentStageID() == StageID::sStageEX)
-                return false;
-
+            /* ボス戦でも Player HP は描画するため、ここでは止めない。 */
             return true;
         }
 
 
         void GameplayHudScreen::Draw(RenderContext& rc)
         {
+            /* HUD が描画可能かどうかを判定する。*/
             if (!CanDrawHud())
                 return;
 
-             /**
-             * @brief チュートリアル完了後は毎フレームスコアを表示に戻す。
-             *        Enter/Exit のペアが崩れた場合の保険。
-             */
+            /* HUD データソースからロジックを同期する。 */
+            SyncFromDataSource();
+
+            /* ボス戦: HP のみ描画（Score/Timer は描画しない）。 */
+            if (IsBossStage())
+            {
+                /* ボス戦のカットインが再生中なら描画しない。 */
+                if (IsBossCutInPlaying())
+                    return;
+
+                /* HP のみ描画する。 */
+                if (pHpComponent_ != nullptr)
+                {
+                    const Matrix& world = GetRootEntity().GetTransform().GetWorldMatrix();
+                    pHpComponent_->OnDraw(rc, world);
+                }
+                return;
+            }
+
+            /* 通常ステージ: チュートリアル後はスコア表示を戻す。 */
             if (auto* pPlayer = FindGO<nsApp::nsActor::nsCharacter::nsPlayer::Player>("player"))
             {
                 if (pPlayer->IsTutorialDone())
                     SetScoreVisible(true);
             }
 
-            SyncFromDataSource();
+            /* HUD を描画する。*/
+            if (pScoreComponent_ != nullptr)
+                pScoreComponent_->SetVisible(true);
+
+            /* Entity ツリーを描画する。*/
             GetRootEntity().Draw(rc);
         }
     } // namespace nsUI

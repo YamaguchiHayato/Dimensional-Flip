@@ -22,12 +22,23 @@ namespace nsApp
         {
         public:
             /**
-             * @brief 具体 UIScreen を生成する。
-             * @return BossHudScreen。
+             * @brief 初期化。BossHudData と Screen を接続する。
+             * @return 成功なら true。
+             */
+            bool Start() override;
+
+            /**
+             * @brief 具体 UIScreen を取得する。
+             * @return BossHudScreen。未生成なら nullptr。
              */
             BossHudScreen* GetBossHudScreen();
 
+
         protected:
+            /**
+             * @brief 具体 UIScreen を生成する。
+             * @return BossHudScreen。
+             */
             std::unique_ptr<UIScreen> CreateScreen() override;
         };
     } // namespace nsUI

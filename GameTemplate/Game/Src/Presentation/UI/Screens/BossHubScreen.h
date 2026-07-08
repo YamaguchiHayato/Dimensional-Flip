@@ -12,33 +12,49 @@ namespace nsApp
 {
     namespace nsUI
     {
+        class BossStatusHudComponent;
+        class BossAttackIndicatorHudComponent;
+
         /**
          * @class BossHudScreen
-         * @brief ボスアイコン + HP バー UI を構築する UIScreen。
+         * @brief ボスステータス + 攻撃予告 UI を構築する UIScreen。
          */
         class BossHudScreen : public UIScreen
         {
         public:
             /**
-             * @brief HP データソースを Bind する。
+             * @brief 毎フレーム更新。
+             * @param deltaTime 経過秒数。
+             */
+            void Update(float deltaTime) override;
+
+            /**
+             * @brief 毎フレーム描画。
+             * @param rc 描画コンテキスト。
+             */
+            void Draw(RenderContext& rc) override;
+
+            /**
+             * @brief データソースを Bind する。
              * @param pData IBossHudData。nullptr 可。
              */
             void Bind(nsPresentation::IBossHudData* pData);
 
             /**
-             * @brief UIScreen::Build() をオーバーライドして、ボス HUD UI を構築する。
+             * @brief UI ツリーを構築する。
              */
             void Build() override;
 
             /**
-             * @brief Bind されたデータソースから現在の HP 割合を取得して、UI に反映する。
+             * @brief データソースから各 Component へ値を委譲する。
              */
             void SyncFromDataSource();
 
 
         private:
-            nsPresentation::IBossHudData* pHudData_ = nullptr;
-            nsFramework::Entity* pLogicEntity_ = nullptr;
+            nsPresentation::IBossHudData* pHudData_ = nullptr; //! データソース。nullptr 可。
+            BossStatusHudComponent* pStatusComponent_ = nullptr; //! ボスステータス HUD Component。nullptr 可。
+            BossAttackIndicatorHudComponent* pAttackComponent_ = nullptr; //! ボス攻撃予告 HUD Component。nullptr 可。
         };
     } // namespace nsUI
 } // namespace nsApp

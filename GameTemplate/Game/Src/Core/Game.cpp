@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Game.h"
 #include "GameSoundEngine.h"
@@ -81,9 +81,14 @@ namespace nsApp
 
             // TSV 読み込みとステージ背景生成（InGameBuildHelper）。
             {
+                /* InGameBuildHelperクラスを初期化。*/
                 buildHelper_.Initialize(startStageID);
+
+                /* InGameBuildHelperの初期化が完了するまでループ。*/
                 while (!buildHelper_.IsFinished())
                     buildHelper_.Update();
+
+                /* 初期化が失敗した場合はデバッグ出力。*/
                 if (!buildHelper_.IsLoadSuccess())
                     OutputDebugStringA("Game::Start - parameter TSV load failed.\n");
             }
@@ -103,6 +108,7 @@ namespace nsApp
             app::core::SoundManager::GetInstance()->Init();
 
             buildHelper_.ConnectGameplayHudData();
+            buildHelper_.ConnectBossHudData();
 
             if (auto* pHubData = buildHelper_.GetGameplayHudData())
             {

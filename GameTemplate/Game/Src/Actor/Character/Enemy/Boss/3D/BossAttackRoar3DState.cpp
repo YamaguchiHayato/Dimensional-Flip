@@ -2,10 +2,9 @@
 #include "BossAttackRoar3DState.h"
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Actor/Character/Player/Player.h"
-
 #include "Src/Actor/Stage/Gimmick/BossGimmick/RoarWave.h"
-
 #include "Src/Core/SoundManager.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -39,6 +38,9 @@ namespace app
 
             /* 角度を更新。*/
             UpdateLookAtPlayer();
+
+            /* 攻撃のUIを設定。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar3D);
         }
 
 
@@ -62,6 +64,9 @@ namespace app
             /* タイマーをリセット。*/
             auto interval = 4.0f + (static_cast<float>(rand() % 21) / 10.0f);
             pBoss_->SettNextInterval(interval);
+
+             /* 攻撃のUIを設定。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar3D);
         }
 
 

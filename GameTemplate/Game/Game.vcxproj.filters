@@ -97,12 +97,6 @@
     <Filter Include="Src\Actor\Character\Enemy\Fall">
       <UniqueIdentifier>{3b928a7e-6e4f-4719-928d-45c51b40ca07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Camera\Core">
-      <UniqueIdentifier>{b45da247-dcac-4cbc-b999-1d9dc826fb3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Camera\Core\Job">
-      <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Framework">
       <UniqueIdentifier>{a9379f74-7239-4e5d-8015-7f7af7265b9b}</UniqueIdentifier>
     </Filter>
@@ -156,6 +150,12 @@
     </Filter>
     <Filter Include="Src\UI\Setting">
       <UniqueIdentifier>{f00f9a91-db2c-49fa-a2cb-17ff49d7e526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Core">
+      <UniqueIdentifier>{b45da247-dcac-4cbc-b999-1d9dc826fb3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Core\Job">
+      <UniqueIdentifier>{f7dabfbd-32bf-4b9e-93e5-9b8f21ca65fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -219,10 +219,10 @@
       <Filter>Src\Direction</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\Game.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\SceneManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Camera\FollowStrategy.cpp">
       <Filter>Src\Camera</Filter>
@@ -246,10 +246,10 @@
       <Filter>Src\Direction\CutIn</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\CameraManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\StageManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Camera\BossCameraStrategy.cpp">
       <Filter>Src\Camera</Filter>
@@ -306,16 +306,16 @@
       <Filter>Src\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\BattlePhaseManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\EndRollManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\InputManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\SoundManager.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Collision\CollisionManager.cpp">
       <Filter>Src\Direction\Collision</Filter>
@@ -387,10 +387,10 @@
       <Filter>Src\Actor\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\Job\JobQueue.cpp">
-      <Filter>Src\Camera\Core\Job</Filter>
+      <Filter>Src\Core\Job</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\StageLoadContext.cpp">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClCompile>
     <ClCompile Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.cpp">
       <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
@@ -664,6 +664,12 @@
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClCompile>
     <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Presentation\UI\Components\BossStatusHudComponent.cpp">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -729,10 +735,10 @@
       <Filter>Src\Direction</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\Game.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\SceneManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Camera\FollowStrategy.h">
       <Filter>Src\Camera</Filter>
@@ -762,10 +768,10 @@
       <Filter>Src\Direction\CutIn</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\CameraManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\StageManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Camera\BossCameraStrategy.h">
       <Filter>Src\Camera</Filter>
@@ -856,16 +862,16 @@
       <Filter>Src\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\BattlePhaseManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\EndRollManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\InputManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\SoundManager.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Collision\CollisionManager.h">
       <Filter>Src\Direction\Collision</Filter>
@@ -955,13 +961,13 @@
       <Filter>Src\Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\Job\JobHandle.h">
-      <Filter>Src\Camera\Core\Job</Filter>
+      <Filter>Src\Core\Job</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\Job\JobQueue.h">
-      <Filter>Src\Camera\Core\Job</Filter>
+      <Filter>Src\Core\Job</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\StageLoadContext.h">
-      <Filter>Src\Camera\Core</Filter>
+      <Filter>Src\Core</Filter>
     </ClInclude>
     <ClInclude Include="Src\Actor\Stage\Gimmick\StageGimmick\Star.h">
       <Filter>Src\Actor\Stage\Gimmick\StageGimmick</Filter>
@@ -1275,6 +1281,15 @@
       <Filter>Src\Presentation\UI\Components</Filter>
     </ClInclude>
     <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\Components\BossStatusHudComponent.h">
+      <Filter>Src\Presentation\UI\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Presentation\UI\BossAttackHudHelper.h">
+      <Filter>Src\Presentation\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

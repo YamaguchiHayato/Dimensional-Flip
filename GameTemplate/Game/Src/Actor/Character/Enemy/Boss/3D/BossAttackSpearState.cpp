@@ -6,6 +6,7 @@
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Spear.h"
 
 #include "Src/Core/SoundManager.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -33,6 +34,9 @@ namespace app
 
             /* 攻撃タイプの設定。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Spear);
+
+            /* 攻撃タイプの通知。*/
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Spear);
         }
 
 
@@ -55,6 +59,9 @@ namespace app
         {
             /* 攻撃の生成フラグをリセット。*/
             pBoss_->SettNextInterval(3.0f);
+
+            /* 攻撃UIの設定。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Spear);
         }
 
 

@@ -4,7 +4,7 @@
 #include "Src/Actor/Character/Enemy/Boss/Boss.h"
 #include "Src/Core/SoundManager.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Meteo.h"
-
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -29,6 +29,8 @@ namespace app
 
             /* 攻撃タイプのセット。*/
             pBoss_->SetAttackType(app::enemyStatus::AttackType::Meteor);
+
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Meteor);
         }
 
 
@@ -55,6 +57,9 @@ namespace app
 
             /* 隕石の生成SEを停止。*/
             app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_SpawnBlock);
+
+            /* 攻撃タイプのリセット。*/
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Meteor);
         }
 
 

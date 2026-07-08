@@ -1,4 +1,5 @@
 #pragma once
+#include "Src/UI/BossUI/BossAttackIndicatorUI.h"
 
 namespace nsApp
 {
@@ -33,6 +34,12 @@ namespace nsApp
              * @return　現在HP。
              */
             virtual float GetCurrentHp() const = 0;
+
+            /**
+             * @brief 攻撃の種類を取得する。
+             * @return 攻撃の種類。データ未設定時は BossAttackKind::None。
+             */
+            virtual nsUI::BossAttackKind GetAttackKind() const = 0;
         };
     } // namespace nsPresentation
 } // namespace nsApp

@@ -31,7 +31,7 @@ namespace nsApp
              * @brief 毎フレーム更新。
              * @param deltaTime 経過秒数。
              */
-            void Update(float deltaTime);
+            virtual void Update(float deltaTime);
 
             /**
              * @brief 毎フレーム描画。

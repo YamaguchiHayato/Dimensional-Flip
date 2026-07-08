@@ -5,6 +5,7 @@
 #include "Src/Actor/Character/Player/Player.h"
 #include "Src/Actor/Stage/Gimmick/BossGimmick/Thunder.h"
 #include "Src/Core/SoundManager.h"
+#include "Src/Presentation/UI/BossAttackHudHelper.h"
 
 namespace
 {
@@ -41,6 +42,9 @@ namespace app
 
             /* SEの再生。*/
             app::core::SoundManager::GetInstance()->PlaySE(GameSoundList_SE_Roar, 2.0f);
+
+            /* UIの表示。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar2D);
         }
 
 
@@ -66,6 +70,10 @@ namespace app
 
             /* SEの停止。*/
             app::core::SoundManager::GetInstance()->StopSE(GameSoundList_SE_Roar);
+
+            /* UIの表示。 */
+            nsApp::nsBossHud::NotifyAttack(pBoss_, app::enemyStatus::AttackType::Roar2D);
+
         }
 
 

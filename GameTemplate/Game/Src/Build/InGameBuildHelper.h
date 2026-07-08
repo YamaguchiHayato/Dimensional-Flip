@@ -104,6 +104,11 @@ namespace nsApp
         void ConnectGameplayHudData();
 
         /**
+         * @brief ボス HUD データとスクリーンを接続する。
+         */
+        void ConnectBossHudData();
+
+        /**
          * @brief ゲームプレイ HUD を破棄する。
          */
         void DestroyGameplayHud();

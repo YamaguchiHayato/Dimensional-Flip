@@ -66,8 +66,9 @@ namespace nsApp
             /**
              * @brief ステージを同期的に切り替える。
              * @param newStageID 切替先ステージ ID。
+             * @param forceReload 同じステージでも強制的に作り直す場合 true。
              */
-            void ChangeStageSync(StageID newStageID);
+            void ChangeStageSync(StageID newStageID, bool forceReload = false);
 
             /**
              * @brief 次フレームでステージ切替を行う。

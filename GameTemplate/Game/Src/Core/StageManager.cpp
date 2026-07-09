@@ -91,8 +91,8 @@ namespace nsApp
 
         void StageManager::Render(RenderContext& rc)
         {
-            /* 現在のステージが存在する場合は、ステージの描画を行う。*/
-            if (pCurrentStage_ != nullptr)
+            /* Start 完了前の Stage は描画しない（未初期化 ModelRender 対策）。*/
+            if (pCurrentStage_ != nullptr && pCurrentStage_->IsStart())
                 pCurrentStage_->Render(rc);
 
             /* ステージセットアップの描画を行う。*/
@@ -100,10 +100,10 @@ namespace nsApp
         }
 
 
-        void StageManager::ChangeStageSync(StageID newStageID)
+        void StageManager::ChangeStageSync(StageID newStageID, bool forceReload)
         {
-            /* 現在のステージIDと新しいステージIDが同じで、現在のステージが存在する場合は、何もしない。*/
-            if (stageCurrentID_ == newStageID && pCurrentStage_ != nullptr)
+            /* 同ステージでも forceReload なら作り直す。*/
+            if (!forceReload && stageCurrentID_ == newStageID && pCurrentStage_ != nullptr)
                 return;
 
             /* ステージスポナーをクリアする。*/
@@ -131,16 +131,20 @@ namespace nsApp
             SetupTutorialUI(newStageID);
             stageSetup_.OnEnter(newStageID);
 
-            /* プレイヤーの位置をステージの開始位置に設定する。*/
-            if (auto* pPlayer = FindGO<Player>("player"))
+            /* Restart 時は呼び出し元が座標を戻すので、ここは forceReload 時スキップ。*/
+            if (!forceReload)
             {
-                const Vector3 startPos = GetStageStartPos();
-                pPlayer->SetPlayerPos(startPos);
-                pPlayer->SetRespwanPos(startPos);
+                /* プレイヤーの位置をステージの開始位置に設定する。*/
+                if (auto* pPlayer = FindGO<Player>("player"))
+                {
+                    const Vector3 startPos = GetStageStartPos();
+                    pPlayer->SetPlayerPos(startPos);
+                    pPlayer->SetRespwanPos(startPos);
+                }
             }
 
             if (auto* pGame = FindGO<nsCore::Game>("game"))
-                pGame->ResetStageTimer(); 
+                pGame->ResetStageTimer();
         }
 
 

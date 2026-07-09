@@ -215,6 +215,18 @@ namespace nsApp
                 }
 
                 /**
+                 * @brief ステージ Restart 用に移動状態をリセットする。
+                 */
+                void Player::ResetForStageRestart()
+                {
+                    moveSpeed_ = Vector3::Zero;
+                    isBounce_ = false;
+                    SetRespawnFlag(false);
+                    stateMachine_.ChangeState(enState_Idle);
+                    charaCon_.SetPosition(pos_);
+                }
+
+                /**
                  * @brief 座標と描画を同期する。
                  */
                 void Player::SyncView()

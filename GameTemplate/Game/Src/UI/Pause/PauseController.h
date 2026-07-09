@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdint.h"
 
 
@@ -20,9 +20,11 @@ namespace nsApp
          */
         enum class PauseAction : uint8_t
         {
-            None, //! < アクションなし。
-            Resume, // ! < ポーズ解除。
-            BackToTitle, //! < タイトルに戻る。
+            None,              //! < 何もアクションがない状態。
+            Resume,            //! < ポーズ解除のアクション。
+            RestartStage,      //! < ステージ再開のアクション。
+            BackToWorldSelect, //! < ワールド選択画面に戻るアクション。
+            SoundSetting,      //! < サウンド設定画面に遷移するアクション。
         };
 
         /**
@@ -81,6 +83,9 @@ namespace nsApp
         private:
             nsUI::PauseMenuUI* pPauseMenu_ = nullptr; //! < ポーズメニューUIのポインタ。
             bool isPaused_ = false;                   //! < ポーズ状態のフラグ。
+            int selectedIndex_ = 0;                   //! < 選択中の項目インデックス。
+
+            static constexpr int kItemCount = 3; //! < ポーズメニューの項目数。
         };
     } // namespace nsCore
 } // namespace nsApp

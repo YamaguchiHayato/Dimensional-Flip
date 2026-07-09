@@ -8,6 +8,8 @@
 #include "Src/Presentation/UI/Screens/GameplayHudScreenHost.h"   
 #include "Src/Presentation/UI/Screens/GameplayHudScreen.h"       
 #include "Src/UI/Pause/PauseMenuUI.h"
+#include "Src/Presentation/UI/Screens/SoundSettingScreenHost.h"
+#include "Src/Presentation/UI/Screens/SoundSettingScreen.h"
 
 namespace nsApp
 {
@@ -32,8 +34,10 @@ namespace nsApp
         buildFunctions_.push_back([this]() { BuildBossHudUi(); });
         buildFunctions_.push_back([this]() { BuildGameplayHudUiStep(); });
         buildFunctions_.push_back([this]() { BuildPauseMenuUiStep(); });
+        buildFunctions_.push_back([this]() { BuildSoundSettingUiStep(); });
         buildFunctions_.push_back([this]() { FinishBuild(); });
     }
+
 
     void InGameBuildHelper::BuildParameters()
     {
@@ -43,6 +47,7 @@ namespace nsApp
             OutputDebugStringA("InGameBuildHelper::BuildParameters - LoadAll failed.\n");
     }
 
+
     void InGameBuildHelper::BuildBackGroundStep()
     {
         /* ステージ背景を生成。*/
@@ -51,10 +56,12 @@ namespace nsApp
             OutputDebugStringA("InGameBuildHelper::BuildBackGroundStep - CreateBackGround returned nullptr.\n");
     }
 
+
     void InGameBuildHelper::FinishBuild()
     {
         isFinished_ = true;
     }
+
 
     void InGameBuildHelper::BuildBossHudUi()
     {
@@ -69,6 +76,7 @@ namespace nsApp
         /* BossHudScreenHost を生成する（接続は ConnectBossHudData で行う）。 */
         pBossHudHost_ = NewGO<nsUI::BossHudScreenHost>(1, "BossHudScreenHost");
     }
+
 
     float InGameBuildHelper::GetProgress() const
     {
@@ -85,6 +93,7 @@ namespace nsApp
         return progress;
     }
 
+
     void InGameBuildHelper::BuildGameplayHudUiStep()
     {
         /* 二重生成防止 */
@@ -100,6 +109,7 @@ namespace nsApp
         ConnectGameplayHudData();
     }
 
+
     void InGameBuildHelper::BuildPauseMenuUiStep()
     {
         /* 二重生成防止 */
@@ -110,15 +120,17 @@ namespace nsApp
         pPauseMenuUI_ = NewGO<nsUI::PauseMenuUI>(1, "PauseMenuUI");
     }
 
+
     void InGameBuildHelper::DestroyPauseMenuUi()
     {
+        /* NewGO で生成した PauseMenuUI は DeleteGO で破棄する（delete 禁止）。 */
         if (pPauseMenuUI_ != nullptr)
         {
-            delete pPauseMenuUI_;
+            DeleteGO(pPauseMenuUI_);
             pPauseMenuUI_ = nullptr;
         }
         else if (auto* pPause = FindGO<nsUI::PauseMenuUI>("PauseMenuUI"))
-            delete pPause;
+            DeleteGO(pPause);
     }
 
     void InGameBuildHelper::ConnectGameplayHudData()
@@ -135,6 +147,7 @@ namespace nsApp
         /* Game 内の GameplayHudData と Screen を接続 */
         pScreen->ConnectToData(&gameplayHudData_);
     }
+
 
     void InGameBuildHelper::ConnectBossHudData()
     {
@@ -175,6 +188,57 @@ namespace nsApp
         else if (auto* pHud = FindGO<nsUI::GameplayHudScreenHost>("GameplayHudScreenHost"))
             DeleteGO(pHud);
     }
+
+
+    void InGameBuildHelper::BuildSoundSettingUiStep()
+    {
+        /* 二重生成防止 */
+        if (pSoundSettingHost_ != nullptr)
+            return;
+
+        /* SoundSettingScreenHost を生成。 */
+        pSoundSettingHost_ = NewGO<nsUI::SoundSettingScreenHost>(1, "SoundSettingScreenHost");
+
+        /* NewGO 直後は Start 前のため、同フレーム接続できるように即時初期化する。 */
+        if (pSoundSettingHost_ != nullptr)
+            pSoundSettingHost_->StartWrapper();
+    }
+
+
+    void InGameBuildHelper::ConnectSoundSettingData()
+    {
+        if (pSoundSettingHost_ == nullptr)
+            pSoundSettingHost_ = FindGO<nsUI::SoundSettingScreenHost>("SoundSettingScreenHost");
+
+        if (pSoundSettingHost_ == nullptr)
+            return;
+
+        auto* pUiScreen = pSoundSettingHost_->GetScreen();
+        if (pUiScreen == nullptr)
+            return;
+
+        auto* pScreen = static_cast<nsUI::SoundSettingScreen*>(pUiScreen);
+
+        /* 起動時は非表示。 */
+        pScreen->SetVisible(false);
+
+        /* Data と Screen を接続する。 */
+        soundSettingData_.SetScreen(pScreen);
+        pScreen->Bind(&soundSettingData_);
+    }
+
+
+    void InGameBuildHelper::DestroySoundSettingUi()
+    {
+        if (pSoundSettingHost_ != nullptr)
+        {
+            DeleteGO(pSoundSettingHost_);
+            pSoundSettingHost_ = nullptr;
+        }
+        else if (auto* pHost = FindGO<nsUI::SoundSettingScreenHost>("SoundSettingScreenHost"))
+            DeleteGO(pHost);
+    }
+
 
     void InGameBuildHelper::ExecuteNextBuildFunction()
     {

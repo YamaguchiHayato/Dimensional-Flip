@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 /**
  * @file   InGameBuildHelper.h
@@ -13,7 +13,7 @@
 #include "Src/Parameter/ParameterSystem.h"
 #include "Src/Presentation/Data/BossHubData.h"
 #include "Src/Presentation/Data/GameplayHudData.h"
-
+#include "Src/Presentation/Data/SoundSettingData.h"
 
 namespace nsApp
 {
@@ -21,7 +21,8 @@ namespace nsApp
     {
         class BossHudScreenHost;
         class GameplayHudScreenHost;
-        class PauseMenuUI; 
+        class PauseMenuUI;
+        class SoundSettingScreenHost;
     }
 
     class InGameBuildHelper
@@ -125,13 +126,31 @@ namespace nsApp
          */
         void DestroyPauseMenuUi();
 
+        /**
+         * @brief Sound Setting スクリーンホストを取得する。
+         */
+        nsUI::SoundSettingScreenHost* GetSoundSettingScreenHost() const { return pSoundSettingHost_; }
+
+        /**
+         * @brief Sound Setting データを取得する。
+         */
+        nsPresentation::SoundSettingData* GetSoundSettingData() { return &soundSettingData_; }
+
+        /**
+         * @brief Sound Setting データとスクリーンを接続する。
+         */
+        void ConnectSoundSettingData();
+
+        /**
+         * @brief Sound Setting UI を破棄する。
+         */
+        void DestroySoundSettingUi();
+
 
     private:
         using BuildFunction = std::function<void()>; //! ビルド関数の型定義。
 
-        /**
-         * @brief ビルド関数を初期化する。
-         */
+        /* @brief ビルド関数を初期化する。*/
         void InitializeBuildFunctions();
         void ExecuteNextBuildFunction();
         void BuildParameters();
@@ -140,12 +159,16 @@ namespace nsApp
         void BuildBossHudUi();
         void BuildGameplayHudUiStep();
         void BuildPauseMenuUiStep();
+        void BuildSoundSettingUiStep();
+
 
     private:
         std::vector<BuildFunction> buildFunctions_; //! < ビルド関数のリスト。
         nsUI::BossHudScreenHost* pBossHudHost_ = nullptr;           //! < 生成されたボス HUD スクリーンホスト。
         nsUI::GameplayHudScreenHost* pGameplayHudScreenHost_ = nullptr;//! < 生成されたゲームプレイ HUD スクリーンホスト。
-        nsUI::PauseMenuUI* pPauseMenuUI_ = nullptr;
+        nsUI::PauseMenuUI* pPauseMenuUI_ = nullptr; //! < 生成されたポーズメニュー UI。
+        nsUI::SoundSettingScreenHost* pSoundSettingHost_ = nullptr;    //! < 生成された Sound Setting スクリーンホスト。
+        nsPresentation::SoundSettingData soundSettingData_;
         nsPresentation::BossHudData bossHudData_;         //! < ボス HUD データ。
         nsPresentation::GameplayHudData gameplayHudData_; //! < ゲームプレイ HUD データ。
         nsSystem::ParameterSystem parameterSystem_;       //! パラメータシステム。

@@ -57,11 +57,28 @@ namespace nsApp
              */
             bool IsOpen() const { return isOpen_; }
 
+            /**
+             * @brief 選択中の項目インデックスを取得する。
+             * @param index 選択中の項目インデックス。
+             */
+            void SetSelectedIndex(int index);
+
+
+        private:
+            /**
+             * @brief 選択中の項目の見た目を更新する。
+             */
+            void ApplySelectionVisual();
+
 
         private:
             SpriteRender pauseSprite_;   //!< pose.DDS
-            FontRender hintFont_;        //!< 操作ヒント
-            bool isOpen_ = false;        //!< 開閉状態
+            FontRender restartFont_;     //!< "Restart" の文字列
+            FontRender returnWorld_;     //!< "Return to World" の文字列
+            FontRender returnTitle_;     //!< "Return to Title" の文字列
+            bool isOpen_ = false;        //!< 開閉状態。
+            int selectedIndex_ = 0;      //! < 選択中の項目インデックス。
+
         };
     }
 }

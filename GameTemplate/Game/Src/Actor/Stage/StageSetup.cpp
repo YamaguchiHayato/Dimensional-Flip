@@ -5,10 +5,12 @@
 #include "Src/Core/CameraManager.h"
 #include "Src/Core/Game.h"
 #include "Src/Parameter/Stage/StageMasterTable.h"
+#include "Src/Presentation/UI/Screens/BossBriefingScreenHost.h"
 #include "Src/Presentation/UI/Screens/BossHubScreen.h"
 #include "Src/Presentation/UI/Screens/BossHubScreenHost.h"
 #include "Src/Production/CutIn/CutInView.h"
 #include "StageSetup.h"
+#include "Src/Core/InputManager.h"
 
 namespace
 {
@@ -16,6 +18,9 @@ namespace
     const Vector3 BOSS_PLAYER_LIMIT_MAX(38.0f, 500.0f, 26.0f);
     const Vector3 BOSS_CAMERA_LIMIT_MIN(-450.0f, -100.0f, -2000.0f);
     const Vector3 BOSS_CAMERA_LIMIT_MAX(450.0f, 500.0f, 500.0f);
+
+    bool s_keepPlayerPaused = false;
+    bool s_isBriefing = false;
 
     void SetBossHudVisible(bool visible)
     {
@@ -52,17 +57,83 @@ namespace
             pUiScreen->SetVisible(true);
         }
     }
+
+    void DestroyBossBriefingHost()
+    {
+        if (auto* pHost = FindGO<nsApp::nsUI::BossBriefingScreenHost>("BossBriefingScreenHost"))
+            DeleteGO(pHost);
+    }
 } // namespace
 
 namespace nsApp
 {
     namespace nsStage
     {
-        static bool s_keepPlayerPaused = false;
-
         bool StageSetup::ShouldKeepPlayerPaused()
         {
             return s_keepPlayerPaused;
+        }
+
+
+        void StageSetup::InitBossBriefingSlides()
+        {
+            /*
+             * 画像は Assets/UI/BossTutorialEvent/ に2枚。
+             * 1枚目: ボス戦の流れ
+             * 2枚目: 攻撃アイコン説明
+             */
+            briefingData_.SetSlidePaths({
+                "Assets/UI/BossTutorialEvent/flow.DDS",
+                "Assets/UI/BossTutorialEvent/BossUI.DDS",
+            });
+        }
+
+
+        void StageSetup::StartBriefing()
+        {
+            introPhase_ = BossIntroPhase::Briefing;
+            s_keepPlayerPaused = true;
+            s_isBriefing = true;
+
+            SetBossHudVisible(false);
+
+            /* Briefing 中は視点切替を止める。 */
+            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(false);
+
+            if (Player* player = FindGO<Player>("player"))
+            {
+                player->SetPaused(true);
+                if (auto* cam = player->GetCameraManager())
+                    cam->SetButtonActionControl(false);
+            }
+
+            InitBossBriefingSlides();
+            briefingController_.Open();
+        }
+
+
+        void StageSetup::StartBattle()
+        {
+            introPhase_ = BossIntroPhase::Battle;
+            s_keepPlayerPaused = false;
+            s_isBriefing = false;
+
+            /* ボス戦開始時に視点切替を戻す。 */
+            app::core::InputManager::GetInstance()->SetDimensionFlipFlag(true);
+
+            ReconnectBossHud();
+            SetBossHudVisible(true);
+
+            if (Player* player = FindGO<Player>("player"))
+            {
+                const auto& master = nsSystem::StageMasterTable::Get(StageID::sStageEX);
+                player->SetPlayerPos(master.playerStartPosition);
+                player->SetRespwanPos(master.playerStartPosition);
+                player->SetPaused(false);
+
+                if (auto* cam = player->GetCameraManager())
+                    cam->SetButtonActionControl(true);
+            }
         }
 
 
@@ -73,16 +144,19 @@ namespace nsApp
             if (master.backgroundType != "Boss")
             {
                 isBossStage_ = false;
-                isCutInPlaying_ = false;
+                introPhase_ = BossIntroPhase::CutIn;
                 s_keepPlayerPaused = false;
                 return;
             }
 
             isBossStage_ = true;
-            isCutInPlaying_ = true;
+            introPhase_ = BossIntroPhase::CutIn;
             s_keepPlayerPaused = true;
 
-            SetBossHudVisible(true);
+            briefingController_.Initialize(&briefingData_);
+            InitBossBriefingSlides();
+
+            SetBossHudVisible(false);
 
             Player* player = FindGO<Player>("player");
             if (player == nullptr)
@@ -107,14 +181,14 @@ namespace nsApp
             if (!isBossStage_)
                 return;
 
-            /* ボスステージ終了時の処理。 */
-            SetBossHudVisible(true);
+            briefingController_.Close();
+            DestroyBossBriefingHost();
 
             if (Player* player = FindGO<Player>("player"))
                 player->ReleaseMoveLimit();
 
             isBossStage_ = false;
-            isCutInPlaying_ = false;
+            introPhase_ = BossIntroPhase::CutIn;
             s_keepPlayerPaused = false;
 
             SetBossHudVisible(false);
@@ -126,47 +200,61 @@ namespace nsApp
             if (!isBossStage_)
                 return;
 
-            /* 旧 BossUIManager::Update() 相当（カットイン中も更新） */
-            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            /* Briefing 中 */
+            if (introPhase_ == BossIntroPhase::Briefing)
             {
-                if (auto* pHost = pGame->GetBossHudScreenHost())
+                briefingController_.BeginInputFrame();
+                briefingController_.Update();
+
+                if (auto* pHost = FindGO<nsUI::BossBriefingScreenHost>("BossBriefingScreenHost"))
                     pHost->Update();
+
+                if (briefingController_.IsFinished())
+                    StartBattle();
+
+                return;
             }
 
-            if (!isCutInPlaying_)
+            /* 本番ボス戦中の Boss HUD 更新 */
+            if (introPhase_ == BossIntroPhase::Battle)
+            {
+                if (auto* pGame = FindGO<nsCore::Game>("game"))
+                {
+                    if (auto* pHost = pGame->GetBossHudScreenHost())
+                        pHost->Update();
+                }
+            }
+
+            /* カットイン終了 → Briefing 開始 */
+            if (introPhase_ != BossIntroPhase::CutIn)
                 return;
 
             auto* cutIn = FindGO<CutInView>("CutInView");
-
             if (cutIn == nullptr || cutIn->IsCutInFinished())
-            {
-                isCutInPlaying_ = false;
-                s_keepPlayerPaused = false;
-
-                ReconnectBossHud();
-                SetBossHudVisible(true);
-
-                if (Player* player = FindGO<Player>("player"))
-                {
-                    const auto& master = nsSystem::StageMasterTable::Get(StageID::sStageEX);
-                    player->SetPlayerPos(master.playerStartPosition);
-                    player->SetRespwanPos(master.playerStartPosition);
-                    player->SetPaused(false);
-                }
-            }
+                StartBriefing();
         }
-
 
         void StageSetup::Render(RenderContext& rc)
         {
             if (!isBossStage_)
                 return;
 
-            /* 旧 StageEX::Render() — カットイン中も描画（Draw 側でカットイン判定） */
-            if (auto* pGame = FindGO<nsApp::nsCore::Game>("game"))
+            /* Briefing スライド UI */
+            if (introPhase_ == BossIntroPhase::Briefing)
             {
-                if (auto* pHost = FindGO<nsUI::BossHudScreenHost>("BossHudScreenHost"))
+                if (auto* pHost = FindGO<nsUI::BossBriefingScreenHost>("BossBriefingScreenHost"))
                     pHost->Render(rc);
+                return;
+            }
+
+            /* 本番ボス HUD */
+            if (introPhase_ == BossIntroPhase::Battle)
+            {
+                if (auto* pGame = FindGO<nsCore::Game>("game"))
+                {
+                    if (auto* pHost = FindGO<nsUI::BossHudScreenHost>("BossHudScreenHost"))
+                        pHost->Render(rc);
+                }
             }
         }
     } // namespace nsStage

@@ -22,7 +22,7 @@
 #include "Src/Parameter/Player/PlayerMoveParameterTable.h"
 #include "Src/Parameter/Player/PlayerAirParameterTable.h"
 #include "Src/Parameter/Player/PlayerPhysicsParameterTable.h"
-
+#include "Src/Actor/Stage/StageSetup.h"
 
 
 /**
@@ -144,7 +144,9 @@ namespace nsApp
                         bounceCooldown_ -= g_gameTime->GetFrameDeltaTime();
 
                     /** @brief チュートリアルポーズ中以外は次元切替を許可。 */
-                    if (!stateMachine_.IsInState(enState_TutorialPause))
+                    /** @brief チュートリアル / ボス説明中以外は次元切替を許可。 */
+                    if (!stateMachine_.IsInState(enState_TutorialPause) &&
+                        !nsApp::nsStage::StageSetup::ShouldKeepPlayerPaused())
                     {
                         if (IsDimensionSwitchAction())
                             app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);

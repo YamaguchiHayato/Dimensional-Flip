@@ -292,10 +292,6 @@ namespace nsApp
                 m_hasAppliedStageBgm_ = true;
             }
 
-            /* None のときだけステージ本体を更新する。 */
-            if (state_ == SceneTransitionState::None)
-                nsApp::nsStage::StageManager::GetInstance()->Update();
-
             /* プレイヤー HP が 0 以下ならゲームオーバーへ遷移する。 */
             if (pPlayer_ && pPlayer_->GetHP() <= 0)
             {

@@ -223,6 +223,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Presentation\UI\Components\BossBriefingSlideComponent.cpp" />
+    <ClCompile Include="Src\UI\BossTutorial\BossBriefingController.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\BossBriefingScreenHost.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\BossBriefingScreen.cpp" />
+    <ClCompile Include="Src\Presentation\Data\BossBriefingData.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\SoundSettingContentComponent.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\SoundSettingScreen.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Screens\SoundSettingScreenHost.cpp" />
+    <ClCompile Include="Src\UI\Pause\SoundSettingController.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.cpp" />
     <ClCompile Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.cpp" />
@@ -317,6 +326,7 @@
     <ClCompile Include="Src\Presentation\Data\BossHubData.cpp" />
     <ClCompile Include="Src\Presentation\Data\GameplayHubUiNames.cpp" />
     <ClCompile Include="Src\Presentation\Data\GameplayHudData.cpp" />
+    <ClCompile Include="Src\Presentation\Data\SoundSettingData.cpp" />
     <ClCompile Include="Src\Presentation\UI\BossHudUiNames.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\BossHpBarLogic.cpp" />
@@ -324,6 +334,7 @@
     <ClCompile Include="Src\Presentation\UI\Components\GameplayHpHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.cpp" />
+    <ClCompile Include="Src\Presentation\UI\Components\SoundSettingPanelComponent.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\UISpriteView.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\UITextView.cpp" />
     <ClCompile Include="Src\Presentation\UI\Components\UIVisibility.cpp" />
@@ -384,6 +395,8 @@
     <ClCompile Include="Src\UI\PatchNote\PatchNoteTitleBarUI.cpp" />
     <ClCompile Include="Src\UI\PatchNote\PatchNoteWindowUI.cpp" />
     <ClCompile Include="Src\UI\PatchNote\TitlePatchNoteHintUI.cpp" />
+    <ClCompile Include="Src\UI\Pause\PauseController.cpp" />
+    <ClCompile Include="Src\UI\Pause\PauseMenuUI.cpp" />
     <ClCompile Include="Src\UI\Select\ManualUI.cpp" />
     <ClCompile Include="Src\UI\Select\TitleMenu.cpp" />
     <ClCompile Include="Src\UI\Select\WorldSelectUI.cpp" />
@@ -402,9 +415,18 @@
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameVersion.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\BossBriefingSlideComponent.h" />
+    <ClInclude Include="Src\UI\BossTutorial\BossBriefingController.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\BossBriefingScreenHost.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\BossBriefingScreen.h" />
     <ClInclude Include="IBackGround.h" />
     <ClInclude Include="ResultData.h" />
+    <ClInclude Include="Src\Presentation\Data\BossBriefingData.h" />
+    <ClInclude Include="Src\Presentation\Data\IBossBriefingData.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\SoundSettingContentComponent.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\SoundSettingScreen.h" />
+    <ClInclude Include="Src\Presentation\UI\Screens\SoundSettingScreenHost.h" />
+    <ClInclude Include="Src\UI\Pause\SoundSettingController.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackFireBallState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackJumpState.h" />
     <ClInclude Include="Src\Actor\Character\Enemy\Boss\2D\BossAttackMeteo2DState.h" />
@@ -518,6 +540,8 @@
     <ClInclude Include="Src\Presentation\Data\GameplayHudData.h" />
     <ClInclude Include="Src\Presentation\Data\IBossHubData.h" />
     <ClInclude Include="Src\Presentation\Data\IGameplayHubData.h" />
+    <ClInclude Include="Src\Presentation\Data\ISoundSettingData.h" />
+    <ClInclude Include="Src\Presentation\Data\SoundSettingData.h" />
     <ClInclude Include="Src\Presentation\UI\BossAttackHudHelper.h" />
     <ClInclude Include="Src\Presentation\UI\BossHudUiNames.h" />
     <ClInclude Include="Src\Presentation\UI\Components\BossAttackIndicatorHudComponent.h" />
@@ -527,6 +551,7 @@
     <ClInclude Include="Src\Presentation\UI\Components\GameplayScoreHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\GameplayTimerHudComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\IUIComponent.h" />
+    <ClInclude Include="Src\Presentation\UI\Components\SoundSettingPanelComponent.h" />
     <ClInclude Include="Src\Presentation\UI\Components\UISpriteView.h" />
     <ClInclude Include="Src\Presentation\UI\Components\UITextView.h" />
     <ClInclude Include="Src\Presentation\UI\Components\UIVisibility.h" />
@@ -599,6 +624,8 @@
     <ClInclude Include="Src\UI\PatchNote\PatchNoteTypes.h" />
     <ClInclude Include="Src\UI\PatchNote\PatchNoteWindowUI.h" />
     <ClInclude Include="Src\UI\PatchNote\TitlePatchNoteHintUI.h" />
+    <ClInclude Include="Src\UI\Pause\PauseController.h" />
+    <ClInclude Include="Src\UI\Pause\PauseMenuUI.h" />
     <ClInclude Include="Src\UI\Select\ManualUI.h" />
     <ClInclude Include="Src\UI\Select\TitleMenu.h" />
     <ClInclude Include="Src\UI\Select\WorldSelectUI.h" />

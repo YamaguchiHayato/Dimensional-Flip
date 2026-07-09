@@ -22,7 +22,7 @@
 #include "Src/Parameter/Player/PlayerMoveParameterTable.h"
 #include "Src/Parameter/Player/PlayerAirParameterTable.h"
 #include "Src/Parameter/Player/PlayerPhysicsParameterTable.h"
-
+#include "Src/Actor/Stage/StageSetup.h"
 
 
 /**
@@ -144,7 +144,9 @@ namespace nsApp
                         bounceCooldown_ -= g_gameTime->GetFrameDeltaTime();
 
                     /** @brief チュートリアルポーズ中以外は次元切替を許可。 */
-                    if (!stateMachine_.IsInState(enState_TutorialPause))
+                    /** @brief チュートリアル / ボス説明中以外は次元切替を許可。 */
+                    if (!stateMachine_.IsInState(enState_TutorialPause) &&
+                        !nsApp::nsStage::StageSetup::ShouldKeepPlayerPaused())
                     {
                         if (IsDimensionSwitchAction())
                             app::core::InputManager::GetInstance()->FlipDimension(pCameraManager_);
@@ -212,6 +214,18 @@ namespace nsApp
                 void Player::ApplyMovement()
                 {
                     locomotion_.ApplyMovement();
+                }
+
+                /**
+                 * @brief ステージ Restart 用に移動状態をリセットする。
+                 */
+                void Player::ResetForStageRestart()
+                {
+                    moveSpeed_ = Vector3::Zero;
+                    isBounce_ = false;
+                    SetRespawnFlag(false);
+                    stateMachine_.ChangeState(enState_Idle);
+                    charaCon_.SetPosition(pos_);
                 }
 
                 /**

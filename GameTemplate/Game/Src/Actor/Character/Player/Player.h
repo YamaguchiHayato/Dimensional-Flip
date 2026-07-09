@@ -463,6 +463,11 @@ namespace nsApp
                     void ApplyMovement() override;
 
                     /**
+                     * @brief ステージ Restart 用に移動状態をリセットする。
+                     */
+                    void ResetForStageRestart();
+
+                    /**
                      * @brief 座標と描画を同期する。
                      */
                     void SyncView() override;

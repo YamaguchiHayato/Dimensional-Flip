@@ -6,6 +6,7 @@
 
 #include "Src/Scene/Scene.h"
 #include "Src/Core/SceneManager.h"
+#include "Src/Core/SoundManager.h"
 #include "Src/Core/StageManager.h"
 
 void ReportLiveObjects()
@@ -51,8 +52,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
         // シーンマネージャーの更新。
         SceneManager::GetInstance()->Update();
-
-
+        nsApp::nsCore::SoundManager::GetInstance()->Update();
 		K2Engine::GetInstance()->Execute();
 	}
 

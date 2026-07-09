@@ -86,6 +86,8 @@ namespace nsApp
             }
 
 
+            /* 前シーンの BGM / SE を確実に止めてから再生する（Title と同じ流れ） */
+            nsCore::SoundManager::GetInstance()->ReleaseAllSounds();
             nsCore::SoundManager::GetInstance()->PlayBGM(GameSoundList_BGM_StageSelect);
 
             /**
